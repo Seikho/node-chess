@@ -3,7 +3,7 @@ declare module Chess {
 
 	// From the perspective of the piece owner
 	enum Direction {
-		Up, Down, Left, Right
+		Up, Down, Left, Right, DiagonalUp, DiagonalDown
 	}
 }
 /**
@@ -31,7 +31,7 @@ interface Square {
 interface Piece {
 	name: string;
 	notation: string;
-	movement: MovePattern;
+	movement: MovePattern[];
 	value: number; // Should the board determine the value of a piece?
 }
 
