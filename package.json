@@ -24,7 +24,9 @@
   },
   "homepage": "https://github.com/seikho/node-chess",
   "devDependencies": {
+    "chai": "^2.1.2",
     "grunt": "^0.4.5",
-    "grunt-ts": "^3.0.0"
+    "grunt-ts": "^3.0.0",
+    "mocha": "^2.2.1"
   }
 }
