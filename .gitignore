@@ -1,0 +1,6 @@
+.tscache/
+NUL
+*.swp
+*.*~
+*.log
+node_modules/

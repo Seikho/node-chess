@@ -1,0 +1,30 @@
+{
+  "name": "node-chess",
+  "version": "0.0.0",
+  "description": "A chess engine for board validations and position calculation",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seikho/node-chess"
+  },
+  "keywords": [
+    "node",
+    "chess",
+    "calculate",
+    "validate",
+    "engine"
+  ],
+  "author": "Carl Winkler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seikho/node-chess/issues"
+  },
+  "homepage": "https://github.com/seikho/node-chess",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-ts": "^3.0.0"
+  }
+}
