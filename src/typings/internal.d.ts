@@ -13,6 +13,28 @@ interface PieceMovement {
 	movePatterns: MovePattern[];
 }
 
+interface Coordinate {
+	rank: number; // Board x-axis
+	file: number; // Board y-axis
+}
+
+interface Rank {
+	rank: number;
+	squares: Square[];
+}
+
+interface Square {
+	file: number;
+	piece: Piece;
+}
+
+interface Piece {
+	name: string;
+	notation: string;
+	movement: MovePattern;
+	value: number; // Should the board determine the value of a piece?
+}
+
 /**
  * @param moves The complete pattern of movement
  * @param canJump Can the piece jump over pieces to reach the location
@@ -43,4 +65,8 @@ interface AnalysisOptions {
 	interval?: number;
 	depth?: number;
 	time?: number;
+}
+
+interface PositionParser {
+	parse(position: string): any;
 }
