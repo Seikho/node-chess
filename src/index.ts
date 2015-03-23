@@ -34,10 +34,52 @@ export class Board {
 
 	/**
 	 * Returns an array of the available squares a piece can move to
+	 * TODO Export function to smaller module
 	 */
-	availableMoves(square: Coordinate): Coordinate[] {
-		return [];
-	} 
+	availableMoves(coordinate: Coordinate): Coordinate[] {
+		var moves = [];
+		var square = this.getSquare(coordinate);
+		if (!square) return moves;
+
+	}
+
+	getSquaresForMove(coordinate: Coordinate, movePattern: MovePattern, isWhite?: boolean): Coordinate[] {
+		isWhite = isWhite || true;
+		var coordinates: Coordinate[] = [];
+		var moves = movePattern.moves;
+
+		// Can only provide two (2) single moves. Providing more makes no logical sense
+		// An error will get thrown to explicitly disallow this
+		if (moves.length > 2) return coordinates;
+		if (moves.length === 2) {
+			if (moves[0].count === 0 && moves[1].count === 0) return coordinates;
+			var incLeft = this.getIncrementer(moves[0].direction);
+			var incRight = this.getIncrementer(moves[1].direction);
+			if (!isWhite) {
+				incLeft = this.inverseCoordinates(incLeft);
+				incRight = this.inverseCoordinates(incRight);
+			}
+			/// Invalid move definition: Cannot have infinte moves in both directions -- This limit will be removed
+			if (moves[0].count !== 0 && moves[1].count !== 0) {
+
+			}	
+		} 
+
+		movePattern.forEach(singleMove => {
+
+		});
+	}
+
+	getSquareForMoves(coordinate: Coordinate, movePatterns: MovePattern[]): Coordinate[] {
+		var coordinates: Coordinate = [];
+		movePatterns.forEach(move => coordinates.concat(getSquaresForMove(coordinate, move)));
+		return coordinates;
+	}
+
+	inverseCoordinatse(coordinates: Coordinate[]): Coordinate[] {
+		return coordinates.map(coord => { return { rank: coord.rank*=1, file: coord.file*=-1 } } );
+	}
+
 
 	/**
 	 * @return boolean Returns true if the piece moved to the toSquare
@@ -51,6 +93,25 @@ export class Board {
 		var y = square.file;
 		if (!this.ranks[x]) return null;
 		return this.ranks[x].squares[y] || null;
+	}
+
+	getIncrementer(direction: Chess.Direction): Location[] {
+		switch (direction) {
+			case Chess.Direction.Up:
+				return [{ rank: 1, file: 0}];
+			case Chess.Direction.Down:
+			   return [{ rank: -1, file: 0}];
+			case Chess.Direction.Left:
+			   return [{rank: 0, file: -1}];
+			case Chess.Direction.Right:
+			   return [{rank: 0, file: 1}];
+			case Chess.Direction.DiagonalUp:
+			   return [{rank: 1, file: -1}, {rank: 1, file: 1}];
+			case Chess.Direction.DiagonalDown:
+			   return [{rank: -1, file: -1}, {rank: -1, file: 1}];
+			default:
+			   throw "InvalidDirectionException: The direction provided was invalid";
+		}
 	}
 
 	rankCount: number;
