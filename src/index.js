@@ -1,10 +1,18 @@
+/// <reference path="typings/internal.d.ts" />
+/**
+ * Board: extensible board (TODO: more detail)
+ */
 var Board = (function () {
     function Board(ranks, files) {
         if (isNaN(ranks) || isNaN(files))
             throw "InvalidArgumentException: 'ranks' and 'files' must be a number";
+        // Only accept positive, whole, organic, gluten-free numbers.
         this.rankCount = !!ranks ? Math.floor(Math.abs(ranks)) : 8;
         this.fileCount = !!ranks ? Math.floor(Math.abs(files)) : 8;
     }
+    /**
+     * Creates an empty board using a 2-dimensional, non-zero based array.
+     */
     Board.prototype.create = function () {
         this.ranks = [];
         for (var rank = 0; rank < this.rankCount; rank++) {
@@ -21,44 +29,19 @@ var Board = (function () {
             this.ranks[rank + 1] = row;
         }
     };
+    /**
+     * Returns an array of the available squares a piece can move to
+     * TODO Export function to smaller module
+     */
     Board.prototype.availableMoves = function (coordinate) {
         var moves = [];
         var square = this.getSquare(coordinate);
         if (!square)
             return moves;
     };
-    Board.prototype.getSquaresForMove = function (coordinate, movePattern, isWhite) {
-        isWhite = isWhite || true;
-        var coordinates = [];
-        var moves = movePattern.moves;
-        if (moves.length > 2)
-            return coordinates;
-        if (moves.length === 2) {
-            if (moves[0].count === 0 && moves[1].count === 0)
-                return coordinates;
-            var incLeft = this.getIncrementer(moves[0].direction);
-            var incRight = this.getIncrementer(moves[1].direction);
-            if (!isWhite) {
-                incLeft = this.inverseCoordinates(incLeft);
-                incRight = this.inverseCoordinates(incRight);
-            }
-            if (moves[0].count !== 0 && moves[1].count !== 0) {
-            }
-        }
-        movePattern.moves.forEach(function (singleMove) {
-        });
-    };
-    Board.prototype.getSquareForMoves = function (coordinate, movePatterns) {
-        var _this = this;
-        var coordinates = [];
-        movePatterns.forEach(function (move) { return coordinates.concat(_this.getSquaresForMove(coordinate, move)); });
-        return coordinates;
-    };
-    Board.prototype.inverseCoordinates = function (coordinates) {
-        return coordinates.map(function (coord) {
-            return { rank: coord.rank *= 1, file: coord.file *= -1 };
-        });
-    };
+    /**
+     * @return boolean Returns true if the piece moved to the toSquare
+     */
     Board.prototype.movePieceTo = function (fromSquare, toSquare) {
         return false;
     };
@@ -69,27 +52,18 @@ var Board = (function () {
             return null;
         return this.ranks[x].squares[y] || null;
     };
-    Board.prototype.getIncrementer = function (direction) {
-        switch (direction) {
-            case Chess.Direction.Up:
-                return [{ rank: 1, file: 0 }];
-            case Chess.Direction.Down:
-                return [{ rank: -1, file: 0 }];
-            case Chess.Direction.Left:
-                return [{ rank: 0, file: -1 }];
-            case Chess.Direction.Right:
-                return [{ rank: 0, file: 1 }];
-            case Chess.Direction.DiagonalUp:
-                return [{ rank: 1, file: -1 }, { rank: 1, file: 1 }];
-            case Chess.Direction.DiagonalDown:
-                return [{ rank: -1, file: -1 }, { rank: -1, file: 1 }];
-            default:
-                throw "InvalidDirectionException: The direction provided was invalid";
-        }
-    };
     return Board;
 })();
 exports.Board = Board;
+(function (Direction) {
+    Direction[Direction["Up"] = 0] = "Up";
+    Direction[Direction["Down"] = 1] = "Down";
+    Direction[Direction["Left"] = 2] = "Left";
+    Direction[Direction["Right"] = 3] = "Right";
+    Direction[Direction["DiagonalUp"] = 4] = "DiagonalUp";
+    Direction[Direction["DiagonalDown"] = 5] = "DiagonalDown";
+})(exports.Direction || (exports.Direction = {}));
+var Direction = exports.Direction;
 var Piece = (function () {
     function Piece() {
     }
@@ -108,9 +82,9 @@ var Analyzer = (function () {
         this.startTime = Date.now();
     }
     Analyzer.prototype.calculate = function (callback) {
+        //TODO 
         callback(this.evaluation);
     };
     return Analyzer;
 })();
 exports.Analyzer = Analyzer;
-//# sourceMappingURL=index.js.map

@@ -9,26 +9,35 @@ export function getSquaresForMove(coordinate: Coordinate, movePattern: MovePatte
 	if (moves.length > 2) return coordinates;
 	if (moves.length === 2) {
 		if (moves[0].count === 0 && moves[1].count === 0) return coordinates;
-		var incLeft = this.getIncrementer(moves[0].direction);
-		var incRight = this.getIncrementer(moves[1].direction);
+		var incLeft = getIncrementer(moves[0].direction);
+		var incRight = getIncrementer(moves[1].direction);
 		if (!isWhite) {
-			incLeft = this.inverseCoordinates(incLeft);
-			incRight = this.inverseCoordinates(incRight);
+			incLeft = inverseCoordinates(incLeft);
+			incRight = inverseCoordinates(incRight);
 		}
 		/// Invalid move definition: Cannot have infinte moves in both directions -- This limit will be removed
 		if (moves[0].count !== 0 && moves[1].count !== 0) {
-
 		}	
 	} 
 
 	movePattern.moves.forEach(singleMove => {
 
 	});
+	return coordinates;
 }
 
 export function getSquareForMoves(coordinate: Coordinate, movePatterns: MovePattern[]): Coordinate[] {
 	var coordinates: Coordinate[] = [];
-	movePatterns.forEach(move => coordinates.concat(this.getSquaresForMove(coordinate, move)));
+	movePatterns.forEach(move => coordinates.concat(getSquaresForMove(coordinate, move)));
+	return coordinates;
+}
+
+export function applyIncrements(coordinate: Coordinate, incs: Coordinate[]): Coordinate[] {
+	var coordinates: Coordinate[] = [];
+	incs.forEach(inc => {
+		var coord = { rank: coordinate.rank + inc.rank, file: coordinate.file + inc.file };
+		if (coord.file > 0 && coord.rank > 0) coordinates.push(coord);
+	});
 	return coordinates;
 }
 
@@ -38,17 +47,17 @@ export function inverseCoordinates(coordinates: Coordinate[]): Coordinate[] {
 
 export function getIncrementer(direction: Chess.Direction): Coordinate[] {
 	switch (direction) {
-		case Chess.Direction.Up:
+		case board.Direction.Up:
 			return [{ rank: 1, file: 0}];
-		case Chess.Direction.Down:
+		case board.Direction.Down:
 			return [{ rank: -1, file: 0}];
-		case Chess.Direction.Left:
+		case board.Direction.Left:
 			return [{rank: 0, file: -1}];
-		case Chess.Direction.Right:
+		case bhess.Direction.Right:
 			return [{rank: 0, file: 1}];
-		case Chess.Direction.DiagonalUp:
+		case bhess.Direction.DiagonalUp:
 			return [{rank: 1, file: -1}, {rank: 1, file: 1}];
-		case Chess.Direction.DiagonalDown:
+		case bhess.Direction.DiagonalDown:
 			return [{rank: -1, file: -1}, {rank: -1, file: 1}];
 		default:
 			throw "InvalidDirectionException: The direction provided was invalid";

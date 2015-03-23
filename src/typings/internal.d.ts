@@ -2,9 +2,6 @@
 declare module Chess {
 
 	// From the perspective of the piece owner
-	enum Direction {
-		Up, Down, Left, Right, DiagonalUp, DiagonalDown
-	}
 }
 /**
  * Defines a single move that a piece can perform
