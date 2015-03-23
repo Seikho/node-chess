@@ -65,21 +65,20 @@ export class Board {
 			}	
 		} 
 
-		movePattern.forEach(singleMove => {
+		movePattern.moves.forEach(singleMove => {
 
 		});
 	}
 
 	getSquareForMoves(coordinate: Coordinate, movePatterns: MovePattern[]): Coordinate[] {
-		var coordinates: Coordinate = [];
-		movePatterns.forEach(move => coordinates.concat(getSquaresForMove(coordinate, move)));
+		var coordinates: Coordinate[] = [];
+		movePatterns.forEach(move => coordinates.concat(this.getSquaresForMove(coordinate, move)));
 		return coordinates;
 	}
 
-	inverseCoordinatse(coordinates: Coordinate[]): Coordinate[] {
+	inverseCoordinates(coordinates: Coordinate[]): Coordinate[] {
 		return coordinates.map(coord => { return { rank: coord.rank*=1, file: coord.file*=-1 } } );
 	}
-
 
 	/**
 	 * @return boolean Returns true if the piece moved to the toSquare
@@ -95,7 +94,7 @@ export class Board {
 		return this.ranks[x].squares[y] || null;
 	}
 
-	getIncrementer(direction: Chess.Direction): Location[] {
+	getIncrementer(direction: Chess.Direction): Coordinate[] {
 		switch (direction) {
 			case Chess.Direction.Up:
 				return [{ rank: 1, file: 0}];
