@@ -30,15 +30,21 @@ function getSquareForMoves(coordinate, movePatterns) {
 exports.getSquareForMoves = getSquareForMoves;
 function applyIncrements(coordinate, incs, bounds) {
     bounds = bounds || { rank: 8, file: 8 };
+    var originalCoordinate = {
+        rank: coordinate.rank,
+        file: coordinate.file
+    };
     var coordinates = [];
-    incs.forEach(function (inc) {
+    for (var i = 0; i < incs.length; i++) {
+        var inc = incs[i];
         var coord = { rank: coordinate.rank + inc.rank, file: coordinate.file + inc.file };
-        if (coord.file > 0 && coord.file <= bounds.file && coord.rank > 0 && coord.rank <= bounds.rank)
-            coordinates.push(coord);
+        if (coord.file > 0 && coord.file <= bounds.file && coord.rank > 0 && coord.rank <= bounds.rank) {
+            coordinate = coord;
+        }
         else
-            coordinates.push(coordinate);
-    });
-    return coordinates;
+            return originalCoordinate;
+    }
+    return coordinate;
 }
 exports.applyIncrements = applyIncrements;
 function inverseCoordinates(coordinates) {
@@ -47,6 +53,17 @@ function inverseCoordinates(coordinates) {
     });
 }
 exports.inverseCoordinates = inverseCoordinates;
+function singleMovesToIncrements(moves) {
+    var coordinates = [];
+    moves.forEach(function (move) {
+        var inc = getIncrementer(move.direction);
+        inc[0].rank *= move.count;
+        inc[0].file *= move.count;
+        coordinates.push(inc[0]);
+    });
+    return coordinates;
+}
+exports.singleMovesToIncrements = singleMovesToIncrements;
 function getIncrementer(direction) {
     switch (direction) {
         case 0 /* Up */:
