@@ -1,5 +1,6 @@
 /// <reference path="../typings/internal.d.ts" />
-class FenParser implements PositionParser {
+import Chess = require("../types");
+class FenParser implements Chess.PositionParser {
 	constructor(){}
 
 	parse(position: string): any {

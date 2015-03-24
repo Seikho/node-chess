@@ -1,10 +1,8 @@
-/// <reference path="typings/internal.d.ts" />
+var Chess = require("./types");
 function getSquaresForMove(coordinate, movePattern, isWhite) {
     isWhite = isWhite || true;
     var coordinates = [];
     var moves = movePattern.moves;
-    // Can only provide two (2) single moves. Providing more makes no logical sense
-    // An error will get thrown to explicitly disallow this
     if (moves.length > 2)
         return coordinates;
     if (moves.length === 2) {
@@ -16,7 +14,6 @@ function getSquaresForMove(coordinate, movePattern, isWhite) {
             incLeft = inverseCoordinates(incLeft);
             incRight = inverseCoordinates(incRight);
         }
-        /// Invalid move definition: Cannot have infinte moves in both directions -- This limit will be removed
         if (moves[0].count !== 0 && moves[1].count !== 0) {
         }
     }
@@ -49,20 +46,21 @@ function inverseCoordinates(coordinates) {
 exports.inverseCoordinates = inverseCoordinates;
 function getIncrementer(direction) {
     switch (direction) {
-        case board.Direction.Up:
+        case 0 /* Up */:
             return [{ rank: 1, file: 0 }];
-        case board.Direction.Down:
+        case 1 /* Down */:
             return [{ rank: -1, file: 0 }];
-        case board.Direction.Left:
+        case 2 /* Left */:
             return [{ rank: 0, file: -1 }];
-        case bhess.Direction.Right:
+        case 3 /* Right */:
             return [{ rank: 0, file: 1 }];
-        case bhess.Direction.DiagonalUp:
+        case 4 /* DiagonalUp */:
             return [{ rank: 1, file: -1 }, { rank: 1, file: 1 }];
-        case bhess.Direction.DiagonalDown:
+        case 5 /* DiagonalDown */:
             return [{ rank: -1, file: -1 }, { rank: -1, file: 1 }];
         default:
             throw "InvalidDirectionException: The direction provided was invalid";
     }
 }
 exports.getIncrementer = getIncrementer;
+//# sourceMappingURL=helper.js.map

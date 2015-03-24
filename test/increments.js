@@ -1,8 +1,6 @@
-/// <reference path="../src/typings/internal.d.ts" />
-/// <reference path="../src/typings/tsd.d.ts" />
-var Board = require("../src/index");
 var helper = require("../src/helper");
 var chai = require("chai");
+var Chess = require("../src/types");
 var expect = chai.expect;
 describe("increment tests", function () {
     it("should return an array with length above 0", function () {
@@ -17,3 +15,4 @@ function incrementTest(coordinate, direction) {
 function pos(rank, file) {
     return { rank: rank, file: file };
 }
+//# sourceMappingURL=increments.js.map

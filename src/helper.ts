@@ -1,7 +1,8 @@
 /// <reference path="typings/internal.d.ts" />
-export function getSquaresForMove(coordinate: Coordinate, movePattern: MovePattern, isWhite?: boolean): Coordinate[] {
+import Chess = require("./types");
+export function getSquaresForMove(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, isWhite?: boolean): Chess.Coordinate[] {
 	isWhite = isWhite || true;
-	var coordinates: Coordinate[] = [];
+	var coordinates: Chess.Coordinate[] = [];
 	var moves = movePattern.moves;
 
 	// Can only provide two (2) single moves. Providing more makes no logical sense
@@ -26,14 +27,14 @@ export function getSquaresForMove(coordinate: Coordinate, movePattern: MovePatte
 	return coordinates;
 }
 
-export function getSquareForMoves(coordinate: Coordinate, movePatterns: MovePattern[]): Coordinate[] {
-	var coordinates: Coordinate[] = [];
+export function getSquareForMoves(coordinate: Chess.Coordinate, movePatterns: Chess.MovePattern[]): Chess.Coordinate[] {
+	var coordinates: Chess.Coordinate[] = [];
 	movePatterns.forEach(move => coordinates.concat(getSquaresForMove(coordinate, move)));
 	return coordinates;
 }
 
-export function applyIncrements(coordinate: Coordinate, incs: Coordinate[]): Coordinate[] {
-	var coordinates: Coordinate[] = [];
+export function applyIncrements(coordinate: Chess.Coordinate, incs: Chess.Coordinate[]): Chess.Coordinate[] {
+	var coordinates: Chess.Coordinate[] = [];
 	incs.forEach(inc => {
 		var coord = { rank: coordinate.rank + inc.rank, file: coordinate.file + inc.file };
 		if (coord.file > 0 && coord.rank > 0) coordinates.push(coord);
@@ -41,26 +42,25 @@ export function applyIncrements(coordinate: Coordinate, incs: Coordinate[]): Coo
 	return coordinates;
 }
 
-export function inverseCoordinates(coordinates: Coordinate[]): Coordinate[] {
+export function inverseCoordinates(coordinates: Chess.Coordinate[]): Chess.Coordinate[] {
 	return coordinates.map(coord => { return { rank: coord.rank*=1, file: coord.file*=-1 } } );
 }
 
-export function getIncrementer(direction: Chess.Direction): Coordinate[] {
+export function getIncrementer(direction: Chess.Direction): Chess.Coordinate[] {
 	switch (direction) {
-		case board.Direction.Up:
+		case Chess.Direction.Up:
 			return [{ rank: 1, file: 0}];
-		case board.Direction.Down:
+		case Chess.Direction.Down:
 			return [{ rank: -1, file: 0}];
-		case board.Direction.Left:
+		case Chess.Direction.Left:
 			return [{rank: 0, file: -1}];
-		case bhess.Direction.Right:
+		case Chess.Direction.Right:
 			return [{rank: 0, file: 1}];
-		case bhess.Direction.DiagonalUp:
+		case Chess.Direction.DiagonalUp:
 			return [{rank: 1, file: -1}, {rank: 1, file: 1}];
-		case bhess.Direction.DiagonalDown:
+		case Chess.Direction.DiagonalDown:
 			return [{rank: -1, file: -1}, {rank: -1, file: 1}];
 		default:
 			throw "InvalidDirectionException: The direction provided was invalid";
 	}
 }
-

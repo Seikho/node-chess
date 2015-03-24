@@ -1,5 +1,5 @@
 /// <reference path="typings/internal.d.ts" />
-
+import Chess = require("./types");
 /**
  * Board: extensible board (TODO: more detail)
  */ 
@@ -17,7 +17,7 @@ export class Board {
 	create(): void {
 		this.ranks = [];
 		for (var rank = 0; rank < this.rankCount;rank++) {
-			var row: Rank = {
+			var row: Chess.Rank = {
 				rank: rank, 
 				squares: []
 			};
@@ -36,7 +36,7 @@ export class Board {
 	 * Returns an array of the available squares a piece can move to
 	 * TODO Export function to smaller module
 	 */
-	availableMoves(coordinate: Coordinate): Coordinate[] {
+	availableMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
 		var moves = [];
 		var square = this.getSquare(coordinate);
 		if (!square) return moves;
@@ -45,11 +45,11 @@ export class Board {
 	/**
 	 * @return boolean Returns true if the piece moved to the toSquare
 	 */ 
-	movePieceTo(fromSquare: Coordinate, toSquare: Coordinate): boolean {
+	movePieceTo(fromSquare: Chess.Coordinate, toSquare: Chess.Coordinate): boolean {
 		return false;
 	}
 
-	getSquare(square: Coordinate): Square {
+	getSquare(square: Chess.Coordinate): Chess.Square {
 		var x = square.rank;
 		var y = square.file;
 		if (!this.ranks[x]) return null;
@@ -58,23 +58,20 @@ export class Board {
 
 	rankCount: number;
 	fileCount: number;
-	ranks: Rank[];
+	ranks: Chess.Rank[];
 }
 
-export enum Direction {
-	Up, Down, Left, Right, DiagonalUp, DiagonalDown
-}
 
 export class Piece {
 	constructor(){}
 
 	notation: string;
-	movement: PieceMovement[];
+	movement: Chess.PieceMovement[];
 
 }
 
 export class Analyzer {
-	constructor(board: Board, options?: AnalysisOptions) {
+	constructor(board: Board, options?: Chess.AnalysisOptions) {
 		this.evaluation = 0;
 		if (!options) options = {};
 		this.options.interval = options.interval || 100;
@@ -89,7 +86,7 @@ export class Analyzer {
 	}
 
 	evaluation: number;
-	options: AnalysisOptions = {};
+	options: Chess.AnalysisOptions = {};
 	startTime: number;
 }
 
