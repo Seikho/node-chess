@@ -28,12 +28,15 @@ function getSquareForMoves(coordinate, movePatterns) {
     return coordinates;
 }
 exports.getSquareForMoves = getSquareForMoves;
-function applyIncrements(coordinate, incs) {
+function applyIncrements(coordinate, incs, bounds) {
+    bounds = bounds || { rank: 8, file: 8 };
     var coordinates = [];
     incs.forEach(function (inc) {
         var coord = { rank: coordinate.rank + inc.rank, file: coordinate.file + inc.file };
-        if (coord.file > 0 && coord.rank > 0)
+        if (coord.file > 0 && coord.file <= bounds.file && coord.rank > 0 && coord.rank <= bounds.rank)
             coordinates.push(coord);
+        else
+            coordinates.push(coordinate);
     });
     return coordinates;
 }

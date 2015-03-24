@@ -33,11 +33,13 @@ export function getSquareForMoves(coordinate: Chess.Coordinate, movePatterns: Ch
 	return coordinates;
 }
 
-export function applyIncrements(coordinate: Chess.Coordinate, incs: Chess.Coordinate[]): Chess.Coordinate[] {
+export function applyIncrements(coordinate: Chess.Coordinate, incs: Chess.Coordinate[], bounds?: Chess.Coordinate): Chess.Coordinate[] {
+	bounds = bounds || { rank: 8, file: 8 };
 	var coordinates: Chess.Coordinate[] = [];
 	incs.forEach(inc => {
 		var coord = { rank: coordinate.rank + inc.rank, file: coordinate.file + inc.file };
-		if (coord.file > 0 && coord.rank > 0) coordinates.push(coord);
+		if (coord.file > 0 && coord.file <= bounds.file && coord.rank > 0 && coord.rank <= bounds.rank) coordinates.push(coord);
+		else coordinates.push(coordinate);
 	});
 	return coordinates;
 }
