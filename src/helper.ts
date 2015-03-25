@@ -51,7 +51,7 @@ export function applyIncrements(coordinate: Chess.Coordinate, incs: Chess.Coordi
 }
 
 export function inverseCoordinates(coordinates: Chess.Coordinate[]): Chess.Coordinate[] {
-	return coordinates.map(coord => { return { rank: coord.rank*=1, file: coord.file*=-1 } } );
+	return coordinates.map(coord => { return { rank: coord.rank*=-1, file: coord.file*=-1 } } );
 }
 
 export function singleMovesToIncrements(moves: Chess.SingleMove[]): Chess.Coordinate[] {
