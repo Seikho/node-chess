@@ -1,6 +1,6 @@
 {
   "name": "node-chess",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A chess engine for board validations and position calculation",
   "main": "src/index.js",
   "scripts": {
@@ -15,7 +15,10 @@
     "chess",
     "calculate",
     "validate",
-    "engine"
+    "engine",
+    "analysis",
+    "variant",
+    "portal"
   ],
   "author": "Carl Winkler",
   "license": "MIT",
