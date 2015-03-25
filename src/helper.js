@@ -49,7 +49,7 @@ function applyIncrements(coordinate, incs, bounds) {
 exports.applyIncrements = applyIncrements;
 function inverseCoordinates(coordinates) {
     return coordinates.map(function (coord) {
-        return { rank: coord.rank *= 1, file: coord.file *= -1 };
+        return { rank: coord.rank *= -1, file: coord.file *= -1 };
     });
 }
 exports.inverseCoordinates = inverseCoordinates;
