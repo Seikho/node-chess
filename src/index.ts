@@ -61,7 +61,7 @@ export class Board {
 	ranks: Chess.Rank[];
 }
 
-
+// TODO Change this to an interface. Moves to types.ts
 export class Piece {
 	constructor(){}
 
