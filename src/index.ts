@@ -1,9 +1,10 @@
 /// <reference path="typings/internal.d.ts" />
 import Chess = require("./types");
+export = Board;
 /**
  * Board: extensible board (TODO: more detail)
  */ 
-export class Board {
+class Board {
 	constructor(ranks?: number, files?: number) {
 		if (isNaN(ranks) || isNaN(files)) throw "InvalidArgumentException: 'ranks' and 'files' must be a number";
 		// Only accept positive, whole, organic, gluten-free numbers.
@@ -60,34 +61,3 @@ export class Board {
 	fileCount: number;
 	ranks: Chess.Rank[];
 }
-
-// TODO Change this to an interface. Moves to types.ts
-export class Piece {
-	constructor(){}
-
-	notation: string;
-	movement: Chess.PieceMovement[];
-
-}
-
-export class Analyzer {
-	constructor(board: Board, options?: Chess.AnalysisOptions) {
-		this.evaluation = 0;
-		if (!options) options = {};
-		this.options.interval = options.interval || 100;
-		this.options.depth = options.depth || 5;
-		this.options.time = options.time || 5;
-		this.startTime = Date.now();
-	}
-
-	calculate(callback: (evaluation: number) => any): void {
-		//TODO 
-		callback(this.evaluation);
-	}
-
-	evaluation: number;
-	options: Chess.AnalysisOptions = {};
-	startTime: number;
-}
-
-
