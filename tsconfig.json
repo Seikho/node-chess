@@ -19,6 +19,7 @@
         "src/parsers/fen.ts",
         "src/pieces/pawn.ts",
         "src/pieces/pieces.ts",
+        "src/pieces/rook.ts",
         "src/types.ts",
         "src/typings/bluebird/bluebird.d.ts",
         "src/typings/chai/chai.d.ts",

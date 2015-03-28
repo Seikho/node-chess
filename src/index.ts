@@ -7,4 +7,4 @@ var boards = {
 	classicBoard: new Board()
 };
 
-boards.classicBoard.pieces.push(Pawn);
+boards.classicBoard.pieces.push(new Pawn());

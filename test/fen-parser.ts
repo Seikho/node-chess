@@ -11,7 +11,7 @@ var start = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 describe("fen parsing tests", () => {
 	// Build a basic board with a pawn a valid piece
 	var board = new Board();
-	board.pieces.push(pieces.pawn);
+	board.pieces.push(new pieces.pawn());
 	var fen = new Fen(board);
 
 	// Fingers crossed!
@@ -20,7 +20,6 @@ describe("fen parsing tests", () => {
 	it("will have a pawn at 7,2", () => {
 		var rankEight = board.ranks[7];
 		var fileOne = rankEight.squares[2];
-
 		expect(fileOne.piece).to.exist;
 	});
 });

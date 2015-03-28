@@ -24,8 +24,24 @@ export interface Square {
 	piece: Piece;
 }
 
-export interface PieceFactory {
-	create(isWhite?: boolean): Piece;
+export class PieceFactory {
+	constructor(piece: Piece, notation: string) {
+		this.piece = piece;
+		this.notation = notation.slice(0,1).toLowerCase();
+	}
+
+	create(isWhite?: boolean): Piece {
+		return {
+			name: this.piece.name,
+			movement: this.piece.movement,
+			canQueen: this.piece.canQueen,
+			canSpawn: this.piece.canSpawn,
+			value: this.piece.value,
+			isWhite: !!isWhite
+		}
+	}
+
+	piece: Piece;
 	notation: string;
 }
 
@@ -35,7 +51,7 @@ export interface Piece {
 	value: number;
 	canQueen: boolean;
 	canSpawn: boolean;
-	isWhite: boolean;
+	isWhite?: boolean;
 }
 
 /**

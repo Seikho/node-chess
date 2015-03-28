@@ -8,4 +8,22 @@
     Direction[Direction["DiagonalDown"] = 5] = "DiagonalDown";
 })(exports.Direction || (exports.Direction = {}));
 var Direction = exports.Direction;
+var PieceFactory = (function () {
+    function PieceFactory(piece, notation) {
+        this.piece = piece;
+        this.notation = notation.slice(0, 1).toLowerCase();
+    }
+    PieceFactory.prototype.create = function (isWhite) {
+        return {
+            name: this.piece.name,
+            movement: this.piece.movement,
+            canQueen: this.piece.canQueen,
+            canSpawn: this.piece.canSpawn,
+            value: this.piece.value,
+            isWhite: !!isWhite
+        };
+    };
+    return PieceFactory;
+})();
+exports.PieceFactory = PieceFactory;
 //# sourceMappingURL=types.js.map
