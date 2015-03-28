@@ -5,8 +5,8 @@ export = PawnFactory;
  * Pawn piece registration
  */
 
-class PawnFactory implements Chess.PieceFactory {
-	create(isWhite?: boolean): Chess.Piece {
+var PawnFactory: Chess.PieceFactory = {
+	create: (isWhite?: boolean): Chess.Piece => {
 		return {
 			name: "Pawn",
 			movement: [moveForward, moveCapture],
@@ -15,8 +15,8 @@ class PawnFactory implements Chess.PieceFactory {
 			value: 1,
 			isWhite: !!isWhite
 		}
-	}
-	notation: string = "p";
+	},
+	notation: "p"
 }
 
 var moveForward = {

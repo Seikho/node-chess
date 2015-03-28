@@ -6,10 +6,12 @@ export = Board;
  */ 
 class Board {
 	constructor(ranks?: number, files?: number) {
+		ranks = ranks || 8;
+		files = files || 8;
 		if (isNaN(ranks) || isNaN(files)) throw "InvalidArgumentException: 'ranks' and 'files' must be a number";
 		// Only accept positive, whole, organic, gluten-free numbers.
-		this.rankCount = !!ranks?Math.floor(Math.abs(ranks)):8;
-		this.fileCount = !!ranks?Math.floor(Math.abs(files)):8;
+		this.rankCount = Math.floor(Math.abs(ranks));
+		this.fileCount = Math.floor(Math.abs(files));
 	}
 
 	/**

@@ -3,9 +3,8 @@ import Chess = require("./types");
 import Pawn = require("./pieces/pawn");
 export = boards;
 
-var boards: any = {};
+var boards = {
+	classicBoard: new Board()
+};
 
-var classicBoard = new Board();
-classicBoard.pieces.push(new Pawn());
-
-boards.classic = classicBoard;
+boards.classicBoard.pieces.push(Pawn);

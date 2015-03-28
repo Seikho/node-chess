@@ -1,8 +1,8 @@
 var Board = require("./board");
 var Pawn = require("./pieces/pawn");
-var boards = {};
-var classicBoard = new Board();
-classicBoard.pieces.push(new Pawn());
-boards.classic = classicBoard;
+var boards = {
+    classicBoard: new Board()
+};
+boards.classicBoard.pieces.push(Pawn);
 module.exports = boards;
 //# sourceMappingURL=index.js.map

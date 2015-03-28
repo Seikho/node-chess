@@ -3,11 +3,8 @@ var Chess = require("../types");
 /**
  * Pawn piece registration
  */
-var PawnFactory = (function () {
-    function PawnFactory() {
-        this.notation = "p";
-    }
-    PawnFactory.prototype.create = function (isWhite) {
+var PawnFactory = {
+    create: function (isWhite) {
         return {
             name: "Pawn",
             movement: [moveForward, moveCapture],
@@ -16,9 +13,9 @@ var PawnFactory = (function () {
             value: 1,
             isWhite: !!isWhite
         };
-    };
-    return PawnFactory;
-})();
+    },
+    notation: "p"
+};
 var moveForward = {
     moves: [{ direction: 0 /* Up */, count: 1 }],
     canJump: false,

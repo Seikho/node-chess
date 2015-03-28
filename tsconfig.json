@@ -18,12 +18,14 @@
         "src/index.ts",
         "src/parsers/fen.ts",
         "src/pieces/pawn.ts",
+        "src/pieces/pieces.ts",
         "src/types.ts",
         "src/typings/bluebird/bluebird.d.ts",
         "src/typings/chai/chai.d.ts",
         "src/typings/internal.d.ts",
         "src/typings/mocha/mocha.d.ts",
         "src/typings/tsd.d.ts",
+        "test/fen-parser.ts",
         "test/increments.ts"
     ]
 }
