@@ -10,6 +10,7 @@ var Analyzer = (function () {
         this.startTime = Date.now();
     }
     Analyzer.prototype.calculate = function (callback) {
+        //TODO 
         callback(this.evaluation);
     };
     return Analyzer;

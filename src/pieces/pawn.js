@@ -1,4 +1,8 @@
+/// <reference path="../typings/internal.d.ts" />
 var Chess = require("../types");
+/**
+ * Pawn piece registration
+ */
 var pawn = {
     name: "Pawn",
     notation: "p",

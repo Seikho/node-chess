@@ -1,8 +1,11 @@
+/// <reference path="typings/internal.d.ts" />
 var Chess = require("./types");
 function getSquaresForMove(coordinate, movePattern, isWhite) {
     isWhite = isWhite || true;
     var coordinates = [];
     var moves = movePattern.moves;
+    // Can only provide two (2) single moves. Providing more makes no logical sense
+    // An error will get thrown to explicitly disallow this
     if (moves.length > 2)
         return coordinates;
     if (moves.length === 2) {
@@ -14,6 +17,7 @@ function getSquaresForMove(coordinate, movePattern, isWhite) {
             incLeft = inverseCoordinates(incLeft);
             incRight = inverseCoordinates(incRight);
         }
+        /// Invalid move definition: Cannot have infinte moves in both directions -- This limit will be removed
         if (moves[0].count !== 0 && moves[1].count !== 0) {
         }
     }
