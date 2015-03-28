@@ -1,4 +1,5 @@
 import Chess = require("../types");
+export = RookFactory; 
 
 class RookFactory extends Chess.PieceFactory {
 	constructor() {

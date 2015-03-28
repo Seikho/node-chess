@@ -43,4 +43,5 @@ var moveRight = {
     canCapture: false,
     canMove: true
 };
+module.exports = RookFactory;
 //# sourceMappingURL=rook.js.map
