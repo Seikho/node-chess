@@ -8,7 +8,9 @@ var pawn: Chess.Piece = {
 	name: "Pawn",
 	notation: "p",
 	value: 1,
-	movement: []
+	movement: [],
+	canQueen: true,
+	canSpawn: false
 }
 
 var moveForward = {

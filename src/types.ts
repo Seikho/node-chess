@@ -28,7 +28,9 @@ export interface Piece {
 	name: string;
 	notation: string;
 	movement: MovePattern[];
-	value: number; // Should the board determine the value of a piece?
+	value?: number;
+	canQueen?: boolean;
+	canSpawn?: boolean;
 }
 
 /**
