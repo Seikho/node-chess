@@ -1,11 +1,11 @@
 import Board = require("./board");
 import Chess = require("./types");
-import pawn = require("./pieces/pawn");
+import Pawn = require("./pieces/pawn");
 export = boards;
 
 var boards: any = {};
 
 var classicBoard = new Board();
-classicBoard.pieces.push(pawn);
+classicBoard.pieces.push(new Pawn());
 
 boards.classic = classicBoard;

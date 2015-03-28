@@ -24,13 +24,18 @@ export interface Square {
 	piece: Piece;
 }
 
+export interface PieceFactory {
+	create(isWhite?: boolean): Piece;
+	notation: string;
+}
+
 export interface Piece {
 	name: string;
-	notation: string;
 	movement: MovePattern[];
-	value?: number;
-	canQueen?: boolean;
-	canSpawn?: boolean;
+	value: number;
+	canQueen: boolean;
+	canSpawn: boolean;
+	isWhite: boolean;
 }
 
 /**

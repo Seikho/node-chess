@@ -3,14 +3,22 @@ var Chess = require("../types");
 /**
  * Pawn piece registration
  */
-var pawn = {
-    name: "Pawn",
-    notation: "p",
-    value: 1,
-    movement: [],
-    canQueen: true,
-    canSpawn: false
-};
+var PawnFactory = (function () {
+    function PawnFactory() {
+        this.notation = "p";
+    }
+    PawnFactory.prototype.create = function (isWhite) {
+        return {
+            name: "Pawn",
+            movement: [moveForward, moveCapture],
+            canQueen: true,
+            canSpawn: false,
+            value: 1,
+            isWhite: !!isWhite
+        };
+    };
+    return PawnFactory;
+})();
 var moveForward = {
     moves: [{ direction: 0 /* Up */, count: 1 }],
     canJump: false,
@@ -27,7 +35,5 @@ var forward = {
     direction: 0 /* Up */,
     count: 1
 };
-pawn.movement.push(moveCapture);
-pawn.movement.push(moveForward);
-module.exports = pawn;
+module.exports = PawnFactory;
 //# sourceMappingURL=pawn.js.map
