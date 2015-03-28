@@ -1,5 +1,5 @@
 /// <reference path="../src/typings/internal.d.ts" />
-import Board = require("../src/index");
+import Board = require("../src/board");
 import helper = require("../src/helper");
 import chai = require("chai");
 import Chess = require("../src/types");

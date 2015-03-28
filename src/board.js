@@ -40,4 +40,4 @@ var Board = (function () {
     return Board;
 })();
 module.exports = Board;
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=board.js.map

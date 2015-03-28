@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+		"target": "es5",
+        "noImplicitAny": true,
+        "removeComments": false,
+        "outDir": "dist/",
+        "sourceMap": true,
+    },
+    "filesGlob": ["src/**/*.ts", "test/**/*.ts"]
+}

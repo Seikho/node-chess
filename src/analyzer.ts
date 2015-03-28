@@ -1,4 +1,4 @@
-import Board = require("./index");
+import Board = require("./board");
 import Chess = require("./types");
 export = Analyzer;
 
