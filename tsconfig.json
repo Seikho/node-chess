@@ -1,11 +1,29 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-		"target": "es5",
-        "noImplicitAny": true,
+        "target": "es5",
+        "noImplicitAny": false,
         "removeComments": false,
         "outDir": "dist/",
-        "sourceMap": true,
+        "sourceMap": true
     },
-    "filesGlob": ["src/**/*.ts", "test/**/*.ts"]
+    "filesGlob": [
+        "src/**/*.ts",
+        "test/**/*.ts"
+    ],
+    "files": [
+        "src/analyzer.ts",
+        "src/board.ts",
+        "src/helper.ts",
+        "src/index.ts",
+        "src/parsers/fen.ts",
+        "src/pieces/pawn.ts",
+        "src/types.ts",
+        "src/typings/bluebird/bluebird.d.ts",
+        "src/typings/chai/chai.d.ts",
+        "src/typings/internal.d.ts",
+        "src/typings/mocha/mocha.d.ts",
+        "src/typings/tsd.d.ts",
+        "test/increments.ts"
+    ]
 }

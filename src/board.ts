@@ -59,5 +59,6 @@ class Board {
 
 	rankCount: number;
 	fileCount: number;
-	ranks: Chess.Rank[];
+	ranks: Chess.Rank[] = [];
+	pieces: Chess.Piece[] = [];
 }

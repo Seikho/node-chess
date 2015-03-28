@@ -1,5 +1,7 @@
 var Board = (function () {
     function Board(ranks, files) {
+        this.ranks = [];
+        this.pieces = [];
         if (isNaN(ranks) || isNaN(files))
             throw "InvalidArgumentException: 'ranks' and 'files' must be a number";
         this.rankCount = !!ranks ? Math.floor(Math.abs(ranks)) : 8;

@@ -1,8 +1,4 @@
-/// <reference path="../typings/internal.d.ts" />
 var Chess = require("../types");
-/**
- * Pawn piece registration
- */
 var pawn = {
     name: "Pawn",
     notation: "p",
@@ -30,3 +26,4 @@ var forward = {
 pawn.movement.push(moveCapture);
 pawn.movement.push(moveForward);
 module.exports = pawn;
+//# sourceMappingURL=pawn.js.map
