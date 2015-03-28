@@ -1,14 +1,22 @@
 /// <reference path="../typings/internal.d.ts" />
 import Chess = require("../types");
-export = pawn;
+export = PawnFactory;
 /**
  * Pawn piece registration
  */
-var pawn: Chess.Piece = {
-	name: "Pawn",
-	notation: "p",
-	value: 1,
-	movement: []
+
+var PawnFactory: Chess.PieceFactory = {
+	create: (isWhite?: boolean): Chess.Piece => {
+		return {
+			name: "Pawn",
+			movement: [moveForward, moveCapture],
+			canQueen: true,
+			canSpawn: false,
+			value: 1,
+			isWhite: !!isWhite
+		}
+	},
+	notation: "p"
 }
 
 var moveForward = {
@@ -29,6 +37,3 @@ var forward: Chess.SingleMove = {
 	direction: Chess.Direction.Up,
 	count: 1
 }
-
-pawn.movement.push(moveCapture);
-pawn.movement.push(moveForward);
