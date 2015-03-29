@@ -1,5 +1,5 @@
-/// <reference path="typings/internal.d.ts" />
 import Chess = require("./types");
+
 export function getSquaresForMove(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, isWhite?: boolean): Chess.Coordinate[] {
 	isWhite = isWhite || true;
 	var coordinates: Chess.Coordinate[] = [];
@@ -66,19 +66,35 @@ export function singleMovesToIncrements(moves: Chess.SingleMove[]): Chess.Coordi
 }
 
 export function getIncrementer(direction: Chess.Direction): Chess.Coordinate[] {
+	var up = {rank: 1, file: 0};
+	var down = {rank: -1, file: 0};
+	var left = {rank: 0, file: -1};
+	var right = {rank: 0, file: 1};
+	var upLeft = {rank: 1, file: -1};
+	var upRight = {rank: 1, file: 1};
+	var downLeft = {rank: -1, file: -1};
+	var downRight = {rank: -1, file: 1};
 	switch (direction) {
 		case Chess.Direction.Up:
-			return [{ rank: 1, file: 0}];
+			return [up];
 		case Chess.Direction.Down:
-			return [{ rank: -1, file: 0}];
+			return [down];
 		case Chess.Direction.Left:
-			return [{rank: 0, file: -1}];
+			return [left];
 		case Chess.Direction.Right:
-			return [{rank: 0, file: 1}];
+			return [right];
 		case Chess.Direction.DiagonalUp:
-			return [{rank: 1, file: -1}, {rank: 1, file: 1}];
+			return [upLeft, upRight];
 		case Chess.Direction.DiagonalDown:
-			return [{rank: -1, file: -1}, {rank: -1, file: 1}];
+			return [downLeft, downRight];
+		case Chess.Direction.Diagonal:
+			return [upLeft, upRight, downLeft, downRight];
+		case Chess.Direction.Horizontal:
+			return [left, right];
+		case Chess.Direction.Vertical:
+			return [up, down];
+		case Chess.Direction.Lateral:
+			return [up, down, left, right];
 		default:
 			throw "InvalidDirectionException: The direction provided was invalid";
 	}

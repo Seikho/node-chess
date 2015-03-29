@@ -19,8 +19,8 @@ describe("single movement tests", () => {
 
 describe("multiple movement tests", () => {
 	multiMoveTest("it should move up two and left one", pos(2,2), [move(dir.Up,2),move(dir.Left,1)], pos(4,1));
-	multiMoveTest("it should not move due to second SingleMove being out of bounds", pos(2,2), [move(dir.Up,2),move(dir.Left,2)], pos(2,2));
-	multiMoveTest("it should not move due to first SingleMove being out of bounds", pos(2,2), [move(dir.Up,10),move(dir.Left,1)], pos(2,2));
+	multiMoveTest("it should not move due to second SingleMove being out of bounds", pos(2,2), [move(dir.Up,2), move(dir.Left,2)], pos(2,2));
+	multiMoveTest("it should not move due to first SingleMove being out of bounds", pos(2,2), [move(dir.Up,10), move(dir.Left,1)], pos(2,2));
 	multiMoveTest("it should not remove due to both SingleMoves being out of bounds", pos(1,1), [move(dir.Up,10), move(dir.Left, 8)], pos(1,1));
 });
 

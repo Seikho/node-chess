@@ -1,4 +1,3 @@
-/// <reference path="typings/internal.d.ts" />
 var Chess = require("./types");
 function getSquaresForMove(coordinate, movePattern, isWhite) {
     isWhite = isWhite || true;
@@ -69,19 +68,35 @@ function singleMovesToIncrements(moves) {
 }
 exports.singleMovesToIncrements = singleMovesToIncrements;
 function getIncrementer(direction) {
+    var up = { rank: 1, file: 0 };
+    var down = { rank: -1, file: 0 };
+    var left = { rank: 0, file: -1 };
+    var right = { rank: 0, file: 1 };
+    var upLeft = { rank: 1, file: -1 };
+    var upRight = { rank: 1, file: 1 };
+    var downLeft = { rank: -1, file: -1 };
+    var downRight = { rank: -1, file: 1 };
     switch (direction) {
         case 0 /* Up */:
-            return [{ rank: 1, file: 0 }];
+            return [up];
         case 1 /* Down */:
-            return [{ rank: -1, file: 0 }];
+            return [down];
         case 2 /* Left */:
-            return [{ rank: 0, file: -1 }];
+            return [left];
         case 3 /* Right */:
-            return [{ rank: 0, file: 1 }];
+            return [right];
         case 4 /* DiagonalUp */:
-            return [{ rank: 1, file: -1 }, { rank: 1, file: 1 }];
+            return [upLeft, upRight];
         case 5 /* DiagonalDown */:
-            return [{ rank: -1, file: -1 }, { rank: -1, file: 1 }];
+            return [downLeft, downRight];
+        case 9 /* Diagonal */:
+            return [upLeft, upRight, downLeft, downRight];
+        case 7 /* Horizontal */:
+            return [left, right];
+        case 8 /* Vertical */:
+            return [up, down];
+        case 6 /* Lateral */:
+            return [up, down, left, right];
         default:
             throw "InvalidDirectionException: The direction provided was invalid";
     }
