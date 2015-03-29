@@ -5,7 +5,7 @@
         "noImplicitAny": false,
         "removeComments": false,
         "outDir": "dist/",
-        "sourceMap": true
+        "sourceMap": false
     },
     "filesGlob": [
         "src/**/*.ts",

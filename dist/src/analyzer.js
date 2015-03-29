@@ -16,4 +16,3 @@ var Analyzer = (function () {
     return Analyzer;
 })();
 module.exports = Analyzer;
-//# sourceMappingURL=analyzer.js.map

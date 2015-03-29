@@ -20,4 +20,3 @@ describe("fen parsing tests", function () {
         expect(fileOne.piece).to.exist;
     });
 });
-//# sourceMappingURL=fen-parser.js.map

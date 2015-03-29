@@ -45,4 +45,3 @@ var FenParser = (function () {
     return FenParser;
 })();
 module.exports = FenParser;
-//# sourceMappingURL=fen.js.map

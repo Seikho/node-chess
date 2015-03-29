@@ -26,4 +26,3 @@ var lat = {
     canMove: true
 };
 module.exports = RookFactory;
-//# sourceMappingURL=rook.js.map

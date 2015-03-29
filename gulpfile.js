@@ -4,9 +4,9 @@ var typescript = require("gulp-tsc");
 gulp.task("default", function(){
 	gulp.src(["src/**/*.ts", "test/**/*.ts"])
 	.pipe(typescript({
-		sourcemap: true,
+		sourcemap: false,
 		module: "commonjs",
 		target: "es5"
 	}))
-	.pipe(gulp.dest(""));
+	.pipe(gulp.dest("dist/"));
 });

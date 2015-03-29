@@ -44,4 +44,3 @@ function compare(left, right) {
 function move(direction, count) {
     return { direction: direction, count: count };
 }
-//# sourceMappingURL=increments.js.map

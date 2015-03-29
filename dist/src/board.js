@@ -74,4 +74,3 @@ var Board = (function () {
     return Board;
 })();
 module.exports = Board;
-//# sourceMappingURL=board.js.map

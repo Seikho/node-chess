@@ -13,4 +13,3 @@ var pieces = {
     king: King
 };
 module.exports = pieces;
-//# sourceMappingURL=pieces.js.map

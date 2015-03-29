@@ -30,4 +30,3 @@ var PieceFactory = (function () {
     return PieceFactory;
 })();
 exports.PieceFactory = PieceFactory;
-//# sourceMappingURL=types.js.map
