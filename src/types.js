@@ -9,6 +9,7 @@
     Direction[Direction["Lateral"] = 6] = "Lateral";
     Direction[Direction["Horizontal"] = 7] = "Horizontal";
     Direction[Direction["Vertical"] = 8] = "Vertical";
+    Direction[Direction["Diagonal"] = 9] = "Diagonal";
 })(exports.Direction || (exports.Direction = {}));
 var Direction = exports.Direction;
 var PieceFactory = (function () {
