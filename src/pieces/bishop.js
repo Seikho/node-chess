@@ -11,7 +11,7 @@ var BishopFactory = (function (_super) {
     function BishopFactory() {
         var pawn = {
             name: "Bishop",
-            movement: [diagUp, diagDown],
+            movement: [diag],
             canQueen: false,
             canSpawn: true,
             value: 3,
@@ -21,7 +21,6 @@ var BishopFactory = (function (_super) {
     return BishopFactory;
 })(Chess.PieceFactory);
 var d = Chess.Direction;
-var diagUp = helper.createMove([{ direction: 4 /* DiagonalUp */, count: 0 }], true, false, true);
-var diagDown = helper.createMove([{ direction: 5 /* DiagonalDown */, count: 0 }], true, false, true);
+var diag = helper.createMove([{ direction: 9 /* Diagonal */, count: 0 }], true, false, true);
 module.exports = BishopFactory;
 //# sourceMappingURL=bishop.js.map

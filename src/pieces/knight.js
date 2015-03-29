@@ -11,7 +11,7 @@ var KnightFactory = (function (_super) {
     function KnightFactory() {
         var pawn = {
             name: "Knight",
-            movement: [upLeft, upRight, downLeft, downRight, leftUp, leftDown, rightUp, rightDown],
+            movement: [horzThenVert, vertThenHorz],
             canQueen: false,
             canSpawn: true,
             value: 3,
@@ -21,13 +21,7 @@ var KnightFactory = (function (_super) {
     return KnightFactory;
 })(Chess.PieceFactory);
 var d = Chess.Direction;
-var upLeft = helper.createMove([{ direction: 0 /* Up */, count: 2 }, { direction: 2 /* Left */, count: 1 }], true, true, true);
-var upRight = helper.createMove([{ direction: 0 /* Up */, count: 2 }, { direction: 3 /* Right */, count: 1 }], true, true, true);
-var downLeft = helper.createMove([{ direction: 1 /* Down */, count: 2 }, { direction: 2 /* Left */, count: 1 }], true, true, true);
-var downRight = helper.createMove([{ direction: 1 /* Down */, count: 2 }, { direction: 3 /* Right */, count: 1 }], true, true, true);
-var leftUp = helper.createMove([{ direction: 2 /* Left */, count: 2 }, { direction: 0 /* Up */, count: 1 }], true, true, true);
-var leftDown = helper.createMove([{ direction: 2 /* Left */, count: 2 }, { direction: 1 /* Down */, count: 1 }], true, true, true);
-var rightUp = helper.createMove([{ direction: 3 /* Right */, count: 2 }, { direction: 0 /* Up */, count: 1 }], true, true, true);
-var rightDown = helper.createMove([{ direction: 3 /* Right */, count: 2 }, { direction: 1 /* Down */, count: 1 }], true, true, true);
+var horzThenVert = helper.createMove([{ direction: 7 /* Horizontal */, count: 2 }, { direction: 8 /* Vertical */, count: 1 }], true, true, true);
+var vertThenHorz = helper.createMove([{ direction: 8 /* Vertical */, count: 2 }, { direction: 7 /* Horizontal */, count: 1 }], true, true, true);
 module.exports = KnightFactory;
 //# sourceMappingURL=knight.js.map

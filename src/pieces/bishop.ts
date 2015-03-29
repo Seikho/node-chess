@@ -7,7 +7,7 @@ class BishopFactory extends Chess.PieceFactory {
 	constructor() {
 		var pawn = {
 			name: "Bishop",
-			movement: [diagUp, diagDown],
+			movement: [diag],
 			canQueen: false,
 			canSpawn: true,
 			value: 3,
@@ -16,5 +16,4 @@ class BishopFactory extends Chess.PieceFactory {
 	}
 }
 var d = Chess.Direction;
-var diagUp = helper.createMove([{direction: d.DiagonalUp, count: 0}], true, false, true);
-var diagDown = helper.createMove([{direction: d.DiagonalDown, count: 0}], true, false, true);
+var diag = helper.createMove([{direction: d.Diagonal, count: 0}], true, false, true);

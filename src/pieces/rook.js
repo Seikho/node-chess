@@ -10,7 +10,7 @@ var RookFactory = (function (_super) {
     function RookFactory() {
         var rook = {
             name: "Rook",
-            movement: [moveUp, moveDown, moveLeft, moveRight],
+            movement: [lat],
             canQueen: false,
             canSpawn: true,
             value: 5,
@@ -19,28 +19,10 @@ var RookFactory = (function (_super) {
     }
     return RookFactory;
 })(Chess.PieceFactory);
-var moveUp = {
-    moves: [{ direction: 0 /* Up */, count: 0 }],
+var lat = {
+    moves: [{ direction: 6 /* Lateral */, count: 0 }],
     canJump: false,
     canCapture: true,
-    canMove: true
-};
-var moveDown = {
-    moves: [{ direction: 1 /* Down */, count: 0 }],
-    canJump: false,
-    canCapture: true,
-    canMove: true
-};
-var moveLeft = {
-    moves: [{ direction: 2 /* Left */, count: 0 }],
-    canJump: false,
-    canCapture: false,
-    canMove: true
-};
-var moveRight = {
-    moves: [{ direction: 3 /* Right */, count: 0 }],
-    canJump: false,
-    canCapture: false,
     canMove: true
 };
 module.exports = RookFactory;

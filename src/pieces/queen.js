@@ -11,7 +11,7 @@ var QueenFactory = (function (_super) {
     function QueenFactory() {
         var pawn = {
             name: "Queen",
-            movement: [upLeft, upRight],
+            movement: [diag, lat],
             canQueen: false,
             canSpawn: true,
             value: 9,
@@ -21,11 +21,7 @@ var QueenFactory = (function (_super) {
     return QueenFactory;
 })(Chess.PieceFactory);
 var d = Chess.Direction;
-var upLeft = helper.createMove([{ direction: 4 /* DiagonalUp */, count: 0 }], true, false, true);
-var upRight = helper.createMove([{ direction: 5 /* DiagonalDown */, count: 0 }], true, false, true);
-var up = helper.createMove([{ direction: 0 /* Up */, count: 0 }], true, false, true);
-var down = helper.createMove([{ direction: 1 /* Down */, count: 0 }], true, false, true);
-var left = helper.createMove([{ direction: 2 /* Left */, count: 0 }], true, false, true);
-var right = helper.createMove([{ direction: 3 /* Right */, count: 0 }], true, false, true);
+var diag = helper.createMove([{ direction: 9 /* Diagonal */, count: 0 }], true, false, true);
+var lat = helper.createMove([{ direction: 6 /* Lateral */, count: 0 }], true, false, true);
 module.exports = QueenFactory;
 //# sourceMappingURL=queen.js.map
