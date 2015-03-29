@@ -22,6 +22,7 @@
         "src/pieces/knight.ts",
         "src/pieces/pawn.ts",
         "src/pieces/pieces.ts",
+        "src/pieces/queen.ts",
         "src/pieces/rook.ts",
         "src/types.ts",
         "src/typings/bluebird/bluebird.d.ts",

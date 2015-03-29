@@ -8,7 +8,7 @@ class RookFactory extends Chess.PieceFactory {
 			movement: [moveUp, moveDown, moveLeft, moveRight],
 			canQueen: true,
 			canSpawn: false,
-			value: 1,
+			value: 5,
 		};
 		super(rook, "r");
 	}
