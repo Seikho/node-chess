@@ -5,14 +5,14 @@ export = BishopFactory;
 
 class BishopFactory extends Chess.PieceFactory {
 	constructor() {
-		var pawn = {
+		var piece = {
 			name: "Bishop",
 			movement: [diag],
 			canQueen: false,
 			canSpawn: true,
 			value: 3,
 		}
-		super(pawn, "b");
+		super(piece, "b");
 	}
 }
 var d = Chess.Direction;

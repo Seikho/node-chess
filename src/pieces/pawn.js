@@ -12,14 +12,14 @@ var Chess = require("../types");
 var PawnFactory = (function (_super) {
     __extends(PawnFactory, _super);
     function PawnFactory() {
-        var pawn = {
+        var piece = {
             name: "Pawn",
             movement: [moveForward, moveCapture],
             canQueen: true,
             canSpawn: false,
             value: 1,
         };
-        _super.call(this, pawn, "p");
+        _super.call(this, piece, "p");
     }
     return PawnFactory;
 })(Chess.PieceFactory);

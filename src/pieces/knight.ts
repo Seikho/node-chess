@@ -5,14 +5,14 @@ export = KnightFactory;
 
 class KnightFactory extends Chess.PieceFactory {
 	constructor() {
-		var pawn = {
+		var piece = {
 			name: "Knight",
 			movement: [horzThenVert, vertThenHorz],
 			canQueen: false,
 			canSpawn: true,
 			value: 3,
 		}
-		super(pawn, "n");
+		super(piece, "n");
 	}
 }
 var d = Chess.Direction;

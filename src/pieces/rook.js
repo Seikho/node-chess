@@ -8,14 +8,14 @@ var Chess = require("../types");
 var RookFactory = (function (_super) {
     __extends(RookFactory, _super);
     function RookFactory() {
-        var rook = {
+        var piece = {
             name: "Rook",
             movement: [lat],
             canQueen: false,
             canSpawn: true,
             value: 5,
         };
-        _super.call(this, rook, "r");
+        _super.call(this, piece, "r");
     }
     return RookFactory;
 })(Chess.PieceFactory);

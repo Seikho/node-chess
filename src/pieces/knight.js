@@ -9,14 +9,14 @@ var helper = require("./helper");
 var KnightFactory = (function (_super) {
     __extends(KnightFactory, _super);
     function KnightFactory() {
-        var pawn = {
+        var piece = {
             name: "Knight",
             movement: [horzThenVert, vertThenHorz],
             canQueen: false,
             canSpawn: true,
             value: 3,
         };
-        _super.call(this, pawn, "n");
+        _super.call(this, piece, "n");
     }
     return KnightFactory;
 })(Chess.PieceFactory);

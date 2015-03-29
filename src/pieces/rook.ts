@@ -3,14 +3,14 @@ export = RookFactory;
 
 class RookFactory extends Chess.PieceFactory {
 	constructor() {
-		var rook = {
+		var piece = {
 			name: "Rook",
 			movement: [lat],
 			canQueen: false,
 			canSpawn: true,
 			value: 5,
 		};
-		super(rook, "r");
+		super(piece, "r");
 	}
 }
 

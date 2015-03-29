@@ -7,14 +7,14 @@ export = PawnFactory;
 
 class PawnFactory extends Chess.PieceFactory {
 	constructor() {
-		var pawn = {
+		var piece = {
 			name: "Pawn",
 			movement: [moveForward, moveCapture],
 			canQueen: true,
 			canSpawn: false,
 			value: 1,
 		}
-		super(pawn, "p");
+		super(piece, "p");
 	}
 }
 
