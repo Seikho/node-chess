@@ -54,6 +54,6 @@ class FenParser implements Chess.PositionParser {
 		var pieceFactory = this.board.pieces.filter(p => p.notation === notation.toString().toLowerCase());
 		return pieceFactory.length === 0
 		? null
-		: pieceFactory[0].create(pieceFactory[0].notation !== notation.toLowerCase());
+		: pieceFactory[0].create(pieceFactory[0].notation.toLowerCase() !== notation);
 	}
 }
