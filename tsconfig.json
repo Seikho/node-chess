@@ -17,6 +17,7 @@
         "src/helper.ts",
         "src/index.ts",
         "src/parsers/fen.ts",
+        "src/pieces/bishop.ts",
         "src/pieces/helper.ts",
         "src/pieces/knight.ts",
         "src/pieces/pawn.ts",

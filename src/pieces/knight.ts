@@ -2,9 +2,6 @@ import Chess = require("../types");
 import helper = require("./helper");
 
 export = KnightFactory;
-/**
- * Pawn piece registration
- */
 
 class KnightFactory extends Chess.PieceFactory {
 	constructor() {
