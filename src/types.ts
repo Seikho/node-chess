@@ -1,6 +1,6 @@
 /// <reference path="typings/internal.d.ts" />
 export enum Direction {
-	Up, Down, Left, Right, DiagonalUp, DiagonalDown
+	Up, Down, Left, Right, DiagonalUp, DiagonalDown, Lateral, Horizontal, Vertical
 }
 /**
  * Defines a single move that a piece can perform
