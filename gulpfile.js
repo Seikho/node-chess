@@ -8,5 +8,5 @@ gulp.task("default", function(){
 		module: "commonjs",
 		target: "es5"
 	}))
-	.pipe(gulp.dest("dist/"));
+	.pipe(gulp.dest(""));
 });
