@@ -14,6 +14,7 @@
     "files": [
         "src/analyzer.ts",
         "src/board.ts",
+        "src/boards/classic.ts",
         "src/helper.ts",
         "src/index.ts",
         "src/parsers/fen.ts",
