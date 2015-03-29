@@ -8,8 +8,8 @@ class KnightFactory extends Chess.PieceFactory {
 		var pawn = {
 			name: "Knight",
 			movement: [upLeft, upRight, downLeft, downRight, leftUp, leftDown, rightUp, rightDown],
-			canQueen: true,
-			canSpawn: false,
+			canQueen: false,
+			canSpawn: true,
 			value: 3,
 		}
 		super(pawn, "n");

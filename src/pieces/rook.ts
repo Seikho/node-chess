@@ -6,8 +6,8 @@ class RookFactory extends Chess.PieceFactory {
 		var rook = {
 			name: "Rook",
 			movement: [moveUp, moveDown, moveLeft, moveRight],
-			canQueen: true,
-			canSpawn: false,
+			canQueen: false,
+			canSpawn: true,
 			value: 5,
 		};
 		super(rook, "r");
