@@ -6,9 +6,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var Chess = require("../types");
 var helper = require("./helper");
-/**
- * Pawn piece registration
- */
 var KnightFactory = (function (_super) {
     __extends(KnightFactory, _super);
     function KnightFactory() {
