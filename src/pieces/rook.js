@@ -11,9 +11,9 @@ var RookFactory = (function (_super) {
         var rook = {
             name: "Rook",
             movement: [moveUp, moveDown, moveLeft, moveRight],
-            canQueen: true,
-            canSpawn: false,
-            value: 1,
+            canQueen: false,
+            canSpawn: true,
+            value: 5,
         };
         _super.call(this, rook, "r");
     }

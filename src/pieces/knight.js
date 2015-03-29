@@ -12,9 +12,9 @@ var KnightFactory = (function (_super) {
         var pawn = {
             name: "Knight",
             movement: [upLeft, upRight, downLeft, downRight, leftUp, leftDown, rightUp, rightDown],
-            canQueen: true,
-            canSpawn: false,
-            value: 1,
+            canQueen: false,
+            canSpawn: true,
+            value: 3,
         };
         _super.call(this, pawn, "n");
     }

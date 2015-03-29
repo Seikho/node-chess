@@ -12,6 +12,8 @@ describe("fen parsing tests", () => {
 	// Build a basic board with a pawn a valid piece
 	var board = new Board();
 	board.pieces.push(new pieces.pawn());
+	board.pieces.push(new pieces.rook());
+	
 	var fen = new Fen(board);
 
 	// Fingers crossed!
