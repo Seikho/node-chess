@@ -41,7 +41,7 @@ var rank = [];
  	});
  	return vals;
 }
-
+/**
 Start
 = r:RankList WS t:Turn WS Castling WS Enpassant WS HalfMove WS Tuple
 { return { 
@@ -85,3 +85,4 @@ HalfMove
 
 Tuple
 = [0-9]+
+**/
