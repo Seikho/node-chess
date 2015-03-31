@@ -90,3 +90,22 @@ export interface PositionParser {
 	parse(position: string): any;
 }
 
+export interface BoardInput {
+	ranks: string[];
+	turn: Turn;
+	castling: Castling[];
+	halfMove: number;
+	fullMove: number;
+}
+
+export enum Turn {
+	White = <any>"w",
+	Black = <any>"b"
+}
+
+export enum Castling {
+	WhiteKingSide = <any>"K",
+	WhiteQueenSide = <any>"Q",
+	BlackKingSide = <any>"k",
+	BlackQueenSide = <any>"q"
+}

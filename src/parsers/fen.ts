@@ -59,7 +59,7 @@ class FenParser implements Chess.PositionParser {
 	}
 }
 
-var parser = PEG.buildParser(`
+var parser: (fenString: string) => Chess.BoardInput = PEG.buildParser(`
 	Start
 	= r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move
 	{ return { 
@@ -67,8 +67,7 @@ var parser = PEG.buildParser(`
 	turn: t,
 	castling: c,
 	halfMove: h,
-	move: t
-	     };
+	fullMove: t };
 	}
 	RankList
 	= head:Rank "/" tail:RankList { return [].concat(head,tail); }

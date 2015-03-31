@@ -30,3 +30,15 @@ var PieceFactory = (function () {
     return PieceFactory;
 })();
 exports.PieceFactory = PieceFactory;
+(function (Turn) {
+    Turn[Turn["White"] = "w"] = "White";
+    Turn[Turn["Black"] = "b"] = "Black";
+})(exports.Turn || (exports.Turn = {}));
+var Turn = exports.Turn;
+(function (Castling) {
+    Castling[Castling["WhiteKingSide"] = "K"] = "WhiteKingSide";
+    Castling[Castling["WhiteQueenSide"] = "Q"] = "WhiteQueenSide";
+    Castling[Castling["BlackKingSide"] = "k"] = "BlackKingSide";
+    Castling[Castling["BlackQueenSide"] = "q"] = "BlackQueenSide";
+})(exports.Castling || (exports.Castling = {}));
+var Castling = exports.Castling;
