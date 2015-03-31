@@ -4,8 +4,8 @@
         "target": "es5",
         "noImplicitAny": false,
         "removeComments": false,
-        "outDir": "dist/",
-        "sourceMap": false
+        "outDir": "./",
+        "sourceMap": true
     },
     "filesGlob": [
         "src/**/*.ts",
@@ -31,6 +31,7 @@
         "src/typings/chai/chai.d.ts",
         "src/typings/internal.d.ts",
         "src/typings/mocha/mocha.d.ts",
+        "src/typings/node/node.d.ts",
         "src/typings/tsd.d.ts",
         "test/fen-parser.ts",
         "test/increments.ts"

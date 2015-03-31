@@ -1,6 +1,7 @@
-/// <reference path="../typings/internal.d.ts" />
 import Chess = require("../types");
 import Board = require("../board");
+var PEG = require("pegjs");
+
 export = FenParser;
 
 class FenParser implements Chess.PositionParser {
@@ -57,3 +58,41 @@ class FenParser implements Chess.PositionParser {
 		: pieceFactory[0].create(pieceFactory[0].notation.toLowerCase() !== notation);
 	}
 }
+
+var parser = PEG.buildParser(`
+	Start
+	= r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move
+	{ return { 
+	ranks: r,
+	turn: t,
+	castling: c,
+	halfMove: h,
+	move: t
+	     };
+	}
+	RankList
+	= head:Rank "/" tail:RankList { return [].concat(head,tail); }
+	/ Rank
+
+	Rank
+	= rank:[a-zA-Z0-9]+ { return rank.join(''); }
+
+	WS
+	= " "* { return null; }
+
+	Turn
+	= turn:[w|b] { return turn }
+
+	Castling
+	= [k|q|K|Q|"-"]+
+
+	Enpassant
+	= [a-h1-8]{1}
+	/ "-"
+
+	HalfMove
+	= [0-9]+
+
+	Move
+	= [0-9]+
+`);

@@ -21,8 +21,8 @@ export interface Rank {
 
 export interface Square {
 	file: number;
-	piece: Piece;
-}
+	piece: Piece
+;}
 
 export class PieceFactory {
 	constructor(piece: Piece, notation: string) {
