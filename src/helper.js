@@ -1,8 +1,14 @@
 var Chess = require("./types");
-function getSquaresForMove(coordinate, movePattern, isWhite) {
-    isWhite = isWhite || true;
+function getSquaresForMove(coordinate, movePattern, isWhite, bounds) {
+    isWhite = !!isWhite;
     var coordinates = [];
     var moves = movePattern.moves;
+    bounds = bounds || { rank: 8, file: 8 };
+    var moveArrays = [];
+    for (var s in moves) {
+        var sm = moves[s];
+        var incs = getIncrementer(sm.direction);
+    }
     // Can only provide two (2) single moves. Providing more makes no logical sense
     // An error will get thrown to explicitly disallow this
     if (moves.length > 2)
@@ -25,6 +31,37 @@ function getSquaresForMove(coordinate, movePattern, isWhite) {
     return coordinates;
 }
 exports.getSquaresForMove = getSquaresForMove;
+function applyCounts(coordinate, incrementers, count, isWhite, bounds) {
+    var returnCoords = [];
+    if (count > 0) {
+        incrementers.forEach(function (inc) {
+            inc.file *= count;
+            inc.rank *= count;
+            var newCoord = { rank: coordinate.rank + inc.rank, file: coordinate.file + inc.file };
+            if (isInBounds(newCoord, bounds))
+                returnCoords.push(newCoord);
+        });
+        return returnCoords;
+    }
+    var count = 1;
+    for (var i in incrementers) {
+        var inc = incrementers[i];
+        var newCoord = { rank: bounds.rank, file: bounds.file };
+        var count = 1;
+        while (isInBounds(newCoord, bounds)) {
+            var newInc = { rank: inc.rank *= count, file: inc.file *= count };
+            newCoord = { rank: coordinate.rank + newInc.rank, file: coordinate.file + newInc.file };
+            if (isInBounds(newCoord, bounds))
+                returnCoords.push({ rank: newCoord.rank, file: newCoord.file });
+        }
+    }
+    return returnCoords;
+}
+exports.applyCounts = applyCounts;
+function isInBounds(coordinate, bounds) {
+    return coordinate.rank <= bounds.rank && coordinate.file <= bounds.file;
+}
+exports.isInBounds = isInBounds;
 function getSquareForMoves(coordinate, movePatterns) {
     var coordinates = [];
     movePatterns.forEach(function (move) { return coordinates.concat(getSquaresForMove(coordinate, move)); });

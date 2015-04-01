@@ -45,6 +45,19 @@ export function applyCounts(coordinate: Chess.Coordinate, incrementers: Chess.Co
 		});
 		return returnCoords;
 	}
+
+	var count = 1;
+	for (var i in incrementers) {
+		var inc = incrementers[i];
+		var newCoord = { rank: bounds.rank, file: bounds.file };
+		var count = 1;
+		while (isInBounds(newCoord, bounds)) {
+			var newInc = { rank: inc.rank *= count, file: inc.file *= count };
+			newCoord = { rank: coordinate.rank + newInc.rank, file: coordinate.file + newInc.file };
+			if (isInBounds(newCoord, bounds)) returnCoords.push({rank: newCoord.rank, file: newCoord.file });
+		}
+	}
+	return returnCoords;
 }
 
 export function isInBounds(coordinate: Chess.Coordinate, bounds: Chess.Coordinate): boolean {
