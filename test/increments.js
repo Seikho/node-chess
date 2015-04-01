@@ -35,6 +35,11 @@ function multiMoveTest(message, start, moves, end) {
         expect(coordinate.file).to.equal(end.file);
     });
 }
+// function movePatternTest(message: string, start: Chess.Coordinate, piece: Chess.Piece, hasCoordinates: Chess.Coordinate[]) {
+// 	it(message, () => {
+// 		piece.
+// 	});
+// }
 function pos(rank, file) {
     return { rank: rank, file: file };
 }

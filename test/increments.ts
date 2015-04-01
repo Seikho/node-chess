@@ -3,6 +3,7 @@ import Board = require("../src/board");
 import helper = require("../src/helper");
 import chai = require("chai");
 import Chess = require("../src/types");
+import pieces = require("../src/pieces/pieces");
 
 var expect = chai.expect;
 var dir = Chess.Direction;
@@ -41,6 +42,13 @@ function multiMoveTest(message: string, start: Chess.Coordinate, moves: Chess.Si
 		expect(coordinate.file).to.equal(end.file);
 	});
 }
+
+// function movePatternTest(message: string, start: Chess.Coordinate, piece: Chess.Piece, hasCoordinates: Chess.Coordinate[]) {
+// 	it(message, () => {
+// 		piece.
+// 	});
+// }
+
 function pos(rank: number, file: number): Chess.Coordinate {
 	return { rank: rank, file: file };
 }

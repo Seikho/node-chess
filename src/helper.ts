@@ -10,36 +10,34 @@ export function getSquaresForMove(coordinate: Chess.Coordinate, movePattern: Che
 	for (var s in moves) {
 		var sm = moves[s];
 		var incs = getIncrementer(sm.direction);
-
+		moveArrays.push(applyCounts(coordinate, incs, sm.count, isWhite, bounds));
 	}
-	// Can only provide two (2) single moves. Providing more makes no logical sense
-	// An error will get thrown to explicitly disallow this
-	if (moves.length > 2) return coordinates;
-	if (moves.length === 2) {
-		if (moves[0].count === 0 && moves[1].count === 0) return coordinates;
-		var incLeft = getIncrementer(moves[0].direction);
-		var incRight = getIncrementer(moves[1].direction);
-		if (!isWhite) {
-			incLeft = inverseCoordinates(incLeft);
-			incRight = inverseCoordinates(incRight);
-		}
-		/// Invalid move definition: Cannot have infinte moves in both directions -- This limit will be removed
-		if (moves[0].count !== 0 && moves[1].count !== 0) {
-		}	
-	} 
 
-	movePattern.moves.forEach(singleMove => {
+	var addCoords = [];
+	if (moveArrays.length === 1) addCoords = moveArrays[0];
+	else {
+		moveArrays[0].forEach(m1 => {
+			moveArrays[1].forEach(m2 => {
+				addCoords.push({ rank: m1.rank + m2.rank, file: m1.file + m2.file });
+			});
+		});
+	}
 
+	addCoords.forEach(m => {
+		var newCoord = { rank: coordinate.rank + m.rank, file: coordinate.file + m.file };
+		if (isInBounds(newCoord, coordinate)) coordinates.push(newCoord);
 	});
+
 	return coordinates;
 }
 
 export function applyCounts(coordinate: Chess.Coordinate, incrementers: Chess.Coordinate[], count: number, isWhite: boolean, bounds: Chess.Coordinate) {
+	var inverser = isWhite?1:-1;
 	var returnCoords: Chess.Coordinate[] = [];
 	if (count > 0) {
 		incrementers.forEach(inc => {
-			inc.file *= count;
-			inc.rank *= count;
+			inc.file *= (count*inverser);
+			inc.rank *= (count*inverser);
 			var newCoord = { rank: coordinate.rank + inc.rank, file: coordinate.file + inc.file };
 			if (isInBounds(newCoord, bounds)) returnCoords.push(newCoord);
 		});
