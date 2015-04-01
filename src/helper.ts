@@ -1,11 +1,17 @@
 import Chess = require("./types");
 
 export function getSquaresForMove(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, isWhite?: boolean, bounds?: Chess.Coordinate): Chess.Coordinate[] {
-	isWhite = isWhite || true;
+	isWhite = !!isWhite;
 	var coordinates: Chess.Coordinate[] = [];
 	var moves = movePattern.moves;
 	bounds = bounds || { rank: 8, file: 8};
-	
+
+	var moveArrays: Array<Chess.Coordinate[]> = [];
+	for (var s in moves) {
+		var sm = moves[s];
+		var incs = getIncrementer(sm.direction);
+
+	}
 	// Can only provide two (2) single moves. Providing more makes no logical sense
 	// An error will get thrown to explicitly disallow this
 	if (moves.length > 2) return coordinates;
@@ -26,6 +32,23 @@ export function getSquaresForMove(coordinate: Chess.Coordinate, movePattern: Che
 
 	});
 	return coordinates;
+}
+
+export function applyCounts(coordinate: Chess.Coordinate, incrementers: Chess.Coordinate[], count: number, isWhite: boolean, bounds: Chess.Coordinate) {
+	var returnCoords: Chess.Coordinate[] = [];
+	if (count > 0) {
+		incrementers.forEach(inc => {
+			inc.file *= count;
+			inc.rank *= count;
+			var newCoord = { rank: coordinate.rank + inc.rank, file: coordinate.file + inc.file };
+			if (isInBounds(newCoord, bounds)) returnCoords.push(newCoord);
+		});
+		return returnCoords;
+	}
+}
+
+export function isInBounds(coordinate: Chess.Coordinate, bounds: Chess.Coordinate): boolean {
+	return coordinate.rank <= bounds.rank && coordinate.file <= bounds.file;
 }
 
 export function getSquareForMoves(coordinate: Chess.Coordinate, movePatterns: Chess.MovePattern[]): Chess.Coordinate[] {
