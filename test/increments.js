@@ -13,23 +13,9 @@ describe("single movement tests", function () {
     singleMoveTest("will not move left due to out of bounds movement", pos(4, 1), 2 /* Left */, pos(4, 1));
     singleMoveTest("will not move right due to out of bounds movement", pos(4, 8), 3 /* Right */, pos(4, 8));
 });
-describe("multiple movement tests", function () {
-    multiMoveTest("it should move up two and left one", pos(2, 2), [move(0 /* Up */, 2), move(2 /* Left */, 1)], pos(4, 1));
-    multiMoveTest("it should not move due to second SingleMove being out of bounds", pos(2, 2), [move(0 /* Up */, 2), move(2 /* Left */, 2)], pos(2, 2));
-    multiMoveTest("it should not move due to first SingleMove being out of bounds", pos(2, 2), [move(0 /* Up */, 10), move(2 /* Left */, 1)], pos(2, 2));
-    multiMoveTest("it should not remove due to both SingleMoves being out of bounds", pos(1, 1), [move(0 /* Up */, 10), move(2 /* Left */, 8)], pos(1, 1));
-});
 function singleMoveTest(message, start, direction, end) {
     it(message, function () {
         var incs = helper.getIncrementer(direction);
-        var coordinate = helper.applyIncrements(start, incs);
-        expect(coordinate.rank).to.equal(end.rank);
-        expect(coordinate.file).to.equal(end.file);
-    });
-}
-function multiMoveTest(message, start, moves, end) {
-    it(message, function () {
-        var incs = helper.singleMovesToIncrements(moves);
         var coordinate = helper.applyIncrements(start, incs);
         expect(coordinate.rank).to.equal(end.rank);
         expect(coordinate.file).to.equal(end.file);
