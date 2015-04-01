@@ -1,10 +1,11 @@
 import Chess = require("./types");
 
-export function getSquaresForMove(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, isWhite?: boolean): Chess.Coordinate[] {
+export function getSquaresForMove(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, isWhite?: boolean, bounds?: Chess.Coordinate): Chess.Coordinate[] {
 	isWhite = isWhite || true;
 	var coordinates: Chess.Coordinate[] = [];
 	var moves = movePattern.moves;
-
+	bounds = bounds || { rank: 8, file: 8};
+	
 	// Can only provide two (2) single moves. Providing more makes no logical sense
 	// An error will get thrown to explicitly disallow this
 	if (moves.length > 2) return coordinates;
