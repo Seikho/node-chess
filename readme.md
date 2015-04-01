@@ -19,3 +19,4 @@ With node-chess you can:
 
 [![Analytics](https://ga-beacon.appspot.com/UA-61186849-1/seikho/node-chess)](https://github.com/Seikho/watcher)
 
+[![Build Status](https://semaphoreci.com/api/v1/projects/0b754a96-b327-48da-8b40-9c9985086c31/386310/badge.svg)](https://semaphoreci.com/seikho/node-chess)
