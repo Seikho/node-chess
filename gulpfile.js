@@ -4,7 +4,7 @@ var typescript = require("gulp-tsc");
 gulp.task("default", function(){
 	gulp.src(["src/**/*.ts", "test/**/*.ts"])
 	.pipe(typescript({
-		sourcemap: false,
+		sourcemap: true,
 		module: "commonjs",
 		target: "es5"
 	}))
