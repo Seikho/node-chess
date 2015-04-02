@@ -1,9 +1,12 @@
-/// <reference path="../src/typings/internal.d.ts" />
 import Board = require("../src/board");
 import helper = require("../src/helper");
 import chai = require("chai");
 import Chess = require("../src/types");
 import pieces = require("../src/pieces/pieces");
+import classic = require("../src/boards/classic");
+
+var classicBoard = classic();
+console.log(classicBoard.toString());
 
 var expect = chai.expect;
 var dir = Chess.Direction;
@@ -27,11 +30,11 @@ function singleMoveTest(message: string, start: Chess.Coordinate, direction: Che
 	});
 }
 
-// function movePatternTest(message: string, start: Chess.Coordinate, piece: Chess.Piece, hasCoordinates: Chess.Coordinate[]) {
-// 	it(message, () => {
-// 		piece.
-// 	});
-// }
+function pieceMoveTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {
+	it(message, () => {
+		
+	});
+}
 
 function pos(rank: number, file: number): Chess.Coordinate {
 	return { rank: rank, file: file };

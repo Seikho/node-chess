@@ -15,8 +15,9 @@ var QueenFactory = (function (_super) {
             canQueen: false,
             canSpawn: true,
             value: 9,
+            notation: "q"
         };
-        _super.call(this, piece, "q");
+        _super.call(this, piece);
     }
     return QueenFactory;
 })(Chess.PieceFactory);

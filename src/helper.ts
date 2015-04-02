@@ -1,7 +1,14 @@
 import Chess = require("./types");
 
+export function getSquaresForMoves(coordinate: Chess.Coordinate, movePatterns: Chess.MovePattern[]): Chess.Coordinate[] {
+	var coordinates: Chess.Coordinate[] = [];
+	movePatterns.forEach(move => coordinates.concat(getSquaresForMove(coordinate, move)));
+	return coordinates;
+}
+
 export function getSquaresForMove(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, isWhite?: boolean, bounds?: Chess.Coordinate): Chess.Coordinate[] {
 	isWhite = !!isWhite;
+
 	var coordinates: Chess.Coordinate[] = [];
 	var moves = movePattern.moves;
 	bounds = bounds || { rank: 8, file: 8};
@@ -32,7 +39,7 @@ export function getSquaresForMove(coordinate: Chess.Coordinate, movePattern: Che
 }
 
 export function applyCounts(coordinate: Chess.Coordinate, incrementers: Chess.Coordinate[], count: number, isWhite: boolean, bounds: Chess.Coordinate) {
-	var inverser = isWhite?1:-1;
+	var inverser = isWhite ? 1 : -1;
 	var returnCoords: Chess.Coordinate[] = [];
 	if (count > 0) {
 		incrementers.forEach(inc => {
@@ -53,6 +60,7 @@ export function applyCounts(coordinate: Chess.Coordinate, incrementers: Chess.Co
 			var newInc = { rank: inc.rank *= count, file: inc.file *= count };
 			newCoord = { rank: coordinate.rank + newInc.rank, file: coordinate.file + newInc.file };
 			if (isInBounds(newCoord, bounds)) returnCoords.push({rank: newCoord.rank, file: newCoord.file });
+			count++;
 		}
 	}
 	return returnCoords;
@@ -60,12 +68,6 @@ export function applyCounts(coordinate: Chess.Coordinate, incrementers: Chess.Co
 
 export function isInBounds(coordinate: Chess.Coordinate, bounds: Chess.Coordinate): boolean {
 	return coordinate.rank <= bounds.rank && coordinate.file <= bounds.file;
-}
-
-export function getSquareForMoves(coordinate: Chess.Coordinate, movePatterns: Chess.MovePattern[]): Chess.Coordinate[] {
-	var coordinates: Chess.Coordinate[] = [];
-	movePatterns.forEach(move => coordinates.concat(getSquaresForMove(coordinate, move)));
-	return coordinates;
 }
 
 export function applyIncrements(coordinate: Chess.Coordinate, incs: Chess.Coordinate[], bounds?: Chess.Coordinate): Chess.Coordinate {
@@ -83,21 +85,6 @@ export function applyIncrements(coordinate: Chess.Coordinate, incs: Chess.Coordi
 		} else return originalCoordinate;
 	}
 	return coordinate;
-}
-
-export function inverseCoordinates(coordinates: Chess.Coordinate[]): Chess.Coordinate[] {
-	return coordinates.map(coord => { return { rank: coord.rank*=-1, file: coord.file*=-1 } } );
-}
-
-export function singleMovesToIncrements(moves: Chess.SingleMove[]): Chess.Coordinate[] {
-	var coordinates: Chess.Coordinate[] = [];
-	moves.forEach(move => {
-		var inc = getIncrementer(move.direction);
-		inc[0].rank *= move.count;
-		inc[0].file *= move.count;
-		coordinates.push(inc[0]);
-	});
-	return coordinates;
 }
 
 export function getIncrementer(direction: Chess.Direction): Chess.Coordinate[] {

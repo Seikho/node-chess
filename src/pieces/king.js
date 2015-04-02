@@ -15,8 +15,9 @@ var KingFactory = (function (_super) {
             canQueen: false,
             canSpawn: false,
             value: 10,
+            notation: "k"
         };
-        _super.call(this, piece, "K");
+        _super.call(this, piece);
     }
     return KingFactory;
 })(Chess.PieceFactory);

@@ -15,8 +15,9 @@ var BishopFactory = (function (_super) {
             canQueen: false,
             canSpawn: true,
             value: 3,
+            notation: "b"
         };
-        _super.call(this, piece, "b");
+        _super.call(this, piece);
     }
     return BishopFactory;
 })(Chess.PieceFactory);

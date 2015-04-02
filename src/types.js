@@ -13,9 +13,8 @@
 })(exports.Direction || (exports.Direction = {}));
 var Direction = exports.Direction;
 var PieceFactory = (function () {
-    function PieceFactory(piece, notation) {
+    function PieceFactory(piece) {
         this.piece = piece;
-        this.notation = notation.slice(0, 1).toLowerCase();
     }
     PieceFactory.prototype.create = function (isWhite) {
         return {
@@ -24,7 +23,8 @@ var PieceFactory = (function () {
             canQueen: this.piece.canQueen,
             canSpawn: this.piece.canSpawn,
             value: this.piece.value,
-            isWhite: !!isWhite
+            isWhite: !!isWhite,
+            notation: this.notation
         };
     };
     return PieceFactory;

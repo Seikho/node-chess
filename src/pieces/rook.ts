@@ -9,8 +9,9 @@ class RookFactory extends Chess.PieceFactory {
 			canQueen: false,
 			canSpawn: true,
 			value: 5,
+			notation: "r"
 		};
-		super(piece, "r");
+		super(piece);
 	}
 }
 

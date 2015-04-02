@@ -11,8 +11,9 @@ class BishopFactory extends Chess.PieceFactory {
 			canQueen: false,
 			canSpawn: true,
 			value: 3,
+			notation: "b"
 		}
-		super(piece, "b");
+		super(piece);
 	}
 }
 var d = Chess.Direction;

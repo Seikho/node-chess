@@ -13,8 +13,9 @@ class PawnFactory extends Chess.PieceFactory {
 			canQueen: true,
 			canSpawn: false,
 			value: 1,
+			notation: "p"
 		}
-		super(piece, "p");
+		super(piece);
 	}
 }
 

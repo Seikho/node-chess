@@ -18,8 +18,9 @@ var PawnFactory = (function (_super) {
             canQueen: true,
             canSpawn: false,
             value: 1,
+            notation: "p"
         };
-        _super.call(this, piece, "p");
+        _super.call(this, piece);
     }
     return PawnFactory;
 })(Chess.PieceFactory);

@@ -11,8 +11,9 @@ class KingFactory extends Chess.PieceFactory {
 			canQueen: false,
 			canSpawn: false,
 			value: 10,
+			notation: "k"
 		}
-		super(piece, "K");
+		super(piece);
 	}
 }
 var d = Chess.Direction;

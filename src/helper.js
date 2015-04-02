@@ -1,4 +1,10 @@
 var Chess = require("./types");
+function getSquaresForMoves(coordinate, movePatterns) {
+    var coordinates = [];
+    movePatterns.forEach(function (move) { return coordinates.concat(getSquaresForMove(coordinate, move)); });
+    return coordinates;
+}
+exports.getSquaresForMoves = getSquaresForMoves;
 function getSquaresForMove(coordinate, movePattern, isWhite, bounds) {
     isWhite = !!isWhite;
     var coordinates = [];
@@ -51,6 +57,7 @@ function applyCounts(coordinate, incrementers, count, isWhite, bounds) {
             newCoord = { rank: coordinate.rank + newInc.rank, file: coordinate.file + newInc.file };
             if (isInBounds(newCoord, bounds))
                 returnCoords.push({ rank: newCoord.rank, file: newCoord.file });
+            count++;
         }
     }
     return returnCoords;
@@ -60,12 +67,6 @@ function isInBounds(coordinate, bounds) {
     return coordinate.rank <= bounds.rank && coordinate.file <= bounds.file;
 }
 exports.isInBounds = isInBounds;
-function getSquareForMoves(coordinate, movePatterns) {
-    var coordinates = [];
-    movePatterns.forEach(function (move) { return coordinates.concat(getSquaresForMove(coordinate, move)); });
-    return coordinates;
-}
-exports.getSquareForMoves = getSquareForMoves;
 function applyIncrements(coordinate, incs, bounds) {
     bounds = bounds || { rank: 8, file: 8 };
     var originalCoordinate = {
@@ -85,23 +86,6 @@ function applyIncrements(coordinate, incs, bounds) {
     return coordinate;
 }
 exports.applyIncrements = applyIncrements;
-function inverseCoordinates(coordinates) {
-    return coordinates.map(function (coord) {
-        return { rank: coord.rank *= -1, file: coord.file *= -1 };
-    });
-}
-exports.inverseCoordinates = inverseCoordinates;
-function singleMovesToIncrements(moves) {
-    var coordinates = [];
-    moves.forEach(function (move) {
-        var inc = getIncrementer(move.direction);
-        inc[0].rank *= move.count;
-        inc[0].file *= move.count;
-        coordinates.push(inc[0]);
-    });
-    return coordinates;
-}
-exports.singleMovesToIncrements = singleMovesToIncrements;
 function getIncrementer(direction) {
     var up = { rank: 1, file: 0 };
     var down = { rank: -1, file: 0 };

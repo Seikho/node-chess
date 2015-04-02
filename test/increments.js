@@ -1,6 +1,9 @@
 var helper = require("../src/helper");
 var chai = require("chai");
 var Chess = require("../src/types");
+var classic = require("../src/boards/classic");
+var classicBoard = classic();
+console.log(classicBoard.toString());
 var expect = chai.expect;
 var dir = Chess.Direction;
 describe("single movement tests", function () {
@@ -21,11 +24,10 @@ function singleMoveTest(message, start, direction, end) {
         expect(coordinate.file).to.equal(end.file);
     });
 }
-// function movePatternTest(message: string, start: Chess.Coordinate, piece: Chess.Piece, hasCoordinates: Chess.Coordinate[]) {
-// 	it(message, () => {
-// 		piece.
-// 	});
-// }
+function pieceMoveTest(message, start, expectedMoves) {
+    it(message, function () {
+    });
+}
 function pos(rank, file) {
     return { rank: rank, file: file };
 }

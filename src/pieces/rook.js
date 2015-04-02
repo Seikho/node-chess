@@ -14,8 +14,9 @@ var RookFactory = (function (_super) {
             canQueen: false,
             canSpawn: true,
             value: 5,
+            notation: "r"
         };
-        _super.call(this, piece, "r");
+        _super.call(this, piece);
     }
     return RookFactory;
 })(Chess.PieceFactory);

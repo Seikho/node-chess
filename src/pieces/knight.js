@@ -15,8 +15,9 @@ var KnightFactory = (function (_super) {
             canQueen: false,
             canSpawn: true,
             value: 3,
+            notation: "n"
         };
-        _super.call(this, piece, "n");
+        _super.call(this, piece);
     }
     return KnightFactory;
 })(Chess.PieceFactory);
