@@ -1,7 +1,9 @@
 var Chess = require("./types");
-function getSquaresForMoves(coordinate, movePatterns) {
+function getSquaresForMoves(coordinate, piece) {
     var coordinates = [];
-    movePatterns.forEach(function (move) { return coordinates.concat(getSquaresForMove(coordinate, move)); });
+    if (!piece)
+        return [];
+    piece.movement.forEach(function (move) { return coordinates = coordinates.concat(getSquaresForMove(coordinate, move, piece.isWhite)); });
     return coordinates;
 }
 exports.getSquaresForMoves = getSquaresForMoves;
@@ -18,7 +20,7 @@ function getSquaresForMove(coordinate, movePattern, isWhite, bounds) {
     }
     var addCoords = [];
     if (moveArrays.length === 1)
-        addCoords = moveArrays[0];
+        coordinates = moveArrays[0];
     else {
         moveArrays[0].forEach(function (m1) {
             moveArrays[1].forEach(function (m2) {
@@ -26,11 +28,6 @@ function getSquaresForMove(coordinate, movePattern, isWhite, bounds) {
             });
         });
     }
-    addCoords.forEach(function (m) {
-        var newCoord = { rank: coordinate.rank + m.rank, file: coordinate.file + m.file };
-        if (isInBounds(newCoord, coordinate))
-            coordinates.push(newCoord);
-    });
     return coordinates;
 }
 exports.getSquaresForMove = getSquaresForMove;

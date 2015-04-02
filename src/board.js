@@ -38,70 +38,14 @@ var Board = (function () {
      * TODO Export function to smaller module
      */
     Board.prototype.availableMoves = function (coordinate) {
-        var moves = [];
         var square = this.getSquare(coordinate);
-        if (!square)
-            return moves;
-        if (!square.piece)
-            return moves;
-        for (var m in square.piece.movement) {
-            var movePattern = square.piece.movement[m];
-            var increments = [];
-            for (var s in movePattern.moves) {
-                increments.push({
-                    incs: helper.getIncrementer(movePattern.moves[s].direction),
-                    count: movePattern.moves[s].count
-                });
-            }
-            if (increments.length === 0)
-                return [];
-            if (increments[0].length === 0)
-                return [];
-            for (var i = 0; i < increments[0].incs.length; i++) {
-                var inc = increments[0].incs[i];
-                if (inc.count > 0) {
-                }
-            }
-        }
+        return helper.getSquaresForMoves(coordinate, square.piece);
     };
     /**
      * @return boolean Returns true if the piece moved to the toSquare
      */
     Board.prototype.movePieceTo = function (fromSquare, toSquare) {
         return false;
-    };
-    Board.prototype.applySingleMoves = function (moves, coordinate) {
-        for (var s in moves[0]) {
-            var move = moves[0][s];
-            var incs = helper.getIncrementer(move.direction);
-            for (var i in incs) {
-                var inc = incs[i];
-                if (moves.length === 1) {
-                }
-            }
-        }
-        return [];
-    };
-    Board.prototype.applyIncrementer = function (coordinate, incrementer, count, piece) {
-        var bounds = { rank: this.rankCount, file: this.fileCount };
-        var coords = [];
-        if (count > 0) {
-            incrementer.file *= count;
-            incrementer.rank *= count;
-            coords.push(helper.applyIncrements(coordinate, [incrementer], bounds));
-        }
-        else {
-            var count = 1;
-            while (true) {
-                var newInc = { file: incrementer.file * count, rank: incrementer.rank * count };
-                var newCoord = helper.applyIncrements(coordinate, [newInc], bounds);
-                if (!newCoord)
-                    return coords;
-                coords.push(newCoord);
-                count++;
-            }
-        }
-        return coords;
     };
     Board.prototype.getSquare = function (square) {
         var x = square.rank;
@@ -112,8 +56,8 @@ var Board = (function () {
     };
     Board.prototype.toString = function () {
         var ranks = [];
-        for (var i in this.ranks) {
-            var pieces = [];
+        for (var i = this.rankCount; i > 0; i--) {
+            var pieces = [i];
             var rank = this.ranks[i];
             for (var p in rank.squares) {
                 var s = rank.squares[p];

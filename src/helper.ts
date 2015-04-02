@@ -1,27 +1,27 @@
 import Chess = require("./types");
 
-export function getSquaresForMoves(coordinate: Chess.Coordinate, movePatterns: Chess.MovePattern[]): Chess.Coordinate[] {
+export function getSquaresForMoves(coordinate: Chess.Coordinate, piece: Chess.Piece): Chess.Coordinate[] {
 	var coordinates: Chess.Coordinate[] = [];
-	movePatterns.forEach(move => coordinates.concat(getSquaresForMove(coordinate, move)));
+	if (!piece) return [];
+	piece.movement.forEach(move => coordinates = coordinates.concat(getSquaresForMove(coordinate, move, piece.isWhite)));
 	return coordinates;
 }
 
 export function getSquaresForMove(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, isWhite?: boolean, bounds?: Chess.Coordinate): Chess.Coordinate[] {
 	isWhite = !!isWhite;
-
 	var coordinates: Chess.Coordinate[] = [];
 	var moves = movePattern.moves;
-	bounds = bounds || { rank: 8, file: 8};
-
+	bounds = bounds || { rank: 8, file: 8 };
 	var moveArrays: Array<Chess.Coordinate[]> = [];
 	for (var s in moves) {
 		var sm = moves[s];
 		var incs = getIncrementer(sm.direction);
+
 		moveArrays.push(applyCounts(coordinate, incs, sm.count, isWhite, bounds));
 	}
 
 	var addCoords = [];
-	if (moveArrays.length === 1) addCoords = moveArrays[0];
+	if (moveArrays.length === 1) coordinates = moveArrays[0];
 	else {
 		moveArrays[0].forEach(m1 => {
 			moveArrays[1].forEach(m2 => {
@@ -29,12 +29,6 @@ export function getSquaresForMove(coordinate: Chess.Coordinate, movePattern: Che
 			});
 		});
 	}
-
-	addCoords.forEach(m => {
-		var newCoord = { rank: coordinate.rank + m.rank, file: coordinate.file + m.file };
-		if (isInBounds(newCoord, coordinate)) coordinates.push(newCoord);
-	});
-
 	return coordinates;
 }
 

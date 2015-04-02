@@ -37,7 +37,7 @@ export class PieceFactory {
 			canQueen: this.piece.canQueen,
 			canSpawn: this.piece.canSpawn,
 			value: this.piece.value,
-			isWhite: !!isWhite,
+			isWhite: isWhite,
 			notation: this.notation
 		}
 	}
@@ -54,6 +54,7 @@ export interface Piece {
 	canQueen: boolean;
 	canSpawn: boolean;
 	isWhite?: boolean;
+	originalPosition?: Coordinate;
 }
 
 /**

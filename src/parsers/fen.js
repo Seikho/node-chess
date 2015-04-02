@@ -35,13 +35,14 @@ var FenParser = (function () {
                 file: i,
                 piece: this.getPiece(notation)
             };
+            square.piece.originalPosition = { rank: rank.rank, file: i };
             rank.squares[i] = square;
         }
         return rank;
     };
     FenParser.prototype.getPiece = function (notation) {
-        var pieceFactory = this.board.pieces.filter(function (p) { return p.notation === notation.toLowerCase(); });
-        return pieceFactory.length === 0 ? null : pieceFactory[0].create(pieceFactory[0].notation.toLowerCase() !== notation);
+        var pieceFactory = this.board.pieces.filter(function (p) { return p.notation.toUpperCase() === notation || p.notation.toLowerCase() === notation; });
+        return pieceFactory.length === 0 ? null : pieceFactory[0].create(pieceFactory[0].notation.toLowerCase() === notation);
     };
     return FenParser;
 })();

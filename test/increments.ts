@@ -22,7 +22,7 @@ describe("single movement tests", () => {
 });
 
 describe("available move tests", () => {
-	pieceMoveTest("thing", pos(2,2), [pos(3,2)]);
+	pieceMoveTest("will find all available moves for a pawn from the starting position", pos(2,2), [pos(3,2), pos(3,1), pos(3,3)]);
 });
 
 function singleMoveTest(message: string, start: Chess.Coordinate, direction: Chess.Direction, end: Chess.Coordinate): void {
@@ -36,7 +36,8 @@ function singleMoveTest(message: string, start: Chess.Coordinate, direction: Che
 
 function pieceMoveTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {
 	it(message, () => {
-		console.log(classicBoard.availableMoves(start));
+		var moves = classicBoard.availableMoves(start);
+		expectedMoves.forEach(move => expect(moves.some(m => m.rank === move.rank && m.file === move.file)).to.equal(true));
 	});
 }
 

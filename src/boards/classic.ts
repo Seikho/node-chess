@@ -11,5 +11,3 @@ function newClassicBoard() {
 	fen.parse(start);
 	return board;
 }
-
-

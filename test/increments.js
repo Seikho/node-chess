@@ -16,6 +16,9 @@ describe("single movement tests", function () {
     singleMoveTest("will not move left due to out of bounds movement", pos(4, 1), 2 /* Left */, pos(4, 1));
     singleMoveTest("will not move right due to out of bounds movement", pos(4, 8), 3 /* Right */, pos(4, 8));
 });
+describe("available move tests", function () {
+    pieceMoveTest("will find all available moves for a pawn from the starting position", pos(2, 2), [pos(3, 2), pos(3, 1), pos(3, 3)]);
+});
 function singleMoveTest(message, start, direction, end) {
     it(message, function () {
         var incs = helper.getIncrementer(direction);
@@ -26,6 +29,8 @@ function singleMoveTest(message, start, direction, end) {
 }
 function pieceMoveTest(message, start, expectedMoves) {
     it(message, function () {
+        var moves = classicBoard.availableMoves(start);
+        expectedMoves.forEach(function (move) { return expect(moves.some(function (m) { return m.rank === move.rank && m.file === move.file; })).to.equal(true); });
     });
 }
 function pos(rank, file) {

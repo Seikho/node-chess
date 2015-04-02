@@ -24,7 +24,7 @@ var PieceFactory = (function () {
             canQueen: this.piece.canQueen,
             canSpawn: this.piece.canSpawn,
             value: this.piece.value,
-            isWhite: !!isWhite,
+            isWhite: isWhite,
             notation: this.notation
         };
     };

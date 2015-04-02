@@ -46,16 +46,17 @@ class FenParser implements Chess.PositionParser {
 				file: i,
 				piece: this.getPiece(notation)
 			}
+			square.piece.originalPosition = { rank: rank.rank, file: i };
 			rank.squares[i] = square;
 		}
 		return rank;
 	}
 
 	getPiece(notation: string): Chess.Piece {
-		var pieceFactory = this.board.pieces.filter(p => p.notation === notation.toLowerCase());
+		var pieceFactory = this.board.pieces.filter(p => p.notation.toUpperCase() === notation || p.notation.toLowerCase() === notation);
 		return pieceFactory.length === 0
 		? null
-		: pieceFactory[0].create(pieceFactory[0].notation.toLowerCase() !== notation);
+		: pieceFactory[0].create(pieceFactory[0].notation.toLowerCase() === notation);
 	}
 }
 
