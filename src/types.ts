@@ -27,6 +27,7 @@ export interface Square {
 export class PieceFactory {
 	constructor(piece: Piece) {
 		this.piece = piece;
+		this.notation = piece.notation;
 	}
 
 	create(isWhite?: boolean): Piece {

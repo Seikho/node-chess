@@ -15,6 +15,7 @@ var Direction = exports.Direction;
 var PieceFactory = (function () {
     function PieceFactory(piece) {
         this.piece = piece;
+        this.notation = piece.notation;
     }
     PieceFactory.prototype.create = function (isWhite) {
         return {

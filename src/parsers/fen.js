@@ -40,7 +40,7 @@ var FenParser = (function () {
         return rank;
     };
     FenParser.prototype.getPiece = function (notation) {
-        var pieceFactory = this.board.pieces.filter(function (p) { return p.notation === notation.toString().toLowerCase(); });
+        var pieceFactory = this.board.pieces.filter(function (p) { return p.notation === notation.toLowerCase(); });
         return pieceFactory.length === 0 ? null : pieceFactory[0].create(pieceFactory[0].notation.toLowerCase() !== notation);
     };
     return FenParser;

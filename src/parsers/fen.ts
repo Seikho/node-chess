@@ -52,14 +52,14 @@ class FenParser implements Chess.PositionParser {
 	}
 
 	getPiece(notation: string): Chess.Piece {
-		var pieceFactory = this.board.pieces.filter(p => p.notation === notation.toString().toLowerCase());
+		var pieceFactory = this.board.pieces.filter(p => p.notation === notation.toLowerCase());
 		return pieceFactory.length === 0
 		? null
 		: pieceFactory[0].create(pieceFactory[0].notation.toLowerCase() !== notation);
 	}
 }
 
-var parser: (fenString: string) => Chess.BoardInput = PEG.buildParser(`
+var parser = PEG.buildParser(`
 	Start
 	= r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move
 	{ return { 
