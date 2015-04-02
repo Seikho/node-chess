@@ -21,6 +21,10 @@ describe("single movement tests", () => {
 	singleMoveTest("will not move right due to out of bounds movement", pos(4,8), dir.Right, pos(4,8));
 });
 
+describe("available move tests", () => {
+	pieceMoveTest("thing", pos(2,2), [pos(3,2)]);
+});
+
 function singleMoveTest(message: string, start: Chess.Coordinate, direction: Chess.Direction, end: Chess.Coordinate): void {
 	it(message, () => {
 		var incs = helper.getIncrementer(direction);
@@ -32,7 +36,7 @@ function singleMoveTest(message: string, start: Chess.Coordinate, direction: Che
 
 function pieceMoveTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {
 	it(message, () => {
-		
+		console.log(classicBoard.availableMoves(start));
 	});
 }
 
