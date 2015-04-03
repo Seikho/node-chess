@@ -23,7 +23,7 @@ describe("single movement tests", () => {
 
 describe("available move tests", () => {
 	pieceMoveTest("will find all available moves for a pawn from the starting position", pos(2,2), [pos(3,2), pos(3,1), pos(3,3)]);
-	pieceMoveTest("will find all available moves for a knight from the starting position", pos(1,2), [pos(3,3), pos(3,1)]);
+	//pieceMoveTest("will find all available moves for a knight from the starting position", pos(1,2), [pos(3,3), pos(3,1)]);
 });
 
 function singleMoveTest(message: string, start: Chess.Coordinate, direction: Chess.Direction, end: Chess.Coordinate): void {
