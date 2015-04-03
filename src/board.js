@@ -56,7 +56,9 @@ var Board = (function () {
     };
     Board.prototype.toString = function () {
         var ranks = [];
+        var fileLabels = ['-'];
         for (var i = this.rankCount; i > 0; i--) {
+            fileLabels[i] = "_" + i + "_";
             var pieces = [i];
             var rank = this.ranks[i];
             for (var p in rank.squares) {
@@ -68,6 +70,7 @@ var Board = (function () {
             }
             ranks.push(pieces.join("|"));
         }
+        ranks.push(fileLabels.join("|"));
         return ranks.join("\r\n");
     };
     Board.prototype.applyMovePatterns = function (coordinate) {

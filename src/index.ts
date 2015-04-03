@@ -1,4 +1,4 @@
 import classicBoard = require("./boards/classic");
 
-console.log(classicBoard().toString());
-
+var board = classicBoard();
+var moves = board.availableMoves({file: 2, rank: 1});

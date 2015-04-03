@@ -13,22 +13,15 @@ function getSquaresForMove(coordinate, movePattern, isWhite, bounds) {
     var moves = movePattern.moves;
     bounds = bounds || { rank: 8, file: 8 };
     var moveArrays = [];
-    for (var s in moves) {
-        var sm = moves[s];
-        var incs = getIncrementer(sm.direction);
-        moveArrays.push(applyCounts(coordinate, incs, sm.count, isWhite, bounds));
-    }
-    var addCoords = [];
-    if (moveArrays.length === 1)
-        coordinates = moveArrays[0];
-    else {
-        moveArrays[0].forEach(function (m1) {
-            moveArrays[1].forEach(function (m2) {
-                addCoords.push({ rank: m1.rank + m2.rank, file: m1.file + m2.file });
-            });
-        });
-    }
-    return coordinates;
+    var appliedCoords = applyCounts(coordinate, getIncrementer(moves[0].direction), moves[0].count, isWhite, bounds);
+    // If there's only one SingleMove, all processing has been completed. Return our applied coordinates.
+    if (moves.length === 1)
+        return appliedCoords;
+    var incs = getIncrementer(moves[1].direction);
+    appliedCoords.forEach(function (ac) {
+        moveArrays = moveArrays.concat(applyCounts({ rank: ac.rank, file: ac.file }, incs, moves[1].count, isWhite, bounds));
+    });
+    return moveArrays;
 }
 exports.getSquaresForMove = getSquaresForMove;
 function applyCounts(coordinate, incrementers, count, isWhite, bounds) {
@@ -50,7 +43,7 @@ function applyCounts(coordinate, incrementers, count, isWhite, bounds) {
         var newCoord = { rank: bounds.rank, file: bounds.file };
         var count = 1;
         while (isInBounds(newCoord, bounds)) {
-            var newInc = { rank: inc.rank *= count, file: inc.file *= count };
+            var newInc = { rank: inc.rank * count, file: inc.file * count };
             newCoord = { rank: coordinate.rank + newInc.rank, file: coordinate.file + newInc.file };
             if (isInBounds(newCoord, bounds))
                 returnCoords.push({ rank: newCoord.rank, file: newCoord.file });
@@ -61,7 +54,7 @@ function applyCounts(coordinate, incrementers, count, isWhite, bounds) {
 }
 exports.applyCounts = applyCounts;
 function isInBounds(coordinate, bounds) {
-    return coordinate.rank <= bounds.rank && coordinate.file <= bounds.file;
+    return coordinate.rank <= bounds.rank && coordinate.file <= bounds.file && coordinate.rank > 0 && coordinate.file > 0;
 }
 exports.isInBounds = isInBounds;
 function applyIncrements(coordinate, incs, bounds) {

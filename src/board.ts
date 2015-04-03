@@ -64,7 +64,9 @@ class Board {
 	
     toString(): string {
         var ranks: string[] = [];
+        var fileLabels = ['-'];
         for (var i = this.rankCount;i > 0; i--) {
+        	fileLabels[i] = "_" + i + "_";
             var pieces: any[] = [i];
             var rank = this.ranks[i];
             for (var p in rank.squares) {
@@ -75,6 +77,7 @@ class Board {
             }
             ranks.push(pieces.join("|"));
         }
+        ranks.push(fileLabels.join("|"));
         return ranks.join("\r\n");
     }
 

@@ -22,8 +22,9 @@ describe("single movement tests", () => {
 });
 
 describe("available move tests", () => {
-	pieceMoveTest("will find all available moves for a pawn from the starting position", pos(2,2), [pos(3,2), pos(3,1), pos(3,3)]);
-	//pieceMoveTest("will find all available moves for a knight from the starting position", pos(1,2), [pos(3,3), pos(3,1)]);
+	pieceMoveTest("will find all available moves for the b2 pawn from the starting position", pos(2,2), [pos(3,2), pos(3,1), pos(3,3)]);
+	pieceMoveTest("will find all available moves for b1 knight from the starting position", pos(1,2), [pos(3,3), pos(3,1)]);
+	pieceMoveTest("will find all available moves for c1 bishop from the starting position", coord(3,1), [coord(2,2), coord(1,3), coord(4,2), coord(5,3), coord(6,4), coord(7,5), coord(8,6)]);
 });
 
 function singleMoveTest(message: string, start: Chess.Coordinate, direction: Chess.Direction, end: Chess.Coordinate): void {
@@ -38,8 +39,8 @@ function singleMoveTest(message: string, start: Chess.Coordinate, direction: Che
 function pieceMoveTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {
 	it(message, () => {
 		var moves = classicBoard.availableMoves(start);
-		console.log(moves);
-		expectedMoves.forEach(move => expect(moves.some(m => m.rank === move.rank && m.file === move.file)).to.equal(true));
+		expectedMoves.forEach(m => expect(moves).to.include({rank: m.rank, file: m.file }));
+		//expectedMoves.forEach(move => expect(moves.some(m => m.rank === move.rank && m.file === move.file)).to.equal(true));
 	});
 }
 
