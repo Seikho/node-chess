@@ -43,3 +43,4 @@ var Turn = exports.Turn;
     Castling[Castling["BlackQueenSide"] = "q"] = "BlackQueenSide";
 })(exports.Castling || (exports.Castling = {}));
 var Castling = exports.Castling;
+//# sourceMappingURL=types.js.map

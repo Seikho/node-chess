@@ -11,3 +11,4 @@ function newClassicBoard() {
     return board;
 }
 module.exports = newClassicBoard;
+//# sourceMappingURL=classic.js.map

@@ -41,3 +41,4 @@ var forward = {
     count: 1
 };
 module.exports = PawnFactory;
+//# sourceMappingURL=pawn.js.map

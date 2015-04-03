@@ -25,3 +25,4 @@ var d = Chess.Direction;
 var diag = helper.createMove([{ direction: 9 /* Diagonal */, count: 0 }], true, false, true);
 var lat = helper.createMove([{ direction: 6 /* Lateral */, count: 0 }], true, false, true);
 module.exports = QueenFactory;
+//# sourceMappingURL=queen.js.map

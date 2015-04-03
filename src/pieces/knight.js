@@ -25,3 +25,4 @@ var d = Chess.Direction;
 var horzThenVert = helper.createMove([{ direction: 7 /* Horizontal */, count: 2 }, { direction: 8 /* Vertical */, count: 1 }], true, true, true);
 var vertThenHorz = helper.createMove([{ direction: 8 /* Vertical */, count: 2 }, { direction: 7 /* Horizontal */, count: 1 }], true, true, true);
 module.exports = KnightFactory;
+//# sourceMappingURL=knight.js.map

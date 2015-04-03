@@ -18,6 +18,7 @@ describe("single movement tests", function () {
 });
 describe("available move tests", function () {
     pieceMoveTest("will find all available moves for a pawn from the starting position", pos(2, 2), [pos(3, 2), pos(3, 1), pos(3, 3)]);
+    pieceMoveTest("will find all available moves for a knight from the starting position", pos(1, 2), [pos(3, 3), pos(3, 1)]);
 });
 function singleMoveTest(message, start, direction, end) {
     it(message, function () {
@@ -30,11 +31,15 @@ function singleMoveTest(message, start, direction, end) {
 function pieceMoveTest(message, start, expectedMoves) {
     it(message, function () {
         var moves = classicBoard.availableMoves(start);
+        console.log(moves);
         expectedMoves.forEach(function (move) { return expect(moves.some(function (m) { return m.rank === move.rank && m.file === move.file; })).to.equal(true); });
     });
 }
 function pos(rank, file) {
     return { rank: rank, file: file };
+}
+function coord(file, rank) {
+    return pos(rank, file);
 }
 function compare(left, right) {
     return left.rank === right.rank && left.file === right.file;
@@ -42,3 +47,4 @@ function compare(left, right) {
 function move(direction, count) {
     return { direction: direction, count: count };
 }
+//# sourceMappingURL=increments.js.map

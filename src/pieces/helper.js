@@ -7,3 +7,4 @@ function createMove(moves, canMove, canJump, canCapture) {
     };
 }
 exports.createMove = createMove;
+//# sourceMappingURL=helper.js.map
