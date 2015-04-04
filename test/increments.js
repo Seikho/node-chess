@@ -15,7 +15,6 @@ describe("available move tests", function () {
 function pieceMoveTest(message, start, expectedMoves) {
     it(message, function () {
         var moves = classicBoard.availableMoves(start);
-        console.log(moves);
         expectedMoves.forEach(function (m) { return expect(moves).to.include({ rank: m.rank, file: m.file }); });
     });
 }

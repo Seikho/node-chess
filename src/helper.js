@@ -39,6 +39,8 @@ function addMatrices(left, right, bounds) {
 exports.addMatrices = addMatrices;
 function getIncrementers(singleMove, start, bounds, isWhite) {
     var x = isWhite ? 1 : -1;
+    if (singleMove.count > 0)
+        x *= singleMove.count;
     var up = { rank: 1 * x, file: 0 };
     var down = { rank: -1 * x, file: 0 };
     var left = { rank: 0, file: -1 * x };

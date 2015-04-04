@@ -38,6 +38,8 @@ export function addMatrices(left: Chess.Coordinate[], right: Chess.Coordinate[],
  
 export function getIncrementers(singleMove: Chess.SingleMove, start: Chess.Coordinate, bounds: Chess.Coordinate, isWhite?: boolean): Chess.Coordinate[] {
 	var x = isWhite?1:-1;
+	if (singleMove.count > 0) x *= singleMove.count;
+	
 	var up = {rank: 1*x, file: 0};
 	var down = {rank: -1*x, file: 0 };
 	var left = {rank: 0, file: -1*x };
@@ -93,7 +95,7 @@ export function getIncrementers(singleMove: Chess.SingleMove, start: Chess.Coord
 			var newIncrement = { file: inc.file*count, rank: inc.rank*count };
 			inBounds = isInBounds({ file: file+newIncrement.file, rank: rank+newIncrement.rank}, bounds);
 			if (isInBounds) finalIncrements.push(newIncrement);
-			count++;
+		count++;
 		}		
 	}
 	return finalIncrements;

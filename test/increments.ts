@@ -22,7 +22,6 @@ describe("available move tests", () => {
 function pieceMoveTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {
 	it(message, () => {
 		var moves = classicBoard.availableMoves(start);
-		console.log(moves);
 		expectedMoves.forEach(m => expect(moves).to.include({rank: m.rank, file: m.file }));
 	});
 }
