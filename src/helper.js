@@ -12,8 +12,7 @@ function getSquaresForMove(coordinate, movePattern, isWhite, bounds) {
     bounds = bounds || { rank: 8, file: 8 };
     var coordinates = [];
     movePattern.moves.forEach(function (move) {
-        var incrementers = getIncrementers(move, isWhite);
-        console.log("Incs: %s", JSON.stringify(incrementers));
+        var incrementers = getIncrementers(move, coordinate, bounds, isWhite);
         coordinates = addMatrices(coordinates, incrementers);
     });
     return addMatrices([coordinate], coordinates).filter(function (coord) { return isInBounds(coord, bounds); });
@@ -38,40 +37,69 @@ function addMatrices(left, right, bounds) {
     return result;
 }
 exports.addMatrices = addMatrices;
-function getIncrementers(singleMove, isWhite) {
-    var multiplier = (isWhite ? 1 : -1) * singleMove.count;
-    var up = { rank: 1 * multiplier, file: 0 };
-    var down = { rank: -1 * multiplier, file: 0 };
-    var left = { rank: 0, file: -1 * multiplier };
-    var right = { rank: 0, file: 1 * multiplier };
-    var upLeft = { rank: 1 * multiplier, file: -1 * multiplier };
-    var upRight = { rank: 1 * multiplier, file: 1 * multiplier };
-    var downLeft = { rank: -1 * multiplier, file: -1 * multiplier };
-    var downRight = { rank: -1 * multiplier, file: 1 * multiplier };
+function getIncrementers(singleMove, start, bounds, isWhite) {
+    var x = isWhite ? 1 : -1;
+    var up = { rank: 1 * x, file: 0 };
+    var down = { rank: -1 * x, file: 0 };
+    var left = { rank: 0, file: -1 * x };
+    var right = { rank: 0, file: 1 * x };
+    var upLeft = { rank: 1 * x, file: -1 * x };
+    var upRight = { rank: 1 * x, file: 1 * x };
+    var downLeft = { rank: -1 * x, file: -1 * x };
+    var downRight = { rank: -1 * x, file: 1 * x };
+    var increments;
     switch (singleMove.direction) {
         case 0 /* Up */:
-            return [up];
+            increments = [up];
+            break;
         case 1 /* Down */:
-            return [down];
+            increments = [down];
+            break;
         case 2 /* Left */:
-            return [left];
+            increments = [left];
+            break;
         case 3 /* Right */:
-            return [right];
+            increments = [right];
+            break;
         case 4 /* DiagonalUp */:
-            return [upLeft, upRight];
+            increments = [upLeft, upRight];
+            break;
         case 5 /* DiagonalDown */:
-            return [downLeft, downRight];
+            increments = [downLeft, downRight];
+            break;
         case 9 /* Diagonal */:
-            return [upLeft, upRight, downLeft, downRight];
+            increments = [upLeft, upRight, downLeft, downRight];
+            break;
         case 7 /* Horizontal */:
-            return [left, right];
+            increments = [left, right];
+            break;
         case 8 /* Vertical */:
-            return [up, down];
+            increments = [up, down];
+            break;
         case 6 /* Lateral */:
-            return [up, down, left, right];
+            increments = [up, down, left, right];
+            break;
         default:
             throw "InvalidDirectionException: The direction provided was invalid";
     }
+    var rank = start.rank;
+    var file = start.file;
+    if (singleMove.count > 0)
+        return increments;
+    var finalIncrements = [];
+    for (var i = 0; i < increments.length; i++) {
+        var inc = increments[i];
+        var inBounds = true;
+        var count = 1;
+        while (inBounds) {
+            var newIncrement = { file: inc.file * count, rank: inc.rank * count };
+            inBounds = isInBounds({ file: file + newIncrement.file, rank: rank + newIncrement.rank }, bounds);
+            if (isInBounds)
+                finalIncrements.push(newIncrement);
+            count++;
+        }
+    }
+    return finalIncrements;
 }
 exports.getIncrementers = getIncrementers;
 //# sourceMappingURL=helper.js.map
