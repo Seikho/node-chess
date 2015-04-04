@@ -73,35 +73,6 @@ var Board = (function () {
         ranks.push(fileLabels.join("|"));
         return ranks.join("\r\n");
     };
-    Board.prototype.applyMovePatterns = function (coordinate) {
-        var square = this.ranks[coordinate.rank].squares[coordinate.file];
-        var bounds = { rank: this.rankCount, file: this.fileCount };
-        var coords = [];
-        if (!square.piece)
-            return [];
-        for (var m in square.piece.movement) {
-            var movePattern = square.piece.movement[m];
-            for (var s in movePattern.moves) {
-                var singleMove = movePattern.moves[s];
-                if (singleMove.count > 0) {
-                    var incrementers = helper.getIncrementer(singleMove.direction);
-                    for (var i in incrementers) {
-                        var incrementer = incrementer[i];
-                        incrementer.file *= singleMove.count;
-                        incrementer.rank *= singleMove.count;
-                        var newCoord = helper.applyIncrements(coordinate, [incrementer], bounds);
-                        if (!!newCoord)
-                            coords.push(newCoord);
-                    }
-                }
-                var count = 1;
-                var addCoord = { file: 0, rank: 0 };
-                while (!!addCoord) {
-                    var incrementers = helper.getIncrementer(singleMove.direction);
-                }
-            }
-        }
-    };
     return Board;
 })();
 module.exports = Board;

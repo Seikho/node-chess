@@ -10,16 +10,6 @@ console.log(classicBoard.toString());
 
 var expect = chai.expect;
 var dir = Chess.Direction;
-describe("single movement tests", () => {
-	singleMoveTest("will move the rank up one square", coord(1,1), dir.Up, coord(1,2));
-	singleMoveTest("will move the rank down one square", coord(1,2), dir.Down, coord(1,1));
-	singleMoveTest("will move the file left one square", coord(2,2), dir.Left, coord(1,2));
-	singleMoveTest("will move the file right one square", coord(2,2), dir.Right, coord(3,2));
-	singleMoveTest("will not move up due to out of bounds movement", coord(4,8), dir.Up, coord(4,8));
-	singleMoveTest("will not move down due to out of bounds movement", coord(4,1), dir.Down, coord(4,1));
-	singleMoveTest("will not move left due to out of bounds movement", coord(1,4), dir.Left, coord(1,4));
-	singleMoveTest("will not move right due to out of bounds movement", coord(8,4), dir.Right, coord(8,4));
-});
 
 describe("available move tests", () => {
 	pieceMoveTest("will find all available moves for the b2 pawn from the starting position", coord(2,2), [coord(2,3), coord(1,3), coord(3,3)]);
@@ -29,18 +19,10 @@ describe("available move tests", () => {
 	pieceMoveTest("will find all availabmoe moves for e1 king from the starting position", coord(5,1), [coord(4,1), coord(6,1), coord(4,2), coord(5,2), coord(6,2)]);
 });
 
-function singleMoveTest(message: string, start: Chess.Coordinate, direction: Chess.Direction, end: Chess.Coordinate): void {
-	it(message, () => {
-		var incs = helper.getIncrementer(direction);
-		var coordinate = helper.applyIncrements(start, incs);	
-		expect(coordinate.rank).to.equal(end.rank);
-		expect(coordinate.file).to.equal(end.file);
-	});
-}
-
 function pieceMoveTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {
 	it(message, () => {
 		var moves = classicBoard.availableMoves(start);
+		console.log(moves);
 		expectedMoves.forEach(m => expect(moves).to.include({rank: m.rank, file: m.file }));
 	});
 }

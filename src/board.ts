@@ -13,6 +13,10 @@ class Board {
 		this.rankCount = Math.floor(Math.abs(ranks));
 		this.fileCount = Math.floor(Math.abs(files));
 	}
+	rankCount: number;
+	fileCount: number;
+	ranks: Chess.Rank[] = [];
+	pieces: Chess.PieceFactory[] = [];
 
 	/**
 	 * Creates an empty board using a 2-dimensional, non-zero based array.
@@ -56,11 +60,6 @@ class Board {
 		if (!this.ranks[x]) return null;
 		return this.ranks[x].squares[y] || null;
 	}
-
-	rankCount: number;
-	fileCount: number;
-	ranks: Chess.Rank[] = [];
-	pieces: Chess.PieceFactory[] = [];
 	
     toString(): string {
         var ranks: string[] = [];
@@ -79,35 +78,5 @@ class Board {
         }
         ranks.push(fileLabels.join("|"));
         return ranks.join("\r\n");
-    }
-
-    applyMovePatterns(coordinate: Chess.Coordinate): Chess.Coordinate[] {
-    	var square = this.ranks[coordinate.rank].squares[coordinate.file];
-    	var bounds = { rank: this.rankCount, file: this.fileCount };
-    	var coords: Chess.Coordinate[] = [];
-
-    	if (!square.piece) return [];
-    	for (var m in square.piece.movement) {
-    		var movePattern = square.piece.movement[m];
-    		for (var s in movePattern.moves) {
-    			var singleMove = movePattern.moves[s];
-    			if (singleMove.count > 0) {
-    				var incrementers = helper.getIncrementer(singleMove.direction);
-    				for (var i in incrementers) {
-    					var incrementer = incrementer[i];
-    					incrementer.file *= singleMove.count;
-    					incrementer.rank *= singleMove.count;
-    					var newCoord = helper.applyIncrements(coordinate,[incrementer], bounds);
-    					if (!!newCoord) coords.push(newCoord);
-    				}
-    			}
-    			var count = 1;
-    			var addCoord: Chess.Coordinate = { file: 0, rank: 0 };
-    			while (!!addCoord) {
-    				var incrementers = helper.getIncrementer(singleMove.direction);
-    				
-    			}
-    		}
-    	}
     }
 }
