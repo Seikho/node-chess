@@ -8,9 +8,11 @@ class FenParser implements Chess.PositionParser {
 	constructor(parentBoard: Board) {
 		this.parentBoard = parentBoard;
 	}
-
+	
+	defaultPosition: string = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 	parentBoard: Board;
 	boardInput: Chess.BoardInput;
+
 	parse(position: string): void {
 		//TODO Implement fen string parser, return a board
 		// Only accept 8x8 board?

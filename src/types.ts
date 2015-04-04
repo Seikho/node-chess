@@ -91,6 +91,7 @@ export interface AnalysisOptions {
 
 export interface PositionParser {
 	parse(position: string): any;
+	defaultPosition: string;
 }
 
 export interface StringParser {

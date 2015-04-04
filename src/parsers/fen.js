@@ -1,6 +1,7 @@
 var fenStringParser = require("./stringParsers/fen");
 var FenParser = (function () {
     function FenParser(parentBoard) {
+        this.defaultPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         this.parentBoard = parentBoard;
     }
     FenParser.prototype.parse = function (position) {
