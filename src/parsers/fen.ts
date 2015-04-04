@@ -5,19 +5,19 @@ var PEG = require("pegjs");
 export = FenParser;
 
 class FenParser implements Chess.PositionParser {
-	constructor(board: Board) {
-		this.board = board;
+	constructor(parentBoard: Board) {
+		this.parentBoard = parentBoard;
 	}
 
-	board: Board;
-	parse(position: string): any {
+	parentBoard: Board;
+	parse(position: string): void {
 		//TODO Implement fen string parser, return a board
 		// Only accept 8x8 board?
 
 		// This will split a FEN string into an array. First 8 indexes are ranks of the board, descending from rank 8 t rank 1.
 		var info = position.match(/[a-z|A-Z|0-9]*[^/\s]/g);
-		for (var i = 1; i <= this.board.rankCount; i++) {		
-			this.board.ranks[i] = this.createFilesForRank(info[i-1], i);
+		for (var i = 1; i <= this.parentBoard.rankCount; i++) {		
+			this.parentBoard.ranks[i] = this.createFilesForRank(info[i-1], i);
 		}
 	}
 
@@ -26,7 +26,7 @@ class FenParser implements Chess.PositionParser {
 			rank: rankNumber,
 			squares: []
 		}
-		for (var i = 1; i <= this.board.fileCount; i++) {
+		for (var i = 1; i <= this.parentBoard.fileCount; i++) {
 			var notation = fenRank[i-1];
 			var notationNumber = parseInt(notation);
 
@@ -53,7 +53,7 @@ class FenParser implements Chess.PositionParser {
 	}
 
 	getPiece(notation: string): Chess.Piece {
-		var pieceFactory = this.board.pieces.filter(p => p.notation.toUpperCase() === notation || p.notation.toLowerCase() === notation);
+		var pieceFactory = this.parentBoard.pieces.filter(p => p.notation.toUpperCase() === notation || p.notation.toLowerCase() === notation);
 		return pieceFactory.length === 0
 		? null
 		: pieceFactory[0].create(pieceFactory[0].notation.toLowerCase() === notation);

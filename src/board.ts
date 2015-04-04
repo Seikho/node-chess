@@ -17,7 +17,8 @@ class Board {
 	fileCount: number;
 	ranks: Chess.Rank[] = [];
 	pieces: Chess.PieceFactory[] = [];
-
+	positionParser: Chess.PositionParser;
+	
 	/**
 	 * Creates an empty board using a 2-dimensional, non-zero based array.
 	 */
