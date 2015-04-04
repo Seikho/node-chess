@@ -41,7 +41,6 @@ function pieceMoveTest(message: string, start: Chess.Coordinate, expectedMoves: 
 	it(message, () => {
 		var moves = classicBoard.availableMoves(start);
 		expectedMoves.forEach(m => expect(moves).to.include({rank: m.rank, file: m.file }));
-		//expectedMoves.forEach(move => expect(moves.some(m => m.rank === move.rank && m.file === move.file)).to.equal(true));
 	});
 }
 
