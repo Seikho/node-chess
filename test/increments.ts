@@ -26,6 +26,7 @@ describe("available move tests", () => {
 	pieceMoveTest("will find all available moves for b1 knight from the starting position", coord(2,1), [coord(3,3), coord(1,3)]);
 	pieceMoveTest("will find all available moves for c1 bishop from the starting position", coord(3,1), [coord(2,2), coord(1,3), coord(4,2), coord(5,3), coord(6,4), coord(7,5), coord(8,6)]);
 	pieceMoveTest("will find all available moves for d1 queen from the starting position", coord(4,1), [coord(4,2), coord(4,3), coord(4,4), coord(4,5), coord(4,6), coord(4,7), coord(4,8)]);
+	pieceMoveTest("will find all availabmoe moves for e1 king from the starting position", coord(5,1), [coord(4,1), coord(6,1), coord(4,2), coord(5,2), coord(6,2)]);
 });
 
 function singleMoveTest(message: string, start: Chess.Coordinate, direction: Chess.Direction, end: Chess.Coordinate): void {
