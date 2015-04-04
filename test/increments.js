@@ -20,7 +20,7 @@ describe("available move tests", function () {
     pieceMoveTest("will find all available moves for the b2 pawn from the starting position", coord(2, 2), [coord(2, 3), coord(1, 3), coord(3, 3)]);
     pieceMoveTest("will find all available moves for b1 knight from the starting position", coord(2, 1), [coord(3, 3), coord(1, 3)]);
     pieceMoveTest("will find all available moves for c1 bishop from the starting position", coord(3, 1), [coord(2, 2), coord(1, 3), coord(4, 2), coord(5, 3), coord(6, 4), coord(7, 5), coord(8, 6)]);
-    pieceMoveTest("will find all available moves for d1 queen from the starting position", coord(4, 1), []);
+    pieceMoveTest("will find all available moves for d1 queen from the starting position", coord(4, 1), [coord(4, 2), coord(4, 3), coord(4, 4), coord(4, 5), coord(4, 6), coord(4, 7), coord(4, 8)]);
 });
 function singleMoveTest(message, start, direction, end) {
     it(message, function () {
