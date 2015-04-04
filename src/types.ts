@@ -93,6 +93,10 @@ export interface PositionParser {
 	parse(position: string): any;
 }
 
+export interface StringParser {
+	parse(position: string): BoardInput;
+}
+
 export interface BoardInput {
 	ranks: string[];
 	turn: Turn;
