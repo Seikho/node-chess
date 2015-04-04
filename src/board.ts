@@ -18,7 +18,7 @@ class Board {
 	ranks: Chess.Rank[] = [];
 	pieces: Chess.PieceFactory[] = [];
 	positionParser: Chess.PositionParser;
-	
+
 	/**
 	 * Creates an empty board using a 2-dimensional, non-zero based array.
 	 */
@@ -42,12 +42,12 @@ class Board {
 
 	/**
 	 * Returns an array of the available squares a piece can move to
-	 * TODO Export function to smaller module
 	 */
 	availableMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
 		var square = this.getSquare(coordinate);
 		return helper.getSquaresForMoves(coordinate, square.piece);
 	}
+	
 	/**
 	 * @return boolean Returns true if the piece moved to the toSquare
 	 */ 
