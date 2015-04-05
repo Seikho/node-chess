@@ -10,8 +10,8 @@ export interface PieceMovement {
 }
 
 export interface Coordinate {
-	rank: number; // Board x-axis
-    file: number; // Board y-axis
+	file: number; // Board x-axis
+	rank: number; // Board y-axis
 }
 
 export interface Rank {
