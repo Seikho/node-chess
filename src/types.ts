@@ -1,4 +1,4 @@
-/// <reference path="typings/internal.d.ts" />
+import Board = require("./board");
 export enum Direction {
 	Up, Down, Left, Right, DiagonalUp, DiagonalDown, Lateral, Horizontal, Vertical, Diagonal
 }
@@ -116,4 +116,8 @@ export enum Castling {
 	WhiteQueenSide = <any>"Q",
 	BlackKingSide = <any>"k",
 	BlackQueenSide = <any>"q"
+}
+
+export interface Rule {
+	(): boolean;
 }

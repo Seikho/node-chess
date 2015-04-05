@@ -35,7 +35,6 @@ var Board = (function () {
     };
     /**
      * Returns an array of the available squares a piece can move to
-     * TODO Export function to smaller module
      */
     Board.prototype.availableMoves = function (coordinate) {
         var square = this.getSquare(coordinate);
