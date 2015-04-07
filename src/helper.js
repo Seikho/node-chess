@@ -12,7 +12,7 @@ function getSquaresForMove(coordinate, movePattern, isWhite, bounds) {
     bounds = bounds || { rank: 8, file: 8 };
     var coordinates = [];
     movePattern.moves.forEach(function (move) {
-        var incrementers = getIncrementers(move, coordinate, bounds, isWhite);
+        var incrementers = getMoves(move, coordinate, bounds, isWhite);
         coordinates = addMatrices(coordinates, incrementers);
     });
     return addMatrices([coordinate], coordinates).filter(function (coord) { return isInBounds(coord, bounds); });
@@ -37,57 +37,13 @@ function addMatrices(left, right, bounds) {
     return result;
 }
 exports.addMatrices = addMatrices;
-function getIncrementers(singleMove, start, bounds, isWhite) {
-    var x = isWhite ? 1 : -1;
-    if (singleMove.count > 0)
-        x *= singleMove.count;
-    var up = { rank: 1 * x, file: 0 };
-    var down = { rank: -1 * x, file: 0 };
-    var left = { rank: 0, file: -1 * x };
-    var right = { rank: 0, file: 1 * x };
-    var upLeft = { rank: 1 * x, file: -1 * x };
-    var upRight = { rank: 1 * x, file: 1 * x };
-    var downLeft = { rank: -1 * x, file: -1 * x };
-    var downRight = { rank: -1 * x, file: 1 * x };
-    var increments;
-    switch (singleMove.direction) {
-        case 0 /* Up */:
-            increments = [up];
-            break;
-        case 1 /* Down */:
-            increments = [down];
-            break;
-        case 2 /* Left */:
-            increments = [left];
-            break;
-        case 3 /* Right */:
-            increments = [right];
-            break;
-        case 4 /* DiagonalUp */:
-            increments = [upLeft, upRight];
-            break;
-        case 5 /* DiagonalDown */:
-            increments = [downLeft, downRight];
-            break;
-        case 9 /* Diagonal */:
-            increments = [upLeft, upRight, downLeft, downRight];
-            break;
-        case 7 /* Horizontal */:
-            increments = [left, right];
-            break;
-        case 8 /* Vertical */:
-            increments = [up, down];
-            break;
-        case 6 /* Lateral */:
-            increments = [up, down, left, right];
-            break;
-        default:
-            throw "InvalidDirectionException: The direction provided was invalid";
-    }
+function getMoves(singleMove, start, bounds, isWhite) {
     var rank = start.rank;
     var file = start.file;
+    var increments = getIncrementers(singleMove, isWhite);
+    // Bounded moves only require a simple transform
     if (singleMove.count > 0)
-        return increments;
+        return increments.map(function (i) { return transform(start, i, singleMove.count); });
     var finalIncrements = [];
     for (var i = 0; i < increments.length; i++) {
         var inc = increments[i];
@@ -103,5 +59,47 @@ function getIncrementers(singleMove, start, bounds, isWhite) {
     }
     return finalIncrements;
 }
+exports.getMoves = getMoves;
+function getIncrementers(singleMove, isWhite) {
+    var x = isWhite ? 1 : -1;
+    var up = { rank: 1 * x, file: 0 };
+    var down = { rank: -1 * x, file: 0 };
+    var left = { rank: 0, file: -1 * x };
+    var right = { rank: 0, file: 1 * x };
+    var upLeft = { rank: 1 * x, file: -1 * x };
+    var upRight = { rank: 1 * x, file: 1 * x };
+    var downLeft = { rank: -1 * x, file: -1 * x };
+    var downRight = { rank: -1 * x, file: 1 * x };
+    switch (singleMove.direction) {
+        case 0 /* Up */:
+            return [up];
+        case 1 /* Down */:
+            return [down];
+        case 2 /* Left */:
+            return [left];
+        case 3 /* Right */:
+            return [right];
+        case 4 /* DiagonalUp */:
+            return [upLeft, upRight];
+        case 5 /* DiagonalDown */:
+            return [downLeft, downRight];
+        case 9 /* Diagonal */:
+            return [upLeft, upRight, downLeft, downRight];
+        case 7 /* Horizontal */:
+            return [left, right];
+        case 8 /* Vertical */:
+            return [up, down];
+        case 6 /* Lateral */:
+            return [up, down, left, right];
+        default:
+            throw "InvalidDirectionException: The direction provided was invalid";
+    }
+}
 exports.getIncrementers = getIncrementers;
+/**
+* Will return a new coordinate after applying a simple multiplier transform to each index
+*/
+function transform(coordinate, incrementer, factor) {
+    return { file: coordinate.file + (incrementer.file * factor), rank: coordinate.rank + (incrementer.rank * factor) };
+}
 //# sourceMappingURL=helper.js.map

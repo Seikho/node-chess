@@ -121,3 +121,8 @@ export enum Castling {
 export interface Rule {
 	(): boolean;
 }
+
+export interface Move {
+	destination: Coordinate;
+	path: Coordinate[];
+}

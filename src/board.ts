@@ -61,6 +61,14 @@ class Board {
 		if (!this.ranks[x]) return null;
 		return this.ranks[x].squares[y] || null;
 	}
+
+	isSquareOccupied(coordinate: Chess.Coordinate): boolean {
+		return !!this.ranks[coordinate.rank].squares[coordinate.file];
+	}
+
+	isOpponentPiece(left: Chess.Piece, right: Chess.Piece) {
+		return left.isWhite === right.isWhite;
+	}
 	
     toString(): string {
         var ranks: string[] = [];

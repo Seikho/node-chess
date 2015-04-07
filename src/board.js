@@ -53,6 +53,12 @@ var Board = (function () {
             return null;
         return this.ranks[x].squares[y] || null;
     };
+    Board.prototype.isSquareOccupied = function (coordinate) {
+        return !!this.ranks[coordinate.rank].squares[coordinate.file];
+    };
+    Board.prototype.isOpponentPiece = function (left, right) {
+        return left.isWhite === right.isWhite;
+    };
     Board.prototype.toString = function () {
         var ranks = [];
         var fileLabels = ['-'];

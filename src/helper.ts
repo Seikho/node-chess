@@ -13,7 +13,7 @@ export function getSquaresForMove(coordinate: Chess.Coordinate, movePattern: Che
 	var coordinates: Chess.Coordinate[] = [];
 
 	movePattern.moves.forEach(move => {
-		var incrementers = getIncrementers(move, coordinate, bounds, isWhite);
+		var incrementers = getMoves(move, coordinate, bounds, isWhite);
 		coordinates = addMatrices(coordinates, incrementers);
 	});
 	return addMatrices([coordinate], coordinates).filter(coord => isInBounds(coord, bounds));
@@ -36,56 +36,13 @@ export function addMatrices(left: Chess.Coordinate[], right: Chess.Coordinate[],
 	return result;
 }
  
-export function getIncrementers(singleMove: Chess.SingleMove, start: Chess.Coordinate, bounds: Chess.Coordinate, isWhite?: boolean): Chess.Coordinate[] {
-	var x = isWhite?1:-1;
-	if (singleMove.count > 0) x *= singleMove.count;
-	
-	var up = {rank: 1*x, file: 0};
-	var down = {rank: -1*x, file: 0 };
-	var left = {rank: 0, file: -1*x };
-	var right = {rank: 0, file: 1*x };
-	var upLeft = {rank: 1*x, file: -1*x };
-	var upRight = {rank: 1*x, file: 1*x };
-	var downLeft = {rank: -1*x, file: -1*x };
-	var downRight = {rank: -1*x, file: 1*x };
-	var increments: Chess.Coordinate[];
-	switch (singleMove.direction) {
-		case Chess.Direction.Up:
-			increments = [up];
-			break;
-		case Chess.Direction.Down:
-			increments = [down];
-			break;
-		case Chess.Direction.Left:
-			increments = [left];
-			break;
-		case Chess.Direction.Right:
-			increments = [right];
-			break;
-		case Chess.Direction.DiagonalUp:
-			increments = [upLeft, upRight];
-			break;
-		case Chess.Direction.DiagonalDown:
-			increments = [downLeft, downRight];
-			break;
-		case Chess.Direction.Diagonal:
-			increments = [upLeft, upRight, downLeft, downRight];
-			break;
-		case Chess.Direction.Horizontal:
-			increments = [left, right];
-			break;
-		case Chess.Direction.Vertical:
-			increments = [up, down];
-			break;
-		case Chess.Direction.Lateral:
-			increments = [up, down, left, right];
-			break;
-		default:
-			throw "InvalidDirectionException: The direction provided was invalid";	
-	}
+export function getMoves(singleMove: Chess.SingleMove, start: Chess.Coordinate, bounds: Chess.Coordinate, isWhite: boolean) {
 	var rank = start.rank;
 	var file = start.file;
-	if (singleMove.count > 0) return increments;
+	var increments = getIncrementers(singleMove, isWhite);
+
+	// Bounded moves only require a simple transform
+	if (singleMove.count > 0) return increments.map(i => transform(start, i, singleMove.count));
 	var finalIncrements: Chess.Coordinate[] = [];
 	for (var i = 0; i < increments.length; i++) {
 		var inc = increments[i];
@@ -99,4 +56,48 @@ export function getIncrementers(singleMove: Chess.SingleMove, start: Chess.Coord
 		}		
 	}
 	return finalIncrements;
+}
+
+export function getIncrementers(singleMove: Chess.SingleMove, isWhite: boolean): Chess.Coordinate[] {
+	var x = isWhite?1:-1;
+	var up = {rank: 1*x, file: 0};
+	var down = {rank: -1*x, file: 0 };
+	var left = {rank: 0, file: -1*x };
+	var right = {rank: 0, file: 1*x };
+	var upLeft = {rank: 1*x, file: -1*x };
+	var upRight = {rank: 1*x, file: 1*x };
+	var downLeft = {rank: -1*x, file: -1*x };
+	var downRight = {rank: -1*x, file: 1*x };
+	switch (singleMove.direction) {
+		case Chess.Direction.Up:
+			return [up];
+		case Chess.Direction.Down:
+			return [down];
+		case Chess.Direction.Left:
+			return [left];
+		case Chess.Direction.Right:
+			return [right];
+		case Chess.Direction.DiagonalUp:
+			return [upLeft, upRight];
+		case Chess.Direction.DiagonalDown:
+			return [downLeft, downRight];
+		case Chess.Direction.Diagonal:
+			return [upLeft, upRight, downLeft, downRight];
+		case Chess.Direction.Horizontal:
+			return [left, right];
+		case Chess.Direction.Vertical:
+			return [up, down];
+		case Chess.Direction.Lateral:
+			return [up, down, left, right];
+		default:
+			throw "InvalidDirectionException: The direction provided was invalid";	
+	}
+	
+}
+
+/**
+* Will return a new coordinate after applying a simple multiplier transform to each index
+*/
+function transform(coordinate: Chess.Coordinate, incrementer: Chess.Coordinate, factor: number): Chess.Coordinate {
+	return { file: coordinate.file+(incrementer.file*factor), rank: coordinate.rank+(incrementer.rank*factor) };
 }
