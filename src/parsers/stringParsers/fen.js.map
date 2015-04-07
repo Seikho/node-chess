@@ -1,1 +1,1 @@
-{"version":3,"file":"fen.js","sourceRoot":"","sources":["../../../../src/parsers/stringParsers/fen.ts"],"names":[],"mappings":"AACA,IAAI,GAAG,GAAG,OAAO,CAAC,OAAO,CAAC,CAAC;AAG3B,IAAI,MAAM,GAAuB,GAAG,CAAC,WAAW,CAAC,4hBAmChD,CAAC,CAAC;AArCH,iBAAS,MAAM,CAAC"}
+{"version":3,"file":"fen.js","sourceRoot":"","sources":["fen.ts"],"names":[],"mappings":"AACA,IAAI,GAAG,GAAG,OAAO,CAAC,OAAO,CAAC,CAAC;AAG3B,IAAI,MAAM,GAAuB,GAAG,CAAC,WAAW,CAAC,4hBAmChD,CAAC,CAAC;AArCH,iBAAS,MAAM,CAAC"}

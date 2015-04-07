@@ -1,4 +1,9 @@
 import classicBoard = require("./boards/classic");
+setTimeout(createBoard, 20000);
 
-var board = classicBoard();
-var moves = console.log(board.availableMoves({file: 2, rank: 1}));
+function createBoard() {
+	var board = classicBoard();
+	var moves = console.log(board.availableMoves({file: 2, rank: 1}));
+}
+
+

@@ -6,7 +6,7 @@ gulp.task("default", function() {
         .pipe(typescript({
             sourcemap: true,
             module: "commonjs",
-            target: "es5"
-        }))
-        .pipe(gulp.dest(""));
+            target: "es5",
+            outDir: "./"
+    })).pipe(gulp.dest("./"));
 });
