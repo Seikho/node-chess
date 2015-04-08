@@ -22,7 +22,7 @@ var KnightFactory = (function (_super) {
     return KnightFactory;
 })(Chess.PieceFactory);
 var d = Chess.Direction;
-var horzThenVert = helper.createMove([{ direction: 7 /* Horizontal */, count: 2 }, { direction: 8 /* Vertical */, count: 1 }], true, true, true);
-var vertThenHorz = helper.createMove([{ direction: 8 /* Vertical */, count: 2 }, { direction: 7 /* Horizontal */, count: 1 }], true, true, true);
+var horzThenVert = helper.createMove([{ direction: d.Horizontal, count: 2 }, { direction: d.Vertical, count: 1 }], true, true, true);
+var vertThenHorz = helper.createMove([{ direction: d.Vertical, count: 2 }, { direction: d.Horizontal, count: 1 }], true, true, true);
 module.exports = KnightFactory;
 //# sourceMappingURL=knight.js.map

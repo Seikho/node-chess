@@ -21,7 +21,7 @@ var RookFactory = (function (_super) {
     return RookFactory;
 })(Chess.PieceFactory);
 var lat = {
-    moves: [{ direction: 6 /* Lateral */, count: 0 }],
+    moves: [{ direction: Chess.Direction.Lateral, count: 0 }],
     canJump: false,
     canCapture: true,
     canMove: true

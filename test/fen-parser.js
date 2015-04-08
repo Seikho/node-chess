@@ -8,6 +8,7 @@ var start = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 describe("fen parsing tests", function () {
     // Build a basic board with a pawn a valid piece
     var board = new Board();
+    // Add all classical pieces to the board
     for (var p in pieces)
         board.pieces.push(new pieces[p]());
     // Use FEN parser to properly instantiate the board state

@@ -22,7 +22,7 @@ var QueenFactory = (function (_super) {
     return QueenFactory;
 })(Chess.PieceFactory);
 var d = Chess.Direction;
-var diag = helper.createMove([{ direction: 9 /* Diagonal */, count: 0 }], true, false, true);
-var lat = helper.createMove([{ direction: 6 /* Lateral */, count: 0 }], true, false, true);
+var diag = helper.createMove([{ direction: d.Diagonal, count: 0 }], true, false, true);
+var lat = helper.createMove([{ direction: d.Lateral, count: 0 }], true, false, true);
 module.exports = QueenFactory;
 //# sourceMappingURL=queen.js.map

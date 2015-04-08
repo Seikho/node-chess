@@ -51,34 +51,34 @@ function getIncrementers(singleMove, start, bounds, isWhite) {
     var downRight = { rank: -1 * x, file: 1 * x };
     var increments;
     switch (singleMove.direction) {
-        case 0 /* Up */:
+        case Chess.Direction.Up:
             increments = [up];
             break;
-        case 1 /* Down */:
+        case Chess.Direction.Down:
             increments = [down];
             break;
-        case 2 /* Left */:
+        case Chess.Direction.Left:
             increments = [left];
             break;
-        case 3 /* Right */:
+        case Chess.Direction.Right:
             increments = [right];
             break;
-        case 4 /* DiagonalUp */:
+        case Chess.Direction.DiagonalUp:
             increments = [upLeft, upRight];
             break;
-        case 5 /* DiagonalDown */:
+        case Chess.Direction.DiagonalDown:
             increments = [downLeft, downRight];
             break;
-        case 9 /* Diagonal */:
+        case Chess.Direction.Diagonal:
             increments = [upLeft, upRight, downLeft, downRight];
             break;
-        case 7 /* Horizontal */:
+        case Chess.Direction.Horizontal:
             increments = [left, right];
             break;
-        case 8 /* Vertical */:
+        case Chess.Direction.Vertical:
             increments = [up, down];
             break;
-        case 6 /* Lateral */:
+        case Chess.Direction.Lateral:
             increments = [up, down, left, right];
             break;
         default:

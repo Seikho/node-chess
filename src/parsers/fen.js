@@ -31,6 +31,7 @@ var FenParser = (function () {
                 // Insert the next notation after the blank squares. 
                 if (!!fenRank[i + 1])
                     fenRank[i + notationNumber] = fenRank[i + 1];
+                // Insert blank squares from the current square, to currentSquare+notationNumber.
                 for (var j = i; j < i + notationNumber; j++)
                     rank.squares.push({ file: j, piece: null });
                 i += notationNumber - 1;
@@ -47,7 +48,9 @@ var FenParser = (function () {
     };
     FenParser.prototype.getPiece = function (notation) {
         var pieceFactory = this.parentBoard.pieces.filter(function (p) { return p.notation.toUpperCase() === notation || p.notation.toLowerCase() === notation; });
-        return pieceFactory.length === 0 ? null : pieceFactory[0].create(pieceFactory[0].notation.toUpperCase() === notation);
+        return pieceFactory.length === 0
+            ? null
+            : pieceFactory[0].create(pieceFactory[0].notation.toUpperCase() === notation);
     };
     return FenParser;
 })();

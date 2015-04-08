@@ -22,6 +22,6 @@ var BishopFactory = (function (_super) {
     return BishopFactory;
 })(Chess.PieceFactory);
 var d = Chess.Direction;
-var diag = helper.createMove([{ direction: 9 /* Diagonal */, count: 0 }], true, false, true);
+var diag = helper.createMove([{ direction: d.Diagonal, count: 0 }], true, false, true);
 module.exports = BishopFactory;
 //# sourceMappingURL=bishop.js.map

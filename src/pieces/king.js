@@ -22,7 +22,7 @@ var KingFactory = (function (_super) {
     return KingFactory;
 })(Chess.PieceFactory);
 var d = Chess.Direction;
-var diag = helper.createMove([{ direction: 9 /* Diagonal */, count: 1 }], true, false, true);
-var lat = helper.createMove([{ direction: 6 /* Lateral */, count: 1 }], true, false, true);
+var diag = helper.createMove([{ direction: d.Diagonal, count: 1 }], true, false, true);
+var lat = helper.createMove([{ direction: d.Lateral, count: 1 }], true, false, true);
 module.exports = KingFactory;
 //# sourceMappingURL=king.js.map
