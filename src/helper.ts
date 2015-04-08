@@ -36,6 +36,7 @@ export function addMatrices(left: Chess.Coordinate[], right: Chess.Coordinate[],
 	return result;
 }
  
+//TODO: Refactor into 2 separate methods
 export function getIncrementers(singleMove: Chess.SingleMove, start: Chess.Coordinate, bounds: Chess.Coordinate, isWhite?: boolean): Chess.Coordinate[] {
 	var x = isWhite?1:-1;
 	if (singleMove.count > 0) x *= singleMove.count;

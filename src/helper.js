@@ -37,6 +37,7 @@ function addMatrices(left, right, bounds) {
     return result;
 }
 exports.addMatrices = addMatrices;
+//TODO: Refactor into 2 separate methods
 function getIncrementers(singleMove, start, bounds, isWhite) {
     var x = isWhite ? 1 : -1;
     if (singleMove.count > 0)
