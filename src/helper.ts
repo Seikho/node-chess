@@ -35,12 +35,77 @@ export function addMatrices(left: Chess.Coordinate[], right: Chess.Coordinate[],
 	});
 	return result;
 }
- 
-//TODO: Refactor into 2 separate methods
+
+export function getIncrements(singleMove: Chess.SingleMove, start: Chess.Coordinate, bounds: Chess.Coordinate, isWhite: boolean): Chess.Coordinate[] {
+	var transforms = getTransforms(singleMove, isWhite);
+
+	// If the singleMove defines a fix move, apply it directly to the transforms and return the result.
+	if (singleMove.count > 0) {
+		var x = singleMove.count;
+		return transforms.map((t: Chess.Coordinate) => { return { file: t.file*x, rank: t.rank*x }; });
+	}
+
+	// The move is unbounded
+	var rank = start.rank;
+	var file = start.file;
+
+	var coordinate = { file: start.file, rank: start.rank };
+	var increments: Chess.Coordinate[] = [];
+
+	for (var i = 0; i < transforms.length; i++) {
+		var increment = increments[i];
+		var inBounds = true;
+		var count = 1;
+		while (inBounds) {
+			var newIncrement = { file: increment.file*count, rank: increment.rank*count };
+			inBounds = isInBounds({ file: file+newIncrement.file, rank: rank+newIncrement.rank }, bounds);
+			if (isInBounds) increments.push(newIncrement);
+		count++;
+		}
+	}
+	return increments;
+}
+
+export function getTransforms(singleMove: Chess.SingleMove, isWhite: boolean): Chess.Coordinate[] {
+	var x = isWhite?1:-1;
+	var up = {rank: 1*x, file: 0};
+	var down = {rank: -1*x, file: 0 };
+	var left = {rank: 0, file: -1*x };
+	var right = {rank: 0, file: 1*x };
+	var upLeft = {rank: 1*x, file: -1*x };
+	var upRight = {rank: 1*x, file: 1*x };
+	var downLeft = {rank: -1*x, file: -1*x };
+	var downRight = {rank: -1*x, file: 1*x };
+	switch (singleMove.direction) {
+		case Chess.Direction.Up:
+			return [up];
+		case Chess.Direction.Down:
+			return [down];
+		case Chess.Direction.Left:
+			return [left];
+		case Chess.Direction.Right:
+			return [right];
+		case Chess.Direction.DiagonalUp:
+			return [upLeft, upRight];
+		case Chess.Direction.DiagonalDown:
+			return [downLeft, downRight];
+		case Chess.Direction.Diagonal:
+			return [upLeft, upRight, downLeft, downRight];
+		case Chess.Direction.Horizontal:
+			return [left, right];
+		case Chess.Direction.Vertical:
+			return [up, down];
+		case Chess.Direction.Lateral:
+			return [up, down, left, right];
+		default:
+			throw "InvalidDirectionException: The direction provided was invalid";
+	}
+}
+
 export function getIncrementers(singleMove: Chess.SingleMove, start: Chess.Coordinate, bounds: Chess.Coordinate, isWhite?: boolean): Chess.Coordinate[] {
 	var x = isWhite?1:-1;
 	if (singleMove.count > 0) x *= singleMove.count;
-	
+
 	var up = {rank: 1*x, file: 0};
 	var down = {rank: -1*x, file: 0 };
 	var left = {rank: 0, file: -1*x };
@@ -82,7 +147,7 @@ export function getIncrementers(singleMove: Chess.SingleMove, start: Chess.Coord
 			increments = [up, down, left, right];
 			break;
 		default:
-			throw "InvalidDirectionException: The direction provided was invalid";	
+			throw "InvalidDirectionException: The direction provided was invalid";
 	}
 	var rank = start.rank;
 	var file = start.file;
@@ -97,7 +162,7 @@ export function getIncrementers(singleMove: Chess.SingleMove, start: Chess.Coord
 			inBounds = isInBounds({ file: file+newIncrement.file, rank: rank+newIncrement.rank}, bounds);
 			if (isInBounds) finalIncrements.push(newIncrement);
 		count++;
-		}		
+		}
 	}
 	return finalIncrements;
 }

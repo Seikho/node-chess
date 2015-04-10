@@ -2,7 +2,7 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es5",
-        "noImplicitAny": false,
+        "noImplicitAny": true,
         "removeComments": false,
         "outDir": "./",
         "sourceMap": true
@@ -27,6 +27,7 @@
         "src/pieces/pieces.ts",
         "src/pieces/queen.ts",
         "src/pieces/rook.ts",
+        "src/rules/index.ts",
         "src/types.ts",
         "src/typings/bluebird/bluebird.d.ts",
         "src/typings/chai/chai.d.ts",
