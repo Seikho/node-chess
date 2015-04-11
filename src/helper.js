@@ -12,7 +12,7 @@ function getSquaresForMove(coordinate, movePattern, isWhite, bounds) {
     bounds = bounds || { rank: 8, file: 8 };
     var coordinates = [];
     movePattern.moves.forEach(function (move) {
-        var incrementers = getIncrementers(move, coordinate, bounds, isWhite);
+        var incrementers = getIncrements(move, coordinate, bounds, isWhite);
         coordinates = addMatrices(coordinates, incrementers);
     });
     return addMatrices([coordinate], coordinates).filter(function (coord) { return isInBounds(coord, bounds); });
@@ -50,7 +50,7 @@ function getIncrements(singleMove, start, bounds, isWhite) {
     var coordinate = { file: start.file, rank: start.rank };
     var increments = [];
     for (var i = 0; i < transforms.length; i++) {
-        var increment = increments[i];
+        var increment = transforms[i];
         var inBounds = true;
         var count = 1;
         while (inBounds) {
@@ -100,71 +100,4 @@ function getTransforms(singleMove, isWhite) {
     }
 }
 exports.getTransforms = getTransforms;
-function getIncrementers(singleMove, start, bounds, isWhite) {
-    var x = isWhite ? 1 : -1;
-    if (singleMove.count > 0)
-        x *= singleMove.count;
-    var up = { rank: 1 * x, file: 0 };
-    var down = { rank: -1 * x, file: 0 };
-    var left = { rank: 0, file: -1 * x };
-    var right = { rank: 0, file: 1 * x };
-    var upLeft = { rank: 1 * x, file: -1 * x };
-    var upRight = { rank: 1 * x, file: 1 * x };
-    var downLeft = { rank: -1 * x, file: -1 * x };
-    var downRight = { rank: -1 * x, file: 1 * x };
-    var increments;
-    switch (singleMove.direction) {
-        case Chess.Direction.Up:
-            increments = [up];
-            break;
-        case Chess.Direction.Down:
-            increments = [down];
-            break;
-        case Chess.Direction.Left:
-            increments = [left];
-            break;
-        case Chess.Direction.Right:
-            increments = [right];
-            break;
-        case Chess.Direction.DiagonalUp:
-            increments = [upLeft, upRight];
-            break;
-        case Chess.Direction.DiagonalDown:
-            increments = [downLeft, downRight];
-            break;
-        case Chess.Direction.Diagonal:
-            increments = [upLeft, upRight, downLeft, downRight];
-            break;
-        case Chess.Direction.Horizontal:
-            increments = [left, right];
-            break;
-        case Chess.Direction.Vertical:
-            increments = [up, down];
-            break;
-        case Chess.Direction.Lateral:
-            increments = [up, down, left, right];
-            break;
-        default:
-            throw "InvalidDirectionException: The direction provided was invalid";
-    }
-    var rank = start.rank;
-    var file = start.file;
-    if (singleMove.count > 0)
-        return increments;
-    var finalIncrements = [];
-    for (var i = 0; i < increments.length; i++) {
-        var inc = increments[i];
-        var inBounds = true;
-        var count = 1;
-        while (inBounds) {
-            var newIncrement = { file: inc.file * count, rank: inc.rank * count };
-            inBounds = isInBounds({ file: file + newIncrement.file, rank: rank + newIncrement.rank }, bounds);
-            if (isInBounds)
-                finalIncrements.push(newIncrement);
-            count++;
-        }
-    }
-    return finalIncrements;
-}
-exports.getIncrementers = getIncrementers;
 //# sourceMappingURL=helper.js.map
