@@ -1,5 +1,5 @@
 var toString = require("./helpers/toString");
-var helper = require("../helper");
+var getMoves = require("./helpers/getMoves");
 /**
  * Board: extensible board (TODO: more detail)
  */
@@ -39,7 +39,7 @@ var Board = (function () {
      */
     Board.prototype.availableMoves = function (coordinate) {
         var square = this.getSquare(coordinate);
-        return helper.getSquaresForMoves(coordinate, square.piece);
+        return getMoves(coordinate, square.piece);
     };
     /**
      * @return boolean Returns true if the piece moved to the toSquare

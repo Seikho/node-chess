@@ -13,7 +13,6 @@
     ],
     "files": [
         "src/analyzer.ts",
-        "src/board.ts",
         "src/boards/classic.ts",
         "src/engine/board.ts",
         "src/engine/helpers/addCoordinates.ts",
@@ -22,7 +21,6 @@
         "src/engine/helpers/getTransforms.ts",
         "src/engine/helpers/isInBounds.ts",
         "src/engine/helpers/toString.ts",
-        "src/helper.ts",
         "src/index.ts",
         "src/parsers/fen.ts",
         "src/parsers/stringParsers/fen.ts",

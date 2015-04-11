@@ -1,4 +1,4 @@
-var Board = require("../src/board");
+var Board = require("../src/engine/board");
 var Fen = require("../src/parsers/fen");
 var pieces = require("../src/pieces/pieces");
 var chai = require("chai");

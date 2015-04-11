@@ -1,4 +1,4 @@
-var Board = require("../board");
+var Board = require("../engine/board");
 var Fen = require("../parsers/fen");
 var pieces = require("../pieces/pieces");
 function newClassicBoard() {

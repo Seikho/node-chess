@@ -1,5 +1,5 @@
 import Chess = require("../types");
-import Board = require("../board");
+import Board = require("../engine/board");
 import fenStringParser = require("./stringParsers/fen");
 
 export = FenParser;
@@ -8,7 +8,7 @@ class FenParser implements Chess.PositionParser {
 	constructor(parentBoard: Board) {
 		this.parentBoard = parentBoard;
 	}
-	
+
 	defaultPosition: string = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 	parentBoard: Board;
 	boardInput: Chess.BoardInput;
@@ -19,12 +19,12 @@ class FenParser implements Chess.PositionParser {
 
 		// This will split a FEN string into an array. First 8 indexes are ranks of the board, descending from rank 8 t rank 1.
 		this.boardInput = fenStringParser.parse(position);
-		
+
 		// Fen strings start from the 8th rank, so we start from 8 and descend to rank 1.
 		var rankCount = this.parentBoard.rankCount;
 		this.boardInput.ranks.forEach(rank => {
 			this.parentBoard.ranks[rankCount] = this.createFilesForRank(rank, rankCount);
-			rankCount--;	
+			rankCount--;
 		});
 	}
 
@@ -41,7 +41,7 @@ class FenParser implements Chess.PositionParser {
 			// TODO Consider refactoring--export to function for readability
 			if (!isNaN(notationNumber)) {
 
-				// Insert the next notation after the blank squares. 
+				// Insert the next notation after the blank squares.
 				if (!!fenRank[i+1]) fenRank[i+notationNumber] = fenRank[i+1];
 
 				// Insert blank squares from the current square, to currentSquare+notationNumber.

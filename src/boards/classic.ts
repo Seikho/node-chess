@@ -1,4 +1,4 @@
-import Board = require("../board");
+import Board = require("../engine/board");
 import Fen = require("../parsers/fen");
 import pieces = require("../pieces/pieces");
 export = newClassicBoard;

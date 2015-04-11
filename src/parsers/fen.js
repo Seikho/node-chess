@@ -28,7 +28,7 @@ var FenParser = (function () {
             // If the notation is a number, that many squares from this square contain no piece.
             // TODO Consider refactoring--export to function for readability
             if (!isNaN(notationNumber)) {
-                // Insert the next notation after the blank squares. 
+                // Insert the next notation after the blank squares.
                 if (!!fenRank[i + 1])
                     fenRank[i + notationNumber] = fenRank[i + 1];
                 // Insert blank squares from the current square, to currentSquare+notationNumber.

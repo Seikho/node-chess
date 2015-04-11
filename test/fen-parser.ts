@@ -1,5 +1,5 @@
 import Chess = require("../src/types");
-import Board = require("../src/board");
+import Board = require("../src/engine/board");
 import Fen = require("../src/parsers/fen");
 import pieces = require("../src/pieces/pieces");
 import chai = require("chai");

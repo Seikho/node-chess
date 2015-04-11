@@ -1,6 +1,6 @@
 import Chess = require("../types");
 import toString = require("./helpers/toString");
-import helper = require("../helper");
+import getMoves = require("./helpers/getMoves");
 export = Board;
 /**
  * Board: extensible board (TODO: more detail)
@@ -46,7 +46,7 @@ class Board implements Chess.Engine {
 	 */
 	availableMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
 		var square = this.getSquare(coordinate);
-		return helper.getSquaresForMoves(coordinate, square.piece);
+		return getMoves(coordinate, square.piece);
 	}
 
 	/**
