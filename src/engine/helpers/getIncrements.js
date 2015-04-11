@@ -27,5 +27,5 @@ function getIncrements(singleMove, start, bounds, isWhite) {
     }
     return increments;
 }
-exports.getIncrements = getIncrements;
+module.exports = getIncrements;
 //# sourceMappingURL=getIncrements.js.map

@@ -1,8 +1,9 @@
 import Chess = require("../../types");
 import getTransforms = require("./getTransforms");
 import isInBounds = require("./isInBounds");
+export = getIncrements;
 
-export function getIncrements(singleMove: Chess.SingleMove, start: Chess.Coordinate, bounds: Chess.Coordinate, isWhite: boolean): Chess.Coordinate[] {
+function getIncrements(singleMove: Chess.SingleMove, start: Chess.Coordinate, bounds: Chess.Coordinate, isWhite: boolean): Chess.Coordinate[] {
 	var transforms = getTransforms(singleMove, isWhite);
 
 	// If the singleMove defines a fix move, apply it directly to the transforms and return the result.
