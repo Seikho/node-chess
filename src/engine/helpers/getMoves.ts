@@ -2,8 +2,9 @@ import Chess = require("../../types");
 import getIncrements = require("./getIncrements");
 import addCoordinates = require("./addCoordinates");
 import isInBounds = require("./isInBounds");
+export = getMovesForPiece;
 
-function getMoves(coordinate: Chess.Coordinate, piece: Chess.Piece): Chess.Coordinate[] {
+function getMovesForPiece(coordinate: Chess.Coordinate, piece: Chess.Piece): Chess.Coordinate[] {
 	var coordinates: Chess.Coordinate[] = [];
 	if (!piece) return [];
 	piece.movement.forEach(move => coordinates = coordinates.concat(getMovesForMovePattern(coordinate, move, piece.isWhite)));

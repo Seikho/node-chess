@@ -1,7 +1,7 @@
 var getIncrements = require("./getIncrements");
 var addCoordinates = require("./addCoordinates");
 var isInBounds = require("./isInBounds");
-function getMoves(coordinate, piece) {
+function getMovesForPiece(coordinate, piece) {
     var coordinates = [];
     if (!piece)
         return [];
@@ -18,4 +18,5 @@ function getMovesForMovePattern(coordinate, movePattern, isWhite, bounds) {
     });
     return addCoordinates([coordinate], coordinates).filter(function (coord) { return isInBounds(coord, bounds); });
 }
+module.exports = getMovesForPiece;
 //# sourceMappingURL=getMoves.js.map
