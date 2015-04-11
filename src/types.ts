@@ -1,4 +1,17 @@
-import Board = require("./board");
+export interface Engine {
+	rankCount: number;
+	fileCount: number;
+	ranks: Rank[];
+	pieces: PieceFactory[]
+	positionParser: PositionParser;
+	capturedPieces: Piece[];
+	create(): void;
+	availableMoves(coordinate: Coordinate): Coordinate[];
+	movePieceTo(from: Coordinate, to: Coordinate): boolean;
+	getSquare(square: Coordinate): Square;
+	toString(): string;
+}
+
 export enum Direction {
 	Up, Down, Left, Right, DiagonalUp, DiagonalDown, Lateral, Horizontal, Vertical, Diagonal
 }
@@ -62,7 +75,7 @@ export interface Piece {
  * @param canJump Can the piece jump over pieces to reach the location
  * @param canMove Can the piece move there without capturing
  * @param canCapture Can the piece capture at the location
- */ 
+ */
 export interface MovePattern {
 	moves: SingleMove[];
 	canJump?: boolean;
@@ -72,7 +85,7 @@ export interface MovePattern {
 /**
  * @param direction The direction of movement from the perspective of the piece owner
  * @param count Number of squares in the direction. 0: All squares (e.g. rooks, queens, bishops). Otherwise 1 .. N. SingleMoves with negative numbers are ignored.
- * */ 
+ * */
 export interface SingleMove {
 	direction: Direction;
 	count: number;

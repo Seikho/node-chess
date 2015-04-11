@@ -45,7 +45,7 @@ export function getIncrements(singleMove: Chess.SingleMove, start: Chess.Coordin
 		return transforms.map(t => { return { file: t.file*x, rank: t.rank*x }; });
 	}
 
-	// The move is unbounded
+	// The move is unbounded, keep applying the transform to 'start' until an edge of the board
 	var rank = start.rank;
 	var file = start.file;
 
@@ -56,6 +56,8 @@ export function getIncrements(singleMove: Chess.SingleMove, start: Chess.Coordin
 		var increment = transforms[i];
 		var inBounds = true;
 		var count = 1;
+
+		// Optimization: Do not include any increments that will exceed the bounds of the board
 		while (inBounds) {
 			var newIncrement = { file: increment.file*count, rank: increment.rank*count };
 			inBounds = isInBounds({ file: file+newIncrement.file, rank: rank+newIncrement.rank }, bounds);
@@ -67,6 +69,7 @@ export function getIncrements(singleMove: Chess.SingleMove, start: Chess.Coordin
 }
 
 export function getTransforms(singleMove: Chess.SingleMove, isWhite: boolean): Chess.Coordinate[] {
+	// Return the inverse of the transform if from black perspective
 	var x = isWhite?1:-1;
 	var up = {rank: 1*x, file: 0};
 	var down = {rank: -1*x, file: 0 };
@@ -76,6 +79,7 @@ export function getTransforms(singleMove: Chess.SingleMove, isWhite: boolean): C
 	var upRight = {rank: 1*x, file: 1*x };
 	var downLeft = {rank: -1*x, file: -1*x };
 	var downRight = {rank: -1*x, file: 1*x };
+
 	switch (singleMove.direction) {
 		case Chess.Direction.Up:
 			return [up];
