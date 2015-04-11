@@ -16,6 +16,7 @@
         "src/board.ts",
         "src/boards/classic.ts",
         "src/engine/board.ts",
+        "src/engine/helpers/getTransforms.ts",
         "src/engine/helpers/toString.ts",
         "src/helper.ts",
         "src/index.ts",
