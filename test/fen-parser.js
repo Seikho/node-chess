@@ -1,6 +1,6 @@
 var Engine = require("../src/engine/engine");
-var Fen = require("../src/parsers/fen");
-var pieces = require("../src/pieces/pieces");
+var Fen = require("../src/engine/parsers/fen");
+var pieces = require("../src/engine/pieces/pieces");
 var chai = require("chai");
 var expect = chai.expect;
 // Starting position represented as a FEN string

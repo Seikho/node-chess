@@ -1,8 +1,8 @@
 var chai = require("chai");
 var Chess = require("../src/types");
-var classic = require("../src/boards/classic");
-var classicBoard = classic();
-console.log(classicBoard.toString());
+var classic = require("../src/engine/instances/classic");
+var classicEngine = classic();
+console.log(classicEngine.toString());
 var expect = chai.expect;
 var dir = Chess.Direction;
 describe("available move tests", function () {
@@ -14,7 +14,7 @@ describe("available move tests", function () {
 });
 function pieceMoveTest(message, start, expectedMoves) {
     it(message, function () {
-        var moves = classicBoard.availableMoves(start);
+        var moves = classicEngine.availableMoves(start);
         expectedMoves.forEach(function (m) { return expect(moves).to.include({ rank: m.rank, file: m.file }); });
     });
 }

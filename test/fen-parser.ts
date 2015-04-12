@@ -1,7 +1,7 @@
 import Chess = require("../src/types");
 import Engine = require("../src/engine/engine");
-import Fen = require("../src/parsers/fen");
-import pieces = require("../src/pieces/pieces");
+import Fen = require("../src/engine/parsers/fen");
+import pieces = require("../src/engine/pieces/pieces");
 import chai = require("chai");
 var expect = chai.expect;
 

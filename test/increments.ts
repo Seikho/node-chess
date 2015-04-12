@@ -1,11 +1,11 @@
 import Engine = require("../src/engine/engine");
 import chai = require("chai");
 import Chess = require("../src/types");
-import pieces = require("../src/pieces/pieces");
-import classic = require("../src/boards/classic");
+import pieces = require("../src/engine/pieces/pieces");
+import classic = require("../src/engine/instances/classic");
 
-var classicBoard = classic();
-console.log(classicBoard.toString());
+var classicEngine = classic();
+console.log(classicEngine.toString());
 
 var expect = chai.expect;
 var dir = Chess.Direction;
@@ -20,7 +20,7 @@ describe("available move tests", () => {
 
 function pieceMoveTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {
 	it(message, () => {
-		var moves = classicBoard.availableMoves(start);
+		var moves = classicEngine.availableMoves(start);
 		expectedMoves.forEach(m => expect(moves).to.include({rank: m.rank, file: m.file }));
 	});
 }

@@ -1,9 +1,7 @@
-import classicBoard = require("./boards/classic");
-setTimeout(createBoard, 20000);
+import classicEngine = require("./engine/instances/classic");
+setTimeout(createEngine, 20000);
 
-function createBoard() {
-	var board = classicBoard();
+function createEngine() {
+	var board = classicEngine();
 	var moves = console.log(board.availableMoves({file: 2, rank: 1}));
 }
-
-
