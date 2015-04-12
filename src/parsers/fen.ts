@@ -1,5 +1,5 @@
 import Chess = require("../types");
-import Board = require("../engine/board");
+import Board = require("../engine/engine");
 import fenStringParser = require("./stringParsers/fen");
 
 export = FenParser;

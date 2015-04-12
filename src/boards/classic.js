@@ -1,8 +1,8 @@
-var Board = require("../engine/board");
+var Engine = require("../engine/engine");
 var Fen = require("../parsers/fen");
 var pieces = require("../pieces/pieces");
 function newClassicBoard() {
-    var board = new Board();
+    var board = new Engine();
     for (var p in pieces)
         board.pieces.push(new pieces[p]());
     var start = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";

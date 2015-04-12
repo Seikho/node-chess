@@ -1,5 +1,5 @@
 var Analyzer = (function () {
-    function Analyzer(board, options) {
+    function Analyzer(engine, options) {
         this.options = {};
         this.evaluation = 0;
         if (!options)
@@ -10,7 +10,7 @@ var Analyzer = (function () {
         this.startTime = Date.now();
     }
     Analyzer.prototype.calculate = function (callback) {
-        //TODO 
+        //TODO
         callback(this.evaluation);
     };
     return Analyzer;

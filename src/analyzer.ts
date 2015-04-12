@@ -1,9 +1,9 @@
-import Board = require("./board");
+import Engine = require("./engine/engine");
 import Chess = require("./types");
 export = Analyzer;
 
 class Analyzer {
-	constructor(board: Board, options?: Chess.AnalysisOptions) {
+	constructor(engine: Engine, options?: Chess.AnalysisOptions) {
 		this.evaluation = 0;
 		if (!options) options = {};
 		this.options.interval = options.interval || 100;
@@ -13,7 +13,7 @@ class Analyzer {
 	}
 
 	calculate(callback: (evaluation: number) => any): void {
-		//TODO 
+		//TODO
 		callback(this.evaluation);
 	}
 
@@ -21,4 +21,3 @@ class Analyzer {
 	options: Chess.AnalysisOptions = {};
 	startTime: number;
 }
-

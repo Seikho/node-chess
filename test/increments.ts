@@ -1,4 +1,4 @@
-import Board = require("../src/engine/board");
+import Engine = require("../src/engine/engine");
 import chai = require("chai");
 import Chess = require("../src/types");
 import pieces = require("../src/pieces/pieces");

@@ -14,7 +14,7 @@
     "files": [
         "src/analyzer.ts",
         "src/boards/classic.ts",
-        "src/engine/board.ts",
+        "src/engine/engine.ts",
         "src/engine/helpers/addCoordinates.ts",
         "src/engine/helpers/getIncrements.ts",
         "src/engine/helpers/getMoves.ts",

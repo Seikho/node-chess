@@ -1,11 +1,11 @@
 import Chess = require("../types");
 import toString = require("./helpers/toString");
 import getMoves = require("./helpers/getMoves");
-export = Board;
+export = Engine;
 /**
  * Board: extensible board (TODO: more detail)
  */
-class Board implements Chess.Engine {
+class Engine implements Chess.Engine {
 	constructor(ranks?: number, files?: number) {
 		ranks = ranks || 8;
 		files = files || 8;
