@@ -22,6 +22,11 @@ export interface PieceMovement {
 	movePatterns: MovePattern[];
 }
 
+export interface Path {
+	from: Coordinate;
+	to: Coordinate;
+}
+
 export interface Coordinate {
 	file: number; // Board x-axis
 	rank: number; // Board y-axis
