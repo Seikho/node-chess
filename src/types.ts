@@ -108,8 +108,7 @@ export interface AnalysisOptions {
 }
 
 export interface PositionParser {
-	parse(position: string): any;
-	defaultPosition: string;
+	(position?: string): void;
 }
 
 export interface StringParser {

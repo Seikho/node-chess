@@ -2,20 +2,19 @@ var fenStringParser = require("./stringParsers/fen");
 var defaultPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 function fenParser(position) {
     var _this = this;
-    position = position || defaultPosition;
-    var engineInput = fenStringParser.parse(position);
+    var engineInput = fenStringParser.parse(position || defaultPosition);
     var rankCount = this.rankCount;
     engineInput.ranks.forEach(function (rank) {
-        _this.ranks[rankCount] = createFilesForRank(rank, rankCount);
+        _this.ranks[rankCount] = createFilesForRank(_this, rank, rankCount);
         rankCount--;
     });
 }
-function createFilesForRank(fenRank, rankNumber) {
+function createFilesForRank(engine, fenRank, rankNumber) {
     var rank = {
         rank: rankNumber,
         squares: []
     };
-    for (var i = 1; i <= this.parentEngine.fileCount; i++) {
+    for (var i = 1; i <= engine.fileCount; i++) {
         var notation = fenRank[i - 1];
         var notationNumber = parseInt(notation);
         // If the notation is a number, that many squares from this square contain no piece.
@@ -32,15 +31,15 @@ function createFilesForRank(fenRank, rankNumber) {
         }
         var square = {
             file: i,
-            piece: this.getPiece(notation)
+            piece: getPiece(engine, notation)
         };
         square.piece.originalPosition = { rank: rank.rank, file: i };
         rank.squares[i] = square;
     }
     return rank;
 }
-function getPiece(notation) {
-    var pieceFactory = this.pieces.filter(function (p) { return p.notation.toUpperCase() === notation || p.notation.toLowerCase() === notation; });
+function getPiece(engine, notation) {
+    var pieceFactory = engine.pieces.filter(function (p) { return p.notation.toUpperCase() === notation || p.notation.toLowerCase() === notation; });
     return pieceFactory.length === 0
         ? null
         : pieceFactory[0].create(pieceFactory[0].notation.toUpperCase() === notation);

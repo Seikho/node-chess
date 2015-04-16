@@ -1,6 +1,7 @@
 import Chess = require("../types");
 import toString = require("./helpers/toString");
 import getMoves = require("./helpers/getMoves");
+import fenParser = require("./parsers/fen")
 export = Engine;
 /**
  * Board: extensible board (TODO: more detail)
@@ -11,6 +12,7 @@ class Engine implements Chess.Engine {
 		files = files || 8;
 		if (isNaN(ranks) || isNaN(files)) throw "InvalidArgumentException: 'ranks' and 'files' must be a number";
 		// Only accept positive, whole, organic, gluten-free numbers.
+		this.positionParser = fenParser;
 		this.rankCount = Math.floor(Math.abs(ranks));
 		this.fileCount = Math.floor(Math.abs(files));
 	}

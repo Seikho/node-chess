@@ -1,5 +1,6 @@
 var toString = require("./helpers/toString");
 var getMoves = require("./helpers/getMoves");
+var fenParser = require("./parsers/fen");
 /**
  * Board: extensible board (TODO: more detail)
  */
@@ -12,6 +13,7 @@ var Engine = (function () {
         if (isNaN(ranks) || isNaN(files))
             throw "InvalidArgumentException: 'ranks' and 'files' must be a number";
         // Only accept positive, whole, organic, gluten-free numbers.
+        this.positionParser = fenParser;
         this.rankCount = Math.floor(Math.abs(ranks));
         this.fileCount = Math.floor(Math.abs(files));
     }
