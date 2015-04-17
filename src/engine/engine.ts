@@ -15,6 +15,7 @@ class Engine implements Chess.Engine {
 		this.positionParser = fenParser;
 		this.rankCount = Math.floor(Math.abs(ranks));
 		this.fileCount = Math.floor(Math.abs(files));
+		this.toString = toString;
 	}
 	rankCount: number;
 	fileCount: number;
@@ -65,7 +66,5 @@ class Engine implements Chess.Engine {
 		return this.ranks[x].squares[y] || null;
 	}
 
-    toString(): string {
-        return toString(this);
-    }
+  toString: () => string;
 }

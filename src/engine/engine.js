@@ -16,6 +16,7 @@ var Engine = (function () {
         this.positionParser = fenParser;
         this.rankCount = Math.floor(Math.abs(ranks));
         this.fileCount = Math.floor(Math.abs(files));
+        this.toString = toString;
     }
     /**
      * Creates an empty board using a 2-dimensional, non-zero based array.
@@ -55,9 +56,6 @@ var Engine = (function () {
         if (!this.ranks[x])
             return null;
         return this.ranks[x].squares[y] || null;
-    };
-    Engine.prototype.toString = function () {
-        return toString(this);
     };
     return Engine;
 })();
