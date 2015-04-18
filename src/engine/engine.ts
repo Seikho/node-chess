@@ -2,7 +2,9 @@ import Chess = require("../types");
 import toString = require("./helpers/toString");
 import getMoves = require("./helpers/getMoves");
 import fenParser = require("./parsers/fen")
+import createSqaures = require("./helpers/createSquares");
 export = Engine;
+
 /**
  * Board: extensible board (TODO: more detail)
  */
@@ -23,26 +25,8 @@ class Engine implements Chess.Engine {
 	pieces: Chess.PieceFactory[] = [];
 	positionParser: Chess.PositionParser;
 	capturedPieces: Chess.Piece[];
-	/**
-	 * Creates an empty board using a 2-dimensional, non-zero based array.
-	 */
-	create(): void {
-		this.ranks = [];
-		for (var rank = 0; rank < this.rankCount;rank++) {
-			var row: Chess.Rank = {
-				rank: rank,
-				squares: []
-			};
 
-			for (var file = 0; file < this.fileCount;file++) {
-				row.squares[file+1] = {
-					file: file,
-					piece: null
-				}
-			}
-			this.ranks[rank+1] = row;
-		}
-	}
+	create = createSqaures;
 
 	/**
 	 * Returns an array of the available squares a piece can move to
