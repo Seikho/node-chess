@@ -10,6 +10,10 @@ var Engine = (function () {
         this.ranks = [];
         this.pieces = [];
         this.create = createSqaures;
+        /**
+         * Returns an array of the available squares a piece can move to
+         */
+        this.availableMoves = getMoves;
         ranks = ranks || 8;
         files = files || 8;
         if (isNaN(ranks) || isNaN(files))
@@ -20,13 +24,6 @@ var Engine = (function () {
         this.fileCount = Math.floor(Math.abs(files));
         this.toString = toString;
     }
-    /**
-     * Returns an array of the available squares a piece can move to
-     */
-    Engine.prototype.availableMoves = function (coordinate) {
-        var square = this.getSquare(coordinate);
-        return getMoves(coordinate, square.piece);
-    };
     /**
      * @return boolean Returns true if the piece moved to the toSquare
      */

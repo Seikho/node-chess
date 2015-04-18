@@ -31,10 +31,7 @@ class Engine implements Chess.Engine {
 	/**
 	 * Returns an array of the available squares a piece can move to
 	 */
-	availableMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
-		var square = this.getSquare(coordinate);
-		return getMoves(coordinate, square.piece);
-	}
+	availableMoves = getMoves;
 
 	/**
 	 * @return boolean Returns true if the piece moved to the toSquare
