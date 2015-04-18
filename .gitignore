@@ -5,3 +5,4 @@ NUL
 *.log
 node_modules/
 tsd.json
+*.map
