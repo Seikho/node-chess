@@ -31,11 +31,9 @@ var Engine = (function () {
         return false;
     };
     Engine.prototype.getSquare = function (square) {
-        var x = square.rank;
-        var y = square.file;
-        if (!this.ranks[x])
+        if (!this.ranks[square.rank])
             return null;
-        return this.ranks[x].squares[y] || null;
+        return this.ranks[square.rank].squares[square.file] || null;
     };
     return Engine;
 })();

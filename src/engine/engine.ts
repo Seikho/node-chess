@@ -13,6 +13,7 @@ class Engine implements Chess.Engine {
 		ranks = ranks || 8;
 		files = files || 8;
 		if (isNaN(ranks) || isNaN(files)) throw "InvalidArgumentException: 'ranks' and 'files' must be a number";
+		
 		// Only accept positive, whole, organic, gluten-free numbers.
 		this.positionParser = fenParser;
 		this.rankCount = Math.floor(Math.abs(ranks));
@@ -41,10 +42,8 @@ class Engine implements Chess.Engine {
 	}
 
 	getSquare(square: Chess.Coordinate): Chess.Square {
-		var x = square.rank;
-		var y = square.file;
-		if (!this.ranks[x]) return null;
-		return this.ranks[x].squares[y] || null;
+		if (!this.ranks[square.rank]) return null;
+		return this.ranks[square.rank].squares[square.file] || null;
 	}
 
   toString: () => string;
