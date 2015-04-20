@@ -13,20 +13,18 @@ class Engine implements Chess.Engine {
 		ranks = ranks || 8;
 		files = files || 8;
 		if (isNaN(ranks) || isNaN(files)) throw "InvalidArgumentException: 'ranks' and 'files' must be a number";
-		
+
 		// Only accept positive, whole, organic, gluten-free numbers.
-		this.positionParser = fenParser;
 		this.rankCount = Math.floor(Math.abs(ranks));
 		this.fileCount = Math.floor(Math.abs(files));
-		this.toString = toString;
 	}
 	rankCount: number;
 	fileCount: number;
 	ranks: Chess.Rank[] = [];
 	pieces: Chess.PieceFactory[] = [];
-	positionParser: Chess.PositionParser;
+	positionParser = fenParser;
 	capturedPieces: Chess.Piece[];
-
+	toString = toString;
 	create = createSqaures;
 
 	/**
@@ -45,6 +43,4 @@ class Engine implements Chess.Engine {
 		if (!this.ranks[square.rank]) return null;
 		return this.ranks[square.rank].squares[square.file] || null;
 	}
-
-  toString: () => string;
 }

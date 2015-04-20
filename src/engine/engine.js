@@ -9,6 +9,8 @@ var Engine = (function () {
     function Engine(ranks, files) {
         this.ranks = [];
         this.pieces = [];
+        this.positionParser = fenParser;
+        this.toString = toString;
         this.create = createSqaures;
         /**
          * Returns an array of the available squares a piece can move to
@@ -19,10 +21,8 @@ var Engine = (function () {
         if (isNaN(ranks) || isNaN(files))
             throw "InvalidArgumentException: 'ranks' and 'files' must be a number";
         // Only accept positive, whole, organic, gluten-free numbers.
-        this.positionParser = fenParser;
         this.rankCount = Math.floor(Math.abs(ranks));
         this.fileCount = Math.floor(Math.abs(files));
-        this.toString = toString;
     }
     /**
      * @return boolean Returns true if the piece moved to the toSquare
