@@ -1,10 +1,10 @@
-function toString(board) {
+function toString() {
     var ranks = [];
     var fileLabels = ['-'];
-    for (var i = board.rankCount; i > 0; i--) {
+    for (var i = this.rankCount; i > 0; i--) {
         fileLabels[i] = "_" + i + "_";
         var pieces = [i];
-        var rank = board.ranks[i];
+        var rank = this.ranks[i];
         for (var p in rank.squares) {
             var s = rank.squares[p];
             var val = s.piece == null ? "_" : s.piece.notation;

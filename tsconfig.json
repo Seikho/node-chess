@@ -15,6 +15,7 @@
         "src/analyzer.ts",
         "src/engine/engine.ts",
         "src/engine/helpers/addCoordinates.ts",
+        "src/engine/helpers/createSquares.ts",
         "src/engine/helpers/getIncrements.ts",
         "src/engine/helpers/getMoves.ts",
         "src/engine/helpers/getTransforms.ts",

@@ -1,13 +1,13 @@
 import Chess = require("../../types");
 export = toString;
 
-function toString(board: Chess.Engine): string {
+function toString(): string {
     var ranks: string[] = [];
     var fileLabels = ['-'];
-    for (var i = board.rankCount;i > 0; i--) {
+    for (var i = this.rankCount;i > 0; i--) {
         fileLabels[i] = "_" + i + "_";
         var pieces: any[] = [i];
-        var rank = board.ranks[i];
+        var rank = this.ranks[i];
         for (var p in rank.squares) {
             var s = rank.squares[p];
             var val = s.piece == null?"_":s.piece.notation;
