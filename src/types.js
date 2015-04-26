@@ -11,25 +11,9 @@
     Direction[Direction["Diagonal"] = 9] = "Diagonal";
 })(exports.Direction || (exports.Direction = {}));
 var Direction = exports.Direction;
-var PieceFactory = (function () {
-    function PieceFactory(piece) {
-        this.piece = piece;
-        this.notation = piece.notation;
-    }
-    PieceFactory.prototype.create = function (isWhite) {
-        return {
-            name: this.piece.name,
-            movement: this.piece.movement,
-            canQueen: this.piece.canQueen,
-            canSpawn: this.piece.canSpawn,
-            value: this.piece.value,
-            isWhite: isWhite,
-            notation: this.notation
-        };
-    };
-    return PieceFactory;
-})();
-exports.PieceFactory = PieceFactory;
+/**
+ * Defines a single move that a piece can perform
+ */
 (function (Turn) {
     Turn[Turn["White"] = "w"] = "White";
     Turn[Turn["Black"] = "b"] = "Black";

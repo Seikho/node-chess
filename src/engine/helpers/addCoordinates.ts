@@ -1,4 +1,3 @@
-import Chess = require("../../types");
 export = addCoordinates;
 
 function addCoordinates(left: Chess.Coordinate[], right: Chess.Coordinate[], bounds?: Chess.Coordinate): Chess.Coordinate[] {

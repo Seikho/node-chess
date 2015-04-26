@@ -13,6 +13,7 @@
     ],
     "files": [
         "src/analyzer.ts",
+        "src/engine/baseFactory.ts",
         "src/engine/engine.ts",
         "src/engine/helpers/addCoordinates.ts",
         "src/engine/helpers/createSquares.ts",
@@ -37,7 +38,6 @@
         "src/types.ts",
         "src/typings/bluebird/bluebird.d.ts",
         "src/typings/chai/chai.d.ts",
-        "src/typings/internal.d.ts",
         "src/typings/mocha/mocha.d.ts",
         "src/typings/node/node.d.ts",
         "src/typings/tsd.d.ts",

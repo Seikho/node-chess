@@ -1,4 +1,3 @@
-import Chess = require("../../../types");
 var PEG = require("pegjs");
 export = parser;
 

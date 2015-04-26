@@ -1,5 +1,4 @@
 import Engine = require("./engine/engine");
-import Chess = require("./types");
 export = Analyzer;
 
 class Analyzer {

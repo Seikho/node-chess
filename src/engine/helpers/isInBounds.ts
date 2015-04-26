@@ -1,4 +1,3 @@
-import Chess = require("../../types");
 export = isInBounds;
 
 function isInBounds(coordinate: Chess.Coordinate, bounds: Chess.Coordinate) {

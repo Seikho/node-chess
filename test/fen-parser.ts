@@ -1,4 +1,3 @@
-import Chess = require("../src/types");
 import classicEngine = require("../src/engine/instances/classic");
 import pieces = require("../src/engine/pieces/pieces");
 import chai = require("chai");

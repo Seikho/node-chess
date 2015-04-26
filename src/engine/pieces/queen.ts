@@ -1,9 +1,9 @@
-import Chess = require("../../types");
+import types = require("../../types");
 import helper = require("./helper");
-
+import BaseFactory = require("../baseFactory");
 export = QueenFactory;
 
-class QueenFactory extends Chess.PieceFactory {
+class QueenFactory extends BaseFactory {
 	constructor() {
 		var piece = {
 			name: "Queen",
@@ -16,6 +16,6 @@ class QueenFactory extends Chess.PieceFactory {
 		super(piece);
 	}
 }
-var d = Chess.Direction;
+var d = types.Direction;
 var diag = helper.createMove([{direction: d.Diagonal, count: 0}], true, false, true);
 var lat = helper.createMove([{direction: d.Lateral, count: 0}], true, false, true);

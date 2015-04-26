@@ -1,4 +1,4 @@
-var Chess = require("../../types");
+var types = require("../../types");
 function getTransforms(singleMove, isWhite) {
     // Return the inverse of the transform if from black perspective
     var x = isWhite ? 1 : -1;
@@ -11,25 +11,25 @@ function getTransforms(singleMove, isWhite) {
     var downLeft = { rank: -1 * x, file: -1 * x };
     var downRight = { rank: -1 * x, file: 1 * x };
     switch (singleMove.direction) {
-        case Chess.Direction.Up:
+        case types.Direction.Up:
             return [up];
-        case Chess.Direction.Down:
+        case types.Direction.Down:
             return [down];
-        case Chess.Direction.Left:
+        case types.Direction.Left:
             return [left];
-        case Chess.Direction.Right:
+        case types.Direction.Right:
             return [right];
-        case Chess.Direction.DiagonalUp:
+        case types.Direction.DiagonalUp:
             return [upLeft, upRight];
-        case Chess.Direction.DiagonalDown:
+        case types.Direction.DiagonalDown:
             return [downLeft, downRight];
-        case Chess.Direction.Diagonal:
+        case types.Direction.Diagonal:
             return [upLeft, upRight, downLeft, downRight];
-        case Chess.Direction.Horizontal:
+        case types.Direction.Horizontal:
             return [left, right];
-        case Chess.Direction.Vertical:
+        case types.Direction.Vertical:
             return [up, down];
-        case Chess.Direction.Lateral:
+        case types.Direction.Lateral:
             return [up, down, left, right];
         default:
             throw "InvalidDirectionException: The direction provided was invalid";

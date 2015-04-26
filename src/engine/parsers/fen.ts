@@ -1,4 +1,3 @@
-import Chess = require("../../types");
 import Engine = require("../engine");
 import fenStringParser = require("./stringParsers/fen");
 export = fenParser;

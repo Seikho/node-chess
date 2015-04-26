@@ -1,4 +1,3 @@
-import Chess = require("../../types");
 export = createSquares;
 
 function createSquares() {

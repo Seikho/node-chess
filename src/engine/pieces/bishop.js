@@ -4,8 +4,9 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var Chess = require("../../types");
+var BaseFactory = require("../baseFactory");
 var helper = require("./helper");
+var types = require("../../types");
 var BishopFactory = (function (_super) {
     __extends(BishopFactory, _super);
     function BishopFactory() {
@@ -20,8 +21,8 @@ var BishopFactory = (function (_super) {
         _super.call(this, piece);
     }
     return BishopFactory;
-})(Chess.PieceFactory);
-var d = Chess.Direction;
+})(BaseFactory);
+var d = types.Direction;
 var diag = helper.createMove([{ direction: d.Diagonal, count: 0 }], true, false, true);
 module.exports = BishopFactory;
 //# sourceMappingURL=bishop.js.map

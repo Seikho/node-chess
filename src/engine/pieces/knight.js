@@ -4,8 +4,9 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var Chess = require("../../types");
+var types = require("../../types");
 var helper = require("./helper");
+var BaseFactory = require("../baseFactory");
 var KnightFactory = (function (_super) {
     __extends(KnightFactory, _super);
     function KnightFactory() {
@@ -20,8 +21,8 @@ var KnightFactory = (function (_super) {
         _super.call(this, piece);
     }
     return KnightFactory;
-})(Chess.PieceFactory);
-var d = Chess.Direction;
+})(BaseFactory);
+var d = types.Direction;
 var horzThenVert = helper.createMove([{ direction: d.Horizontal, count: 2 }, { direction: d.Vertical, count: 1 }], true, true, true);
 var vertThenHorz = helper.createMove([{ direction: d.Vertical, count: 2 }, { direction: d.Horizontal, count: 1 }], true, true, true);
 module.exports = KnightFactory;

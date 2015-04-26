@@ -4,8 +4,9 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var Chess = require("../../types");
+var types = require("../../types");
 var helper = require("./helper");
+var BaseFactory = require("../baseFactory");
 var QueenFactory = (function (_super) {
     __extends(QueenFactory, _super);
     function QueenFactory() {
@@ -20,8 +21,8 @@ var QueenFactory = (function (_super) {
         _super.call(this, piece);
     }
     return QueenFactory;
-})(Chess.PieceFactory);
-var d = Chess.Direction;
+})(BaseFactory);
+var d = types.Direction;
 var diag = helper.createMove([{ direction: d.Diagonal, count: 0 }], true, false, true);
 var lat = helper.createMove([{ direction: d.Lateral, count: 0 }], true, false, true);
 module.exports = QueenFactory;

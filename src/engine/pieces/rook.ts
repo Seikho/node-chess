@@ -1,7 +1,8 @@
-import Chess = require("../../types");
+import types = require("../../types");
+import BaseFactory = require("../baseFactory");
 export = RookFactory;
 
-class RookFactory extends Chess.PieceFactory {
+class RookFactory extends BaseFactory {
 	constructor() {
 		var piece = {
 			name: "Rook",
@@ -16,7 +17,7 @@ class RookFactory extends Chess.PieceFactory {
 }
 
 var lat = {
-	moves: [{direction: Chess.Direction.Lateral, count: 0}],
+	moves: [{direction: types.Direction.Lateral, count: 0}],
 	canJump: false,
 	canCapture: true,
 	canMove: true

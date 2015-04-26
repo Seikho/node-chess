@@ -4,7 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var Chess = require("../../types");
+var types = require("../../types");
+var BaseFactory = require("../baseFactory");
 var RookFactory = (function (_super) {
     __extends(RookFactory, _super);
     function RookFactory() {
@@ -19,9 +20,9 @@ var RookFactory = (function (_super) {
         _super.call(this, piece);
     }
     return RookFactory;
-})(Chess.PieceFactory);
+})(BaseFactory);
 var lat = {
-    moves: [{ direction: Chess.Direction.Lateral, count: 0 }],
+    moves: [{ direction: types.Direction.Lateral, count: 0 }],
     canJump: false,
     canCapture: true,
     canMove: true

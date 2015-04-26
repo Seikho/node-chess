@@ -1,4 +1,3 @@
-import Chess = require("../types");
 import toString = require("./helpers/toString");
 import getMoves = require("./helpers/getMoves");
 import fenParser = require("./parsers/fen")

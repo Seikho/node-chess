@@ -1,10 +1,10 @@
 var chai = require("chai");
-var Chess = require("../src/types");
+var types = require("../src/types");
 var classic = require("../src/engine/instances/classic");
 var classicEngine = classic();
 console.log(classicEngine.toString());
 var expect = chai.expect;
-var dir = Chess.Direction;
+var dir = types.Direction;
 describe("available move tests", function () {
     pieceMoveTest("will find all available moves for the b2 pawn from the starting position", coord(2, 2), [coord(2, 3), coord(1, 3), coord(3, 3)]);
     pieceMoveTest("will find all available moves for b1 knight from the starting position", coord(2, 1), [coord(3, 3), coord(1, 3)]);

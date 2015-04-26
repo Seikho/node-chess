@@ -1,4 +1,3 @@
-import Chess = require("../../types");
 import getTransforms = require("./getTransforms");
 import isInBounds = require("./isInBounds");
 export = getIncrements;
