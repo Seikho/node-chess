@@ -18,7 +18,8 @@ var PawnFactory = (function (_super) {
             canQueen: true,
             canSpawn: false,
             value: 1,
-            notation: "p"
+            notation: "p",
+            moveHistory: []
         };
         _super.call(this, piece);
     }

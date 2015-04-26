@@ -50,6 +50,11 @@ declare module Chess {
     	file: number;
     	piece: Piece
     }
+    
+    interface Move {
+        from: Coordinate;
+        to: Coordinate;
+    }
 
     interface Piece {
     	name: string;
@@ -59,7 +64,7 @@ declare module Chess {
     	canQueen: boolean;
     	canSpawn: boolean;
     	isWhite?: boolean;
-    	originalPosition?: Coordinate;
+        moveHistory: Move[];
     }
 
     /**
@@ -112,10 +117,5 @@ declare module Chess {
 
     interface Rule {
     	(): boolean;
-    }
-
-    interface PreviousMove {
-    	from: Coordinate;
-    	to: Coordinate;
     }
 }

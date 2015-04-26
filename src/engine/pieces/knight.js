@@ -16,7 +16,8 @@ var KnightFactory = (function (_super) {
             canQueen: false,
             canSpawn: true,
             value: 3,
-            notation: "n"
+            notation: "n",
+            moveHistory: []
         };
         _super.call(this, piece);
     }

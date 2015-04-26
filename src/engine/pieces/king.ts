@@ -12,7 +12,8 @@ class KingFactory extends BaseFactory {
 			canQueen: false,
 			canSpawn: false,
 			value: 10,
-			notation: "k"
+			notation: "k",
+			moveHistory: []
 		}
 		super(piece);
 	}

@@ -15,7 +15,8 @@ var RookFactory = (function (_super) {
             canQueen: false,
             canSpawn: true,
             value: 5,
-            notation: "r"
+            notation: "r",
+            moveHistory: []
         };
         _super.call(this, piece);
     }

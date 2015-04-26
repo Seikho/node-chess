@@ -11,7 +11,8 @@ class KnightFactory extends BaseFactory {
 			canQueen: false,
 			canSpawn: true,
 			value: 3,
-			notation: "n"
+			notation: "n",
+			moveHistory: []
 		}
 		super(piece);
 	}

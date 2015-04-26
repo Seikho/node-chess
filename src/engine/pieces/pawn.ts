@@ -13,7 +13,8 @@ class PawnFactory extends BaseFactory {
 			canQueen: true,
 			canSpawn: false,
 			value: 1,
-			notation: "p"
+			notation: "p",
+			moveHistory: []
 		}
 		super(piece);
 	}

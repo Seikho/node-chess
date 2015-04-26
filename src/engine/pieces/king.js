@@ -16,7 +16,8 @@ var KingFactory = (function (_super) {
             canQueen: false,
             canSpawn: false,
             value: 10,
-            notation: "k"
+            notation: "k",
+            moveHistory: []
         };
         _super.call(this, piece);
     }

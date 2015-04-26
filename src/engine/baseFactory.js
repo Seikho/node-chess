@@ -1,5 +1,7 @@
+var pieceRules = require("./rules/piece");
 var BaseFactory = (function () {
     function BaseFactory(piece) {
+        this.rules = pieceRules;
         this.piece = piece;
         this.notation = piece.notation;
     }
@@ -11,7 +13,8 @@ var BaseFactory = (function () {
             canSpawn: this.piece.canSpawn,
             value: this.piece.value,
             isWhite: isWhite,
-            notation: this.notation
+            notation: this.notation,
+            moveHistory: []
         };
     };
     return BaseFactory;

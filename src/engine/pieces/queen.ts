@@ -11,7 +11,8 @@ class QueenFactory extends BaseFactory {
 			canQueen: false,
 			canSpawn: true,
 			value: 9,
-			notation: "q"
+			notation: "q",
+			moveHistory: []
 		}
 		super(piece);
 	}

@@ -10,7 +10,8 @@ class RookFactory extends BaseFactory {
 			canQueen: false,
 			canSpawn: true,
 			value: 5,
-			notation: "r"
+			notation: "r",
+			moveHistory: []
 		};
 		super(piece);
 	}

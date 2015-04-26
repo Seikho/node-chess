@@ -16,7 +16,8 @@ var QueenFactory = (function (_super) {
             canQueen: false,
             canSpawn: true,
             value: 9,
-            notation: "q"
+            notation: "q",
+            moveHistory: []
         };
         _super.call(this, piece);
     }

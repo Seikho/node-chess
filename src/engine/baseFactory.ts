@@ -1,3 +1,4 @@
+import pieceRules = require("./rules/piece");
 export = BaseFactory;
 class BaseFactory {
 	constructor(piece: Chess.Piece) {
@@ -13,10 +14,12 @@ class BaseFactory {
 			canSpawn: this.piece.canSpawn,
 			value: this.piece.value,
 			isWhite: isWhite,
-			notation: this.notation
+			notation: this.notation,
+			moveHistory: []
 		}
 	}
 
 	piece: Chess.Piece;
 	notation: string;
+	rules = pieceRules;
 }

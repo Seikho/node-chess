@@ -35,6 +35,7 @@
         "src/engine/pieces/pieces.ts",
         "src/engine/pieces/queen.ts",
         "src/engine/pieces/rook.ts",
+        "src/engine/rules/piece.ts",
         "src/index.ts",
         "src/rules/index.ts",
         "src/turn.ts",
