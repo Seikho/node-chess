@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var types = require("../../types");
+var Direction = require("../../direction");
 var BaseFactory = require("../baseFactory");
 /**
  * Pawn piece registration
@@ -25,19 +25,19 @@ var PawnFactory = (function (_super) {
     return PawnFactory;
 })(BaseFactory);
 var moveForward = {
-    moves: [{ direction: types.Direction.Up, count: 1 }],
+    moves: [{ direction: Direction.Up, count: 1 }],
     canJump: false,
     canCapture: false,
     canMove: true
 };
 var moveCapture = {
-    moves: [{ direction: types.Direction.DiagonalUp, count: 1 }],
+    moves: [{ direction: Direction.DiagonalUp, count: 1 }],
     canJump: false,
     canCapture: true,
     canMove: false
 };
 var forward = {
-    direction: types.Direction.Up,
+    direction: Direction.Up,
     count: 1
 };
 module.exports = PawnFactory;

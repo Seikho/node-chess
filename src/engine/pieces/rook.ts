@@ -1,4 +1,4 @@
-import types = require("../../types");
+import Direction = require("../../direction");
 import BaseFactory = require("../baseFactory");
 export = RookFactory;
 
@@ -17,7 +17,7 @@ class RookFactory extends BaseFactory {
 }
 
 var lat = {
-	moves: [{direction: types.Direction.Lateral, count: 0}],
+	moves: [{direction: Direction.Lateral, count: 0}],
 	canJump: false,
 	canCapture: true,
 	canMove: true

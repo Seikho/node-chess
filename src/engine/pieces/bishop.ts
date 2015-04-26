@@ -1,6 +1,6 @@
 import BaseFactory = require("../baseFactory");
 import helper = require("./helper");
-import types = require("../../types");
+import Direction = require("../../direction");
 
 export = BishopFactory;
 
@@ -17,5 +17,4 @@ class BishopFactory extends BaseFactory {
 		super(piece);
 	}
 }
-var d = types.Direction;
-var diag = helper.createMove([{direction: d.Diagonal, count: 0}], true, false, true);
+var diag = helper.createMove([{direction: Direction.Diagonal, count: 0}], true, false, true);

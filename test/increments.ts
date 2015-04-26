@@ -1,6 +1,6 @@
 import Engine = require("../src/engine/engine");
 import chai = require("chai");
-import types = require("../src/types");
+import Direction = require("../src/direction");
 import pieces = require("../src/engine/pieces/pieces");
 import classic = require("../src/engine/instances/classic");
 
@@ -8,7 +8,6 @@ var classicEngine = classic();
 console.log(classicEngine.toString());
 
 var expect = chai.expect;
-var dir = types.Direction;
 
 describe("available move tests", () => {
 	pieceMoveTest("will find all available moves for the b2 pawn from the starting position", coord(2,2), [coord(2,3), coord(1,3), coord(3,3)]);
@@ -36,6 +35,6 @@ function compare(left: Chess.Coordinate, right: Chess.Coordinate): boolean {
 	return left.rank === right.rank && left.file === right.file;
 }
 
-function move(direction: types.Direction, count: number): Chess.SingleMove {
+function move(direction: Direction, count: number): Chess.SingleMove {
 	return { direction: direction, count: count };
 }

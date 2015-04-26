@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var types = require("../../types");
+var Direction = require("../../direction");
 var helper = require("./helper");
 var BaseFactory = require("../baseFactory");
 var QueenFactory = (function (_super) {
@@ -22,8 +22,7 @@ var QueenFactory = (function (_super) {
     }
     return QueenFactory;
 })(BaseFactory);
-var d = types.Direction;
-var diag = helper.createMove([{ direction: d.Diagonal, count: 0 }], true, false, true);
-var lat = helper.createMove([{ direction: d.Lateral, count: 0 }], true, false, true);
+var diag = helper.createMove([{ direction: Direction.Diagonal, count: 0 }], true, false, true);
+var lat = helper.createMove([{ direction: Direction.Lateral, count: 0 }], true, false, true);
 module.exports = QueenFactory;
 //# sourceMappingURL=queen.js.map

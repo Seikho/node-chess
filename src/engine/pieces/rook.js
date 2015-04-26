@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var types = require("../../types");
+var Direction = require("../../direction");
 var BaseFactory = require("../baseFactory");
 var RookFactory = (function (_super) {
     __extends(RookFactory, _super);
@@ -22,7 +22,7 @@ var RookFactory = (function (_super) {
     return RookFactory;
 })(BaseFactory);
 var lat = {
-    moves: [{ direction: types.Direction.Lateral, count: 0 }],
+    moves: [{ direction: Direction.Lateral, count: 0 }],
     canJump: false,
     canCapture: true,
     canMove: true

@@ -1,4 +1,4 @@
-import types = require("../../types");
+import Direction = require("../../direction");
 import BaseFactory = require("../baseFactory");
 export = PawnFactory;
 /**
@@ -20,20 +20,20 @@ class PawnFactory extends BaseFactory {
 }
 
 var moveForward = {
-	moves: [{ direction: types.Direction.Up, count: 1 }],
+	moves: [{ direction: Direction.Up, count: 1 }],
 	canJump: false,
 	canCapture: false,
 	canMove: true
 }
 
 var moveCapture = {
-	moves: [{ direction: types.Direction.DiagonalUp, count: 1 }],
+	moves: [{ direction: Direction.DiagonalUp, count: 1 }],
 	canJump: false,
 	canCapture: true,
 	canMove: false
 }
 
 var forward: Chess.SingleMove = {
-	direction: types.Direction.Up,
+	direction: Direction.Up,
 	count: 1
 }

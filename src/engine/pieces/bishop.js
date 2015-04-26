@@ -6,7 +6,7 @@ var __extends = this.__extends || function (d, b) {
 };
 var BaseFactory = require("../baseFactory");
 var helper = require("./helper");
-var types = require("../../types");
+var Direction = require("../../direction");
 var BishopFactory = (function (_super) {
     __extends(BishopFactory, _super);
     function BishopFactory() {
@@ -22,7 +22,6 @@ var BishopFactory = (function (_super) {
     }
     return BishopFactory;
 })(BaseFactory);
-var d = types.Direction;
-var diag = helper.createMove([{ direction: d.Diagonal, count: 0 }], true, false, true);
+var diag = helper.createMove([{ direction: Direction.Diagonal, count: 0 }], true, false, true);
 module.exports = BishopFactory;
 //# sourceMappingURL=bishop.js.map

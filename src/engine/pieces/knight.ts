@@ -1,4 +1,4 @@
-import types = require("../../types");
+import Direction = require("../../direction");
 import helper = require("./helper");
 import BaseFactory = require("../baseFactory");
 export = KnightFactory;
@@ -16,6 +16,5 @@ class KnightFactory extends BaseFactory {
 		super(piece);
 	}
 }
-var d = types.Direction;
-var horzThenVert = helper.createMove([{direction: d.Horizontal, count: 2}, {direction: d.Vertical, count: 1}], true, true, true);
-var vertThenHorz = helper.createMove([{direction: d.Vertical, count: 2}, {direction: d.Horizontal, count: 1}], true, true, true);
+var horzThenVert = helper.createMove([{direction: Direction.Horizontal, count: 2}, {direction: Direction.Vertical, count: 1}], true, true, true);
+var vertThenHorz = helper.createMove([{direction: Direction.Vertical, count: 2}, {direction: Direction.Horizontal, count: 1}], true, true, true);

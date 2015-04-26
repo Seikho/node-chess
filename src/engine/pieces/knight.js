@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var types = require("../../types");
+var Direction = require("../../direction");
 var helper = require("./helper");
 var BaseFactory = require("../baseFactory");
 var KnightFactory = (function (_super) {
@@ -22,8 +22,7 @@ var KnightFactory = (function (_super) {
     }
     return KnightFactory;
 })(BaseFactory);
-var d = types.Direction;
-var horzThenVert = helper.createMove([{ direction: d.Horizontal, count: 2 }, { direction: d.Vertical, count: 1 }], true, true, true);
-var vertThenHorz = helper.createMove([{ direction: d.Vertical, count: 2 }, { direction: d.Horizontal, count: 1 }], true, true, true);
+var horzThenVert = helper.createMove([{ direction: Direction.Horizontal, count: 2 }, { direction: Direction.Vertical, count: 1 }], true, true, true);
+var vertThenHorz = helper.createMove([{ direction: Direction.Vertical, count: 2 }, { direction: Direction.Horizontal, count: 1 }], true, true, true);
 module.exports = KnightFactory;
 //# sourceMappingURL=knight.js.map

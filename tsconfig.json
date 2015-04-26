@@ -13,6 +13,8 @@
     ],
     "files": [
         "src/analyzer.ts",
+        "src/castling.ts",
+        "src/direction.ts",
         "src/engine/baseFactory.ts",
         "src/engine/engine.ts",
         "src/engine/helpers/addCoordinates.ts",
@@ -35,7 +37,7 @@
         "src/engine/pieces/rook.ts",
         "src/index.ts",
         "src/rules/index.ts",
-        "src/types.ts",
+        "src/turn.ts",
         "src/typings/bluebird/bluebird.d.ts",
         "src/typings/chai/chai.d.ts",
         "src/typings/mocha/mocha.d.ts",

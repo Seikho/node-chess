@@ -1,4 +1,4 @@
-import types = require("../../types");
+import Direction = require("../../direction");
 export = getTransforms;
 
 function getTransforms(singleMove: Chess.SingleMove, isWhite: boolean): Chess.Coordinate[] {
@@ -14,25 +14,25 @@ function getTransforms(singleMove: Chess.SingleMove, isWhite: boolean): Chess.Co
 	var downRight = {rank: -1*x, file: 1*x };
 
 	switch (singleMove.direction) {
-		case types.Direction.Up:
+		case Direction.Up:
 			return [up];
-		case types.Direction.Down:
+		case Direction.Down:
 			return [down];
-		case types.Direction.Left:
+		case Direction.Left:
 			return [left];
-		case types.Direction.Right:
+		case Direction.Right:
 			return [right];
-		case types.Direction.DiagonalUp:
+		case Direction.DiagonalUp:
 			return [upLeft, upRight];
-		case types.Direction.DiagonalDown:
+		case Direction.DiagonalDown:
 			return [downLeft, downRight];
-		case types.Direction.Diagonal:
+		case Direction.Diagonal:
 			return [upLeft, upRight, downLeft, downRight];
-		case types.Direction.Horizontal:
+		case Direction.Horizontal:
 			return [left, right];
-		case types.Direction.Vertical:
+		case Direction.Vertical:
 			return [up, down];
-		case types.Direction.Lateral:
+		case Direction.Lateral:
 			return [up, down, left, right];
 		default:
 			throw "InvalidDirectionException: The direction provided was invalid";
