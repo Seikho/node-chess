@@ -10,16 +10,21 @@ function getPaths(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, 
     var transforms = getTransforms(move, isWhite);
     var pathings = getPathingForTransforms(coordinate, transforms, move.count, bounds);
 
+    // No further work is necessary for movePatterns with one move.
 	if (!movePattern.moves[1]) return pathings;
 
 	transforms = getTransforms(movePattern.moves[1], isWhite);
     var joinedPathings = [];
 	for (var p in pathings) {
 		var pathing = pathings[p];
-		var nextPathings = getPathingForTransforms(pathing[pathing.length - 1], transforms, movePattern.moves[1].count, bounds);
+
+        // Could use slice(-1), but the linter disagrees.
+        var lastCoordinateInPath = pathing[pathing.length - 1];
+
+        // We need every permutation of originalPathing + newPathing.
+		var nextPathings = getPathingForTransforms(lastCoordinateInPath, transforms, movePattern.moves[1].count, bounds);
         joinedPathings = joinedPathings.concat(combinePathings(pathing, nextPathings));
 	}
-    console.log(joinedPathings);
     return joinedPathings;
 }
 
@@ -28,6 +33,7 @@ function getPathingForTransforms(coordinate: Chess.Coordinate, transforms: Chess
 
     // If the count is 0, return paths for 1 to [bound of the board]
     if (count === 0) {
+        // Get a sensible 'count' value
         var max = Math.max(bounds.file, bounds.rank);
         for (var i = 1; i <= max; i++) {
             paths = paths.concat(getPathingForTransforms(coordinate, transforms, i, bounds));
@@ -44,6 +50,7 @@ function getPathingForTransforms(coordinate: Chess.Coordinate, transforms: Chess
                 rank: coordinate.rank + (transform.rank * i)
             });
         }
+        // Only return the path if every coordinate in the path is within the bounds of the board
         if (newPath.every(coord => isInBounds(coord, bounds))) paths.push(newPath);
     });
     return paths;
