@@ -12,7 +12,8 @@ class BishopFactory extends BaseFactory {
 			canQueen: false,
 			canSpawn: true,
 			value: 3,
-			notation: "b"
+			notation: "b",
+			moveHistory: []
 		}
 		super(piece);
 	}

@@ -16,7 +16,8 @@ var BishopFactory = (function (_super) {
             canQueen: false,
             canSpawn: true,
             value: 3,
-            notation: "b"
+            notation: "b",
+            moveHistory: []
         };
         _super.call(this, piece);
     }
