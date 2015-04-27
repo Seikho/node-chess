@@ -21,6 +21,7 @@
         "src/engine/helpers/createSquares.ts",
         "src/engine/helpers/getIncrements.ts",
         "src/engine/helpers/getMoves.ts",
+        "src/engine/helpers/getPaths.ts",
         "src/engine/helpers/getTransforms.ts",
         "src/engine/helpers/isInBounds.ts",
         "src/engine/helpers/toString.ts",
