@@ -26,11 +26,8 @@ function getMovesForMovePattern(coordinate, movePattern, isWhite, bounds) {
     return addCoordinates([coordinate], coordinates).filter(function (coord) { return isInBounds(coord, bounds); });
 }
 function getPaths(coordinate, movePattern, isWhite, bounds) {
-    console.log(movePattern);
-    console.log("");
+    // TODO: Refactor
     var move = movePattern.moves[0];
-    if (move.count === 0)
-        return;
     var transforms = getTransforms(move, isWhite);
     var pathings = getPathingForTransforms(coordinate, transforms, move.count, bounds);
     if (!movePattern.moves[1])
@@ -42,10 +39,19 @@ function getPaths(coordinate, movePattern, isWhite, bounds) {
         var nextPathings = getPathingForTransforms(pathing[pathing.length - 1], transforms, movePattern.moves[1].count, bounds);
         joinedPathings = joinedPathings.concat(combinePathings(pathing, nextPathings));
     }
-    console.log(joinedPathings);
+    return joinedPathings;
 }
 function getPathingForTransforms(coordinate, transforms, count, bounds) {
     var paths = [];
+    // If the count is 0, return paths for 1 to [bound of the board]
+    if (count === 0) {
+        var max = Math.max(bounds.file, bounds.rank);
+        for (var i = 1; i <= max; i++) {
+            paths = paths.concat(getPathingForTransforms(coordinate, transforms, i, bounds));
+        }
+        return paths;
+    }
+    // TODO: Refactor
     transforms.forEach(function (transform) {
         var newPath = [];
         for (var i = 1; i <= count; i++) {
@@ -54,7 +60,7 @@ function getPathingForTransforms(coordinate, transforms, count, bounds) {
                 rank: coordinate.rank + (transform.rank * i)
             });
         }
-        if (newPath.every(function (coord) { return isInBounds(coord); }))
+        if (newPath.every(function (coord) { return isInBounds(coord, bounds); }))
             paths.push(newPath);
     });
     return paths;

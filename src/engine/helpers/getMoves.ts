@@ -34,11 +34,8 @@ function getMovesForMovePattern(coordinate: Chess.Coordinate, movePattern: Chess
 
 function getPaths(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, isWhite: boolean, bounds: Chess.Coordinate) {
 
-    console.log(movePattern);
-    console.log("");
-
+    // TODO: Refactor
     var move = movePattern.moves[0];
-	if (move.count === 0) return;
 
     var transforms = getTransforms(move, isWhite);
     var pathings = getPathingForTransforms(coordinate, transforms, move.count, bounds);
@@ -51,12 +48,23 @@ function getPaths(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, 
 		var nextPathings = getPathingForTransforms(pathing[pathing.length - 1], transforms, movePattern.moves[1].count, bounds);
         joinedPathings = joinedPathings.concat(combinePathings(pathing, nextPathings));
 	}
-    console.log(joinedPathings);
+
+    return joinedPathings;
 }
 
 function getPathingForTransforms(coordinate: Chess.Coordinate, transforms: Chess.Coordinate[], count: number, bounds: Chess.Coordinate): Array<Chess.Coordinate[]> {
     var paths = [];
 
+    // If the count is 0, return paths for 1 to [bound of the board]
+    if (count === 0) {
+        var max = Math.max(bounds.file, bounds.rank);
+        for (var i = 1; i <= max; i++) {
+            paths = paths.concat(getPathingForTransforms(coordinate, transforms, i, bounds));
+        }
+        return paths;
+    }
+
+    // TODO: Refactor
     transforms.forEach(transform => {
         var newPath: Chess.Coordinate[] = [];
         for (var i = 1; i <= count; i++) {
@@ -65,7 +73,7 @@ function getPathingForTransforms(coordinate: Chess.Coordinate, transforms: Chess
                 rank: coordinate.rank + (transform.rank * i)
             });
         }
-        if (newPath.every(coord => isInBounds(coord))) paths.push(newPath);
+        if (newPath.every(coord => isInBounds(coord, bounds))) paths.push(newPath);
     });
     return paths;
 }
