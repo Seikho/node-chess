@@ -41,20 +41,20 @@ function getPaths(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, 
 	if (move.count === 0) return;
 
     var transforms = getTransforms(move, isWhite);
-    var pathings = getPathingForTransforms(coordinate, transforms, move.count);
+    var pathings = getPathingForTransforms(coordinate, transforms, move.count, bounds);
 	if (!movePattern.moves[1]) return pathings;
 
 	transforms = getTransforms(movePattern.moves[1], isWhite);
     var joinedPathings = [];
 	for (var p in pathings) {
 		var pathing = pathings[p];
-		var nextPathings = getPathingForTransforms(pathing[pathing.length - 1], transforms, movePattern.moves[1].count);
+		var nextPathings = getPathingForTransforms(pathing[pathing.length - 1], transforms, movePattern.moves[1].count, bounds);
         joinedPathings = joinedPathings.concat(combinePathings(pathing, nextPathings));
 	}
     console.log(joinedPathings);
 }
 
-function getPathingForTransforms(coordinate: Chess.Coordinate, transforms: Chess.Coordinate[], count: number): Array<Chess.Coordinate[]> {
+function getPathingForTransforms(coordinate: Chess.Coordinate, transforms: Chess.Coordinate[], count: number, bounds: Chess.Coordinate): Array<Chess.Coordinate[]> {
     var paths = [];
 
     transforms.forEach(transform => {
@@ -65,7 +65,7 @@ function getPathingForTransforms(coordinate: Chess.Coordinate, transforms: Chess
                 rank: coordinate.rank + (transform.rank * i)
             });
         }
-        paths.push(newPath);
+        if (newPath.every(coord => isInBounds(coord))) paths.push(newPath);
     });
     return paths;
 }

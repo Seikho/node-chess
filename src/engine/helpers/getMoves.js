@@ -32,19 +32,19 @@ function getPaths(coordinate, movePattern, isWhite, bounds) {
     if (move.count === 0)
         return;
     var transforms = getTransforms(move, isWhite);
-    var pathings = getPathingForTransforms(coordinate, transforms, move.count);
+    var pathings = getPathingForTransforms(coordinate, transforms, move.count, bounds);
     if (!movePattern.moves[1])
         return pathings;
     transforms = getTransforms(movePattern.moves[1], isWhite);
     var joinedPathings = [];
     for (var p in pathings) {
         var pathing = pathings[p];
-        var nextPathings = getPathingForTransforms(pathing[pathing.length - 1], transforms, movePattern.moves[1].count);
+        var nextPathings = getPathingForTransforms(pathing[pathing.length - 1], transforms, movePattern.moves[1].count, bounds);
         joinedPathings = joinedPathings.concat(combinePathings(pathing, nextPathings));
     }
     console.log(joinedPathings);
 }
-function getPathingForTransforms(coordinate, transforms, count) {
+function getPathingForTransforms(coordinate, transforms, count, bounds) {
     var paths = [];
     transforms.forEach(function (transform) {
         var newPath = [];
@@ -54,7 +54,8 @@ function getPathingForTransforms(coordinate, transforms, count) {
                 rank: coordinate.rank + (transform.rank * i)
             });
         }
-        paths.push(newPath);
+        if (newPath.every(function (coord) { return isInBounds(coord); }))
+            paths.push(newPath);
     });
     return paths;
 }
