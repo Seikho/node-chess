@@ -4,7 +4,8 @@
   "description": "A chess engine for board validations and position calculation",
   "main": "src/board.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
