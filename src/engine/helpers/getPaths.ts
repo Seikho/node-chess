@@ -18,7 +18,6 @@ function getPaths(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, 
 	for (var p in pathings) {
 		var pathing = pathings[p];
 
-        // Could use slice(-1), but the linter disagrees.
         var lastCoordinateInPath = pathing[pathing.length - 1];
 
         // We need every permutation of originalPathing + newPathing.

@@ -1,25 +1,21 @@
-var getIncrements = require("./getIncrements");
-var addCoordinates = require("./addCoordinates");
-var isInBounds = require("./isInBounds");
+var getPaths = require("./getPaths");
 function getMoves(coordinate) {
     var square = this.getSquare(coordinate);
     var piece = square.piece;
-    var coordinates = [];
+    var bounds = { file: this.fileCount, rank: this.rankCount };
     // No piece, no moves.
     if (!piece)
         return [];
-    piece.movement.forEach(function (move) { return coordinates = coordinates.concat(getMovesForMovePattern(coordinate, move, piece.isWhite)); });
-    return coordinates;
-}
-function getMovesForMovePattern(coordinate, movePattern, isWhite, bounds) {
-    isWhite = !!isWhite;
-    bounds = bounds || { rank: 8, file: 8 };
-    var coordinates = [];
-    movePattern.moves.forEach(function (move) {
-        var incrementers = getIncrements(move, coordinate, bounds, isWhite);
-        coordinates = addCoordinates(coordinates, incrementers);
+    var pathings = [];
+    piece.movement.forEach(function (move) { return pathings = pathings.concat(getPaths(coordinate, move, piece.isWhite, bounds)); });
+    var moves = pathings.map(function (pathing) {
+        return pathing[pathing.length - 1];
     });
-    return addCoordinates([coordinate], coordinates).filter(function (coord) { return isInBounds(coord, bounds); });
+    return moves;
+}
+// TODO: Implement path validation -- Can a piece move to the end square using this path?
+function isValidPath(path, piece, getSquare) {
+    return true;
 }
 module.exports = getMoves;
 //# sourceMappingURL=getMoves.js.map
