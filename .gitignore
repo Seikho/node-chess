@@ -6,3 +6,4 @@ NUL
 node_modules/
 tsd.json
 *.map
+.settings/
