@@ -3,7 +3,6 @@ import getTransforms = require("./getTransforms");
 export = getPaths;
 
 function getPaths(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, isWhite: boolean, bounds: Chess.Coordinate) {
-
     // TODO: Refactor
     var move = movePattern.moves[0];
 
