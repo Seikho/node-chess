@@ -11,7 +11,8 @@ function createSquares() {
         for (var file = 0; file < this.fileCount;file++) {
             row.squares[file+1] = {
                 file: file,
-                piece: null
+                piece: null,
+                availablePaths: []
             }
         }
         this.ranks[rank+1] = row;

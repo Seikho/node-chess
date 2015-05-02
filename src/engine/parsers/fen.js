@@ -33,7 +33,6 @@ function createFilesForRank(engine, fenRank, rankNumber) {
             file: i,
             piece: getPiece(engine, notation)
         };
-        square.piece.originalPosition = { rank: rank.rank, file: i };
         rank.squares[i] = square;
     }
     return rank;

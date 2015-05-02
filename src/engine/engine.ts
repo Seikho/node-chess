@@ -42,4 +42,12 @@ class Engine implements Chess.Engine {
 		if (!this.ranks[square.rank]) return null;
 		return this.ranks[square.rank].squares[square.file] || null;
 	}
+	
+	populateSquarePaths(): void {
+		this.ranks.forEach(rank => {
+			rank.squares.forEach(square => {
+				square.availablePaths = this.availableMoves({ file: square.file, rank: rank.rank });
+			});
+		})
+	}	
 }

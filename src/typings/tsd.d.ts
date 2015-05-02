@@ -48,7 +48,8 @@ declare module Chess {
 
     interface Square {
     	file: number;
-    	piece: Piece
+    	piece: Piece;
+        availablePaths?: Coordinate[];
     }
     
     interface Move {
@@ -64,7 +65,7 @@ declare module Chess {
     	canQueen: boolean;
     	canSpawn: boolean;
     	isWhite?: boolean;
-        moveHistory: Move[];
+        moveHistory?: Move[];
     }
 
     /**

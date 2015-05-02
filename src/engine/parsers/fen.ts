@@ -37,7 +37,7 @@ function createFilesForRank(engine: Chess.Engine, fenRank: string, rankNumber: n
 			file: i,
 			piece: getPiece(engine, notation)
 		}
-		square.piece.originalPosition = { rank: rank.rank, file: i };
+
 		rank.squares[i] = square;
 	}
 	return rank;

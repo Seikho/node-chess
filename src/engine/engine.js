@@ -35,6 +35,14 @@ var Engine = (function () {
             return null;
         return this.ranks[square.rank].squares[square.file] || null;
     };
+    Engine.prototype.populateSquarePaths = function () {
+        var _this = this;
+        this.ranks.forEach(function (rank) {
+            rank.squares.forEach(function (square) {
+                square.availablePaths = _this.availableMoves({ file: square.file, rank: rank.rank });
+            });
+        });
+    };
     return Engine;
 })();
 module.exports = Engine;
