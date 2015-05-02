@@ -10,10 +10,16 @@ function getMoves(coordinate) {
     function isValidPath(path, move) {
         // TODO: Rules API would be used here
         var isWhite = !!piece.isWhite;
-        // Optimisations
         var lastCoordinateIndex = path.length - 1;
         var lastCoordinate = path[lastCoordinateIndex];
         var lastSquare = self.getSquare(lastCoordinate);
+        // Optimisations
+        // Ensure all squares leading up to the destination are vacant
+        if (!move.canJump) {
+            var isPathVacant = path.slice(0, -1).every(function (coord) { return !self.getSquare(coord).piece; });
+            if (!isPathVacant)
+                return false;
+        }
         // Destination occupied optimisations        
         if (!!lastSquare.piece) {
             // Can't land on your own piece
@@ -31,7 +37,9 @@ function getMoves(coordinate) {
     }
     var pathings = [];
     piece.movement.forEach(function (move) {
-        pathings = pathings.concat(getPaths(coordinate, move, piece.isWhite, bounds));
+        var newPathings = pathings.concat(getPaths(coordinate, move, piece.isWhite, bounds));
+        var validPathings = newPathings.filter(function (pathing) { return isValidPath(pathing, move); });
+        pathings = pathings.concat(validPathings);
     });
     var moves = pathings.map(function (pathing) {
         return pathing[pathing.length - 1];
