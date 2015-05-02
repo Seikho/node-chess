@@ -1,12 +1,13 @@
 var getPaths = require("./getPaths");
 function getMoves(coordinate) {
+    var stopwatch = Date.now();
     var self = this;
     var square = self.getSquare(coordinate);
-    var piece = square.piece;
-    var bounds = { file: this.fileCount, rank: this.rankCount };
     // No piece, no moves.
+    var piece = square.piece;
     if (!piece)
         return [];
+    var bounds = { file: this.fileCount, rank: this.rankCount };
     function isValidPath(path, move) {
         // TODO: Rules API would be used here
         var isWhite = !!piece.isWhite;

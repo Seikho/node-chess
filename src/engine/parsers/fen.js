@@ -24,8 +24,9 @@ function createFilesForRank(engine, fenRank, rankNumber) {
             if (!!fenRank[i + 1])
                 fenRank[i + notationNumber] = fenRank[i + 1];
             // Insert blank squares from the current square, to currentSquare+notationNumber.
-            for (var j = i; j < i + notationNumber; j++)
-                rank.squares.push({ file: j, piece: null });
+            for (var j = i; j < i + notationNumber; j++) {
+                rank.squares[j] = { file: j, piece: null };
+            }
             i += notationNumber - 1;
             continue;
         }

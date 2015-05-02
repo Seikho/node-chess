@@ -5,6 +5,7 @@ import pieces = require("../src/engine/pieces/pieces");
 import classic = require("../src/engine/instances/classic");
 
 var classicEngine = classic();
+classicEngine.populateAvailableMoves();
 console.log(classicEngine.toString());
 
 var expect = chai.expect;
@@ -22,7 +23,7 @@ describe("available move tests", () => {
 
 function pieceMoveTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {
 	it(message, () => {
-		var moves = classicEngine.availableMoves(start);
+		var moves = classicEngine.getSquare(start).availableMoves;
 		expectedMoves.forEach(m => expect(moves).to.include({rank: m.rank, file: m.file }));
 		expect(expectedMoves.length).to.equal(moves.length);
 	});

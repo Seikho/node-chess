@@ -1,6 +1,7 @@
 var chai = require("chai");
 var classic = require("../src/engine/instances/classic");
 var classicEngine = classic();
+classicEngine.populateAvailableMoves();
 console.log(classicEngine.toString());
 var expect = chai.expect;
 describe("available move tests", function () {
@@ -15,7 +16,7 @@ describe("available move tests", function () {
 });
 function pieceMoveTest(message, start, expectedMoves) {
     it(message, function () {
-        var moves = classicEngine.availableMoves(start);
+        var moves = classicEngine.getSquare(start).availableMoves;
         expectedMoves.forEach(function (m) { return expect(moves).to.include({ rank: m.rank, file: m.file }); });
         expect(expectedMoves.length).to.equal(moves.length);
     });

@@ -43,11 +43,11 @@ class Engine implements Chess.Engine {
 		return this.ranks[square.rank].squares[square.file] || null;
 	}
 
-	populateSquarePaths(): void {
+	populateAvailableMoves(): void {
 		this.ranks.forEach(rank => {
 			rank.squares.forEach(square => {
-				square.availablePaths = this.availableMoves({ file: square.file, rank: rank.rank });
+				square.availableMoves = this.availableMoves({ file: square.file, rank: rank.rank });
 			});
-		})
+		});
 	}
 }

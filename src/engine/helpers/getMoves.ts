@@ -2,13 +2,15 @@ import getPaths = require("./getPaths");
 export = getMoves;
 
 function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
+    var stopwatch = Date.now();
     var self: Chess.Engine = this;
     var square: Chess.Square = self.getSquare(coordinate);
-    var piece = square.piece;
-    var bounds = { file: this.fileCount, rank: this.rankCount };
-
+    
     // No piece, no moves.
+    var piece = square.piece;
     if (!piece) return [];
+    
+    var bounds = { file: this.fileCount, rank: this.rankCount };
 
     function isValidPath(path: Chess.Coordinate[], move: Chess.MovePattern): boolean {
         // TODO: Rules API would be used here
@@ -16,7 +18,7 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
         var lastCoordinateIndex = path.length-1;
         var lastCoordinate = path[lastCoordinateIndex];
         var lastSquare = self.getSquare(lastCoordinate);
-
+        
         // Optimisations
         
         // Ensure all squares leading up to the destination are vacant
@@ -24,8 +26,6 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
             var isPathVacant = path.slice(0,-1).every(coord => !self.getSquare(coord).piece);
             if (!isPathVacant) return false;
         }
-
-        
 
         // Destination occupied optimisations        
         if (!!lastSquare.piece) {

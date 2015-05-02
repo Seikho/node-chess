@@ -5,6 +5,7 @@ function classEngine() {
     for (var p in pieces)
         board.pieces.push(new pieces[p]());
     board.positionParser();
+    board.ranks.length;
     return board;
 }
 module.exports = classEngine;

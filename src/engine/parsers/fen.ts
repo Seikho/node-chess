@@ -18,7 +18,7 @@ function createFilesForRank(engine: Chess.Engine, fenRank: string, rankNumber: n
 		squares: []
 	}
 	for (var i = 1; i <= engine.fileCount; i++) {
-		var notation = fenRank[i-1];
+		var notation = fenRank[i - 1];
 		var notationNumber = parseInt(notation);
 
 		// If the notation is a number, that many squares from this square contain no piece.
@@ -26,11 +26,13 @@ function createFilesForRank(engine: Chess.Engine, fenRank: string, rankNumber: n
 		if (!isNaN(notationNumber)) {
 
 			// Insert the next notation after the blank squares.
-			if (!!fenRank[i+1]) fenRank[i+notationNumber] = fenRank[i+1];
+			if (!!fenRank[i + 1]) fenRank[i + notationNumber] = fenRank[i + 1];
 
 			// Insert blank squares from the current square, to currentSquare+notationNumber.
-			for (var j = i;j < i+notationNumber;j++) rank.squares.push({file: j, piece: null});
-			i += notationNumber-1;
+			for (var j = i; j < i + notationNumber; j++) {
+				rank.squares[j] = { file: j, piece: null };
+			}
+			i += notationNumber - 1;
 			continue;
 		}
 		var square = {
@@ -48,6 +50,6 @@ function getPiece(engine: Chess.Engine, notation: string): Chess.Piece {
 	return pieceFactory.length === 0
 		? null
 
-		// If the upperCase pieceFactory notation === notation, the piece is white.
+	// If the upperCase pieceFactory notation === notation, the piece is white.
 		: pieceFactory[0].create(pieceFactory[0].notation.toUpperCase() === notation);
 }
