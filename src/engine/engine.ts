@@ -31,13 +31,6 @@ class Engine implements Chess.Engine {
 	 */
 	availableMoves = getMoves;
 
-	/**
-	 * @return boolean Returns true if the piece moved to the toSquare
-	 */
-	movePieceTo(fromSquare: Chess.Coordinate, toSquare: Chess.Coordinate): boolean {
-		return false;
-	}
-
 	getSquare(square: Chess.Coordinate): Chess.Square {
 		if (!this.ranks[square.rank]) return null;
 		return this.ranks[square.rank].squares[square.file] || null;
@@ -49,5 +42,30 @@ class Engine implements Chess.Engine {
 				square.availableMoves = this.availableMoves({ file: square.file, rank: rank.rank });
 			});
 		});
+	}
+	
+	movePiece(move: Chess.Move) {
+		var origin = this.getSquare(move.from);
+		if (!origin || !origin.piece) return false;
+		
+		// The 'destination' square must be in the square's list of available moves
+		if (!origin.availableMoves.some(move => move.file === move.file && move.rank === move.rank)) return false;
+		var destination = this.getSquare(move.to); 
+		if (destination.piece) this.capturedPieces.push(destination.piece)
+
+		this.ranks[move.to.rank].squares[move.to.file] = {
+			availableMoves: [],
+			piece: origin.piece,
+			file: move.to.file
+		} 
+		
+		this.ranks[move.from.rank].squares[move.from.file] = {
+			availableMoves: [],
+			piece: null,
+			file: move.from.file
+		} 
+
+		this.populateAvailableMoves();
+		return true;
 	}
 }

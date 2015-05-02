@@ -24,12 +24,6 @@ var Engine = (function () {
         this.rankCount = Math.floor(Math.abs(ranks));
         this.fileCount = Math.floor(Math.abs(files));
     }
-    /**
-     * @return boolean Returns true if the piece moved to the toSquare
-     */
-    Engine.prototype.movePieceTo = function (fromSquare, toSquare) {
-        return false;
-    };
     Engine.prototype.getSquare = function (square) {
         if (!this.ranks[square.rank])
             return null;
@@ -42,6 +36,29 @@ var Engine = (function () {
                 square.availableMoves = _this.availableMoves({ file: square.file, rank: rank.rank });
             });
         });
+    };
+    Engine.prototype.movePiece = function (move) {
+        var origin = this.getSquare(move.from);
+        if (!origin || !origin.piece)
+            return false;
+        // The 'destination' square must be in the square's list of available moves
+        if (!origin.availableMoves.some(function (move) { return move.file === move.file && move.rank === move.rank; }))
+            return false;
+        var destination = this.getSquare(move.to);
+        if (destination.piece)
+            this.capturedPieces.push(destination.piece);
+        this.ranks[move.to.rank].squares[move.to.file] = {
+            availableMoves: [],
+            piece: origin.piece,
+            file: move.to.file
+        };
+        this.ranks[move.from.rank].squares[move.from.file] = {
+            availableMoves: [],
+            piece: null,
+            file: move.from.file
+        };
+        this.populateAvailableMoves();
+        return true;
     };
     return Engine;
 })();

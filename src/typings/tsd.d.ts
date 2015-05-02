@@ -20,8 +20,8 @@ declare module Chess {
     	create(): void;
     	availableMoves(coordinate: Coordinate): Coordinate[];
         populateAvailableMoves();
-    	movePieceTo(from: Coordinate, to: Coordinate): boolean;
     	getSquare(square: Coordinate): Square;
+        movePiece(move: Move): boolean;
     	toString(): string;
     }
 
