@@ -22,7 +22,7 @@ class Engine implements Chess.Engine {
 	ranks: Chess.Rank[] = [];
 	pieces: Chess.PieceFactory[] = [];
 	positionParser = fenParser;
-	capturedPieces: Chess.Piece[];
+	capturedPieces: Chess.Piece[] = [];
 	toString = toString;
 	create = createSqaures;
 

@@ -10,6 +10,7 @@ var Engine = (function () {
         this.ranks = [];
         this.pieces = [];
         this.positionParser = fenParser;
+        this.capturedPieces = [];
         this.toString = toString;
         this.create = createSqaures;
         /**

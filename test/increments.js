@@ -17,6 +17,11 @@ describe("movement tests", function () {
     pieceMoveTest("will move a2 pawn to a3", coord(1, 2), coord(1, 3), true);
     pieceAvailableMovesTest("will find all available moves for the a3 pawn", coord(1, 3), [coord(1, 4)]);
     pieceMoveTest("will not move a3 pawn to a5", coord(1, 3), coord(1, 5), false);
+    pieceMoveTest("will move a3 pawn to a4", coord(1, 3), coord(1, 4), true);
+    pieceMoveTest("will move a4 pawn to a5", coord(1, 4), coord(1, 5), true);
+    pieceMoveTest("will move a5 pawn to a6", coord(1, 5), coord(1, 6), true);
+    pieceMoveTest("will not move a6 pawn to a7", coord(1, 3), coord(1, 5), false);
+    pieceMoveTest("will capture from a6 to b7", coord(1, 6), coord(2, 7), true);
 });
 function pieceAvailableMovesTest(message, start, expectedMoves) {
     it(message, function () {
