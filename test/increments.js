@@ -14,8 +14,9 @@ describe("available move tests", function () {
     pieceAvailableMovesTest("will find all available moves for a7 pawn form the start position", coord(1, 7), [coord(1, 6)]);
 });
 describe("movement tests", function () {
-    pieceMoveTest("will move a2 pawn to a3", { from: { file: 1, rank: 2 }, to: { file: 1, rank: 3 } }, true);
+    pieceMoveTest("will move a2 pawn to a3", coord(1, 2), coord(1, 3), true);
     pieceAvailableMovesTest("will find all available moves for the a3 pawn", coord(1, 3), [coord(1, 4)]);
+    pieceMoveTest("will not move a3 pawn to a5", coord(1, 3), coord(1, 5), false);
 });
 function pieceAvailableMovesTest(message, start, expectedMoves) {
     it(message, function () {
@@ -33,7 +34,8 @@ function compare(left, right) {
 function move(direction, count) {
     return { direction: direction, count: count };
 }
-function pieceMoveTest(message, move, expected) {
+function pieceMoveTest(message, from, to, expected) {
+    var move = { from: from, to: to };
     it(message, function () {
         var moveResult = classicEngine.movePiece(move);
         expect(expected).to.equal(moveResult);

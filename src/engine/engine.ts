@@ -49,7 +49,7 @@ class Engine implements Chess.Engine {
 		if (!origin || !origin.piece) return false;
 		
 		// The 'destination' square must be in the square's list of available moves
-		if (!origin.availableMoves.some(move => move.file === move.file && move.rank === move.rank)) return false;
+		if (!origin.availableMoves.some(availableMove => availableMove.file === move.to.file && availableMove.rank === move.to.rank)) return false;
 		var destination = this.getSquare(move.to); 
 		if (destination.piece) this.capturedPieces.push(destination.piece)
 
