@@ -2,7 +2,6 @@ var chai = require("chai");
 var classic = require("../src/engine/instances/classic");
 var classicEngine = classic();
 classicEngine.populateAvailableMoves();
-console.log(classicEngine.toString());
 var expect = chai.expect;
 describe("available move tests", function () {
     pieceAvailableMovesTest("will find all available moves for the b2 pawn from the starting position", coord(2, 2), [coord(2, 3)]);
@@ -16,6 +15,7 @@ describe("available move tests", function () {
 });
 describe("movement tests", function () {
     pieceMoveTest("will move a2 pawn to a3", { from: { file: 1, rank: 2 }, to: { file: 1, rank: 3 } }, true);
+    pieceAvailableMovesTest("will find all available moves for the a3 pawn", coord(1, 3), [coord(1, 4)]);
 });
 function pieceAvailableMovesTest(message, start, expectedMoves) {
     it(message, function () {

@@ -6,7 +6,6 @@ import classic = require("../src/engine/instances/classic");
 
 var classicEngine = classic();
 classicEngine.populateAvailableMoves();
-console.log(classicEngine.toString());
 
 var expect = chai.expect;
 
@@ -23,6 +22,7 @@ describe("available move tests", () => {
 
 describe("movement tests", () => {
 	pieceMoveTest("will move a2 pawn to a3", { from: { file: 1, rank: 2 }, to: { file: 1, rank: 3 } }, true);
+	pieceAvailableMovesTest("will find all available moves for the a3 pawn", coord(1,3), [coord(1,4)]);
 });
 
 function pieceAvailableMovesTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {
@@ -50,5 +50,4 @@ function pieceMoveTest(message: string, move: Chess.Move, expected: boolean) {
 		var moveResult = classicEngine.movePiece(move);
 		expect(expected).to.equal(moveResult);
 	});
-	
 }
