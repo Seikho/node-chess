@@ -4,7 +4,7 @@ export = classEngine;
 
 function classEngine() {
 	var board = new Engine();
-	for (var p in pieces) board.pieces.push(new pieces[p]());
+	for (var p in pieces) board.pieces.push(pieces[p]);
 
 	board.positionParser();
 	board.ranks.length;

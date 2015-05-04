@@ -6,24 +6,21 @@ var __extends = this.__extends || function (d, b) {
 };
 var Direction = require("../../direction");
 var helper = require("./helper");
-var BaseFactory = require("../baseFactory");
-var KnightFactory = (function (_super) {
-    __extends(KnightFactory, _super);
-    function KnightFactory() {
-        var piece = {
-            name: "Knight",
-            movement: [horzThenVert, vertThenHorz],
-            canQueen: false,
-            canSpawn: true,
-            value: 3,
-            notation: "n",
-            moveHistory: []
-        };
-        _super.call(this, piece);
+var BasePiece = require("../basePiece");
+var KnightPiece = (function (_super) {
+    __extends(KnightPiece, _super);
+    function KnightPiece() {
+        _super.apply(this, arguments);
+        this.name = "Knight";
+        this.movement = [horzThenVert, vertThenHorz];
+        this.canQueen = false;
+        this.canSpawn = true;
+        this.value = 3;
+        this.notation = "p";
     }
-    return KnightFactory;
-})(BaseFactory);
+    return KnightPiece;
+})(BasePiece);
 var horzThenVert = helper.createMove([{ direction: Direction.Horizontal, count: 2 }, { direction: Direction.Vertical, count: 1 }], true, true, true);
 var vertThenHorz = helper.createMove([{ direction: Direction.Vertical, count: 2 }, { direction: Direction.Horizontal, count: 1 }], true, true, true);
-module.exports = KnightFactory;
+module.exports = KnightPiece;
 //# sourceMappingURL=knight.js.map

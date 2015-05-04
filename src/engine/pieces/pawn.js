@@ -5,26 +5,36 @@ var __extends = this.__extends || function (d, b) {
     d.prototype = new __();
 };
 var Direction = require("../../direction");
-var BaseFactory = require("../baseFactory");
+var BasePiece = require("../basePiece");
 /**
  * Pawn piece registration
  */
-var PawnFactory = (function (_super) {
-    __extends(PawnFactory, _super);
-    function PawnFactory() {
-        var piece = {
-            name: "Pawn",
-            movement: [moveForward, moveCapture],
-            canQueen: true,
-            canSpawn: false,
-            value: 1,
-            notation: "p",
-            moveHistory: []
-        };
-        _super.call(this, piece);
+var PawnPiece = (function (_super) {
+    __extends(PawnPiece, _super);
+    function PawnPiece() {
+        _super.apply(this, arguments);
+        this.name = "Pawn";
+        this.movement = [moveForward, moveCapture];
+        this.canQueen = true;
+        this.canSpawn = false;
+        this.value = 1;
+        this.notation = "p";
+        this.conditionalMoves = [firstMoveConditional];
     }
-    return PawnFactory;
-})(BaseFactory);
+    return PawnPiece;
+})(BasePiece);
+function firstMoveConditional() {
+    if (this.moveHistory.length === 0)
+        return firstMovePattern;
+    else
+        null;
+}
+var firstMovePattern = {
+    moves: [{ direction: Direction.Up, count: 2 }],
+    canJump: false,
+    canCapture: false,
+    canMove: true
+};
 var moveForward = {
     moves: [{ direction: Direction.Up, count: 1 }],
     canJump: false,
@@ -41,5 +51,5 @@ var forward = {
     direction: Direction.Up,
     count: 1
 };
-module.exports = PawnFactory;
+module.exports = PawnPiece;
 //# sourceMappingURL=pawn.js.map

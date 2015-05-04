@@ -46,7 +46,10 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
     }
 
     var pathings: Array<Chess.Coordinate[]> = [];
-    piece.movement.forEach(move => {
+    
+    var conditionalMoves = getConditionalMoves(piece);
+    var movePatterns = piece.movement.concat(conditionalMoves);
+    movePatterns.forEach(move => {
         var newPathings = pathings.concat(getPaths(coordinate, move, piece.isWhite, bounds));
         var validPathings = newPathings.filter(pathing => isValidPath(pathing, move)); 
         pathings = pathings.concat(validPathings);
@@ -56,4 +59,17 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
         return pathing[pathing.length - 1];
     });
     return moves;
+}
+
+function getConditionalMoves(piece: Chess.Piece) {
+	if (!piece.conditionalMoves) return [];
+	if (piece.conditionalMoves.length === 0) return [];
+    
+	var movePatterns = [];
+	piece.conditionalMoves.forEach(condition => {
+		var conditionalMoves = condition();
+		if (!conditionalMoves) return;
+		movePatterns = movePatterns.concat(conditionalMoves);
+	});
+	return movePatterns;
 }

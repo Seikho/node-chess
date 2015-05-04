@@ -1,23 +1,30 @@
 import Direction = require("../../direction");
-import BaseFactory = require("../baseFactory");
-export = PawnFactory;
+import BasePiece = require("../basePiece");
+export = PawnPiece;
+
 /**
  * Pawn piece registration
  */
+class PawnPiece extends BasePiece {
+	name = "Pawn";
+	movement = [moveForward, moveCapture];
+	canQueen = true;
+	canSpawn = false;
+	value = 1;
+	notation = "p";
+	conditionalMoves = [firstMoveConditional];
+}
 
-class PawnFactory extends BaseFactory {
-	constructor() {
-		var piece = {
-			name: "Pawn",
-			movement: [moveForward, moveCapture],
-			canQueen: true,
-			canSpawn: false,
-			value: 1,
-			notation: "p",
-			moveHistory: []
-		}
-		super(piece);
-	}
+function firstMoveConditional() {
+	if (this.moveHistory.length === 0) return firstMovePattern;
+	else null;
+}
+
+var firstMovePattern = {
+	moves: [{ direction: Direction.Up, count: 2 }],
+	canJump: false,
+	canCapture: false,
+	canMove: true
 }
 
 var moveForward = {

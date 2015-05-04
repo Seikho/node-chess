@@ -2,6 +2,7 @@ var chai = require("chai");
 var classic = require("../src/engine/instances/classic");
 var classicEngine = classic();
 classicEngine.populateAvailableMoves();
+classicEngine.getSquare(coord(1, 2)).piece.getConditionalMoves();
 var expect = chai.expect;
 describe("available move tests", function () {
     pieceAvailableMovesTest("will find all available moves for the b2 pawn from the starting position", coord(2, 2), [coord(2, 3)]);

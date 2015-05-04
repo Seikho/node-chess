@@ -6,24 +6,21 @@ var __extends = this.__extends || function (d, b) {
 };
 var Direction = require("../../direction");
 var helper = require("./helper");
-var BaseFactory = require("../baseFactory");
-var QueenFactory = (function (_super) {
-    __extends(QueenFactory, _super);
-    function QueenFactory() {
-        var piece = {
-            name: "Queen",
-            movement: [diag, lat],
-            canQueen: false,
-            canSpawn: true,
-            value: 9,
-            notation: "q",
-            moveHistory: []
-        };
-        _super.call(this, piece);
+var BasePiece = require("../basePiece");
+var QueenPiece = (function (_super) {
+    __extends(QueenPiece, _super);
+    function QueenPiece() {
+        _super.apply(this, arguments);
+        this.name = "Queen";
+        this.movement = [diag, lat];
+        this.canQueen = false;
+        this.canSpawn = true;
+        this.value = 9;
+        this.notation = "q";
     }
-    return QueenFactory;
-})(BaseFactory);
+    return QueenPiece;
+})(BasePiece);
 var diag = helper.createMove([{ direction: Direction.Diagonal, count: 0 }], true, false, true);
 var lat = helper.createMove([{ direction: Direction.Lateral, count: 0 }], true, false, true);
-module.exports = QueenFactory;
+module.exports = QueenPiece;
 //# sourceMappingURL=queen.js.map

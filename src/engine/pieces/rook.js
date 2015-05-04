@@ -5,28 +5,25 @@ var __extends = this.__extends || function (d, b) {
     d.prototype = new __();
 };
 var Direction = require("../../direction");
-var BaseFactory = require("../baseFactory");
-var RookFactory = (function (_super) {
-    __extends(RookFactory, _super);
-    function RookFactory() {
-        var piece = {
-            name: "Rook",
-            movement: [lat],
-            canQueen: false,
-            canSpawn: true,
-            value: 5,
-            notation: "r",
-            moveHistory: []
-        };
-        _super.call(this, piece);
+var BasePiece = require("../basePiece");
+var RookPiece = (function (_super) {
+    __extends(RookPiece, _super);
+    function RookPiece() {
+        _super.apply(this, arguments);
+        this.name = "Rook";
+        this.movement = [lat];
+        this.canQueen = false;
+        this.canSpawn = true;
+        this.value = 5;
+        this.notation = "r";
     }
-    return RookFactory;
-})(BaseFactory);
+    return RookPiece;
+})(BasePiece);
 var lat = {
     moves: [{ direction: Direction.Lateral, count: 0 }],
     canJump: false,
     canCapture: true,
     canMove: true
 };
-module.exports = RookFactory;
+module.exports = RookPiece;
 //# sourceMappingURL=rook.js.map

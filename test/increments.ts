@@ -6,7 +6,7 @@ import classic = require("../src/engine/instances/classic");
 
 var classicEngine = classic();
 classicEngine.populateAvailableMoves();
-
+classicEngine.getSquare(coord(1,2)).piece.getConditionalMoves();
 var expect = chai.expect;
 
 describe("available move tests", () => {

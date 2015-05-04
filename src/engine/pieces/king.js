@@ -6,24 +6,21 @@ var __extends = this.__extends || function (d, b) {
 };
 var Direction = require("../../direction");
 var helper = require("./helper");
-var BaseFactory = require("../baseFactory");
-var KingFactory = (function (_super) {
-    __extends(KingFactory, _super);
-    function KingFactory() {
-        var piece = {
-            name: "King",
-            movement: [diag, lat],
-            canQueen: false,
-            canSpawn: false,
-            value: 10,
-            notation: "k",
-            moveHistory: []
-        };
-        _super.call(this, piece);
+var BasePiece = require("../basePiece");
+var KingPiece = (function (_super) {
+    __extends(KingPiece, _super);
+    function KingPiece() {
+        _super.apply(this, arguments);
+        this.name = "King";
+        this.movement = [diag, lat];
+        this.canQueen = false;
+        this.canSpawn = false;
+        this.value = 10;
+        this.notation = "k";
     }
-    return KingFactory;
-})(BaseFactory);
+    return KingPiece;
+})(BasePiece);
 var diag = helper.createMove([{ direction: Direction.Diagonal, count: 1 }], true, false, true);
 var lat = helper.createMove([{ direction: Direction.Lateral, count: 1 }], true, false, true);
-module.exports = KingFactory;
+module.exports = KingPiece;
 //# sourceMappingURL=king.js.map

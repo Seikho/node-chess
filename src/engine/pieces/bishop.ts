@@ -1,21 +1,16 @@
-import BaseFactory = require("../baseFactory");
+import BasePiece = require("../basePiece");
 import helper = require("./helper");
 import Direction = require("../../direction");
 
-export = BishopFactory;
+export = BishopPiece;
 
-class BishopFactory extends BaseFactory {
-	constructor() {
-		var piece = {
-			name: "Bishop",
-			movement: [diag],
-			canQueen: false,
-			canSpawn: true,
-			value: 3,
-			notation: "b",
-			moveHistory: []
-		}
-		super(piece);
-	}
+class BishopPiece extends BasePiece {
+	name = "Bishop";
+	movement = [diag];
+	canQueen = false;
+	canSpawn = true;
+	value = 3;
+	notation = "b";
 }
-var diag = helper.createMove([{direction: Direction.Diagonal, count: 0}], true, false, true);
+
+var diag = helper.createMove([{ direction: Direction.Diagonal, count: 0 }], true, false, true);

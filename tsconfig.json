@@ -15,7 +15,7 @@
         "src/analyzer.ts",
         "src/castling.ts",
         "src/direction.ts",
-        "src/engine/baseFactory.ts",
+        "src/engine/basePiece.ts",
         "src/engine/engine.ts",
         "src/engine/helpers/addCoordinates.ts",
         "src/engine/helpers/createSquares.ts",

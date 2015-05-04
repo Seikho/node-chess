@@ -31,6 +31,10 @@ declare module Chess {
     interface PieceMovement {
     	movePatterns: MovePattern[];
     }
+    
+    interface ConditionalMovement {
+        (): MovePattern|MovePattern[];
+    }
 
     interface Path {
     	from: Coordinate;
@@ -67,7 +71,8 @@ declare module Chess {
     	canSpawn: boolean;
     	isWhite?: boolean;
         moveHistory?: Move[];
-        conditionalMoves?: Array<() => MovePattern[]>; 
+        conditionalMoves?: Array<() => MovePattern|MovePattern[]>;
+        getConditionalMoves: () => MovePattern[];
     }
 
     /**

@@ -37,7 +37,9 @@ function getMoves(coordinate) {
         return true;
     }
     var pathings = [];
-    piece.movement.forEach(function (move) {
+    var conditionalMoves = getConditionalMoves(piece);
+    var movePatterns = piece.movement.concat(conditionalMoves);
+    movePatterns.forEach(function (move) {
         var newPathings = pathings.concat(getPaths(coordinate, move, piece.isWhite, bounds));
         var validPathings = newPathings.filter(function (pathing) { return isValidPath(pathing, move); });
         pathings = pathings.concat(validPathings);
@@ -46,6 +48,20 @@ function getMoves(coordinate) {
         return pathing[pathing.length - 1];
     });
     return moves;
+}
+function getConditionalMoves(piece) {
+    if (!piece.conditionalMoves)
+        return [];
+    if (piece.conditionalMoves.length === 0)
+        return [];
+    var movePatterns = [];
+    piece.conditionalMoves.forEach(function (condition) {
+        var conditionalMoves = condition();
+        if (!conditionalMoves)
+            return;
+        movePatterns = movePatterns.concat(conditionalMoves);
+    });
+    return movePatterns;
 }
 module.exports = getMoves;
 //# sourceMappingURL=getMoves.js.map

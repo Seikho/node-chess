@@ -4,25 +4,22 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var BaseFactory = require("../baseFactory");
+var BasePiece = require("../basePiece");
 var helper = require("./helper");
 var Direction = require("../../direction");
-var BishopFactory = (function (_super) {
-    __extends(BishopFactory, _super);
-    function BishopFactory() {
-        var piece = {
-            name: "Bishop",
-            movement: [diag],
-            canQueen: false,
-            canSpawn: true,
-            value: 3,
-            notation: "b",
-            moveHistory: []
-        };
-        _super.call(this, piece);
+var BishopPiece = (function (_super) {
+    __extends(BishopPiece, _super);
+    function BishopPiece() {
+        _super.apply(this, arguments);
+        this.name = "Bishop";
+        this.movement = [diag];
+        this.canQueen = false;
+        this.canSpawn = true;
+        this.value = 3;
+        this.notation = "b";
     }
-    return BishopFactory;
-})(BaseFactory);
+    return BishopPiece;
+})(BasePiece);
 var diag = helper.createMove([{ direction: Direction.Diagonal, count: 0 }], true, false, true);
-module.exports = BishopFactory;
+module.exports = BishopPiece;
 //# sourceMappingURL=bishop.js.map
