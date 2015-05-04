@@ -67,6 +67,7 @@ declare module Chess {
     	canSpawn: boolean;
     	isWhite?: boolean;
         moveHistory?: Move[];
+        conditionalMoves?: Array<() => MovePattern[]>; 
     }
 
     /**
