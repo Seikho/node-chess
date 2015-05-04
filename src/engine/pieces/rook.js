@@ -19,6 +19,7 @@ var RookPiece = (function (_super) {
     }
     return RookPiece;
 })(BasePiece);
+RookPiece.prototype.notation = "r";
 var lat = {
     moves: [{ direction: Direction.Lateral, count: 0 }],
     canJump: false,

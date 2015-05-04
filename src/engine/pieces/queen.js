@@ -20,6 +20,7 @@ var QueenPiece = (function (_super) {
     }
     return QueenPiece;
 })(BasePiece);
+QueenPiece.prototype.notation = "q";
 var diag = helper.createMove([{ direction: Direction.Diagonal, count: 0 }], true, false, true);
 var lat = helper.createMove([{ direction: Direction.Lateral, count: 0 }], true, false, true);
 module.exports = QueenPiece;

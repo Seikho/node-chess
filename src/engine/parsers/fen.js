@@ -39,10 +39,12 @@ function createFilesForRank(engine, fenRank, rankNumber) {
     return rank;
 }
 function getPiece(engine, notation) {
-    var pieceFactory = engine.pieces.filter(function (p) { return p.notation.toUpperCase() === notation || p.notation.toLowerCase() === notation; });
-    return pieceFactory.length === 0
-        ? null
-        : pieceFactory[0].create(pieceFactory[0].notation.toUpperCase() === notation);
+    var pieceCtors = engine.pieces.filter(function (p) { return p.prototype.notation.toUpperCase() === notation || p.prototype.notation.toLowerCase() === notation; });
+    if (pieceCtors.length === 0)
+        return null;
+    var ctor = pieceCtors[0];
+    var ctorNotation = ctor.prototype.notation;
+    return new ctor(ctorNotation.toUpperCase() === notation);
 }
 module.exports = fenParser;
 //# sourceMappingURL=fen.js.map

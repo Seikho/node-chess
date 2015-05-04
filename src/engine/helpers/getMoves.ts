@@ -9,13 +9,13 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
     // No piece, no moves.
     var piece = square.piece;
     if (!piece) return [];
-    
+
     var bounds = { file: this.fileCount, rank: this.rankCount };
 
     function isValidPath(path: Chess.Coordinate[], move: Chess.MovePattern): boolean {
         // TODO: Rules API would be used here
         var isWhite = !!piece.isWhite;
-        var lastCoordinateIndex = path.length-1;
+        var lastCoordinateIndex = path.length - 1;
         var lastCoordinate = path[lastCoordinateIndex];
         var lastSquare = self.getSquare(lastCoordinate);
         
@@ -23,7 +23,7 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
         
         // Ensure all squares leading up to the destination are vacant
         if (!move.canJump) {
-            var isPathVacant = path.slice(0,-1).every(coord => !self.getSquare(coord).piece);
+            var isPathVacant = path.slice(0, -1).every(coord => !self.getSquare(coord).piece);
             if (!isPathVacant) return false;
         }
 
@@ -41,17 +41,23 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
         else {
             if (!move.canMove) return false;
         }
-        
+
         return true;
     }
 
-    var pathings: Array<Chess.Coordinate[]> = [];
+    var isA1Pawn = coordinate.file === 1 && coordinate.rank === 2;
     
-    var conditionalMoves = getConditionalMoves(piece);
-    var movePatterns = piece.movement.concat(conditionalMoves);
+    var pathings: Array<Chess.Coordinate[]> = [];
+
+    var conditionalMoves = piece.getConditionalMoves();
+    var movePatterns = piece.movement.slice(0);
+    if (conditionalMoves.length > 0) {
+        movePatterns = piece.movement.concat(conditionalMoves);
+    }
+    
     movePatterns.forEach(move => {
-        var newPathings = pathings.concat(getPaths(coordinate, move, piece.isWhite, bounds));
-        var validPathings = newPathings.filter(pathing => isValidPath(pathing, move)); 
+        var newPathings = getPaths(coordinate, move, piece.isWhite, bounds);
+        var validPathings = newPathings.filter(pathing => isValidPath(pathing, move));
         pathings = pathings.concat(validPathings);
     });
     
@@ -59,17 +65,4 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
         return pathing[pathing.length - 1];
     });
     return moves;
-}
-
-function getConditionalMoves(piece: Chess.Piece) {
-	if (!piece.conditionalMoves) return [];
-	if (piece.conditionalMoves.length === 0) return [];
-    
-	var movePatterns = [];
-	piece.conditionalMoves.forEach(condition => {
-		var conditionalMoves = condition();
-		if (!conditionalMoves) return;
-		movePatterns = movePatterns.concat(conditionalMoves);
-	});
-	return movePatterns;
 }

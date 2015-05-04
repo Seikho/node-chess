@@ -10,19 +10,19 @@ function getPaths(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, 
     var pathings = getPathingForTransforms(coordinate, transforms, move.count, bounds);
 
     // No further work is necessary for movePatterns with one move.
-	if (!movePattern.moves[1]) return pathings;
+    if (!movePattern.moves[1]) return pathings;
 
-	transforms = getTransforms(movePattern.moves[1], isWhite);
+    transforms = getTransforms(movePattern.moves[1], isWhite);
     var joinedPathings = [];
-	for (var p in pathings) {
-		var pathing = pathings[p];
+    for (var p in pathings) {
+        var pathing = pathings[p];
 
         var lastCoordinateInPath = pathing[pathing.length - 1];
 
         // We need every permutation of originalPathing + newPathing.
-		var nextPathings = getPathingForTransforms(lastCoordinateInPath, transforms, movePattern.moves[1].count, bounds);
+        var nextPathings = getPathingForTransforms(lastCoordinateInPath, transforms, movePattern.moves[1].count, bounds);
         joinedPathings = joinedPathings.concat(combinePathings(pathing, nextPathings));
-	}
+    }
     return joinedPathings;
 }
 
@@ -40,6 +40,8 @@ function getPathingForTransforms(coordinate: Chess.Coordinate, transforms: Chess
     }
 
     // TODO: Refactor
+    
+
     transforms.forEach(transform => {
         var newPath: Chess.Coordinate[] = [];
         for (var i = 1; i <= count; i++) {

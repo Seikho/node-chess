@@ -12,17 +12,19 @@ var BasePiece = require("../basePiece");
 var PawnPiece = (function (_super) {
     __extends(PawnPiece, _super);
     function PawnPiece() {
+        var _this = this;
         _super.apply(this, arguments);
         this.name = "Pawn";
         this.movement = [moveForward, moveCapture];
         this.canQueen = true;
         this.canSpawn = false;
         this.value = 1;
+        this.conditionalMoves = [this.makeConditionalMove(function () { return _this.moveHistory.length === 0; }, firstMovePattern)];
         this.notation = "p";
-        this.conditionalMoves = [firstMoveConditional];
     }
     return PawnPiece;
 })(BasePiece);
+PawnPiece.prototype.notation = "p";
 function firstMoveConditional() {
     if (this.moveHistory.length === 0)
         return firstMovePattern;

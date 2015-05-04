@@ -11,6 +11,7 @@ class KingPiece extends BasePiece {
 	value = 10;
 	notation = "k";
 }
+KingPiece.prototype.notation = "k";
 
 var diag = helper.createMove([{ direction: Direction.Diagonal, count: 1 }], true, false, true);
 var lat = helper.createMove([{ direction: Direction.Lateral, count: 1 }], true, false, true);

@@ -9,12 +9,16 @@ declare module Chess {
         piece: Piece;
         notation: string;
     }
+    
+    interface PieceCtor {
+        new(isWhite?: boolean): Piece;
+    }
 
     interface Engine {
     	rankCount: number;
     	fileCount: number;
     	ranks: Rank[];
-    	pieces: PieceFactory[];
+    	pieces: PieceCtor[];
     	positionParser: PositionParser;
     	capturedPieces: Piece[];
     	create(): void;

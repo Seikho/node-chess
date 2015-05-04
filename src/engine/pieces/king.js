@@ -20,6 +20,7 @@ var KingPiece = (function (_super) {
     }
     return KingPiece;
 })(BasePiece);
+KingPiece.prototype.notation = "k";
 var diag = helper.createMove([{ direction: Direction.Diagonal, count: 1 }], true, false, true);
 var lat = helper.createMove([{ direction: Direction.Lateral, count: 1 }], true, false, true);
 module.exports = KingPiece;

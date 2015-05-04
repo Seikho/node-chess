@@ -10,6 +10,7 @@ class RookPiece extends BasePiece {
 	value = 5;
 	notation = "r";
 }
+RookPiece.prototype.notation = "r";
 
 var lat = {
 	moves: [{ direction: Direction.Lateral, count: 0 }],

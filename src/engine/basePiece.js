@@ -1,5 +1,5 @@
 var BasePiece = (function () {
-    function BasePiece() {
+    function BasePiece(isWhite) {
         this.name = "";
         this.movement = [];
         this.canQueen = false;
@@ -8,6 +8,7 @@ var BasePiece = (function () {
         this.notation = "";
         this.moveHistory = [];
         this.conditionalMoves = [];
+        this.isWhite = !!isWhite;
     }
     BasePiece.prototype.getConditionalMoves = function () {
         var movePatterns = [];
@@ -18,6 +19,12 @@ var BasePiece = (function () {
             movePatterns = movePatterns.concat(patterns);
         });
         return movePatterns;
+    };
+    BasePiece.prototype.makeConditionalMove = function (condition, patterns) {
+        return function () {
+            if (condition())
+                return patterns;
+        };
     };
     return BasePiece;
 })();

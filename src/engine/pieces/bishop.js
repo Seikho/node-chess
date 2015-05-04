@@ -20,6 +20,7 @@ var BishopPiece = (function (_super) {
     }
     return BishopPiece;
 })(BasePiece);
+BishopPiece.prototype.notation = "b";
 var diag = helper.createMove([{ direction: Direction.Diagonal, count: 0 }], true, false, true);
 module.exports = BishopPiece;
 //# sourceMappingURL=bishop.js.map

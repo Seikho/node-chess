@@ -46,10 +46,9 @@ function createFilesForRank(engine: Chess.Engine, fenRank: string, rankNumber: n
 }
 
 function getPiece(engine: Chess.Engine, notation: string): Chess.Piece {
-	var pieceFactory = engine.pieces.filter(p => p.notation.toUpperCase() === notation || p.notation.toLowerCase() === notation);
-	return pieceFactory.length === 0
-		? null
-
-	// If the upperCase pieceFactory notation === notation, the piece is white.
-		: pieceFactory[0].create(pieceFactory[0].notation.toUpperCase() === notation);
+	var pieceCtors = engine.pieces.filter(p => p.prototype.notation.toUpperCase() === notation || p.prototype.notation.toLowerCase() === notation);
+	if (pieceCtors.length === 0) return null;
+	var ctor = pieceCtors[0];
+	var ctorNotation = <string>ctor.prototype.notation;
+	return new ctor(ctorNotation.toUpperCase() === notation);
 }

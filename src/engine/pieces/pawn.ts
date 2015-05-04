@@ -11,9 +11,10 @@ class PawnPiece extends BasePiece {
 	canQueen = true;
 	canSpawn = false;
 	value = 1;
+	conditionalMoves = [this.makeConditionalMove(() => this.moveHistory.length === 0, firstMovePattern)];
 	notation = "p";
-	conditionalMoves = [firstMoveConditional];
 }
+PawnPiece.prototype.notation = "p";
 
 function firstMoveConditional() {
 	if (this.moveHistory.length === 0) return firstMovePattern;

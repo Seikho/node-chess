@@ -16,10 +16,11 @@ var KnightPiece = (function (_super) {
         this.canQueen = false;
         this.canSpawn = true;
         this.value = 3;
-        this.notation = "p";
+        this.notation = "n";
     }
     return KnightPiece;
 })(BasePiece);
+KnightPiece.prototype.notation = "n";
 var horzThenVert = helper.createMove([{ direction: Direction.Horizontal, count: 2 }, { direction: Direction.Vertical, count: 1 }], true, true, true);
 var vertThenHorz = helper.createMove([{ direction: Direction.Vertical, count: 2 }, { direction: Direction.Horizontal, count: 1 }], true, true, true);
 module.exports = KnightPiece;

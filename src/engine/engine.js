@@ -48,6 +48,7 @@ var Engine = (function () {
         var destination = this.getSquare(move.to);
         if (destination.piece)
             this.capturedPieces.push(destination.piece);
+        origin.piece.moveHistory.push(move);
         this.ranks[move.to.rank].squares[move.to.file] = {
             availableMoves: [],
             piece: origin.piece,

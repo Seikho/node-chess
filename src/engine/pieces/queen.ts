@@ -11,6 +11,7 @@ class QueenPiece extends BasePiece {
 	value = 9;
 	notation = "q";
 }
+QueenPiece.prototype.notation = "q";
 
 var diag = helper.createMove([{ direction: Direction.Diagonal, count: 0 }], true, false, true);
 var lat = helper.createMove([{ direction: Direction.Lateral, count: 0 }], true, false, true);

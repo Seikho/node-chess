@@ -1,6 +1,9 @@
 import pieceRules = require("./rules/piece");
 export = BasePiece;
 class BasePiece implements Chess.Piece {
+	constructor(isWhite?: boolean) {
+		this.isWhite = !!isWhite;
+	}
 	name: string = "";
 	movement: Chess.MovePattern[] = [];
 	canQueen: boolean = false;
@@ -9,6 +12,7 @@ class BasePiece implements Chess.Piece {
 	notation: string = "";
 	moveHistory: Chess.Move[] = [];
 	conditionalMoves: Chess.ConditionalMovement[] = [];
+	isWhite: boolean;
 	 
 	getConditionalMoves() {
 		var movePatterns = [];
@@ -18,5 +22,11 @@ class BasePiece implements Chess.Piece {
 			movePatterns = movePatterns.concat(patterns);
 		});
 		return movePatterns;
+	}
+	
+	makeConditionalMove(condition: () => boolean, patterns: Chess.MovePattern|Chess.MovePattern[]) {
+		return () => {
+			if (condition()) return patterns;
+		};
 	}
 }

@@ -20,7 +20,7 @@ class Engine implements Chess.Engine {
 	rankCount: number;
 	fileCount: number;
 	ranks: Chess.Rank[] = [];
-	pieces: Chess.PieceFactory[] = [];
+	pieces: Chess.PieceCtor[] = [];
 	positionParser = fenParser;
 	capturedPieces: Chess.Piece[] = [];
 	toString = toString;
@@ -52,7 +52,8 @@ class Engine implements Chess.Engine {
 		if (!origin.availableMoves.some(availableMove => availableMove.file === move.to.file && availableMove.rank === move.to.rank)) return false;
 		var destination = this.getSquare(move.to); 
 		if (destination.piece) this.capturedPieces.push(destination.piece)
-
+		
+		origin.piece.moveHistory.push(move);
 		this.ranks[move.to.rank].squares[move.to.file] = {
 			availableMoves: [],
 			piece: origin.piece,

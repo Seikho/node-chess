@@ -1,7 +1,6 @@
 import BasePiece = require("../basePiece");
 import helper = require("./helper");
 import Direction = require("../../direction");
-
 export = BishopPiece;
 
 class BishopPiece extends BasePiece {
@@ -12,5 +11,6 @@ class BishopPiece extends BasePiece {
 	value = 3;
 	notation = "b";
 }
+BishopPiece.prototype.notation = "b";
 
 var diag = helper.createMove([{ direction: Direction.Diagonal, count: 0 }], true, false, true);
