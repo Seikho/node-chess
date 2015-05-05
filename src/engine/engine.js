@@ -42,6 +42,9 @@ var Engine = (function () {
         var origin = this.getSquare(move.from);
         if (!origin || !origin.piece)
             return false;
+        // Enforce turn-based movement
+        if (this.whitesTurn !== origin.piece.isWhite)
+            return false;
         // The 'destination' square must be in the square's list of available moves
         if (!origin.availableMoves.some(function (availableMove) { return availableMove.file === move.to.file && availableMove.rank === move.to.rank; }))
             return false;
@@ -59,6 +62,7 @@ var Engine = (function () {
             piece: null,
             file: move.from.file
         };
+        this.whitesTurn = !this.whitesTurn;
         this.populateAvailableMoves();
         return true;
     };
