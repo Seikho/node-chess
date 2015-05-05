@@ -25,6 +25,7 @@ class Engine implements Chess.Engine {
 	capturedPieces: Chess.Piece[] = [];
 	toString = toString;
 	create = createSqaures;
+	whitesTurn: boolean;
 
 	/**
 	 * Returns an array of the available squares a piece can move to

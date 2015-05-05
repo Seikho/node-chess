@@ -27,6 +27,7 @@ declare module Chess {
     	getSquare(square: Coordinate): Square;
         movePiece(move: Move): boolean;
     	toString(): string;
+        whitesTurn: boolean;
     }
 
     /**
