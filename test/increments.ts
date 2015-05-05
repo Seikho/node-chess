@@ -21,14 +21,17 @@ describe("available move tests", () => {
 });
 
 describe("movement tests", () => {
-	pieceMoveTest("will move a2 pawn to a3", coord(1,2), coord(1,3), true);
+	pieceMoveTest("[White] will move a2 pawn to a3", coord(1,2), coord(1,3), true);
+	pieceMoveTest("[White] will not move a3 pawn to a4 due to being black's turn", coord(1,3), coord(1,4), false);
 	pieceAvailableMovesTest("will find all available moves for the a3 pawn", coord(1,3), [coord(1,4)]);
-	pieceMoveTest("will not move a3 pawn to a5", coord(1,3), coord(1,5), false);
-	pieceMoveTest("will move a3 pawn to a4", coord(1,3), coord(1,4), true);
-	pieceMoveTest("will move a4 pawn to a5", coord(1,4), coord(1,5), true);
-	pieceMoveTest("will move a5 pawn to a6", coord(1,5), coord(1,6), true);
-	pieceMoveTest("will not move a6 pawn to a7", coord(1,3), coord(1,5), false);
-	pieceMoveTest("will capture from a6 to b7", coord(1,6), coord(2,7), true);
+	pieceMoveTest("[White] will not move a3 pawn to a5", coord(1,3), coord(1,5), false);
+	pieceMoveTest("[Black] will move a7 pawn to a6", coord(1,7), coord(1,6), true);
+	pieceMoveTest("[White] will move a3 pawn to a4", coord(1,3), coord(1,4), true);
+	pieceMoveTest("[Black] will move a6 pawn to a5", coord(1,6), coord(1,5), true);
+	pieceMoveTest("[White] will move not move a4 pawn to a6 due to 'cannot capture'", coord(1,5), coord(1,6), false);
+	pieceMoveTest("[White] will move g1 to h3", coord(7,1), coord(8,3), true);
+	pieceMoveTest("[Black] will move b7 pawn to b5", coord(2,7), coord(2,5), true);
+	pieceMoveTest("[White] will capture from a4 to b5", coord(1,4), coord(2,5), true);
 });
 
 function pieceAvailableMovesTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {
