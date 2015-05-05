@@ -12,6 +12,8 @@
         "test/**/*.ts"
     ],
     "files": [
+        "test/fen-parser.ts",
+        "test/increments.ts",
         "src/analyzer.ts",
         "src/castling.ts",
         "src/direction.ts",
@@ -44,8 +46,6 @@
         "src/typings/chai/chai.d.ts",
         "src/typings/mocha/mocha.d.ts",
         "src/typings/node/node.d.ts",
-        "src/typings/tsd.d.ts",
-        "test/fen-parser.ts",
-        "test/increments.ts"
+        "src/typings/tsd.d.ts"
     ]
 }
