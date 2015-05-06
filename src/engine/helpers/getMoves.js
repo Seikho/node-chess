@@ -36,7 +36,6 @@ function getMoves(coordinate) {
         }
         return true;
     }
-    var isA1Pawn = coordinate.file === 1 && coordinate.rank === 2;
     var pathings = [];
     var conditionalMoves = piece.getConditionalMoves();
     var movePatterns = piece.movement.slice(0);

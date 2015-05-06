@@ -45,8 +45,6 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
         return true;
     }
 
-    var isA1Pawn = coordinate.file === 1 && coordinate.rank === 2;
-    
     var pathings: Array<Chess.Coordinate[]> = [];
 
     var conditionalMoves = piece.getConditionalMoves();
