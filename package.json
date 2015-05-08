@@ -1,6 +1,6 @@
 {
   "name": "node-chess",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A chess engine for board validations and position calculation",
   "main": "src/board.js",
   "scripts": {

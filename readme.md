@@ -1,11 +1,10 @@
 # Node-chess
+An extensible chess engine with position analysis, board analysis, and computer opposition.
 
 [![NPM version](http://img.shields.io/npm/v/node-chess.svg?style=flat)](https://www.npmjs.org/package/webwatcher)
 [![Travis build status](http://img.shields.io/travis/Seikho/node-chess/master.svg?style=flat)](https://travis-ci.org/Seikho/node-chess)
 
 ### Under construction !!!
-
-#### An extensible chess engine with position analysis, board analysis, and computer opposition.
 
 ### What does it do? How is it extensible?
 Node-chess allows you extend the board and add your own rules. The analysis engine and computer player will automatically factor these changes/additions into their calculations and adjust accordingly. 
@@ -16,6 +15,43 @@ With node-chess you can:
 	- (re-)define their notation, movement, value, and capture logic
 - add, change, and remove rules such as win and loss conditions
 - extend the existing engine to improve the calculations for your own variants
+
+### Installation
+Add it as a dependency to your project
+```javascript
+npm install node-chess
+// In your project
+var chess = require("node-chess");
+```
+
+The engine comes with a 'classic' implementation of Chess.
+```javascript
+var classicEngine = chess.classicEngine();
+``` 
+
+###Using the board
+```javascript
+var classicEngine = chess.classicEngine();
+// Move the E2 pawn to E4
+classicEngine.movePiece({ from: { file: 5, rank: 2 }, to: { file: 5, rank: 4 } });
+
+// Move the B8 knight to C6 
+classicEngine.movePiece({ from: { file: 2, rank: 8 }, to: { file: 3, rank: 6 } });
+
+// Print the available moves of the C6 knight to the console
+console.log(classicEngine.getSquare({ file: 3, rank: 6 }).availableMoves);
+```
+
+### Defining your own piece
+```javascript
+var customEngine = new chess.Engine();
+var BasePiece = chess.BasePiece;
+function SuperKnight = function(isWhite) {
+	
+}
+SuperKnight.prototype.notation = "x";
+customEngine.pieces.push(SuperKnight);
+```
 
 [![Analytics](https://ga-beacon.appspot.com/UA-61186849-1/seikho/node-chess)](https://github.com/Seikho/watcher)
 
