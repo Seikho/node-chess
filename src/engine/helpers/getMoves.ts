@@ -37,7 +37,7 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
             if (!move.canCapture) return false;
         }
         
-        // Destination unoccupied optimisations 
+        // Destination unoccupied optimisations
         else {
             if (!move.canMove) return false;
         }
