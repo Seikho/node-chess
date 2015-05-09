@@ -46,6 +46,7 @@
         "src/typings/bluebird/bluebird.d.ts",
         "src/typings/chai/chai.d.ts",
         "src/typings/mocha/mocha.d.ts",
+        "src/typings/node-chess/node-chess.d.ts",
         "src/typings/node/node.d.ts",
         "src/typings/tsd.d.ts"
     ]

@@ -14,9 +14,6 @@ var Engine = (function () {
         this.capturedPieces = [];
         this.toString = toString;
         this.create = createSqaures;
-        /**
-         * Returns an array of the available squares a piece can move to
-         */
         this.availableMoves = getMoves;
         this.movePiece = movePiece;
         ranks = ranks || 8;
