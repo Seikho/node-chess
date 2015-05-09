@@ -33,10 +33,10 @@ var classicEngine = chess.classicEngine();
 ```javascript
 var classicEngine = chess.classicEngine();
 // Move the E2 pawn to E4
-classicEngine.movePiece({ from: { file: 5, rank: 2 }, to: { file: 5, rank: 4 } });
+classicEngine.movePiece({ file: 5, rank: 2 } /* from */,{ file: 5, rank: 4 } /* to */);
 
 // Move the B8 knight to C6 
-classicEngine.movePiece({ from: { file: 2, rank: 8 }, to: { file: 3, rank: 6 } });
+classicEngine.movePiece({ file: 2, rank: 8 }, { file: 3, rank: 6 });
 
 // Print the available moves of the C6 knight to the console
 console.log(classicEngine.getSquare({ file: 3, rank: 6 }).availableMoves);
