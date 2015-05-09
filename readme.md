@@ -42,15 +42,35 @@ classicEngine.movePiece({ from: { file: 2, rank: 8 }, to: { file: 3, rank: 6 } }
 console.log(classicEngine.getSquare({ file: 3, rank: 6 }).availableMoves);
 ```
 
-### Defining your own piece
+### Defining your own pieces
+The 'super knight' moves 3 squares laterally before moving 1 square on the opposite axis!
+
 ```javascript
 var customEngine = new chess.Engine();
-var BasePiece = chess.BasePiece;
-function SuperKnight = function(isWhite) {
-	
+var horzThenVert = {
+	moves: [{direction: Direction.Horizontal, count: 3}, {direction: Direction.Vertical, count: 1}],
+	canJump: true,
+	canCapture: true,
+	canMove: true
 }
-SuperKnight.prototype.notation = "x";
-customEngine.pieces.push(SuperKnight);
+
+var vertThenHorz = {
+	moves: [{direction: Direction.Vertical, count: 3}, {direction: Direction.Horizontal, count: 1}],
+	canJump: true,
+	canCapture: true,
+	canMove: true
+} 
+
+var superKnight = {
+	name: "SuperKnight",
+	movement: [horzThenVert, vertThenHorz],
+	canQueen: false,
+	canSpawn: true,
+	value: 3,
+	notation: "s"
+}
+
+customEngine.pieces.push(superKnight);
 ```
 
 [![Analytics](https://ga-beacon.appspot.com/UA-61186849-1/seikho/node-chess)](https://github.com/Seikho/watcher)
