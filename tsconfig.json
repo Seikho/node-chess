@@ -26,6 +26,7 @@
         "src/engine/helpers/getPaths.ts",
         "src/engine/helpers/getTransforms.ts",
         "src/engine/helpers/isInBounds.ts",
+        "src/engine/helpers/movePiece.ts",
         "src/engine/helpers/toString.ts",
         "src/engine/instances/classic.ts",
         "src/engine/parsers/fen.ts",

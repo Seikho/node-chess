@@ -1,5 +1,6 @@
 import toString = require("./helpers/toString");
 import getMoves = require("./helpers/getMoves");
+import movePiece = require("./helpers/movePiece");
 import fenParser = require("./parsers/fen")
 import createSqaures = require("./helpers/createSquares");
 export = Engine;
@@ -20,18 +21,16 @@ class Engine implements Chess.Engine {
 	rankCount: number;
 	fileCount: number;
 	ranks: Chess.Rank[] = [];
-	pieces: Chess.PieceCtor[] = [];
+	pieces: Chess.Piece[] = [];
 	positionParser = fenParser;
 	capturedPieces: Chess.Piece[] = [];
 	toString = toString;
 	create = createSqaures;
 	whitesTurn: boolean;
 
-	/**
-	 * Returns an array of the available squares a piece can move to
-	 */
 	availableMoves = getMoves;
-
+	movePiece = movePiece;
+	
 	getSquare(square: Chess.Coordinate): Chess.Square {
 		if (!this.ranks[square.rank]) return null;
 		return this.ranks[square.rank].squares[square.file] || null;
@@ -43,35 +42,5 @@ class Engine implements Chess.Engine {
 				square.availableMoves = this.availableMoves({ file: square.file, rank: rank.rank });
 			});
 		});
-	}
-	
-	movePiece(move: Chess.Move) {
-		var origin = this.getSquare(move.from);
-		if (!origin || !origin.piece) return false;
-		
-		// Enforce turn-based movement
-		if (this.whitesTurn !== origin.piece.isWhite) return false; 
-		
-		// The 'destination' square must be in the square's list of available moves
-		if (!origin.availableMoves.some(availableMove => availableMove.file === move.to.file && availableMove.rank === move.to.rank)) return false;
-		var destination = this.getSquare(move.to); 
-		if (destination.piece) this.capturedPieces.push(destination.piece)
-		
-		origin.piece.moveHistory.push(move);
-		this.ranks[move.to.rank].squares[move.to.file] = {
-			availableMoves: [],
-			piece: origin.piece,
-			file: move.to.file
-		} 
-		
-		this.ranks[move.from.rank].squares[move.from.file] = {
-			availableMoves: [],
-			piece: null,
-			file: move.from.file
-		} 
-
-		this.whitesTurn = !this.whitesTurn;
-		this.populateAvailableMoves();
-		return true;
-	}
+	}	
 }

@@ -18,7 +18,7 @@ declare module Chess {
     	rankCount: number;
     	fileCount: number;
     	ranks: Rank[];
-    	pieces: PieceCtor[];
+    	pieces: Piece[];
     	positionParser: PositionParser;
     	capturedPieces: Piece[];
     	create(): void;
