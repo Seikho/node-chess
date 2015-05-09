@@ -1,26 +1,26 @@
-function movePiece(move) {
-    var origin = this.getSquare(move.from);
+function movePiece(from, to) {
+    var origin = this.getSquare(from);
     if (!origin || !origin.piece)
         return false;
     // Enforce turn-based movement
     if (this.whitesTurn !== origin.piece.isWhite)
         return false;
     // The 'destination' square must be in the square's list of available moves
-    if (!origin.availableMoves.some(function (availableMove) { return availableMove.file === move.to.file && availableMove.rank === move.to.rank; }))
+    if (!origin.availableMoves.some(function (availableMove) { return availableMove.file === to.file && availableMove.rank === to.rank; }))
         return false;
-    var destination = this.getSquare(move.to);
+    var destination = this.getSquare(to);
     if (destination.piece)
         this.capturedPieces.push(destination.piece);
-    origin.piece.moveHistory.push(move);
-    this.ranks[move.to.rank].squares[move.to.file] = {
+    origin.piece.moveHistory.push({ from: from, to: to });
+    this.ranks[to.rank].squares[to.file] = {
         availableMoves: [],
         piece: origin.piece,
-        file: move.to.file
+        file: to.file
     };
-    this.ranks[move.from.rank].squares[move.from.file] = {
+    this.ranks[from.rank].squares[from.file] = {
         availableMoves: [],
         piece: null,
-        file: move.from.file
+        file: from.file
     };
     this.whitesTurn = !this.whitesTurn;
     this.populateAvailableMoves();
