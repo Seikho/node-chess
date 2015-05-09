@@ -55,9 +55,8 @@ function move(direction: Direction, count: number): Chess.SingleMove {
 }
 
 function pieceMoveTest(message: string, from: Chess.Coordinate, to: Chess.Coordinate, expected: boolean) {
-	var move = { from: from, to: to };
 	it (message, () => {
-		var moveResult = classicEngine.movePiece(move);
+		var moveResult = classicEngine.movePiece(from, to);
 		expect(expected).to.equal(moveResult);
 	});
 }

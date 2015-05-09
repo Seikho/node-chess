@@ -1,19 +1,20 @@
 var BasePiece = (function () {
-    function BasePiece(isWhite) {
-        this.name = "";
-        this.movement = [];
-        this.canQueen = false;
-        this.canSpawn = false;
-        this.value = 0;
-        this.notation = "";
+    function BasePiece(piece, notation) {
+        this.isWhite = notation === piece.notation.toUpperCase();
+        this.name = piece.name;
+        this.movement = piece.movement;
+        this.canQueen = piece.canQueen;
+        this.canSpawn = piece.canSpawn;
+        this.value = piece.value;
+        this.notation = notation;
+        this.conditionalMoves = piece.conditionalMoves || [];
         this.moveHistory = [];
-        this.conditionalMoves = [];
-        this.isWhite = !!isWhite;
     }
     BasePiece.prototype.getConditionalMoves = function () {
+        var _this = this;
         var movePatterns = [];
         this.conditionalMoves.forEach(function (move) {
-            var patterns = move();
+            var patterns = move(_this);
             if (!patterns)
                 return;
             movePatterns = movePatterns.concat(patterns);

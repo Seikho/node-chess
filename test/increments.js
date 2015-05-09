@@ -44,9 +44,8 @@ function move(direction, count) {
     return { direction: direction, count: count };
 }
 function pieceMoveTest(message, from, to, expected) {
-    var move = { from: from, to: to };
     it(message, function () {
-        var moveResult = classicEngine.movePiece(move);
+        var moveResult = classicEngine.movePiece(from, to);
         expect(expected).to.equal(moveResult);
     });
 }

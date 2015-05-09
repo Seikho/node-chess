@@ -1,14 +1,4 @@
 declare module Chess {
-    interface PieceFactory {
-        create(isWhite?: boolean): Piece;
-        piece: Piece;
-        notation: string;
-    }
-    
-    interface PieceCtor {
-        new(isWhite?: boolean): Piece;
-    }
-
     interface Engine {
     	rankCount: number;
     	fileCount: number;
@@ -23,6 +13,7 @@ declare module Chess {
         movePiece(from: Coordinate, to: Coordinate): boolean;
     	toString(): string;
         whitesTurn: boolean;
+        createPiece(notation: string): Chess.Piece;
     }
 
     /**
@@ -33,12 +24,7 @@ declare module Chess {
     }
     
     interface ConditionalMovement {
-        (): MovePattern|MovePattern[];
-    }
-
-    interface Path {
-    	from: Coordinate;
-    	to: Coordinate;
+        (piece: Piece): MovePattern|MovePattern[];
     }
 
     interface Coordinate {
@@ -71,8 +57,8 @@ declare module Chess {
     	canSpawn: boolean;
     	isWhite?: boolean;
         moveHistory?: Move[];
-        conditionalMoves?: Array<() => MovePattern|MovePattern[]>;
-        getConditionalMoves: () => MovePattern[];
+        conditionalMoves?: ConditionalMovement[];
+        getConditionalMoves?: () => MovePattern[];
     }
 
     /**

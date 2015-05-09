@@ -1,31 +1,16 @@
 import Direction = require("../../direction");
-import BasePiece = require("../basePiece");
-export = PawnPiece;
-
-/**
- * Pawn piece registration
- */
-class PawnPiece extends BasePiece {
-	name = "Pawn";
-	movement = [moveForward, moveCapture];
-	canQueen = true;
-	canSpawn = false;
-	value = 1;
-	conditionalMoves = [this.makeConditionalMove(() => this.moveHistory.length === 0, firstMovePattern)];
-	notation = "p";
-}
-PawnPiece.prototype.notation = "p";
-
-function firstMoveConditional() {
-	if (this.moveHistory.length === 0) return firstMovePattern;
-	else null;
-}
+export = pawn;
 
 var firstMovePattern = {
 	moves: [{ direction: Direction.Up, count: 2 }],
 	canJump: false,
 	canCapture: false,
 	canMove: true
+}
+
+var firstMove = (piece: Chess.Piece) => {
+	if (piece.moveHistory.length === 0) return firstMovePattern;
+	return null;
 }
 
 var moveForward = {
@@ -46,3 +31,14 @@ var forward: Chess.SingleMove = {
 	direction: Direction.Up,
 	count: 1
 }
+
+var pawn = {
+	name: "Pawn",
+	movement: [moveForward, moveCapture],
+	canQueen: true,
+	canSpawn: false,
+	value: 1,
+	conditionalMoves: [firstMove],
+	notation: "p"
+}
+

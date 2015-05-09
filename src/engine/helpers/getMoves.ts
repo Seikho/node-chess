@@ -52,7 +52,6 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
     if (conditionalMoves.length > 0) {
         movePatterns = piece.movement.concat(conditionalMoves);
     }
-    
     movePatterns.forEach(move => {
         var newPathings = getPaths(coordinate, move, piece.isWhite, bounds);
         var validPathings = newPathings.filter(pathing => isValidPath(pathing, move));

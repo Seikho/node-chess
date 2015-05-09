@@ -1,16 +1,18 @@
-import BasePiece = require("../basePiece");
-import helper = require("./helper");
 import Direction = require("../../direction");
-export = BishopPiece;
+export = bishop;
 
-class BishopPiece extends BasePiece {
-	name = "Bishop";
-	movement = [diag];
-	canQueen = false;
-	canSpawn = true;
-	value = 3;
-	notation = "b";
+var diag = {
+	moves: [{ direction: Direction.Diagonal, count: 0 }],
+	canJump: false,
+	canMove: true,
+	canCapture: true
 }
-BishopPiece.prototype.notation = "b";
 
-var diag = helper.createMove([{ direction: Direction.Diagonal, count: 0 }], true, false, true);
+var bishop = {
+	name: "Bishop",
+	movement: [diag],
+	canQueen: false,
+	canSpawn: true,
+	value: 3,
+	notation: "b"
+}

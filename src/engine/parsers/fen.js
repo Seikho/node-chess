@@ -33,19 +33,11 @@ function createFilesForRank(engine, fenRank, rankNumber) {
         }
         var square = {
             file: i,
-            piece: getPiece(engine, notation)
+            piece: engine.createPiece(notation)
         };
         rank.squares[i] = square;
     }
     return rank;
-}
-function getPiece(engine, notation) {
-    var pieceCtors = engine.pieces.filter(function (p) { return p.prototype.notation.toUpperCase() === notation || p.prototype.notation.toLowerCase() === notation; });
-    if (pieceCtors.length === 0)
-        return null;
-    var ctor = pieceCtors[0];
-    var ctorNotation = ctor.prototype.notation;
-    return new ctor(ctorNotation.toUpperCase() === notation);
 }
 module.exports = fenParser;
 //# sourceMappingURL=fen.js.map

@@ -1,3 +1,4 @@
+
 import fenStringParser = require("./stringParsers/fen");
 export = fenParser;
 
@@ -8,7 +9,6 @@ function fenParser(position?: string): void {
 	var engineInput = fenStringParser.parse(position || defaultPosition);
 	
 	engine.whitesTurn = engineInput.turn === "w";
-	
 	var rankCount = this.rankCount;
 	engineInput.ranks.forEach(rank => {
 		engine.ranks[rankCount] = createFilesForRank(engine, rank, rankCount);
@@ -41,18 +41,10 @@ function createFilesForRank(engine: Chess.Engine, fenRank: string, rankNumber: n
 		}
 		var square = {
 			file: i,
-			piece: getPiece(engine, notation)
+			piece: engine.createPiece(notation)
 		}
 
 		rank.squares[i] = square;
 	}
 	return rank;
-}
-
-function getPiece(engine: Chess.Engine, notation: string): Chess.Piece {
-	var pieceCtors = engine.pieces.filter(p => p.prototype.notation.toUpperCase() === notation || p.prototype.notation.toLowerCase() === notation);
-	if (pieceCtors.length === 0) return null;
-	var ctor = pieceCtors[0];
-	var ctorNotation = <string>ctor.prototype.notation;
-	return new ctor(ctorNotation.toUpperCase() === notation);
 }

@@ -3,6 +3,7 @@ import getMoves = require("./helpers/getMoves");
 import movePiece = require("./helpers/movePiece");
 import fenParser = require("./parsers/fen")
 import createSqaures = require("./helpers/createSquares");
+import BasePiece = require("./basePiece");
 export = Engine;
 
 /**
@@ -27,7 +28,8 @@ class Engine implements Chess.Engine {
 	toString = toString;
 	create = createSqaures;
 	whitesTurn: boolean;
-
+	pieceFactory = BasePiece;
+	
 	availableMoves = getMoves;
 	movePiece = movePiece;
 	
@@ -42,5 +44,11 @@ class Engine implements Chess.Engine {
 				square.availableMoves = this.availableMoves({ file: square.file, rank: rank.rank });
 			});
 		});
-	}	
+	}
+	
+	createPiece(notation: string): Chess.Piece {
+		var matchingPiece = this.pieces.filter(p => p.notation === notation.toLocaleLowerCase());
+		if (matchingPiece.length === 0) return null;
+		return new this.pieceFactory(matchingPiece[0], notation);
+	}
 }
