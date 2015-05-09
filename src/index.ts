@@ -1,9 +1,9 @@
 import Engine = require("./engine/engine");
 import classicEngine = require("./engine/instances/classic");
-import BasePiece = require("./engine/basePiece");
-
+import classicPieces = require("./engine/pieces/pieces");
+ 
 export = {
 	Engine: Engine,
 	classicEngine: classicEngine,
-	BasePiece: BasePiece
+	classicPieces: classicPieces
 }
