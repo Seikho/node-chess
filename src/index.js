@@ -1,9 +1,11 @@
 var Engine = require("./engine/engine");
 var classicEngine = require("./engine/instances/classic");
 var classicPieces = require("./engine/pieces/pieces");
+var Direction = require("./direction");
 module.exports = {
     Engine: Engine,
     classicEngine: classicEngine,
-    classicPieces: classicPieces
+    classicPieces: classicPieces,
+    Direction: Direction
 };
 //# sourceMappingURL=index.js.map
