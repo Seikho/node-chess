@@ -8,24 +8,27 @@ function movePiece(from: Chess.Coordinate, to: Chess.Coordinate) {
 		
 	// The 'destination' square must be in the square's list of available moves
 	if (!origin.availableMoves.some(availableMove => availableMove.file === to.file && availableMove.rank === to.rank)) return false;
+	
 	var destination: Chess.Square = this.getSquare(to);
 	if (destination.piece) this.capturedPieces.push(destination.piece)
 
-	origin.piece.location = { file: to.file, rank: to.rank };
-	origin.piece.moveHistory.push({ from: from, to: to });
-	this.ranks[to.rank].squares[to.file] = {
-		availableMoves: [],
-		piece: origin.piece,
-		file: to.file
-	}
-
-	this.ranks[from.rank].squares[from.file] = {
-		availableMoves: [],
-		piece: null,
-		file: from.file
-	}
+	destination.piece = origin.piece;
+	destination.piece.location = { file: to.file, rank: to.rank }; 
+	destination.availableMoves = [];
+	destination.piece.moveHistory.push({from: from, to: to });
+	
+	origin.piece = null;
+	origin.availableMoves = [];
 
 	this.whitesTurn = !this.whitesTurn;
 	this.populateAvailableMoves();
+	
+	var postMoveFunctions: Chess.PostMoveFunction[] = this.postMoveFunctions;
+	if (postMoveFunctions.length === 0) return true;
+	postMoveFunctions.forEach(fn => {
+		fn(destination.piece, this);
+	});
+	this.postMoveFunctions = [];
+	
 	return true;
 }

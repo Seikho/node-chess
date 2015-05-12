@@ -16,6 +16,7 @@ var Engine = (function () {
         this.toString = toString;
         this.create = createSqaures;
         this.pieceFactory = BasePiece;
+        this.postMoveFunctions = [];
         this.availableMoves = getMoves;
         this.movePiece = movePiece;
         ranks = ranks || 8;

@@ -29,6 +29,7 @@ class Engine implements Chess.Engine {
 	create = createSqaures;
 	whitesTurn: boolean;
 	pieceFactory = BasePiece;
+	postMoveFunctions: Chess.PostMoveFunction[] = [];
 	
 	availableMoves = getMoves;
 	movePiece = movePiece;
