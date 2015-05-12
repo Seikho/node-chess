@@ -11,6 +11,7 @@ function movePiece(from, to) {
     var destination = this.getSquare(to);
     if (destination.piece)
         this.capturedPieces.push(destination.piece);
+    origin.piece.location = { file: to.file, rank: to.rank };
     origin.piece.moveHistory.push({ from: from, to: to });
     this.ranks[to.rank].squares[to.file] = {
         availableMoves: [],

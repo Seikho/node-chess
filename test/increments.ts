@@ -1,13 +1,13 @@
-import Engine = require("../src/engine/engine");
-import chai = require("chai");
+import nodeChess = require("../src/index");
 import Direction = require("../src/direction");
-import pieces = require("../src/engine/pieces/pieces");
-import classic = require("../src/engine/instances/classic");
-
-var classicEngine = classic();
-classicEngine.populateAvailableMoves();
-classicEngine.getSquare(coord(1,2)).piece.getConditionalMoves();
+import chai = require("chai");
 var expect = chai.expect;
+
+var classicEngine = nodeChess.classicEngine();
+classicEngine.populateAvailableMoves();
+classicEngine.getSquare(coord(1,2)).piece.getConditionalMoves(classicEngine);
+console.log(classicEngine.toString());
+
 
 describe("available move tests", () => {
 	pieceAvailableMovesTest("will find all available moves for the b2 pawn from the starting position", coord(2,2), [coord(2,3), coord(2,4)]);

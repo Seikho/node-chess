@@ -10,11 +10,11 @@ var BasePiece = (function () {
         this.conditionalMoves = piece.conditionalMoves || [];
         this.moveHistory = [];
     }
-    BasePiece.prototype.getConditionalMoves = function () {
+    BasePiece.prototype.getConditionalMoves = function (board) {
         var _this = this;
         var movePatterns = [];
         this.conditionalMoves.forEach(function (move) {
-            var patterns = move(_this);
+            var patterns = move(_this, board);
             if (!patterns)
                 return;
             movePatterns = movePatterns.concat(patterns);

@@ -1,6 +1,6 @@
 export = movePiece;
 function movePiece(from: Chess.Coordinate, to: Chess.Coordinate) {
-	var origin = this.getSquare(from);
+	var origin: Chess.Square = this.getSquare(from);
 	if (!origin || !origin.piece) return false;
 		
 	// Enforce turn-based movement
@@ -8,9 +8,10 @@ function movePiece(from: Chess.Coordinate, to: Chess.Coordinate) {
 		
 	// The 'destination' square must be in the square's list of available moves
 	if (!origin.availableMoves.some(availableMove => availableMove.file === to.file && availableMove.rank === to.rank)) return false;
-	var destination = this.getSquare(to);
+	var destination: Chess.Square = this.getSquare(to);
 	if (destination.piece) this.capturedPieces.push(destination.piece)
 
+	origin.piece.location = { file: to.file, rank: to.rank };
 	origin.piece.moveHistory.push({ from: from, to: to });
 	this.ranks[to.rank].squares[to.file] = {
 		availableMoves: [],

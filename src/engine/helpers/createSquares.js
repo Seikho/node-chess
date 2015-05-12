@@ -9,7 +9,8 @@ function createSquares() {
             row.squares[file + 1] = {
                 file: file,
                 piece: null,
-                availableMoves: []
+                availableMoves: [],
+                tags: []
             };
         }
         this.ranks[rank + 1] = row;

@@ -1,9 +1,10 @@
+var nodeChess = require("../src/index");
 var chai = require("chai");
-var classic = require("../src/engine/instances/classic");
-var classicEngine = classic();
-classicEngine.populateAvailableMoves();
-classicEngine.getSquare(coord(1, 2)).piece.getConditionalMoves();
 var expect = chai.expect;
+var classicEngine = nodeChess.classicEngine();
+classicEngine.populateAvailableMoves();
+classicEngine.getSquare(coord(1, 2)).piece.getConditionalMoves(classicEngine);
+console.log(classicEngine.toString());
 describe("available move tests", function () {
     pieceAvailableMovesTest("will find all available moves for the b2 pawn from the starting position", coord(2, 2), [coord(2, 3), coord(2, 4)]);
     pieceAvailableMovesTest("will find all available moves for b1 knight from the starting position", coord(2, 1), [coord(3, 3), coord(1, 3)]);

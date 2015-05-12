@@ -13,7 +13,7 @@ declare module Chess {
         movePiece(from: Coordinate, to: Coordinate): boolean;
     	toString(): string;
         whitesTurn: boolean;
-        createPiece(notation: string): Chess.Piece;
+        createPiece(notation: string, location: Coordinate): Chess.Piece;
     }
 
     /**
@@ -24,7 +24,11 @@ declare module Chess {
     }
     
     interface ConditionalMovement {
-        (piece: Piece): MovePattern|MovePattern[];
+        (piece: Piece, board: Engine): MovePattern|MovePattern[];
+    }
+    
+    interface PostMoveFunction {
+        (piece: Piece, board: Engine): void;
     }
 
     interface Coordinate {
@@ -41,6 +45,7 @@ declare module Chess {
     	file: number;
     	piece: Piece;
         availableMoves?: Coordinate[];
+        tags: string[];
     }
     
     interface Move {
@@ -49,6 +54,7 @@ declare module Chess {
     }
 
     interface Piece {
+        location: Coordinate;
     	name: string;
     	movement: MovePattern[];
     	notation: string;
@@ -58,7 +64,7 @@ declare module Chess {
     	isWhite?: boolean;
         moveHistory?: Move[];
         conditionalMoves?: ConditionalMovement[];
-        getConditionalMoves?: () => MovePattern[];
+        getConditionalMoves?: (board: Engine) => MovePattern[];
     }
 
     /**
@@ -72,7 +78,9 @@ declare module Chess {
     	canJump?: boolean;
     	canCapture?: boolean;
     	canMove?: boolean;
+        postMoveActions?: PostMoveFunction[];
     }
+    
     /**
      * @param direction The direction of movement from the perspective of the piece owner
      * @param count Number of squares in the direction. 0: All squares (e.g. rooks, queens, bishops). Otherwise 1 .. N. SingleMoves with negative numbers are ignored.

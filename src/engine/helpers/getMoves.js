@@ -37,7 +37,7 @@ function getMoves(coordinate) {
         return true;
     }
     var pathings = [];
-    var conditionalMoves = piece.getConditionalMoves();
+    var conditionalMoves = piece.getConditionalMoves(this);
     var movePatterns = piece.movement.slice(0);
     if (conditionalMoves.length > 0) {
         movePatterns = piece.movement.concat(conditionalMoves);

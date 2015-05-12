@@ -39,11 +39,13 @@ var Engine = (function () {
             });
         });
     };
-    Engine.prototype.createPiece = function (notation) {
+    Engine.prototype.createPiece = function (notation, location) {
         var matchingPiece = this.pieces.filter(function (p) { return p.notation === notation.toLocaleLowerCase(); });
         if (matchingPiece.length === 0)
             return null;
-        return new this.pieceFactory(matchingPiece[0], notation);
+        var newPiece = new this.pieceFactory(matchingPiece[0], notation);
+        newPiece.location = location;
+        return newPiece;
     };
     return Engine;
 })();

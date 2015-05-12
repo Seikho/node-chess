@@ -46,9 +46,11 @@ class Engine implements Chess.Engine {
 		});
 	}
 	
-	createPiece(notation: string): Chess.Piece {
+	createPiece(notation: string, location: Chess.Coordinate): Chess.Piece {
 		var matchingPiece = this.pieces.filter(p => p.notation === notation.toLocaleLowerCase());
 		if (matchingPiece.length === 0) return null;
-		return new this.pieceFactory(matchingPiece[0], notation);
+		var newPiece = new this.pieceFactory(matchingPiece[0], notation);
+		newPiece.location = location;
+		return newPiece;
 	}
 }
