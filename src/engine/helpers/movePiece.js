@@ -20,6 +20,7 @@ function movePiece(from, to) {
     origin.availableMoves = [];
     this.whitesTurn = !this.whitesTurn;
     this.populateAvailableMoves();
+    this.moveNumber++;
     var postMoveFunctions = this.postMoveFunctions;
     if (postMoveFunctions.length === 0)
         return true;

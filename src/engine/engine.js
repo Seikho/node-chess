@@ -9,14 +9,15 @@ var BasePiece = require("./basePiece");
  */
 var Engine = (function () {
     function Engine(ranks, files) {
+        this.moveNumber = 1;
         this.ranks = [];
         this.pieces = [];
-        this.positionParser = fenParser;
         this.capturedPieces = [];
+        this.postMoveFunctions = [];
+        this.positionParser = fenParser;
         this.toString = toString;
         this.create = createSqaures;
         this.pieceFactory = BasePiece;
-        this.postMoveFunctions = [];
         this.availableMoves = getMoves;
         this.movePiece = movePiece;
         ranks = ranks || 8;

@@ -21,16 +21,18 @@ class Engine implements Chess.Engine {
 	}
 	rankCount: number;
 	fileCount: number;
-	ranks: Chess.Rank[] = [];
-	pieces: Chess.Piece[] = [];
+	moveNumber: number = 1;
+	whitesTurn: boolean;
+	
+	ranks = [];
+	pieces = [];
+	capturedPieces = [];
+	postMoveFunctions = [];
+	
 	positionParser = fenParser;
-	capturedPieces: Chess.Piece[] = [];
 	toString = toString;
 	create = createSqaures;
-	whitesTurn: boolean;
-	pieceFactory = BasePiece;
-	postMoveFunctions: Chess.PostMoveFunction[] = [];
-	
+	pieceFactory = BasePiece;	
 	availableMoves = getMoves;
 	movePiece = movePiece;
 	

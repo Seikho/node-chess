@@ -2,6 +2,8 @@ declare module Chess {
     interface Engine {
     	rankCount: number;
     	fileCount: number;
+        moveNumber: number;
+        
     	ranks: Rank[];
     	pieces: Piece[];
     	positionParser: PositionParser;
