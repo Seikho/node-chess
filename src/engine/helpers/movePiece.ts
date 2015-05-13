@@ -22,14 +22,16 @@ function movePiece(from: Chess.Coordinate, to: Chess.Coordinate) {
 
 	this.whitesTurn = !this.whitesTurn;
 	this.populateAvailableMoves();
-	this.moveNumber++;
 	
 	var postMoveFunctions: Chess.PostMoveFunction[] = this.postMoveFunctions;
 	if (postMoveFunctions.length === 0) return true;
-	postMoveFunctions.forEach(fn => {
-		fn(destination.piece, this);
+	postMoveFunctions.forEach(postMove => {
+		if (!postMove.moveNumber || postMove.moveNumber === this.moveNumber)
+			postMove.action(destination.piece, this);
 	});
-	this.postMoveFunctions = [];
+	
+	this.moveNumber++;
+	this.postMoveFunctions = postMoveFunctions.filter(pmf => pmf.moveNumber >= this.moveNumber);
 	
 	return true;
 }

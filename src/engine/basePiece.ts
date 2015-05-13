@@ -27,7 +27,7 @@ class BasePiece implements Chess.Piece {
 		var movePatterns = [];
 		
 		this.conditionalMoves.forEach(move => {
-			var patterns = move(this, board);
+			var patterns = move.action(this, board);
 			if (!patterns) return;
 			movePatterns = movePatterns.concat(patterns);
 		});

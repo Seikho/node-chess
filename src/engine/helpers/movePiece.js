@@ -20,14 +20,15 @@ function movePiece(from, to) {
     origin.availableMoves = [];
     this.whitesTurn = !this.whitesTurn;
     this.populateAvailableMoves();
-    this.moveNumber++;
     var postMoveFunctions = this.postMoveFunctions;
     if (postMoveFunctions.length === 0)
         return true;
-    postMoveFunctions.forEach(function (fn) {
-        fn(destination.piece, _this);
+    postMoveFunctions.forEach(function (postMove) {
+        if (!postMove.moveNumber || postMove.moveNumber === _this.moveNumber)
+            postMove.action(destination.piece, _this);
     });
-    this.postMoveFunctions = [];
+    this.moveNumber++;
+    this.postMoveFunctions = postMoveFunctions.filter(function (pmf) { return pmf.moveNumber >= _this.moveNumber; });
     return true;
 }
 module.exports = movePiece;

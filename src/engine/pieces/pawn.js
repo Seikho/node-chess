@@ -5,10 +5,12 @@ var firstMovePattern = {
     canCapture: false,
     canMove: true
 };
-var firstMove = function (piece) {
-    if (piece.moveHistory.length === 0)
-        return firstMovePattern;
-    return null;
+var firstMove = {
+    action: function (piece) {
+        if (piece.moveHistory.length === 0)
+            return firstMovePattern;
+        return null;
+    }
 };
 var moveForward = {
     moves: [{ direction: Direction.Up, count: 1 }],
@@ -27,6 +29,7 @@ var forward = {
     count: 1
 };
 var pawn = {
+    location: null,
     name: "Pawn",
     movement: [moveForward, moveCapture],
     canQueen: true,

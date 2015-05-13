@@ -8,9 +8,11 @@ var firstMovePattern = {
 	canMove: true
 }
 
-var firstMove = (piece: Chess.Piece) => {
-	if (piece.moveHistory.length === 0) return firstMovePattern;
-	return null;
+var firstMove: Chess.ConditionalMovement = {
+	action: (piece: Chess.Piece) => {
+		if (piece.moveHistory.length === 0) return firstMovePattern;
+		return null;
+	}
 }
 
 var moveForward = {
@@ -32,7 +34,8 @@ var forward: Chess.SingleMove = {
 	count: 1
 }
 
-var pawn = {
+var pawn: Chess.Piece = {
+	location: null,
 	name: "Pawn",
 	movement: [moveForward, moveCapture],
 	canQueen: true,

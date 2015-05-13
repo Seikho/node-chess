@@ -26,11 +26,13 @@ declare module Chess {
     }
     
     interface ConditionalMovement {
-        (piece: Piece, board: Engine): MovePattern|MovePattern[];
+        moveNumber?: number; //  
+        action: (piece: Piece, board: Engine) => MovePattern|MovePattern[];
     }
     
     interface PostMoveFunction {
-        (piece: Piece, board: Engine): void;
+        moveNumber?: number;
+        action: (piece: Piece, board: Engine) => any;
     }
 
     interface Coordinate {

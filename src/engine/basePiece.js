@@ -14,7 +14,7 @@ var BasePiece = (function () {
         var _this = this;
         var movePatterns = [];
         this.conditionalMoves.forEach(function (move) {
-            var patterns = move(_this, board);
+            var patterns = move.action(_this, board);
             if (!patterns)
                 return;
             movePatterns = movePatterns.concat(patterns);
