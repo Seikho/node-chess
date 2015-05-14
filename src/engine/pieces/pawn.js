@@ -12,6 +12,11 @@ var firstMove = {
         return null;
     }
 };
+var enPassant = {
+    action: function (piece, board) {
+        return null;
+    }
+};
 var moveForward = {
     moves: [{ direction: Direction.Up, count: 1 }],
     canJump: false,

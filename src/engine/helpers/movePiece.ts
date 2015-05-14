@@ -23,6 +23,7 @@ function movePiece(from: Chess.Coordinate, to: Chess.Coordinate) {
 	this.whitesTurn = !this.whitesTurn;
 	this.populateAvailableMoves();
 	
+
 	var postMoveFunctions: Chess.PostMoveFunction[] = this.postMoveFunctions;
 	if (postMoveFunctions.length === 0) return true;
 	postMoveFunctions.forEach(postMove => {

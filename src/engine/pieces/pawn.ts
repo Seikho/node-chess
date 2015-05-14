@@ -15,6 +15,13 @@ var firstMove: Chess.ConditionalMovement = {
 	}
 }
 
+var enPassant: Chess.ConditionalMovement = {
+	action: (piece, board) => {
+		
+		return null;
+	}
+}
+
 var moveForward = {
 	moves: [{ direction: Direction.Up, count: 1 }],
 	canJump: false,
