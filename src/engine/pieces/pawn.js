@@ -14,7 +14,18 @@ var firstMove = {
 };
 var enPassant = {
     action: function (piece, board) {
-        return null;
+        // Only apply the 'EnPassant' tag if this is the first move and we moved 2 squares
+        if (piece.moveHistory.length !== 1)
+            return null;
+        var move = piece.moveHistory[0];
+        var squaresMoved = Math.abs(move.from.rank - move.to.rank);
+        if (squaresMoved !== 2)
+            return null;
+        // Find the middle square between the originating and desination squares for tagging
+        var isWhite = move.from.rank < move.to.rank;
+        var middleSquare = move.from.rank + (isWhite ? 1 : -1);
+        var squareToTag = { file: move.from.file, rank: middleSquare };
+        board.getSquare(squareToTag).tags.push({ enPassant: isWhite });
     }
 };
 var moveForward = {
