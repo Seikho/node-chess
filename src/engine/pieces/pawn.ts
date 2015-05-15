@@ -58,6 +58,7 @@ var pawn: Chess.Piece = {
 	canSpawn: false,
 	value: 1,
 	conditionalMoves: [firstMove],
-	notation: "p"
+	notation: "p",
+	postMoveFunctions: [enPassant]
 }
 

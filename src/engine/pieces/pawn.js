@@ -52,7 +52,8 @@ var pawn = {
     canSpawn: false,
     value: 1,
     conditionalMoves: [firstMove],
-    notation: "p"
+    notation: "p",
+    postMoveFunctions: [enPassant]
 };
 module.exports = pawn;
 //# sourceMappingURL=pawn.js.map
