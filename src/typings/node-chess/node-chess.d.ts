@@ -49,7 +49,7 @@ declare module Chess {
     	file: number;
     	piece: Piece;
         availableMoves?: Coordinate[];
-        tags: string[];
+        tags: any[]; // TODO: Change to more strongly typed interface
     }
     
     interface Move {
@@ -69,6 +69,7 @@ declare module Chess {
         moveHistory?: Move[];
         conditionalMoves?: ConditionalMovement[];
         getConditionalMoves?: (board: Engine) => MovePattern[];
+        postMoveFunctions?: PostMoveFunction[];
     }
 
     /**
