@@ -32,7 +32,6 @@
         "src/engine/parsers/fen.ts",
         "src/engine/parsers/stringParsers/fen.ts",
         "src/engine/pieces/bishop.ts",
-        "src/engine/pieces/helper.ts",
         "src/engine/pieces/king.ts",
         "src/engine/pieces/knight.ts",
         "src/engine/pieces/pawn.ts",

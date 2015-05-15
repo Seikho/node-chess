@@ -17,7 +17,6 @@ var firstMove: Chess.ConditionalMovement = {
 
 var enPassant: Chess.ConditionalMovement = {
 	action: (piece, board) => {
-		
 		return null;
 	}
 }
