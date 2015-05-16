@@ -1,6 +1,5 @@
 import getTransforms = require("./helpers/getTransforms");
 import applyTransform = require("./helpers/applyTransform");
-import Direction = require("../direction");
 export = BasePiece;
 
 class BasePiece implements Chess.BasePiece {
