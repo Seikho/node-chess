@@ -1,12 +1,11 @@
-var Direction = require("../../direction");
 var horzThenVert = {
-    moves: [{ direction: Direction.Horizontal, count: 2 }, { direction: Direction.Vertical, count: 1 }],
+    moves: [{ direction: 7 /* Horizontal */, count: 2 }, { direction: 8 /* Vertical */, count: 1 }],
     canJump: true,
     canCapture: true,
     canMove: true
 };
 var vertThenHorz = {
-    moves: [{ direction: Direction.Vertical, count: 2 }, { direction: Direction.Horizontal, count: 1 }],
+    moves: [{ direction: 8 /* Vertical */, count: 2 }, { direction: 7 /* Horizontal */, count: 1 }],
     canJump: true,
     canCapture: true,
     canMove: true

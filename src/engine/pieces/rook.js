@@ -1,6 +1,5 @@
-var Direction = require("../../direction");
 var lat = {
-    moves: [{ direction: Direction.Lateral, count: 0 }],
+    moves: [{ direction: 6 /* Lateral */, count: 0 }],
     canJump: false,
     canCapture: true,
     canMove: true

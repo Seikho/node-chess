@@ -1,15 +1,14 @@
-import Direction = require("../../direction");
 export = queen;
 
 var diag = {
-	moves: [{ direction: Direction.Diagonal, count: 0 }],
+	moves: [{ direction: Chess.Direction.Diagonal, count: 0 }],
 	canJump: false,
 	canMove: true,
 	canCapture: true
 }
 
 var lat = {
-	moves: [{ direction: Direction.Lateral, count: 0 }],
+	moves: [{ direction: Chess.Direction.Lateral, count: 0 }],
 	canJump: false,
 	canCapture: true,
 	canMove: true

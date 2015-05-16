@@ -1,15 +1,14 @@
-import Direction = require("../../direction");
 export = king;
 
 var diag = {
-	moves: [{ direction: Direction.Diagonal, count: 1 }],
+	moves: [{ direction: Chess.Direction.Diagonal, count: 1 }],
 	canJump: false,
 	canMove: true,
 	canCapture: true
 }
 
 var lat = {
-	moves: [{ direction: Direction.Lateral, count: 1 }],
+	moves: [{ direction: Chess.Direction.Lateral, count: 1 }],
 	canJump: false,
 	canMove: true,
 	canCapture: true

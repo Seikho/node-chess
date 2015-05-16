@@ -1,8 +1,7 @@
-import Direction = require("../../direction");
 export = bishop;
 
 var diag = {
-	moves: [{ direction: Direction.Diagonal, count: 0 }],
+	moves: [{ direction: Chess.Direction.Diagonal, count: 0 }],
 	canJump: false,
 	canMove: true,
 	canCapture: true

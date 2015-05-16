@@ -1,15 +1,14 @@
-import Direction = require("../../direction");
 export = knight;
 
 var horzThenVert = {
-	moves: [{direction: Direction.Horizontal, count: 2}, {direction: Direction.Vertical, count: 1}],
+	moves: [{direction: Chess.Direction.Horizontal, count: 2}, {direction: Chess.Direction.Vertical, count: 1}],
 	canJump: true,
 	canCapture: true,
 	canMove: true
 }
 
 var vertThenHorz = {
-	moves: [{direction: Direction.Vertical, count: 2}, {direction: Direction.Horizontal, count: 1}],
+	moves: [{direction: Chess.Direction.Vertical, count: 2}, {direction: Chess.Direction.Horizontal, count: 1}],
 	canJump: true,
 	canCapture: true,
 	canMove: true

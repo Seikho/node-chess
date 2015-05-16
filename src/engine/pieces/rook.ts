@@ -1,8 +1,7 @@
-import Direction = require("../../direction");
 export = rook;
 
 var lat = {
-	moves: [{ direction: Direction.Lateral, count: 0 }],
+	moves: [{ direction: Chess.Direction.Lateral, count: 0 }],
 	canJump: false,
 	canCapture: true,
 	canMove: true

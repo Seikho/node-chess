@@ -1,12 +1,11 @@
-var Direction = require("../../direction");
 var diag = {
-    moves: [{ direction: Direction.Diagonal, count: 0 }],
+    moves: [{ direction: 9 /* Diagonal */, count: 0 }],
     canJump: false,
     canMove: true,
     canCapture: true
 };
 var lat = {
-    moves: [{ direction: Direction.Lateral, count: 0 }],
+    moves: [{ direction: 6 /* Lateral */, count: 0 }],
     canJump: false,
     canCapture: true,
     canMove: true
