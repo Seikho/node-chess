@@ -23,12 +23,6 @@ var BasePiece = (function () {
         });
         return movePatterns;
     };
-    BasePiece.prototype.makeConditionalMove = function (condition, patterns) {
-        return function () {
-            if (condition())
-                return patterns;
-        };
-    };
     BasePiece.prototype.getRelativeDestinations = function (direction, count) {
         var _this = this;
         var transforms = getTransforms({ direction: direction, count: count }, this.isWhite);

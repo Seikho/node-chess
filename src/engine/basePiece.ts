@@ -3,7 +3,7 @@ import applyTransform = require("./helpers/applyTransform");
 import Direction = require("../direction");
 export = BasePiece;
 
-class BasePiece implements Chess.Piece {
+class BasePiece implements Chess.BasePiece {
 	constructor(piece: Chess.Piece, notation: string) {
 		this.isWhite = notation === piece.notation.toUpperCase();
 		this.name = piece.name;
@@ -37,13 +37,7 @@ class BasePiece implements Chess.Piece {
 		return movePatterns;
 	}
 	
-	makeConditionalMove(condition: () => boolean, patterns: Chess.MovePattern|Chess.MovePattern[]) {
-		return () => {
-			if (condition()) return patterns;
-		};
-	}
-	
-	getRelativeDestinations(direction: Direction, count: number): Chess.Coordinate[] {
+	getRelativeDestinations(direction: Chess.Direction, count: number): Chess.Coordinate[] {
 		var transforms = getTransforms({ direction: direction, count: count }, this.isWhite);
 		
 		var destinations = transforms.map(transform => applyTransform(this.location, transform));
