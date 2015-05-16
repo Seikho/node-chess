@@ -1,6 +1,5 @@
-var Direction = require("../../direction");
 var firstMovePattern = {
-    moves: [{ direction: Direction.Up, count: 2 }],
+    moves: [{ direction: 0 /* Up */, count: 2 }],
     canJump: false,
     canCapture: false,
     canMove: true
@@ -34,19 +33,19 @@ var allowEnpassantCapture = {
     }
 };
 var moveForward = {
-    moves: [{ direction: Direction.Up, count: 1 }],
+    moves: [{ direction: 0 /* Up */, count: 1 }],
     canJump: false,
     canCapture: false,
     canMove: true
 };
 var moveCapture = {
-    moves: [{ direction: Direction.DiagonalUp, count: 1 }],
+    moves: [{ direction: 4 /* DiagonalUp */, count: 1 }],
     canJump: false,
     canCapture: true,
     canMove: false
 };
 var forward = {
-    direction: Direction.Up,
+    direction: 0 /* Up */,
     count: 1
 };
 var pawn = {

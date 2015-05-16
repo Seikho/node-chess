@@ -1,8 +1,7 @@
-import Direction = require("../../direction");
 export = pawn;
 
 var firstMovePattern = {
-	moves: [{ direction: Direction.Up, count: 2 }],
+	moves: [{ direction: Chess.Direction.Up, count: 2 }],
 	canJump: false,
 	canCapture: false,
 	canMove: true
@@ -22,7 +21,7 @@ var enpassantCapture: Chess.ConditionalMovement = {
 }
 
 var allowEnpassantCapture = {
-    action: function (piece: Chess.Piece, board: Chess.Engine) {
+    action: function (piece: Chess.BasePiece, board: Chess.Engine) {
 		// Only apply the 'EnPassant' tag if this is the first move and we moved 2 squares
         if (piece.moveHistory.length !== 1) return null;
         var move = piece.moveHistory[0];
@@ -30,6 +29,7 @@ var allowEnpassantCapture = {
         if (squaresMoved !== 2) return null;
         
 		// Find the middle square between the originating and desination squares for tagging
+		
 		var isWhite = move.from.rank < move.to.rank; 
         var middleSquare = move.from.rank + (isWhite ? 1 : -1);
 		var squareToTag: Chess.Coordinate = { file: move.from.file, rank: middleSquare };
@@ -38,21 +38,21 @@ var allowEnpassantCapture = {
 };
 
 var moveForward = {
-	moves: [{ direction: Direction.Up, count: 1 }],
+	moves: [{ direction: Chess.Direction.Up, count: 1 }],
 	canJump: false,
 	canCapture: false,
 	canMove: true
 }
 
 var moveCapture = {
-	moves: [{ direction: Direction.DiagonalUp, count: 1 }],
+	moves: [{ direction: Chess.Direction.DiagonalUp, count: 1 }],
 	canJump: false,
 	canCapture: true,
 	canMove: false
 }
 
 var forward: Chess.SingleMove = {
-	direction: Direction.Up,
+	direction: Chess.Direction.Up,
 	count: 1
 }
 
