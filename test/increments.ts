@@ -1,5 +1,4 @@
 import nodeChess = require("../src/index");
-import Direction = require("../src/direction");
 import chai = require("chai");
 var expect = chai.expect;
 
@@ -50,7 +49,7 @@ function compare(left: Chess.Coordinate, right: Chess.Coordinate): boolean {
 	return left.rank === right.rank && left.file === right.file;
 }
 
-function move(direction: Direction, count: number): Chess.SingleMove {
+function move(direction: Chess.Direction, count: number): Chess.SingleMove {
 	return { direction: direction, count: count };
 }
 

@@ -1,4 +1,3 @@
-var Direction = require("../../direction");
 function getTransforms(singleMove, isWhite) {
     // Return the inverse of the transform if from black perspective
     var x = isWhite ? 1 : -1;
@@ -11,25 +10,25 @@ function getTransforms(singleMove, isWhite) {
     var downLeft = { rank: -1 * x, file: -1 * x };
     var downRight = { rank: -1 * x, file: 1 * x };
     switch (singleMove.direction) {
-        case Direction.Up:
+        case 0 /* Up */:
             return [up];
-        case Direction.Down:
+        case 1 /* Down */:
             return [down];
-        case Direction.Left:
+        case 2 /* Left */:
             return [left];
-        case Direction.Right:
+        case 3 /* Right */:
             return [right];
-        case Direction.DiagonalUp:
+        case 4 /* DiagonalUp */:
             return [upLeft, upRight];
-        case Direction.DiagonalDown:
+        case 5 /* DiagonalDown */:
             return [downLeft, downRight];
-        case Direction.Diagonal:
+        case 9 /* Diagonal */:
             return [upLeft, upRight, downLeft, downRight];
-        case Direction.Horizontal:
+        case 7 /* Horizontal */:
             return [left, right];
-        case Direction.Vertical:
+        case 8 /* Vertical */:
             return [up, down];
-        case Direction.Lateral:
+        case 6 /* Lateral */:
             return [up, down, left, right];
         default:
             throw "InvalidDirectionException: The direction provided was invalid";
