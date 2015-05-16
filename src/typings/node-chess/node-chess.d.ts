@@ -89,10 +89,10 @@ declare module Chess {
         Horizontal,
         Vertical,
         Diagonal,
-        DiagonalUpLeft,
-        DiagonalUpRight,
-        DiagonalDownLeft,
-        DiagonalDownRight
+        UpLeft,
+        UpRight,
+        DownLeft,
+        DownRight
     }
     
     /**
