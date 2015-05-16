@@ -20,6 +20,7 @@
         "src/engine/basePiece.ts",
         "src/engine/engine.ts",
         "src/engine/helpers/addCoordinates.ts",
+        "src/engine/helpers/applyTransform.ts",
         "src/engine/helpers/createSquares.ts",
         "src/engine/helpers/getIncrements.ts",
         "src/engine/helpers/getMoves.ts",
