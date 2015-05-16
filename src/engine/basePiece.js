@@ -1,3 +1,5 @@
+var getTransforms = require("./helpers/getTransforms");
+var applyTransform = require("./helpers/applyTransform");
 var BasePiece = (function () {
     function BasePiece(piece, notation) {
         this.isWhite = notation === piece.notation.toUpperCase();
@@ -26,6 +28,12 @@ var BasePiece = (function () {
             if (condition())
                 return patterns;
         };
+    };
+    BasePiece.prototype.getRelativeDestinations = function (direction, count) {
+        var _this = this;
+        var transforms = getTransforms({ direction: direction, count: count }, this.isWhite);
+        var destinations = transforms.map(function (transform) { return applyTransform(_this.location, transform); });
+        return destinations;
     };
     return BasePiece;
 })();

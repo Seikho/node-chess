@@ -1,5 +1,6 @@
 import getTransforms = require("./helpers/getTransforms");
 import applyTransform = require("./helpers/applyTransform");
+import Direction = require("../direction");
 export = BasePiece;
 
 class BasePiece implements Chess.Piece {
@@ -42,5 +43,10 @@ class BasePiece implements Chess.Piece {
 		};
 	}
 	
-	
+	getRelativeDestinations(direction: Direction, count: number): Chess.Coordinate[] {
+		var transforms = getTransforms({ direction: direction, count: count }, this.isWhite);
+		
+		var destinations = transforms.map(transform => applyTransform(this.location, transform));
+		return destinations;
+	}
 }
