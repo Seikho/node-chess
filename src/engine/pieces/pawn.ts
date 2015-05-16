@@ -16,8 +16,8 @@ var firstMove: Chess.ConditionalMovement = {
 
 var enpassantCapture: Chess.ConditionalMovement = {
 	action: (piece, board) => {
-		var leftSquare = piece.getRelativeDestinations(Chess.Direction.DiagonalUpLeft, 1);
-		var rightSquare = piece.getRelativeDestinations(Chess.Direction.DiagonalUpRight, 1);
+		var leftSquare = piece.getRelativeSquares(Chess.Direction.DiagonalUpLeft, 1)[0];
+		var rightSquare = piece.getRelativeSquares(Chess.Direction.DiagonalUpRight, 1)[0];
 		
 	}
 }
