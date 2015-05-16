@@ -1,3 +1,5 @@
+import getTransforms = require("./helpers/getTransforms");
+import applyTransform = require("./helpers/applyTransform");
 export = BasePiece;
 
 class BasePiece implements Chess.Piece {
@@ -39,4 +41,6 @@ class BasePiece implements Chess.Piece {
 			if (condition()) return patterns;
 		};
 	}
+	
+	
 }

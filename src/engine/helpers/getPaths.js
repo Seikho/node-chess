@@ -31,6 +31,7 @@ function getPathingForTransforms(coordinate, transforms, count, bounds) {
         return paths;
     }
     // TODO: Refactor
+    // Incrementally apply the transform to create a 'path' 
     transforms.forEach(function (transform) {
         var newPath = [];
         for (var i = 1; i <= count; i++) {

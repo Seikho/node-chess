@@ -40,8 +40,7 @@ function getPathingForTransforms(coordinate: Chess.Coordinate, transforms: Chess
     }
 
     // TODO: Refactor
-    
-
+    // Incrementally apply the transform to create a 'path' 
     transforms.forEach(transform => {
         var newPath: Chess.Coordinate[] = [];
         for (var i = 1; i <= count; i++) {
@@ -56,7 +55,7 @@ function getPathingForTransforms(coordinate: Chess.Coordinate, transforms: Chess
     return paths;
 }
 
-function combinePathings(leftPathings: Chess.Coordinate[], rightPathings: Array<Chess.Coordinate[]>): Array<Chess.Coordinate[]> {
+function combinePathings(leftPathings: Chess.Coordinate[], rightPathings: Chess.Coordinate[][]): Array<Chess.Coordinate[]> {
     var pathings: Array<Chess.Coordinate[]> = [];
     rightPathings.forEach(rightPathing => {
         var newPathing = leftPathings.slice(0);
