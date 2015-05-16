@@ -15,7 +15,7 @@ declare module Chess {
         movePiece(from: Coordinate, to: Coordinate): boolean;
     	toString(): string;
         whitesTurn: boolean;
-        createPiece(notation: string, location: Coordinate): Chess.Piece;
+        createPiece(notation: string, location: Coordinate): Chess.BasePiece;
     }
 
     /**
@@ -27,12 +27,12 @@ declare module Chess {
     
     interface ConditionalMovement {
         moveNumber?: number; //  
-        action: (piece: Piece, board: Engine) => MovePattern|MovePattern[];
+        action: (piece: BasePiece, board: Engine) => MovePattern|MovePattern[];
     }
     
     interface PostMoveFunction {
         moveNumber?: number;
-        action: (piece: Piece, board: Engine) => any;
+        action: (piece: BasePiece, board: Engine) => any;
     }
 
     interface Coordinate {
@@ -46,8 +46,9 @@ declare module Chess {
     }
 
     interface Square {
+        rank: number;
     	file: number;
-    	piece: Piece;
+    	piece: BasePiece;
         availableMoves?: Coordinate[];
         tags: any[]; // TODO: Change to more strongly typed interface
     }
@@ -87,7 +88,11 @@ declare module Chess {
         Lateral,
         Horizontal,
         Vertical,
-        Diagonal
+        Diagonal,
+        DiagonalUpLeft,
+        DiagonalUpRight,
+        DiagonalDownLeft,
+        DiagonalDownRight
     }
     
     /**

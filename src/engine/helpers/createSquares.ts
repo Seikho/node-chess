@@ -10,6 +10,7 @@ function createSquares() {
 
         for (var file = 0; file < this.fileCount;file++) {
             row.squares[file+1] = {
+                rank: rank,
                 file: file,
                 piece: null,
                 availableMoves: [],
