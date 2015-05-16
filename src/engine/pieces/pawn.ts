@@ -15,7 +15,13 @@ var firstMove: Chess.ConditionalMovement = {
 	}
 }
 
-var enPassant = {
+var enpassantCapture: Chess.ConditionalMovement = {
+	action: (piece, board) => {
+		return null;
+	}
+}
+
+var allowEnpassantCapture = {
     action: function (piece: Chess.Piece, board: Chess.Engine) {
 		// Only apply the 'EnPassant' tag if this is the first move and we moved 2 squares
         if (piece.moveHistory.length !== 1) return null;
@@ -59,6 +65,6 @@ var pawn: Chess.Piece = {
 	value: 1,
 	conditionalMoves: [firstMove],
 	notation: "p",
-	postMoveFunctions: [enPassant]
+	postMoveFunctions: [allowEnpassantCapture]
 }
 

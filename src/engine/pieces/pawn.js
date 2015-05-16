@@ -12,7 +12,12 @@ var firstMove = {
         return null;
     }
 };
-var enPassant = {
+var enpassantCapture = {
+    action: function (piece, board) {
+        return null;
+    }
+};
+var allowEnpassantCapture = {
     action: function (piece, board) {
         // Only apply the 'EnPassant' tag if this is the first move and we moved 2 squares
         if (piece.moveHistory.length !== 1)
@@ -53,7 +58,7 @@ var pawn = {
     value: 1,
     conditionalMoves: [firstMove],
     notation: "p",
-    postMoveFunctions: [enPassant]
+    postMoveFunctions: [allowEnpassantCapture]
 };
 module.exports = pawn;
 //# sourceMappingURL=pawn.js.map
