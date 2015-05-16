@@ -71,7 +71,25 @@ declare module Chess {
         getConditionalMoves?: (board: Engine) => MovePattern[];
         postMoveFunctions?: PostMoveFunction[];
     }
-
+    
+    interface BasePiece extends Piece {
+        getConditionalMoves: (board: Engine) => MovePattern[];
+        getRelativeDestinations: (direction: Direction, count: number) => Chess.Coordinate[];
+    }
+    
+    const enum Direction {
+        Up,
+        Down,
+        Left,
+        Right,
+        DiagonalUp,
+        DiagonalDown,
+        Lateral,
+        Horizontal,
+        Vertical,
+        Diagonal
+    }
+    
     /**
      * @param moves The complete pattern of movement
      * @param canJump Can the piece jump over pieces to reach the location
