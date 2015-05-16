@@ -30,13 +30,13 @@ function getTransforms(singleMove, isWhite) {
             return [up, down];
         case 6 /* Lateral */:
             return [up, down, left, right];
-        case Chess.Direction.DiagonalUpLeft:
+        case 10 /* UpLeft */:
             return [upLeft];
-        case Chess.Direction.DiagonalUpRight:
+        case 11 /* UpRight */:
             return [upRight];
-        case Chess.Direction.DiagonalDownLeft:
+        case 12 /* DownLeft */:
             return [downLeft];
-        case Chess.Direction.DiagonalDownRight:
+        case 13 /* DownRight */:
             return [downRight];
         default:
             throw "InvalidDirectionException: The direction provided was invalid";

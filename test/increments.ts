@@ -31,6 +31,8 @@ describe("movement tests", () => {
 	pieceMoveTest("[White] will move g1 to h3", coord(7,1), coord(8,3), true);
 	pieceMoveTest("[Black] will move b7 pawn to b5", coord(2,7), coord(2,5), true);
 	pieceMoveTest("[White] will capture from a4 to b5", coord(1,4), coord(2,5), true);
+	pieceMoveTest("[Black] will move c7 pawn to c5, enabling enpassant capture", coord(3,7), coord(3,5), true);
+	pieceMoveTest("[White] will capture EnPassant from b5 to c6", coord(2,5), coord(3,6), true);
 });
 
 function pieceAvailableMovesTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {

@@ -11,6 +11,7 @@ var BasePiece = (function () {
         this.notation = notation;
         this.conditionalMoves = piece.conditionalMoves || [];
         this.moveHistory = [];
+        this.postMoveFunctions = piece.postMoveFunctions || [];
     }
     BasePiece.prototype.getConditionalMoves = function (board) {
         var _this = this;

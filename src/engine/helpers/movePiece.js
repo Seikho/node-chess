@@ -16,17 +16,21 @@ function movePiece(from, to) {
     destination.piece.location = { file: to.file, rank: to.rank };
     destination.availableMoves = [];
     destination.piece.moveHistory.push({ from: from, to: to });
+    var pieceFunctions = destination.piece.postMoveFunctions;
+    if (pieceFunctions.length > 0) {
+        pieceFunctions.forEach(function (fn) { return fn.action(destination.piece, _this); });
+    }
     origin.piece = null;
     origin.availableMoves = [];
     this.whitesTurn = !this.whitesTurn;
     this.populateAvailableMoves();
     var postMoveFunctions = this.postMoveFunctions;
-    if (postMoveFunctions.length === 0)
-        return true;
-    postMoveFunctions.forEach(function (postMove) {
-        if (!postMove.moveNumber || postMove.moveNumber === _this.moveNumber)
-            postMove.action(destination.piece, _this);
-    });
+    if (postMoveFunctions.length > 0) {
+        postMoveFunctions.forEach(function (postMove) {
+            if (!postMove.moveNumber || postMove.moveNumber === _this.moveNumber)
+                postMove.action(destination.piece, _this);
+        });
+    }
     this.moveNumber++;
     this.postMoveFunctions = postMoveFunctions.filter(function (pmf) { return pmf.moveNumber >= _this.moveNumber; });
     return true;

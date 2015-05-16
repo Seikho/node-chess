@@ -26,8 +26,13 @@ var firstMove = {
 function hasEnpassantTag(direction, piece, board) {
     var coordinate = piece.getRelativeDestinations(direction, 1);
     var square = board.getSquare(coordinate[0]);
+    if (square === null)
+        return false;
+    if (square.tags === null)
+        return false;
     // If the square has an 'enpassant' tag of the opposite color (!thisPiece.isWhite), we can capture.
-    return square.tags.some(function (tag) { return tag.enpassant === !piece.isWhite; });
+    var result = square.tags.some(function (tag) { return tag.enpassant === !piece.isWhite; });
+    return result;
 }
 var enpassantCapture = {
     action: function (piece, board) {

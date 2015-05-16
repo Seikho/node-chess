@@ -30,16 +30,22 @@ var firstMove: Chess.ConditionalMovement = {
 
 function hasEnpassantTag(direction: Chess.Direction, piece: Chess.BasePiece, board: Chess.Engine) {
 	var coordinate = piece.getRelativeDestinations(direction, 1);
+	
+	
 	var square = board.getSquare(coordinate[0]);
 	
+	if (square === null) return false;
+	if (square.tags === null) return false;
+	
+	
 	// If the square has an 'enpassant' tag of the opposite color (!thisPiece.isWhite), we can capture.
-	return square.tags.some(tag => tag.enpassant === !piece.isWhite);
+	var result = square.tags.some(tag => tag.enpassant === !piece.isWhite);
+	return result;
 }
 
 var enpassantCapture: Chess.ConditionalMovement = {
 	action: (piece, board) => {
 		var captures = [];
-		
 		if (hasEnpassantTag(Chess.Direction.UpLeft, piece, board)) captures.push(leftEnpassant);
 		if (hasEnpassantTag(Chess.Direction.UpRight, piece, board)) captures.push(rightEnpassant);
 		return captures.length === 0 ? null : captures;
@@ -52,8 +58,9 @@ var allowEnpassantCapture: Chess.ConditionalMovement = {
         if (piece.moveHistory.length !== 1) return null;
         var move = piece.moveHistory[0];
         var squaresMoved = Math.abs(move.from.rank - move.to.rank);
+		
         if (squaresMoved !== 2) return null;
-        
+
 		// Find the middle square between the originating and desination squares for tagging
 		var coordinateToTag = piece.getRelativeDestinations(Chess.Direction.Down, 1)[0];
 		var squareToTag = board.getSquare(coordinateToTag);

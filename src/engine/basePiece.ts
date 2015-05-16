@@ -13,6 +13,7 @@ class BasePiece implements Chess.BasePiece {
 		this.notation = notation;
 		this.conditionalMoves = piece.conditionalMoves || [];
 		this.moveHistory = [];
+		this.postMoveFunctions = piece.postMoveFunctions || [];
 	}
 	location: Chess.Coordinate;
 	name: string;
@@ -24,6 +25,7 @@ class BasePiece implements Chess.BasePiece {
 	moveHistory: Chess.Move[];
 	conditionalMoves: Chess.ConditionalMovement[];
 	isWhite: boolean;
+	postMoveFunctions: Chess.PostMoveFunction[];
 	 
 	getConditionalMoves(board: Chess.Engine) {
 		var movePatterns = [];

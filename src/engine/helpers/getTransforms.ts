@@ -33,13 +33,13 @@ function getTransforms(singleMove: Chess.SingleMove, isWhite: boolean): Chess.Co
 			return [up, down];
 		case Chess.Direction.Lateral:
 			return [up, down, left, right];
-		case Chess.Direction.DiagonalUpLeft:
+		case Chess.Direction.UpLeft:
 			return [upLeft];
-		case Chess.Direction.DiagonalUpRight:
+		case Chess.Direction.UpRight:
 			return [upRight];
-		case Chess.Direction.DiagonalDownLeft:
+		case Chess.Direction.DownLeft:
 			return [downLeft];
-		case Chess.Direction.DiagonalDownRight:
+		case Chess.Direction.DownRight:
 			return [downRight];
 		default:
 			throw "InvalidDirectionException: The direction provided was invalid";
