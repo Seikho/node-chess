@@ -8,7 +8,7 @@ var firstMovePattern = {
 }
 
 var firstMove: Chess.ConditionalMovement = {
-	action: (piece: Chess.Piece) => {
+	action: (piece) => {
 		if (piece.moveHistory.length === 0) return firstMovePattern;
 		return null;
 	}
@@ -16,12 +16,14 @@ var firstMove: Chess.ConditionalMovement = {
 
 var enpassantCapture: Chess.ConditionalMovement = {
 	action: (piece, board) => {
-		return null;
+		var leftSquare = piece.getRelativeDestinations(Chess.Direction.DiagonalUpLeft, 1);
+		var rightSquare = piece.getRelativeDestinations(Chess.Direction.DiagonalUpRight, 1);
+		
 	}
 }
 
-var allowEnpassantCapture = {
-    action: function (piece: Chess.BasePiece, board: Chess.Engine) {
+var allowEnpassantCapture: Chess.ConditionalMovement = {
+    action: function (piece, board) {
 		// Only apply the 'EnPassant' tag if this is the first move and we moved 2 squares
         if (piece.moveHistory.length !== 1) return null;
         var move = piece.moveHistory[0];
@@ -29,11 +31,10 @@ var allowEnpassantCapture = {
         if (squaresMoved !== 2) return null;
         
 		// Find the middle square between the originating and desination squares for tagging
+		var squareToTag = piece.getRelativeDestinations(Chess.Direction.Down, 1)[0];
+        board.getSquare(squareToTag).tags.push({ enPassant: piece.isWhite });
 		
-		var isWhite = move.from.rank < move.to.rank; 
-        var middleSquare = move.from.rank + (isWhite ? 1 : -1);
-		var squareToTag: Chess.Coordinate = { file: move.from.file, rank: middleSquare };
-        board.getSquare(squareToTag).tags.push({ enPassant: isWhite });
+		//TODO: Add PostMoveFunction to board to remove the tag after the next move.
     }
 };
 

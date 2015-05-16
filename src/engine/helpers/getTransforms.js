@@ -30,6 +30,14 @@ function getTransforms(singleMove, isWhite) {
             return [up, down];
         case 6 /* Lateral */:
             return [up, down, left, right];
+        case 10 /* DiagonalUpLeft */:
+            return [upLeft];
+        case 11 /* DiagonalUpRight */:
+            return [upRight];
+        case 12 /* DiagonalDownLeft */:
+            return [downLeft];
+        case 13 /* DiagonalDownRight */:
+            return [downRight];
         default:
             throw "InvalidDirectionException: The direction provided was invalid";
     }

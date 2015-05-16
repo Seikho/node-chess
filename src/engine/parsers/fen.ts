@@ -34,12 +34,13 @@ function createFilesForRank(engine: Chess.Engine, fenRank: string, rankNumber: n
 
 			// Insert blank squares from the current square, to currentSquare+notationNumber.
 			for (var j = i; j < i + notationNumber; j++) {
-				rank.squares[j] = { file: j, piece: null, tags: [] };
+				rank.squares[j] = { rank: rankNumber, file: j, piece: null, tags: [] };
 			}
 			i += notationNumber - 1;
 			continue;
 		}
-		var square = {
+		var square: Chess.Square = {
+			rank: rankNumber,
 			file: i,
 			piece: engine.createPiece(notation, { file: i, rank: rankNumber }),
 			tags: []
