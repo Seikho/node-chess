@@ -16,7 +16,6 @@
         "test/increments.ts",
         "src/analyzer.ts",
         "src/castling.ts",
-        "src/direction.ts",
         "src/engine/basePiece.ts",
         "src/engine/engine.ts",
         "src/engine/helpers/addCoordinates.ts",
