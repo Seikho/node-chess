@@ -16,8 +16,8 @@ var firstMove: Chess.ConditionalMovement = {
 
 var enpassantCapture: Chess.ConditionalMovement = {
 	action: (piece, board) => {
-		var leftSquare = piece.getRelativeSquares(Chess.Direction.DiagonalUpLeft, 1)[0];
-		var rightSquare = piece.getRelativeSquares(Chess.Direction.DiagonalUpRight, 1)[0];
+		var leftSquare = piece.getRelativeDestinations(Chess.Direction.DiagonalUpLeft, 1)[0];
+		var rightSquare = piece.getRelativeDestinations(Chess.Direction.DiagonalUpRight, 1)[0];
 		
 	}
 }
@@ -31,8 +31,9 @@ var allowEnpassantCapture: Chess.ConditionalMovement = {
         if (squaresMoved !== 2) return null;
         
 		// Find the middle square between the originating and desination squares for tagging
-		var squareToTag = piece.getRelativeDestinations(Chess.Direction.Down, 1)[0];
-        board.getSquare(squareToTag).tags.push({ enPassant: piece.isWhite });
+		var coordinateToTag = piece.getRelativeDestinations(Chess.Direction.Down, 1)[0];
+		var squareToTag = board.getSquare(coordinateToTag);
+        squareToTag.tags.push({ enPassant: piece.isWhite });
 		
 		//TODO: Add PostMoveFunction to board to remove the tag after the next move.
     }

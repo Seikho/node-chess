@@ -13,8 +13,8 @@ var firstMove = {
 };
 var enpassantCapture = {
     action: function (piece, board) {
-        var leftSquare = piece.getRelativeDestinations(10 /* DiagonalUpLeft */, 1);
-        var rightSquare = piece.getRelativeDestinations(11 /* DiagonalUpRight */, 1);
+        var leftSquare = piece.getRelativeDestinations(10 /* DiagonalUpLeft */, 1)[0];
+        var rightSquare = piece.getRelativeDestinations(11 /* DiagonalUpRight */, 1)[0];
     }
 };
 var allowEnpassantCapture = {
@@ -27,8 +27,9 @@ var allowEnpassantCapture = {
         if (squaresMoved !== 2)
             return null;
         // Find the middle square between the originating and desination squares for tagging
-        var squareToTag = piece.getRelativeDestinations(1 /* Down */, 1)[0];
-        board.getSquare(squareToTag).tags.push({ enPassant: piece.isWhite });
+        var coordinateToTag = piece.getRelativeDestinations(1 /* Down */, 1)[0];
+        var squareToTag = board.getSquare(coordinateToTag);
+        squareToTag.tags.push({ enPassant: piece.isWhite });
         //TODO: Add PostMoveFunction to board to remove the tag after the next move.
     }
 };

@@ -75,7 +75,7 @@ declare module Chess {
     
     interface BasePiece extends Piece {
         getConditionalMoves: (board: Engine) => MovePattern[];
-        getRelativeSquares: (direction: Direction, count: number) => Chess.Square[];
+        getRelativeDestinations: (direction: Direction, count: number) => Chess.Coordinate[];
     }
     
     const enum Direction {
