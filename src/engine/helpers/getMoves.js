@@ -7,6 +7,8 @@ function getMoves(coordinate) {
     var piece = square.piece;
     if (!piece)
         return [];
+    if (piece.isWhite !== self.whitesTurn)
+        return [];
     var bounds = { file: this.fileCount, rank: this.rankCount };
     function isValidPath(path, move) {
         // TODO: Rules API would be used here

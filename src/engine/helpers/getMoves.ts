@@ -9,7 +9,7 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
     // No piece, no moves.
     var piece = square.piece;
     if (!piece) return [];
-
+    if (piece.isWhite !== self.whitesTurn) return [];
     var bounds = { file: this.fileCount, rank: this.rankCount };
 
     function isValidPath(path: Chess.Coordinate[], move: Chess.MovePattern): boolean {
