@@ -2,7 +2,7 @@ import isInBounds = require("./isInBounds");
 import getTransforms = require("./getTransforms");
 export = getPaths;
 
-function getPaths(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, isWhite: boolean, bounds: Chess.Coordinate) {
+function getPaths(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, isWhite: boolean, bounds: Chess.Coordinate): Chess.Coordinate[][] {
     // TODO: Refactor
     var move = movePattern.moves[0];
 
@@ -13,7 +13,7 @@ function getPaths(coordinate: Chess.Coordinate, movePattern: Chess.MovePattern, 
     if (!movePattern.moves[1]) return pathings;
 
     transforms = getTransforms(movePattern.moves[1], isWhite);
-    var joinedPathings = [];
+    var joinedPathings: Chess.Coordinate[][] = [];
     for (var p in pathings) {
         var pathing = pathings[p];
 

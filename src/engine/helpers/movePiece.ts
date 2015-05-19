@@ -1,44 +1,48 @@
 export = movePiece;
 function movePiece(from: Chess.Coordinate, to: Chess.Coordinate) {
-	var origin: Chess.Square = this.getSquare(from);
+	var self: Chess.Engine = this;
+	var origin: Chess.Square = self.getSquare(from);
 	if (!origin || !origin.piece) return false;
 		
 	// Enforce turn-based movement
-	if (this.whitesTurn !== origin.piece.isWhite) return false; 
+	if (self.whitesTurn !== origin.piece.isWhite) return false; 
 		
 	// The 'destination' square must be in the square's list of available moves
-	if (!origin.availableMoves.some(availableMove => availableMove.to.file === to.file && availableMove.to.rank === to.rank)) return false;
+	var moveMatches = origin.availableMoves.filter(m => m.to.file === to.file && m.to.rank === to.rank);
+	if (moveMatches.length === 0) return false;
+	var move = moveMatches[0];
 
-	var destination: Chess.Square = this.getSquare(to);
-	if (destination.piece) this.capturedPieces.push(destination.piece)
+	var destination: Chess.Square = self.getSquare(to);
+	if (destination.piece) self.capturedPieces.push(destination.piece)
 
 	destination.piece = origin.piece;
 	destination.piece.location = { file: to.file, rank: to.rank };
 	destination.availableMoves = [];
 	destination.piece.moveHistory.push({ from: from, to: to });
 	
-	var pieceFunctions = destination.piece.postMoveFunctions;
-	if (pieceFunctions.length > 0) {	
-		pieceFunctions.forEach(fn => fn.action(destination.piece, this));
-	}
-
+	var movePatternPostActions = move.postMoveActions || [];
+	movePatternPostActions.forEach(func => {
+		func.action(destination.piece, self);
+	});
+	
+	var pieceFunctions = destination.piece.postMoveFunctions || [];
+	pieceFunctions.forEach(fn => fn.action(destination.piece, self));
+	
 	origin.piece = null;
 	origin.availableMoves = [];
 
-	this.whitesTurn = !this.whitesTurn;
-	this.populateAvailableMoves();
+	self.whitesTurn = !self.whitesTurn;
+	self.populateAvailableMoves();
 
-	var postMoveFunctions: Chess.PostMoveFunction[] = this.postMoveFunctions;
+	var enginePostMoveActions: Chess.PostMoveFunction[] = self.postMoveActions || [];
 
-	if (postMoveFunctions.length > 0) {
-		postMoveFunctions.forEach(postMove => {
-			if (!postMove.moveNumber || postMove.moveNumber === this.moveNumber)
-				postMove.action(destination.piece, this);
-		});
-	}
-
-	this.moveNumber++;
-	this.postMoveFunctions = postMoveFunctions.filter(pmf => pmf.moveNumber >= this.moveNumber);
+	enginePostMoveActions.forEach(postMove => {
+		if (!postMove.moveNumber || postMove.moveNumber === self.moveNumber)
+			postMove.action(destination.piece, self);
+	});
+	
+	self.moveNumber++;
+	self.postMoveActions = enginePostMoveActions.filter(pmf => pmf.moveNumber >= self.moveNumber);
 	
 	return true;
 }

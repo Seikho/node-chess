@@ -45,11 +45,13 @@ function getMoves(coordinate) {
         var newPathings = getPaths(coordinate, move, piece.isWhite, bounds);
         var validPathings = newPathings.forEach(function (pathing) {
             // If it's a vanilla move pattern, use the standard path validation strategy
-            if (!move.conditions && isValidPath(pathing, move)) {
-                moves.push({
-                    to: pathing[pathing.length - 1],
-                    postMoveActions: []
-                });
+            if (!move.conditions) {
+                if (isValidPath(pathing, move)) {
+                    moves.push({
+                        to: pathing[pathing.length - 1],
+                        postMoveActions: []
+                    });
+                }
                 return;
             }
             // Otherwise we use the logic provided with the move pattern

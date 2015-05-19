@@ -4,7 +4,6 @@ var expect = chai.expect;
 
 var classicEngine = nodeChess.classicEngine();
 classicEngine.populateAvailableMoves();
-classicEngine.getSquare(coord(1,2)).piece.getConditionalMovePatterns(classicEngine);
 console.log(classicEngine.toString());
 
 
@@ -37,7 +36,11 @@ describe("movement tests", () => {
 
 function pieceAvailableMovesTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {
 	it(message, () => {
-		var moves = classicEngine.getSquare(start).availableMoves;
+		var moves = classicEngine
+			.getSquare(start)
+			.availableMoves
+			.map(am => am.to);
+			
 		expectedMoves.forEach(m => expect(moves).to.include({rank: m.rank, file: m.file }));
 		expect(expectedMoves.length).to.equal(moves.length);
 	});

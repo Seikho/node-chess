@@ -3,7 +3,6 @@ var chai = require("chai");
 var expect = chai.expect;
 var classicEngine = nodeChess.classicEngine();
 classicEngine.populateAvailableMoves();
-classicEngine.getSquare(coord(1, 2)).piece.getConditionalMovePatterns(classicEngine);
 console.log(classicEngine.toString());
 describe("available move tests", function () {
     pieceAvailableMovesTest("will find all available moves for the b2 pawn from the starting position", coord(2, 2), [coord(2, 3), coord(2, 4)]);
@@ -32,7 +31,10 @@ describe("movement tests", function () {
 });
 function pieceAvailableMovesTest(message, start, expectedMoves) {
     it(message, function () {
-        var moves = classicEngine.getSquare(start).availableMoves;
+        var moves = classicEngine
+            .getSquare(start)
+            .availableMoves
+            .map(function (am) { return am.to; });
         expectedMoves.forEach(function (m) { return expect(moves).to.include({ rank: m.rank, file: m.file }); });
         expect(expectedMoves.length).to.equal(moves.length);
     });

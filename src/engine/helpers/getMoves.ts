@@ -49,16 +49,18 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Move[] {
 
     var movePatterns = piece.movement.slice(0);
     var moves: Chess.Move[] = [];
-    
+
     movePatterns.forEach(move => {
         var newPathings = getPaths(coordinate, move, piece.isWhite, bounds);
         var validPathings = newPathings.forEach(pathing => {
             // If it's a vanilla move pattern, use the standard path validation strategy
-            if (!move.conditions && isValidPath(pathing, move)) {
-                moves.push({
-                    to: pathing[pathing.length -1],
-                    postMoveActions: []
-                });
+            if (!move.conditions) {
+                if (isValidPath(pathing, move)) {
+                    moves.push({
+                        to: pathing[pathing.length - 1],
+                        postMoveActions: []
+                    });
+                }
                 return;
             }
             
@@ -73,6 +75,6 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Move[] {
             }
         });
     });
-    
+
     return moves;
 }
