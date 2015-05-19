@@ -34,6 +34,13 @@ describe("movement tests", () => {
 	pieceMoveTest("[White] will capture EnPassant from b5 to c6", coord(2,5), coord(3,6), true);
 });
 
+function tagTest(message: string, coordinate: Chess.Coordinate, tagName: string, expected: any) {
+	it(message, () => {
+		var square = classicEngine.getSquare(coordinate);
+		expect(square.tags[tagName]).to.equal(expected);
+	});
+}
+
 function pieceAvailableMovesTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {
 	it(message, () => {
 		var moves = classicEngine

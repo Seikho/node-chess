@@ -29,6 +29,12 @@ describe("movement tests", function () {
     pieceAvailableMovesTest("will find all available moves for white's b5 pawn", coord(2, 5), [coord(2, 6), coord(3, 6)]);
     pieceMoveTest("[White] will capture EnPassant from b5 to c6", coord(2, 5), coord(3, 6), true);
 });
+function tagTest(message, coordinate, tagName, expected) {
+    it(message, function () {
+        var square = classicEngine.getSquare(coordinate);
+        expect(square.tags[tagName]).to.equal(expected);
+    });
+}
 function pieceAvailableMovesTest(message, start, expectedMoves) {
     it(message, function () {
         var moves = classicEngine
