@@ -1,32 +1,47 @@
 export = pawn;
 
-var firstMovePattern = {
+var firstMoveCondition: Chess.MovePatternConditional = (piece) => {
+	return (piece.moveHistory.length === 0);
+}
+
+var canLeftEnpassant: Chess.MovePatternConditional = (piece, board) => {
+	return hasEnpassantTag(Chess.Direction.UpLeft, piece, board);
+}
+
+var canRightEnpassant: Chess.MovePatternConditional = (piece, board) => {
+	return hasEnpassantTag(Chess.Direction.UpRight, piece, board);
+}
+
+var firstMovePattern: Chess.MovePattern = {
 	moves: [{ direction: Chess.Direction.Up, count: 2 }],
 	canJump: false,
 	canCapture: false,
-	canMove: true
+	canMove: true,
+	useDefaultConditions: true,
+	conditions: [firstMoveCondition],
+	postMoveActions: [allowEnpassantCapture]
 }
 
-var leftEnpassant = {
+var leftEnpassant: Chess.MovePattern = {
 	moves: [{ direction: Chess.Direction.UpLeft, count: 1 }],
 	canJump: false,
 	canCapture: true,
-	canMove: false
+	canMove: false,
+	useDefaultConditions: false,
+	conditions: [canLeftEnpassant],
+	postMoveActions: []
 }
 
-var rightEnpassant = {
+var rightEnpassant: Chess.MovePattern = {
 	moves: [{ direction: Chess.Direction.UpRight, count: 1 }],
 	canJump: false,
 	canCapture: true,
-	canMove: false
+	canMove: false,
+	useDefaultConditions: false,
+	conditions: [canRightEnpassant],
+	postMoveActions: []
 }
 
-var firstMove: Chess.ConditionalMovement = {
-	action: (piece) => {
-		if (piece.moveHistory.length === 0) return firstMovePattern;
-		return null;
-	}
-}
 
 function hasEnpassantTag(direction: Chess.Direction, piece: Chess.BasePiece, board: Chess.Engine) {
 	var coordinate = piece.getRelativeDestinations(direction, 1);
@@ -41,24 +56,8 @@ function hasEnpassantTag(direction: Chess.Direction, piece: Chess.BasePiece, boa
 	return result;
 }
 
-var enpassantCapture: Chess.ConditionalMovement = {
-	action: (piece, board) => {
-		var captures = [];
-		if (hasEnpassantTag(Chess.Direction.UpLeft, piece, board)) captures.push(leftEnpassant);
-		if (hasEnpassantTag(Chess.Direction.UpRight, piece, board)) captures.push(rightEnpassant);
-		return captures.length === 0 ? null : captures;
-	}
-}
-
-var allowEnpassantCapture: Chess.ConditionalMovement = {
+var allowEnpassantCapture: Chess.PostMoveFunction = {
     action: function(piece, board) {
-		// Only apply the 'EnPassant' tag if this is the first move and we moved 2 squares
-        if (piece.moveHistory.length !== 1) return null;
-        var move = piece.moveHistory[0];
-        var squaresMoved = Math.abs(move.from.rank - move.to.rank);
-		
-        if (squaresMoved !== 2) return null;
-
 		// Find the middle square between the originating and desination squares for tagging
 		var coordinateToTag = piece.getRelativeDestinations(Chess.Direction.Down, 1)[0];
 		var squareToTag = board.getSquare(coordinateToTag);
@@ -90,12 +89,10 @@ var forward: Chess.SingleMove = {
 var pawn: Chess.Piece = {
 	location: null,
 	name: "Pawn",
-	movement: [moveForward, moveCapture],
+	movement: [moveForward, moveCapture, firstMovePattern, leftEnpassant, rightEnpassant],
 	canQueen: true,
 	canSpawn: false,
 	value: 1,
-	conditionalMoves: [firstMove, enpassantCapture],
-	notation: "p",
-	postMoveFunctions: [allowEnpassantCapture]
+	notation: "p"
 }
 

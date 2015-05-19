@@ -7,7 +7,7 @@ function movePiece(from, to) {
     if (this.whitesTurn !== origin.piece.isWhite)
         return false;
     // The 'destination' square must be in the square's list of available moves
-    if (!origin.availableMoves.some(function (availableMove) { return availableMove.to.file === to.file && availableMove.to.rank === to.rank; }))
+    if (!origin.availableMoves.some(function (availableMove) { return availableMove.file === to.file && availableMove.rank === to.rank; }))
         return false;
     var destination = this.getSquare(to);
     if (destination.piece)

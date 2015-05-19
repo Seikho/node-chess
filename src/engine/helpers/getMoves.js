@@ -39,11 +39,7 @@ function getMoves(coordinate) {
         return true;
     }
     var pathings = [];
-    var conditionalMoves = piece.getConditionalMoves(this);
     var movePatterns = piece.movement.slice(0);
-    if (conditionalMoves.length > 0) {
-        movePatterns = piece.movement.concat(conditionalMoves);
-    }
     movePatterns.forEach(function (move) {
         var newPathings = getPaths(coordinate, move, piece.isWhite, bounds);
         var validPathings = newPathings.filter(function (pathing) { return isValidPath(pathing, move); });

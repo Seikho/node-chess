@@ -1,27 +1,38 @@
+var firstMoveCondition = function (piece) {
+    return (piece.moveHistory.length === 0);
+};
+var canLeftEnpassant = function (piece, board) {
+    return hasEnpassantTag(10 /* UpLeft */, piece, board);
+};
+var canRightEnpassant = function (piece, board) {
+    return hasEnpassantTag(11 /* UpRight */, piece, board);
+};
 var firstMovePattern = {
     moves: [{ direction: 0 /* Up */, count: 2 }],
     canJump: false,
     canCapture: false,
-    canMove: true
+    canMove: true,
+    useDefaultConditions: true,
+    conditions: [firstMoveCondition],
+    postMoveActions: [allowEnpassantCapture]
 };
 var leftEnpassant = {
     moves: [{ direction: 10 /* UpLeft */, count: 1 }],
     canJump: false,
     canCapture: true,
-    canMove: false
+    canMove: false,
+    useDefaultConditions: false,
+    conditions: [canLeftEnpassant],
+    postMoveActions: []
 };
 var rightEnpassant = {
     moves: [{ direction: 11 /* UpRight */, count: 1 }],
     canJump: false,
     canCapture: true,
-    canMove: false
-};
-var firstMove = {
-    action: function (piece) {
-        if (piece.moveHistory.length === 0)
-            return firstMovePattern;
-        return null;
-    }
+    canMove: false,
+    useDefaultConditions: false,
+    conditions: [canRightEnpassant],
+    postMoveActions: []
 };
 function hasEnpassantTag(direction, piece, board) {
     var coordinate = piece.getRelativeDestinations(direction, 1);
@@ -34,25 +45,8 @@ function hasEnpassantTag(direction, piece, board) {
     var result = square.tags.some(function (tag) { return tag.enpassant === !piece.isWhite; });
     return result;
 }
-var enpassantCapture = {
-    action: function (piece, board) {
-        var captures = [];
-        if (hasEnpassantTag(10 /* UpLeft */, piece, board))
-            captures.push(leftEnpassant);
-        if (hasEnpassantTag(11 /* UpRight */, piece, board))
-            captures.push(rightEnpassant);
-        return captures.length === 0 ? null : captures;
-    }
-};
 var allowEnpassantCapture = {
     action: function (piece, board) {
-        // Only apply the 'EnPassant' tag if this is the first move and we moved 2 squares
-        if (piece.moveHistory.length !== 1)
-            return null;
-        var move = piece.moveHistory[0];
-        var squaresMoved = Math.abs(move.from.rank - move.to.rank);
-        if (squaresMoved !== 2)
-            return null;
         // Find the middle square between the originating and desination squares for tagging
         var coordinateToTag = piece.getRelativeDestinations(1 /* Down */, 1)[0];
         var squareToTag = board.getSquare(coordinateToTag);
@@ -79,13 +73,11 @@ var forward = {
 var pawn = {
     location: null,
     name: "Pawn",
-    movement: [moveForward, moveCapture],
+    movement: [moveForward, moveCapture, firstMovePattern, leftEnpassant, rightEnpassant],
     canQueen: true,
     canSpawn: false,
     value: 1,
-    conditionalMoves: [firstMove, enpassantCapture],
-    notation: "p",
-    postMoveFunctions: [allowEnpassantCapture]
+    notation: "p"
 };
 module.exports = pawn;
 //# sourceMappingURL=pawn.js.map

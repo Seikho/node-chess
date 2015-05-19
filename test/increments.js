@@ -3,7 +3,7 @@ var chai = require("chai");
 var expect = chai.expect;
 var classicEngine = nodeChess.classicEngine();
 classicEngine.populateAvailableMoves();
-classicEngine.getSquare(coord(1, 2)).piece.getConditionalMoves(classicEngine);
+classicEngine.getSquare(coord(1, 2)).piece.getConditionalMovePatterns(classicEngine);
 console.log(classicEngine.toString());
 describe("available move tests", function () {
     pieceAvailableMovesTest("will find all available moves for the b2 pawn from the starting position", coord(2, 2), [coord(2, 3), coord(2, 4)]);

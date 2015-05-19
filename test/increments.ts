@@ -4,7 +4,7 @@ var expect = chai.expect;
 
 var classicEngine = nodeChess.classicEngine();
 classicEngine.populateAvailableMoves();
-classicEngine.getSquare(coord(1,2)).piece.getConditionalMoves(classicEngine);
+classicEngine.getSquare(coord(1,2)).piece.getConditionalMovePatterns(classicEngine);
 console.log(classicEngine.toString());
 
 

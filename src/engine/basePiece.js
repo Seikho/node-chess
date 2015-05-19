@@ -9,21 +9,9 @@ var BasePiece = (function () {
         this.canSpawn = piece.canSpawn;
         this.value = piece.value;
         this.notation = notation;
-        this.conditionalMoves = piece.conditionalMoves || [];
         this.moveHistory = [];
         this.postMoveFunctions = piece.postMoveFunctions || [];
     }
-    BasePiece.prototype.getConditionalMoves = function (board) {
-        var _this = this;
-        var movePatterns = [];
-        this.conditionalMoves.forEach(function (move) {
-            var patterns = move.action(_this, board);
-            if (!patterns)
-                return;
-            movePatterns = movePatterns.concat(patterns);
-        });
-        return movePatterns;
-    };
     BasePiece.prototype.getRelativeDestinations = function (direction, count) {
         var _this = this;
         var transforms = getTransforms({ direction: direction, count: count }, this.isWhite);

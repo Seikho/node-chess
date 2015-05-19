@@ -102,12 +102,12 @@ declare module Chess {
     	canCapture?: boolean;
     	canMove?: boolean;
         postMoveActions?: PostMoveFunction[];
-        condition?: MovePatternConditional[];
-        useDefaultCondition?: boolean;
+        conditions?: MovePatternConditional[];
+        useDefaultConditions?: boolean;
     }
     
     interface MovePatternConditional {
-        (piece: Piece, board: Engine): boolean;
+        (piece: BasePiece, board: Engine): boolean;
     }
     
     /**
