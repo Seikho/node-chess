@@ -31,12 +31,10 @@ var firstMove: Chess.ConditionalMovement = {
 function hasEnpassantTag(direction: Chess.Direction, piece: Chess.BasePiece, board: Chess.Engine) {
 	var coordinate = piece.getRelativeDestinations(direction, 1);
 	
-	
 	var square = board.getSquare(coordinate[0]);
 	
 	if (square === null) return false;
 	if (square.tags === null) return false;
-	
 	
 	// If the square has an 'enpassant' tag of the opposite color (!thisPiece.isWhite), we can capture.
 	var result = square.tags.some(tag => tag.enpassant === !piece.isWhite);

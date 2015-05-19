@@ -24,12 +24,7 @@ declare module Chess {
     interface PieceMovement {
     	movePatterns: MovePattern[];
     }
-    
-    interface ConditionalMovement {
-        moveNumber?: number; //  
-        action: (piece: BasePiece, board: Engine) => MovePattern|MovePattern[];
-    }
-    
+      
     interface PostMoveFunction {
         moveNumber?: number;
         action: (piece: BasePiece, board: Engine) => any;
@@ -58,6 +53,7 @@ declare module Chess {
         to: Coordinate;
     }
 
+
     interface Piece {
         location: Coordinate;
     	name: string;
@@ -68,13 +64,11 @@ declare module Chess {
     	canSpawn: boolean;
     	isWhite?: boolean;
         moveHistory?: Move[];
-        conditionalMoves?: ConditionalMovement[];
-        getConditionalMoves?: (board: Engine) => MovePattern[];
+        getConditionalMovePatterns?: (board: Engine) => MovePattern[];
         postMoveFunctions?: PostMoveFunction[];
     }
     
     interface BasePiece extends Piece {
-        getConditionalMoves: (board: Engine) => MovePattern[];
         getRelativeDestinations: (direction: Direction, count: number) => Chess.Coordinate[];
         postMoveFunctions: PostMoveFunction[];
     }
@@ -108,6 +102,12 @@ declare module Chess {
     	canCapture?: boolean;
     	canMove?: boolean;
         postMoveActions?: PostMoveFunction[];
+        condition?: MovePatternConditional[];
+        useDefaultCondition?: boolean;
+    }
+    
+    interface MovePatternConditional {
+        (piece: Piece, board: Engine): boolean;
     }
     
     /**

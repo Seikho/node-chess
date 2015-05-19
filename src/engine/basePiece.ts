@@ -11,7 +11,6 @@ class BasePiece implements Chess.BasePiece {
 		this.canSpawn = piece.canSpawn;
 		this.value = piece.value;
 		this.notation = notation;
-		this.conditionalMoves = piece.conditionalMoves || [];
 		this.moveHistory = [];
 		this.postMoveFunctions = piece.postMoveFunctions || [];
 	}
@@ -23,21 +22,9 @@ class BasePiece implements Chess.BasePiece {
 	value: number;
 	notation: string;
 	moveHistory: Chess.Move[];
-	conditionalMoves: Chess.ConditionalMovement[];
 	isWhite: boolean;
 	postMoveFunctions: Chess.PostMoveFunction[];
 	 
-	getConditionalMoves(board: Chess.Engine) {
-		var movePatterns = [];
-		
-		this.conditionalMoves.forEach(move => {
-			var patterns = move.action(this, board);
-			if (!patterns) return;
-			movePatterns = movePatterns.concat(patterns);
-		});
-		return movePatterns;
-	}
-	
 	getRelativeDestinations(direction: Chess.Direction, count: number): Chess.Coordinate[] {
 		var transforms = getTransforms({ direction: direction, count: count }, this.isWhite);
 		

@@ -1,7 +1,7 @@
 {
   "name": "node-chess",
   "version": "0.3.0",
-  "description": "A chess engine for board validations and position calculation",
+  "description": "An isomorphic and fully customisable JavaScript chess engine",
   "main": "src/board.js",
   "scripts": {
     "test": "mocha",
