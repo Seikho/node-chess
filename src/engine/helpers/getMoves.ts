@@ -1,7 +1,7 @@
 import getPaths = require("./getPaths");
 export = getMoves;
 
-function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
+function getMoves(coordinate: Chess.Coordinate): Chess.Move[] {
     var stopwatch = Date.now();
     var self: Chess.Engine = this;
     var square: Chess.Square = self.getSquare(coordinate);
@@ -48,15 +48,31 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Coordinate[] {
     var pathings: Array<Chess.Coordinate[]> = [];
 
     var movePatterns = piece.movement.slice(0);
+    var moves: Chess.Move[] = [];
     
     movePatterns.forEach(move => {
         var newPathings = getPaths(coordinate, move, piece.isWhite, bounds);
-        var validPathings = newPathings.filter(pathing => isValidPath(pathing, move));
-        pathings = pathings.concat(validPathings);
+        var validPathings = newPathings.forEach(pathing => {
+            // If it's a vanilla move pattern, use the standard path validation strategy
+            if (!move.conditions && isValidPath(pathing, move)) {
+                moves.push({
+                    to: pathing[pathing.length -1],
+                    postMoveActions: []
+                });
+                return;
+            }
+            
+            // Otherwise we use the logic provided with the move pattern
+            var defaultValidPath = move.useDefaultConditions ? isValidPath(pathing, move) : true;
+            var movePatternEvaluation = move.conditions.every(cond => cond(piece, self));
+            if (defaultValidPath && movePatternEvaluation) {
+                moves.push({
+                    to: pathing[pathing.length - 1],
+                    postMoveActions: move.postMoveActions || []
+                });
+            }
+        });
     });
     
-    var moves = pathings.map(pathing => {
-        return pathing[pathing.length - 1];
-    });
     return moves;
 }

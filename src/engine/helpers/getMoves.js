@@ -40,13 +40,28 @@ function getMoves(coordinate) {
     }
     var pathings = [];
     var movePatterns = piece.movement.slice(0);
+    var moves = [];
     movePatterns.forEach(function (move) {
         var newPathings = getPaths(coordinate, move, piece.isWhite, bounds);
-        var validPathings = newPathings.filter(function (pathing) { return isValidPath(pathing, move); });
-        pathings = pathings.concat(validPathings);
-    });
-    var moves = pathings.map(function (pathing) {
-        return pathing[pathing.length - 1];
+        var validPathings = newPathings.forEach(function (pathing) {
+            // If it's a vanilla move pattern, use the standard path validation strategy
+            if (!move.conditions && isValidPath(pathing, move)) {
+                moves.push({
+                    to: pathing[pathing.length - 1],
+                    postMoveActions: []
+                });
+                return;
+            }
+            // Otherwise we use the logic provided with the move pattern
+            var defaultValidPath = move.useDefaultConditions ? isValidPath(pathing, move) : true;
+            var movePatternEvaluation = move.conditions.every(function (cond) { return cond(piece, self); });
+            if (defaultValidPath && movePatternEvaluation) {
+                moves.push({
+                    to: pathing[pathing.length - 1],
+                    postMoveActions: move.postMoveActions || []
+                });
+            }
+        });
     });
     return moves;
 }

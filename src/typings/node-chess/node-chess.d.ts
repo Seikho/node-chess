@@ -9,7 +9,7 @@ declare module Chess {
     	positionParser: PositionParser;
     	capturedPieces: Piece[];
     	create(): void;
-    	availableMoves(coordinate: Coordinate): Coordinate[];
+    	availableMoves(coordinate: Coordinate): Move[];
         populateAvailableMoves();
     	getSquare(square: Coordinate): Square;
         movePiece(from: Coordinate, to: Coordinate): boolean;
@@ -45,13 +45,14 @@ declare module Chess {
         rank: number;
     	file: number;
     	piece: BasePiece;
-        availableMoves?: Coordinate[];
+        availableMoves?: Move[];
         tags: any; // TODO: Change to more strongly typed interface
     }
     
     interface Move {
-        from: Coordinate;
+        from?: Coordinate;
         to: Coordinate;
+        postMoveActions?: PostMoveFunction[];
     }
 
 

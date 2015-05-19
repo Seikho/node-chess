@@ -7,7 +7,7 @@ function movePiece(from: Chess.Coordinate, to: Chess.Coordinate) {
 	if (this.whitesTurn !== origin.piece.isWhite) return false; 
 		
 	// The 'destination' square must be in the square's list of available moves
-	if (!origin.availableMoves.some(availableMove => availableMove.file === to.file && availableMove.rank === to.rank)) return false;
+	if (!origin.availableMoves.some(availableMove => availableMove.to.file === to.file && availableMove.to.rank === to.rank)) return false;
 
 	var destination: Chess.Square = this.getSquare(to);
 	if (destination.piece) this.capturedPieces.push(destination.piece)
