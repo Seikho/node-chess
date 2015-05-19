@@ -7,6 +7,14 @@ var canLeftEnpassant = function (piece, board) {
 var canRightEnpassant = function (piece, board) {
     return hasEnpassantTag(11 /* UpRight */, piece, board);
 };
+var enpassantPostMove = {
+    action: function (piece, board) {
+        var coordBelow = piece.getRelativeDestinations(1 /* Down */, 1)[0];
+        var squareBelow = board.getSquare(coordBelow);
+        board.capturedPieces.push(squareBelow.piece);
+        squareBelow.piece = null;
+    }
+};
 var firstMovePattern = {
     moves: [{ direction: 0 /* Up */, count: 2 }],
     canJump: false,
@@ -23,7 +31,7 @@ var leftEnpassant = {
     canMove: false,
     useDefaultConditions: false,
     conditions: [canLeftEnpassant],
-    postMoveActions: []
+    postMoveActions: [enpassantPostMove]
 };
 var rightEnpassant = {
     moves: [{ direction: 11 /* UpRight */, count: 1 }],
@@ -32,7 +40,7 @@ var rightEnpassant = {
     canMove: false,
     useDefaultConditions: false,
     conditions: [canRightEnpassant],
-    postMoveActions: []
+    postMoveActions: [enpassantPostMove]
 };
 function hasEnpassantTag(direction, piece, board) {
     var coordinate = piece.getRelativeDestinations(direction, 1);
@@ -50,7 +58,12 @@ var allowEnpassantCapture = {
         // Find the middle square between the originating and desination squares for tagging
         var coordinateToTag = piece.getRelativeDestinations(1 /* Down */, 1)[0];
         var squareToTag = board.getSquare(coordinateToTag);
-        squareToTag.tags.push({ enpassant: piece.isWhite });
+        squareToTag.tags["enpassant"] = piece.isWhite;
+        board.postMoveActions.push({
+            moveNumber: board.moveNumber + 1,
+            action: function (piece, board) {
+            }
+        });
         //TODO: Add PostMoveFunction to board to remove the tag after the next move.
     }
 };

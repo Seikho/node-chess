@@ -16,6 +16,7 @@ declare module Chess {
     	toString(): string;
         whitesTurn: boolean;
         createPiece(notation: string, location: Coordinate): Chess.BasePiece;
+        postMoveActions: PostMoveFunction[]
     }
 
     /**
@@ -45,7 +46,7 @@ declare module Chess {
     	file: number;
     	piece: BasePiece;
         availableMoves?: Coordinate[];
-        tags: any[]; // TODO: Change to more strongly typed interface
+        tags: any; // TODO: Change to more strongly typed interface
     }
     
     interface Move {

@@ -20,6 +20,7 @@ var Engine = (function () {
         this.pieceFactory = BasePiece;
         this.availableMoves = getMoves;
         this.movePiece = movePiece;
+        this.postMoveActions = [];
         ranks = ranks || 8;
         files = files || 8;
         if (isNaN(ranks) || isNaN(files))
