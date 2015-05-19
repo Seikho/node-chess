@@ -49,7 +49,7 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Move[] {
 
     var movePatterns = piece.movement.slice(0);
     var moves: Chess.Move[] = [];
-
+    
     movePatterns.forEach(move => {
         var newPathings = getPaths(coordinate, move, piece.isWhite, bounds);
         var validPathings = newPathings.forEach(pathing => {
@@ -63,9 +63,8 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Move[] {
                 }
                 return;
             }
-            
             // Otherwise we use the logic provided with the move pattern
-            var defaultValidPath = move.useDefaultConditions ? isValidPath(pathing, move) : true;
+            var defaultValidPath = !!move.useDefaultConditions ? isValidPath(pathing, move) : true;
             var movePatternEvaluation = move.conditions.every(cond => cond(piece, self));
             if (defaultValidPath && movePatternEvaluation) {
                 moves.push({

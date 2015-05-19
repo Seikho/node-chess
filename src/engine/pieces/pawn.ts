@@ -77,7 +77,7 @@ function hasEnpassantTag(direction: Chess.Direction, piece: Chess.BasePiece, boa
 	if (square.tags === null) return false;
 	
 	// If the square has an 'enpassant' tag of the opposite color (!thisPiece.isWhite), we can capture.
-	var result = square.tags.some(tag => tag.enpassant === !piece.isWhite);
+	var result = square.tags["enpassant"] === !piece.isWhite;
 	return result;
 }
 

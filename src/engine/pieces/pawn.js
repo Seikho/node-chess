@@ -64,7 +64,7 @@ function hasEnpassantTag(direction, piece, board) {
     if (square.tags === null)
         return false;
     // If the square has an 'enpassant' tag of the opposite color (!thisPiece.isWhite), we can capture.
-    var result = square.tags.some(function (tag) { return tag.enpassant === !piece.isWhite; });
+    var result = square.tags["enpassant"] === !piece.isWhite;
     return result;
 }
 var moveForward = {

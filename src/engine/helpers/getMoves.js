@@ -55,7 +55,7 @@ function getMoves(coordinate) {
                 return;
             }
             // Otherwise we use the logic provided with the move pattern
-            var defaultValidPath = move.useDefaultConditions ? isValidPath(pathing, move) : true;
+            var defaultValidPath = !!move.useDefaultConditions ? isValidPath(pathing, move) : true;
             var movePatternEvaluation = move.conditions.every(function (cond) { return cond(piece, self); });
             if (defaultValidPath && movePatternEvaluation) {
                 moves.push({
