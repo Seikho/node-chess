@@ -1,5 +1,5 @@
 # Node-chess
-An extensible chess engine with position analysis, board analysis, and computer opposition.
+A fully isomorphic and extensible chess engine with position analysis, board analysis, and computer opposition.
 
 [![NPM version](http://img.shields.io/npm/v/node-chess.svg?style=flat)](https://www.npmjs.org/package/webwatcher)
 [![Travis build status](http://img.shields.io/travis/Seikho/node-chess/master.svg?style=flat)](https://travis-ci.org/Seikho/node-chess)
