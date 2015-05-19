@@ -9,10 +9,12 @@ var canRightEnpassant = function (piece, board) {
 };
 var enpassantPostMove = {
     action: function (piece, board) {
+        var pieceCurrentSquare = board.getSquare(piece.location);
         var coordBelow = piece.getRelativeDestinations(1 /* Down */, 1)[0];
         var squareBelow = board.getSquare(coordBelow);
         board.capturedPieces.push(squareBelow.piece);
         squareBelow.piece = null;
+        pieceCurrentSquare.tags["enpassant"] = undefined;
     }
 };
 var allowEnpassantCapture = {

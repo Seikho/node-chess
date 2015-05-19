@@ -25,9 +25,10 @@ describe("movement tests", function () {
     pieceMoveTest("[White] will move g1 to h3", coord(7, 1), coord(8, 3), true);
     pieceMoveTest("[Black] will move b7 pawn to b5", coord(2, 7), coord(2, 5), true);
     pieceMoveTest("[White] will capture from a4 to b5", coord(1, 4), coord(2, 5), true);
-    pieceMoveTest("[Black] will move c7 pawn to c5, enabling enpassant capture", coord(3, 7), coord(3, 5), true);
+    pieceMoveTest("[Black] will move c7 pawn to c5, enabling enpassant capture on c6", coord(3, 7), coord(3, 5), true);
     pieceAvailableMovesTest("will find all available moves for white's b5 pawn", coord(2, 5), [coord(2, 6), coord(3, 6)]);
     pieceMoveTest("[White] will capture EnPassant from b5 to c6", coord(2, 5), coord(3, 6), true);
+    tagTest("enpassant tag on c6 will be removed after the capture", coord(3, 6), "enpassant", undefined);
 });
 function tagTest(message, coordinate, tagName, expected) {
     it(message, function () {

@@ -14,10 +14,12 @@ var canRightEnpassant: Chess.MovePatternConditional = (piece, board) => {
 
 var enpassantPostMove: Chess.PostMoveFunction = {
 	action: (piece, board) => {
+		var pieceCurrentSquare = board.getSquare(piece.location);
 		var coordBelow = piece.getRelativeDestinations(Chess.Direction.Down, 1)[0];
 		var squareBelow = board.getSquare(coordBelow);
 		board.capturedPieces.push(squareBelow.piece);
 		squareBelow.piece = null;
+		pieceCurrentSquare.tags["enpassant"] = undefined;
 	}
 }
 
