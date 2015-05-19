@@ -15,6 +15,20 @@ var enpassantPostMove = {
         squareBelow.piece = null;
     }
 };
+var allowEnpassantCapture = {
+    action: function (piece, board) {
+        // Find the middle square between the originating and desination squares for tagging
+        var coordinateToTag = piece.getRelativeDestinations(1 /* Down */, 1)[0];
+        var squareToTag = board.getSquare(coordinateToTag);
+        squareToTag.tags["enpassant"] = piece.isWhite;
+        board.postMoveActions.push({
+            moveNumber: board.moveNumber + 1,
+            action: function (piece, board) {
+            }
+        });
+        //TODO: Add PostMoveFunction to board to remove the tag after the next move.
+    }
+};
 var firstMovePattern = {
     moves: [{ direction: 0 /* Up */, count: 2 }],
     canJump: false,
@@ -53,20 +67,6 @@ function hasEnpassantTag(direction, piece, board) {
     var result = square.tags.some(function (tag) { return tag.enpassant === !piece.isWhite; });
     return result;
 }
-var allowEnpassantCapture = {
-    action: function (piece, board) {
-        // Find the middle square between the originating and desination squares for tagging
-        var coordinateToTag = piece.getRelativeDestinations(1 /* Down */, 1)[0];
-        var squareToTag = board.getSquare(coordinateToTag);
-        squareToTag.tags["enpassant"] = piece.isWhite;
-        board.postMoveActions.push({
-            moveNumber: board.moveNumber + 1,
-            action: function (piece, board) {
-            }
-        });
-        //TODO: Add PostMoveFunction to board to remove the tag after the next move.
-    }
-};
 var moveForward = {
     moves: [{ direction: 0 /* Up */, count: 1 }],
     canJump: false,

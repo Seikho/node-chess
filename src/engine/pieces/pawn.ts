@@ -21,6 +21,23 @@ var enpassantPostMove: Chess.PostMoveFunction = {
 	}
 }
 
+var allowEnpassantCapture: Chess.PostMoveFunction = {
+    action: function(piece, board) {
+		// Find the middle square between the originating and desination squares for tagging
+		var coordinateToTag = piece.getRelativeDestinations(Chess.Direction.Down, 1)[0];
+		var squareToTag = board.getSquare(coordinateToTag);
+        squareToTag.tags["enpassant"] = piece.isWhite;
+		
+		board.postMoveActions.push({
+			moveNumber: board.moveNumber+1,
+			action: (piece, board) => {
+				
+			}
+		});
+		//TODO: Add PostMoveFunction to board to remove the tag after the next move.
+    }
+};
+
 var firstMovePattern: Chess.MovePattern = {
 	moves: [{ direction: Chess.Direction.Up, count: 2 }],
 	canJump: false,
@@ -63,23 +80,6 @@ function hasEnpassantTag(direction: Chess.Direction, piece: Chess.BasePiece, boa
 	var result = square.tags.some(tag => tag.enpassant === !piece.isWhite);
 	return result;
 }
-
-var allowEnpassantCapture: Chess.PostMoveFunction = {
-    action: function(piece, board) {
-		// Find the middle square between the originating and desination squares for tagging
-		var coordinateToTag = piece.getRelativeDestinations(Chess.Direction.Down, 1)[0];
-		var squareToTag = board.getSquare(coordinateToTag);
-        squareToTag.tags["enpassant"] = piece.isWhite;
-		
-		board.postMoveActions.push({
-			moveNumber: board.moveNumber+1,
-			action: (piece, board) => {
-				
-			}
-		});
-		//TODO: Add PostMoveFunction to board to remove the tag after the next move.
-    }
-};
 
 var moveForward = {
 	moves: [{ direction: Chess.Direction.Up, count: 1 }],
