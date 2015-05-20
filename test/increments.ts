@@ -32,14 +32,15 @@ describe("movement tests", () => {
 	pieceAvailableMovesTest("will find all available moves for white pawn on b5", coord(2,5), [coord(2,6), coord(3,6)]);
 	pieceMoveTest("[White] will capture EnPassant from b5-c6", coord(2,5), coord(3,6), true);
 	tagTest("enpassant tag on c6 will be removed after the capture", coord(3,6), "enpassant", undefined);
-	pieceMoveTest("[Black] will move Ng8-Nf6", coord(7,8), coord(6,6), true);
+	pieceMoveTest("[Black] will move Nb8-Na6", coord(2,8), coord(1,6), true);
 	pieceMoveTest("[White] will move g2 pawn two squares to for enpassant tag", coord(7, 2), coord(7,4), true);
 	tagTest("will have enpassant tag on g3", coord(7,3), "enpassant", true);
-	pieceMoveTest("[Black] will move Nf6-Ng8", coord(6,6), coord(7, 8), true);
+	pieceMoveTest("[Black] will move Bc8-Bb7", coord(3,8), coord(2, 7), true);
 	pieceMoveTest("[White] will move Bf1-Bg2 to enable white king-side castling", coord(6,1), coord(7,2), true);
-	pieceMoveTest("[Black] will move Ng8-Nf6", coord(7,8), coord(6,6), true);
-	pieceAvailableMovesTest("[White] will be able to move Ke1-Kg1 (O-O)", coord(5,1), [coord(6,1), coord(7,1)]);
+	pieceMoveTest("[Black] will move Qd8-Qc7 enabling queenside castling", coord(4,8), coord(3,7), true);
+	pieceAvailableMovesTest("[White] will be able to move Ke1-Kg1 (O-O) and Ke1-Kf1", coord(5,1), [coord(6,1), coord(7,1)]);
 	pieceMoveTest("[White] will castle king side (Ke1-Kg1 or O-O)", coord(5,1), coord(7,1), true);
+	pieceAvailableMovesTest("[Black] will be able to move Ke8-Kc8 (o-o-o) and Ke8-Kd8", coord(5,8), [coord(3,8), coord(4,8)]);
 	
 });
 
