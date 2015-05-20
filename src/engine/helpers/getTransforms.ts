@@ -11,7 +11,8 @@ function getTransforms(singleMove: Chess.SingleMove, isWhite: boolean): Chess.Co
 	var upRight = { rank: 1 * x, file: 1 * x };
 	var downLeft = { rank: -1 * x, file: -1 * x };
 	var downRight = { rank: -1 * x, file: 1 * x };
-
+	var kingSide = { rank: 0, file: x };
+	var queenSide = { rank: 0, file: isWhite ? -1 : 1 };
 	switch (singleMove.direction) {
 		case Chess.Direction.Up:
 			return [up];
@@ -41,6 +42,10 @@ function getTransforms(singleMove: Chess.SingleMove, isWhite: boolean): Chess.Co
 			return [downLeft];
 		case Chess.Direction.DownRight:
 			return [downRight];
+		case Chess.Direction.KingSide:
+			return [kingSide];
+		case Chess.Direction.QueenSide:
+			return [queenSide];
 		default:
 			throw "InvalidDirectionException: The direction provided was invalid";
 	}
