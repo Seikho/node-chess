@@ -14,9 +14,9 @@ var queenSideCastleCondition = function (piece, board) {
 var kingSideCastleCondition = function (piece, board) {
     if (piece.moveHistory.length > 0)
         return false;
-    var rightBishop = getLeftSquare(piece, board, 1);
-    var rightKnight = getLeftSquare(piece, board, 2);
-    var rightRook = getLeftSquare(piece, board, 3);
+    var rightBishop = getRightSquare(piece, board, 1);
+    var rightKnight = getRightSquare(piece, board, 2);
+    var rightRook = getRightSquare(piece, board, 3);
     if (!!rightBishop.piece || !!rightKnight.piece)
         return false;
     if (!rightRook.piece)
