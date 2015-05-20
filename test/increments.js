@@ -15,27 +15,27 @@ describe("available move tests", function () {
     pieceAvailableMovesTest("will find all available moves for a7 pawn form the start position", coord(1, 7), []);
 });
 describe("movement tests", function () {
-    pieceMoveTest("[White] will move a2 pawn to a3", coord(1, 2), coord(1, 3), true);
-    pieceMoveTest("[White] will not move a3 pawn to a4 due to being black's turn", coord(1, 3), coord(1, 4), false);
-    pieceMoveTest("[White] will not move a3 pawn to a5", coord(1, 3), coord(1, 5), false);
-    pieceMoveTest("[Black] will move a7 pawn to a6", coord(1, 7), coord(1, 6), true);
-    pieceMoveTest("[White] will move a3 pawn to a4", coord(1, 3), coord(1, 4), true);
-    pieceMoveTest("[Black] will move a6 pawn to a5", coord(1, 6), coord(1, 5), true);
-    pieceMoveTest("[White] will move not move a4 pawn to a6 due to 'cannot capture'", coord(1, 5), coord(1, 6), false);
-    pieceMoveTest("[White] will move g1 to h3", coord(7, 1), coord(8, 3), true);
-    pieceMoveTest("[Black] will move b7 pawn to b5", coord(2, 7), coord(2, 5), true);
-    pieceMoveTest("[White] will capture from a4 to b5", coord(1, 4), coord(2, 5), true);
-    pieceMoveTest("[Black] will move c7 pawn to c5, enabling enpassant capture on c6", coord(3, 7), coord(3, 5), true);
-    pieceAvailableMovesTest("will find all available moves for white's b5 pawn", coord(2, 5), [coord(2, 6), coord(3, 6)]);
-    pieceMoveTest("[White] will capture EnPassant from b5 to c6", coord(2, 5), coord(3, 6), true);
+    pieceMoveTest("[White] will move a2-a3", coord(1, 2), coord(1, 3), true);
+    pieceMoveTest("[White] will not move a3-a4 due to being black's turn", coord(1, 3), coord(1, 4), false);
+    pieceMoveTest("[Black] will move a7-a6", coord(1, 7), coord(1, 6), true);
+    pieceMoveTest("[White] will move a3-a4", coord(1, 3), coord(1, 4), true);
+    pieceMoveTest("[Black] will move a6-a5", coord(1, 6), coord(1, 5), true);
+    pieceMoveTest("[White] will move not move a4-a5 due to 'cannot capture'", coord(1, 5), coord(1, 6), false);
+    pieceMoveTest("[White] will move g1-h3", coord(7, 1), coord(8, 3), true);
+    pieceMoveTest("[Black] will move b7-b5", coord(2, 7), coord(2, 5), true);
+    pieceMoveTest("[White] will capture from a4-b5", coord(1, 4), coord(2, 5), true);
+    pieceMoveTest("[Black] will move c7-c5, enabling enpassant capture on c6", coord(3, 7), coord(3, 5), true);
+    pieceAvailableMovesTest("will find all available moves for white pawn on b5", coord(2, 5), [coord(2, 6), coord(3, 6)]);
+    pieceMoveTest("[White] will capture EnPassant from b5-c6", coord(2, 5), coord(3, 6), true);
     tagTest("enpassant tag on c6 will be removed after the capture", coord(3, 6), "enpassant", undefined);
     pieceMoveTest("[Black] will move Ng8-Nf6", coord(7, 8), coord(6, 6), true);
     pieceMoveTest("[White] will move g2 pawn two squares to for enpassant tag", coord(7, 2), coord(7, 4), true);
     tagTest("will have enpassant tag on g3", coord(7, 3), "enpassant", true);
     pieceMoveTest("[Black] will move Nf6-Ng8", coord(6, 6), coord(7, 8), true);
-    pieceMoveTest("[White] will move Bf1 to Bg2 to enable white king-side castling", coord(6, 1), coord(7, 2), true);
+    pieceMoveTest("[White] will move Bf1-Bg2 to enable white king-side castling", coord(6, 1), coord(7, 2), true);
     pieceMoveTest("[Black] will move Ng8-Nf6", coord(7, 8), coord(6, 6), true);
-    pieceAvailableMovesTest("[White] will be able to move Ke1-Kg1 (OO)", coord(5, 1), [coord(6, 1), coord(7, 1)]);
+    pieceAvailableMovesTest("[White] will be able to move Ke1-Kg1 (O-O)", coord(5, 1), [coord(6, 1), coord(7, 1)]);
+    pieceMoveTest("[White] will castle king side (Ke1-Kg1 or O-O)", coord(5, 1), coord(7, 1), true);
 });
 function tagTest(message, coordinate, tagName, expected) {
     it(message, function () {
