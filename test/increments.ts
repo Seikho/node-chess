@@ -33,6 +33,14 @@ describe("movement tests", () => {
 	pieceAvailableMovesTest("will find all available moves for white's b5 pawn", coord(2,5), [coord(2,6), coord(3,6)]);
 	pieceMoveTest("[White] will capture EnPassant from b5 to c6", coord(2,5), coord(3,6), true);
 	tagTest("enpassant tag on c6 will be removed after the capture", coord(3,6), "enpassant", undefined);
+	pieceMoveTest("[Black] will move Ng8-Nf6", coord(7,8), coord(6,6), true);
+	pieceMoveTest("[White] will move g2 pawn two squares to for enpassant tag", coord(7, 2), coord(7,4), true);
+	tagTest("will have enpassant tag on g3", coord(7,3), "enpassant", true);
+	pieceMoveTest("[Black] will move Nf6-Ng8", coord(6,6), coord(7, 8), true);
+	pieceMoveTest("[White] will move Bf1 to Bg2 to enable white king-side castling", coord(6,1), coord(7,2), true);
+	pieceMoveTest("[Black] will move Ng8-Nf6", coord(7,8), coord(6,6), true);
+	pieceAvailableMovesTest("[White] will be able to move Ke1-Kg1 (OO)", coord(5,1), [coord(6,1), coord(7,1)]);
+	
 });
 
 function tagTest(message: string, coordinate: Chess.Coordinate, tagName: string, expected: any) {
