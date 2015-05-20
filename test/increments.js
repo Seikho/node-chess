@@ -36,12 +36,21 @@ describe("movement tests", function () {
     pieceMoveTest("[Black] will move Qd8-Qc7 enabling queenside castling", coord(4, 8), coord(3, 7), true);
     pieceAvailableMovesTest("[White] will be able to move Ke1-Kg1 (O-O) and Ke1-Kf1", coord(5, 1), [coord(6, 1), coord(7, 1)]);
     pieceMoveTest("[White] will castle king side (Ke1-Kg1 or O-O)", coord(5, 1), coord(7, 1), true);
+    pieceLocationTest("will have white rook on f1 after castling", coord(6, 1), "R");
     pieceAvailableMovesTest("[Black] will be able to move Ke8-Kc8 (o-o-o) and Ke8-Kd8", coord(5, 8), [coord(3, 8), coord(4, 8)]);
+    pieceMoveTest("[Black] will castle queen side (Ke8-Kc8 or o-o-o)", coord(5, 8), coord(3, 8), true);
+    pieceLocationTest("will have black rook on d8 after castling", coord(4, 8), "r");
 });
 function tagTest(message, coordinate, tagName, expected) {
     it(message, function () {
         var square = classicEngine.getSquare(coordinate);
         expect(square.tags[tagName]).to.equal(expected);
+    });
+}
+function pieceLocationTest(message, location, notation) {
+    it(message, function () {
+        var square = classicEngine.getSquare(location);
+        expect(square.piece.notation).to.equal(notation);
     });
 }
 function pieceAvailableMovesTest(message, start, expectedMoves) {
@@ -67,6 +76,7 @@ function pieceMoveTest(message, from, to, expected) {
     it(message, function () {
         var moveResult = classicEngine.movePiece(from, to);
         expect(expected).to.equal(moveResult);
+        //console.log(classicEngine.toString());
     });
 }
 //# sourceMappingURL=increments.js.map

@@ -25,16 +25,16 @@ var kingSideCastleCondition = function (piece, board) {
 };
 var postQueenSideCastle = {
     action: function (piece, board) {
-        var rookSquare = getSquare(piece, board, 15 /* QueenSide */, 3);
-        var nextSquare = getSquare(piece, board, 15 /* QueenSide */, 1);
+        var rookSquare = getSquare(piece, board, 15 /* QueenSide */, 2);
+        var nextSquare = getSquare(piece, board, 14 /* KingSide */, 1);
         nextSquare.piece = rookSquare.piece;
         rookSquare.piece = null;
     }
 };
 var postKingSideCastle = {
     action: function (piece, board) {
-        var rookSquare = getSquare(piece, board, 14 /* KingSide */, 2);
-        var nextSquare = getSquare(piece, board, 14 /* KingSide */, 1);
+        var rookSquare = getSquare(piece, board, 14 /* KingSide */, 1);
+        var nextSquare = getSquare(piece, board, 15 /* QueenSide */, 1);
         nextSquare.piece = rookSquare.piece;
         rookSquare.piece = null;
     }
@@ -55,6 +55,7 @@ var kingSideCastle = {
     canJump: false,
     useDefaultConditions: false,
     conditions: [kingSideCastleCondition],
+    postMoveActions: [postKingSideCastle]
 };
 function getSquare(piece, board, direction, count) {
     var coord = piece.getRelativeDestinations(direction, count)[0];
