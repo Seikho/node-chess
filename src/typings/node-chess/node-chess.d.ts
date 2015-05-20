@@ -89,7 +89,9 @@ declare module Chess {
         UpLeft,
         UpRight,
         DownLeft,
-        DownRight
+        DownRight,
+        KingSide,
+        QueenSide
     }
     
     /**
