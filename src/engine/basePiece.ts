@@ -26,9 +26,9 @@ class BasePiece implements Chess.BasePiece {
 	postMoveFunctions: Chess.PostMoveFunction[];
 	 
 	getRelativeDestinations(direction: Chess.Direction, count: number): Chess.Coordinate[] {
-		var transforms = getTransforms({ direction: direction, count: count }, this.isWhite);
-		
-		var destinations = transforms.map(transform => applyTransform(this.location, transform));
+		var transforms = getTransforms({ direction: direction, count: 0 }, this.isWhite);
+		var appliedTransforms = transforms.map(t => { return { file: t.file * count, rank: t.rank * count } });
+		var destinations = appliedTransforms.map(transform => applyTransform(this.location, transform));
 		return destinations;
 	}
 }

@@ -14,8 +14,9 @@ var BasePiece = (function () {
     }
     BasePiece.prototype.getRelativeDestinations = function (direction, count) {
         var _this = this;
-        var transforms = getTransforms({ direction: direction, count: count }, this.isWhite);
-        var destinations = transforms.map(function (transform) { return applyTransform(_this.location, transform); });
+        var transforms = getTransforms({ direction: direction, count: 0 }, this.isWhite);
+        var appliedTransforms = transforms.map(function (t) { return { file: t.file * count, rank: t.rank * count }; });
+        var destinations = appliedTransforms.map(function (transform) { return applyTransform(_this.location, transform); });
         return destinations;
     };
     return BasePiece;
