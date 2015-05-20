@@ -9,8 +9,8 @@ function getTransforms(singleMove, isWhite) {
     var upRight = { rank: 1 * x, file: 1 * x };
     var downLeft = { rank: -1 * x, file: -1 * x };
     var downRight = { rank: -1 * x, file: 1 * x };
-    var kingSide = { rank: 0, file: x };
-    var queenSide = { rank: 0, file: isWhite ? -1 : 1 };
+    var kingSide = { rank: 0, file: 1 };
+    var queenSide = { rank: 0, file: -1 };
     switch (singleMove.direction) {
         case 0 /* Up */:
             return [up];
