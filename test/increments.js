@@ -76,7 +76,6 @@ function pieceMoveTest(message, from, to, expected) {
     it(message, function () {
         var moveResult = classicEngine.movePiece(from, to);
         expect(expected).to.equal(moveResult);
-        //console.log(classicEngine.toString());
     });
 }
 //# sourceMappingURL=increments.js.map

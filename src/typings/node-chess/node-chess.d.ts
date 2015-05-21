@@ -16,6 +16,7 @@ declare module Chess {
     	toString(): string;
         whitesTurn: boolean;
         createPiece(notation: string, location: Coordinate): Chess.BasePiece;
+        moveConditions?: any[];
         postMoveActions: PostMoveFunction[]
     }
 
@@ -54,7 +55,6 @@ declare module Chess {
         to: Coordinate;
         postMoveActions?: PostMoveFunction[];
     }
-
 
     interface Piece {
         location: Coordinate;

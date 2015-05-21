@@ -89,6 +89,5 @@ function pieceMoveTest(message: string, from: Chess.Coordinate, to: Chess.Coordi
 	it (message, () => {
 		var moveResult = classicEngine.movePiece(from, to);
 		expect(expected).to.equal(moveResult);
-		//console.log(classicEngine.toString());
 	});
 }
