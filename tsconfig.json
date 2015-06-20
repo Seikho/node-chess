@@ -28,6 +28,7 @@
         "src/engine/helpers/movePiece.ts",
         "src/engine/helpers/toString.ts",
         "src/engine/instances/classic.ts",
+        "src/engine/instances/rules.ts",
         "src/engine/parsers/fen.ts",
         "src/engine/parsers/stringParsers/fen.ts",
         "src/engine/pieces/bishop.ts",

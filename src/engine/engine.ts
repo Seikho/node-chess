@@ -37,6 +37,7 @@ class Engine implements Chess.Engine {
     movePiece = movePiece;
 	preMoveActions = [];
     postMoveActions = [];
+	tags = {};
 
     getSquare(square: Chess.Coordinate): Chess.Square {
         if (!this.ranks[square.rank]) return null;

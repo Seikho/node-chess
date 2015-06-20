@@ -3,7 +3,7 @@ declare module Chess {
     	rankCount: number;
     	fileCount: number;
         moveNumber: number;
-        
+
     	ranks: Rank[];
     	pieces: Piece[];
     	positionParser: PositionParser;
@@ -17,7 +17,10 @@ declare module Chess {
         whitesTurn: boolean;
         createPiece(notation: string, location: Coordinate): Chess.BasePiece;
         moveConditions?: any[];
-        postMoveActions: PostMoveFunction[]
+        postMoveActions: PostMoveFunction[];
+
+        // TODO: Same as Square interface, needs to be more strongly typed.
+        tags: any;
     }
 
     /**
@@ -26,7 +29,7 @@ declare module Chess {
     interface PieceMovement {
     	movePatterns: MovePattern[];
     }
-      
+
     interface PostMoveFunction {
         moveNumber?: number;
         action: (piece: BasePiece, board: Engine) => any;
@@ -47,9 +50,11 @@ declare module Chess {
     	file: number;
     	piece: BasePiece;
         availableMoves?: Move[];
-        tags: any; // TODO: Change to more strongly typed interface
+
+        // TODO: Change to more strongly typed interface
+        tags: any;
     }
-    
+
     interface Move {
         from?: Coordinate;
         to: Coordinate;
@@ -69,12 +74,12 @@ declare module Chess {
         getConditionalMovePatterns?: (board: Engine) => MovePattern[];
         postMoveFunctions?: PostMoveFunction[];
     }
-    
+
     interface BasePiece extends Piece {
         getRelativeDestinations: (direction: Direction, count: number) => Chess.Coordinate[];
         postMoveFunctions: PostMoveFunction[];
     }
-    
+
     const enum Direction {
         Up,
         Down,
@@ -93,7 +98,7 @@ declare module Chess {
         KingSide,
         QueenSide
     }
-    
+
     /**
      * @param moves The complete pattern of movement
      * @param canJump Can the piece jump over pieces to reach the location
@@ -109,11 +114,11 @@ declare module Chess {
         conditions?: MovePatternConditional[];
         useDefaultConditions?: boolean;
     }
-    
+
     interface MovePatternConditional {
         (piece: BasePiece, board: Engine): boolean;
     }
-    
+
     /**
      * @param direction The direction of movement from the perspective of the piece owner
      * @param count Number of squares in the direction. 0: All squares (e.g. rooks, queens, bishops). Otherwise 1 .. N. SingleMoves with negative numbers are ignored.
