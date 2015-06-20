@@ -5,11 +5,14 @@ var queenSideCastleCondition = function (piece, board) {
     var bishopSquare = getSquare(piece, board, 15 /* QueenSide */, 2);
     var knightSquare = getSquare(piece, board, 15 /* QueenSide */, 3);
     var rookSquare = getSquare(piece, board, 15 /* QueenSide */, 4);
-    if (!!queenSquare.piece || !!bishopSquare.piece || !!knightSquare.piece)
+    var squaresAreVacant = !queenSquare.piece
+        && !bishopSquare.piece
+        && !knightSquare.piece
+        && !!rookSquare.piece;
+    if (!squaresAreVacant)
         return false;
-    if (!rookSquare.piece)
-        return false;
-    return rookSquare.piece.moveHistory.length === 0;
+    var rookHasMoved = rookSquare.piece.moveHistory.length > 0;
+    return !rookHasMoved;
 };
 var kingSideCastleCondition = function (piece, board) {
     if (piece.moveHistory.length > 0)
@@ -17,11 +20,13 @@ var kingSideCastleCondition = function (piece, board) {
     var bishopSquare = getSquare(piece, board, 14 /* KingSide */, 1);
     var knightSquare = getSquare(piece, board, 14 /* KingSide */, 2);
     var rookSquare = getSquare(piece, board, 14 /* KingSide */, 3);
-    if (!!bishopSquare.piece || !!knightSquare.piece)
+    var squaresAreVacant = !bishopSquare.piece
+        && !knightSquare.piece
+        && !!rookSquare.piece;
+    if (!squaresAreVacant)
         return false;
-    if (!rookSquare.piece)
-        return false;
-    return rookSquare.piece.moveHistory.length === 0;
+    var rookHasMoved = rookSquare.piece.moveHistory.length > 0;
+    return !rookHasMoved;
 };
 var postQueenSideCastle = {
     action: function (piece, board) {
