@@ -20,14 +20,15 @@ var Engine = (function () {
         this.pieceFactory = BasePiece;
         this.availableMoves = getMoves;
         this.movePiece = movePiece;
+        this.preMoveActions = [];
         this.postMoveActions = [];
         ranks = ranks || 8;
         files = files || 8;
         if (isNaN(ranks) || isNaN(files))
             throw "InvalidArgumentException: 'ranks' and 'files' must be a number";
         // Only accept positive, whole, organic, gluten-free numbers.
-        this.rankCount = Math.floor(Math.abs(ranks));
-        this.fileCount = Math.floor(Math.abs(files));
+        this.rankCount = Math.floor(ranks);
+        this.fileCount = Math.floor(files);
     }
     Engine.prototype.getSquare = function (square) {
         if (!this.ranks[square.rank])

@@ -15,11 +15,17 @@ var BasePiece = (function () {
     BasePiece.prototype.getRelativeDestinations = function (direction, count) {
         var _this = this;
         var transforms = getTransforms({ direction: direction, count: 0 }, this.isWhite);
-        var appliedTransforms = transforms.map(function (t) { return { file: t.file * count, rank: t.rank * count }; });
+        var appliedTransforms = transforms.map(function (t) { return modifyTransform(t, count); });
         var destinations = appliedTransforms.map(function (transform) { return applyTransform(_this.location, transform); });
         return destinations;
     };
     return BasePiece;
 })();
+function modifyTransform(transform, count) {
+    return {
+        file: transform.file * count,
+        rank: transform.rank * count
+    };
+}
 module.exports = BasePiece;
 //# sourceMappingURL=basePiece.js.map
