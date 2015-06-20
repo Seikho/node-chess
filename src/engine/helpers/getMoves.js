@@ -1,4 +1,5 @@
 var getPaths = require("./getPaths");
+// TODO: Desperately requires refactoring
 function getMoves(coordinate) {
     var stopwatch = Date.now();
     var self = this;
@@ -23,7 +24,7 @@ function getMoves(coordinate) {
             if (!isPathVacant)
                 return false;
         }
-        // Destination occupied optimisations        
+        // Destination occupied optimisations
         if (!!lastSquare.piece) {
             // Can't land on your own piece
             if (!!isWhite === !!lastSquare.piece.isWhite)
