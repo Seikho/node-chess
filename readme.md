@@ -46,6 +46,7 @@ console.log(classicEngine.getSquare({ file: 3, rank: 6 }).availableMoves);
 The 'super knight' moves 3 squares laterally before moving 1 square on the opposite axis!
 
 ```javascript
+var Direction = require("./engine/direction");
 var customEngine = new chess.Engine();
 var horzThenVert = {
 	moves: [{direction: Direction.Horizontal, count: 3}, {direction: Direction.Vertical, count: 1}],
