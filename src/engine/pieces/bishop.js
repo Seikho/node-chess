@@ -1,5 +1,7 @@
+var enums = require("../../enums");
+var Direction = enums.Direction;
 var diag = {
-    moves: [{ direction: Chess.Direction.Diagonal, count: 0 }],
+    moves: [{ direction: Direction.Diagonal, count: 0 }],
     canJump: false,
     canMove: true,
     canCapture: true

@@ -1,7 +1,9 @@
+import enums = require("../../enums");
+import Direction = enums.Direction;
 export = bishop;
 
 var diag = {
-	moves: [{ direction: Chess.Direction.Diagonal, count: 0 }],
+	moves: [{ direction: Direction.Diagonal, count: 0 }],
 	canJump: false,
 	canMove: true,
 	canCapture: true

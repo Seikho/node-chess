@@ -3,21 +3,21 @@ declare module "node-chess" {
 }
 
 declare module Chess {
-    interface Engine {
-    	rankCount: number;
-    	fileCount: number;
+    export interface Engine {
+        rankCount: number;
+        fileCount: number;
         moveNumber: number;
 
-    	ranks: Rank[];
-    	pieces: Piece[];
-    	positionParser: PositionParser;
-    	capturedPieces: Piece[];
-    	create(): void;
-    	availableMoves(coordinate: Coordinate): Move[];
+        ranks: Rank[];
+        pieces: Piece[];
+        positionParser: PositionParser;
+        capturedPieces: Piece[];
+        create(): void;
+        availableMoves(coordinate: Coordinate): Move[];
         populateAvailableMoves();
-    	getSquare(square: Coordinate): Square;
+        getSquare(square: Coordinate): Square;
         movePiece(from: Coordinate, to: Coordinate): boolean;
-    	toString(): string;
+        toString(): string;
         whitesTurn: boolean;
         createPiece(notation: string, location: Coordinate): Chess.BasePiece;
         moveConditions?: any[];
@@ -27,11 +27,30 @@ declare module Chess {
         tags: any;
     }
 
+    export enum Direction {
+        Up,
+        Down,
+        Left,
+        Right,
+        DiagonalUp,
+        DiagonalDown,
+        Lateral,
+        Horizontal,
+        Vertical,
+        Diagonal,
+        UpLeft,
+        UpRight,
+        DownLeft,
+        DownRight,
+        KingSide,
+        QueenSide
+    }
+
     /**
      * Defines a single move that a piece can perform
      */
     interface PieceMovement {
-    	movePatterns: MovePattern[];
+        movePatterns: MovePattern[];
     }
 
     interface PostMoveFunction {
@@ -40,19 +59,19 @@ declare module Chess {
     }
 
     interface Coordinate {
-    	file: number; // Board x-axis
-    	rank: number; // Board y-axis
+        file: number; // Board x-axis
+        rank: number; // Board y-axis
     }
 
     interface Rank {
-    	rank: number;
-    	squares: Square[];
+        rank: number;
+        squares: Square[];
     }
 
     interface Square {
         rank: number;
-    	file: number;
-    	piece: BasePiece;
+        file: number;
+        piece: BasePiece;
         availableMoves?: Move[];
 
         // TODO: Change to more strongly typed interface
@@ -67,13 +86,13 @@ declare module Chess {
 
     interface Piece {
         location: Coordinate;
-    	name: string;
-    	movement: MovePattern[];
-    	notation: string;
-    	value: number;
-    	canQueen: boolean;
-    	canSpawn: boolean;
-    	isWhite?: boolean;
+        name: string;
+        movement: MovePattern[];
+        notation: string;
+        value: number;
+        canQueen: boolean;
+        canSpawn: boolean;
+        isWhite?: boolean;
         moveHistory?: Move[];
         getConditionalMovePatterns?: (board: Engine) => MovePattern[];
         postMoveFunctions?: PostMoveFunction[];
@@ -91,10 +110,10 @@ declare module Chess {
      * @param canCapture Can the piece capture at the location
      */
     interface MovePattern {
-    	moves: SingleMove[];
-    	canJump?: boolean;
-    	canCapture?: boolean;
-    	canMove?: boolean;
+        moves: SingleMove[];
+        canJump?: boolean;
+        canCapture?: boolean;
+        canMove?: boolean;
         postMoveActions?: PostMoveFunction[];
         conditions?: MovePatternConditional[];
         useDefaultConditions?: boolean;
@@ -109,8 +128,8 @@ declare module Chess {
      * @param count Number of squares in the direction. 0: All squares (e.g. rooks, queens, bishops). Otherwise 1 .. N. SingleMoves with negative numbers are ignored.
      * */
     interface SingleMove {
-    	direction: number;
-    	count: number;
+        direction: number;
+        count: number;
     }
 
     /**
@@ -119,28 +138,28 @@ declare module Chess {
      * @param time The maxmium calculation time. The engine will stop analysing the position after this time in seconds. 5s default.
      */
     interface AnalysisOptions {
-    	interval?: number;
-    	depth?: number;
-    	time?: number;
+        interval?: number;
+        depth?: number;
+        time?: number;
     }
 
     interface PositionParser {
-    	(position?: string): void;
+        (position?: string): void;
     }
 
     interface StringParser {
-    	parse(position: string): BoardInput;
+        parse(position: string): BoardInput;
     }
 
     interface BoardInput {
-    	ranks: string[];
-    	turn: string;
-    	castling: string[];
-    	halfMove: number;
-    	fullMove: number;
+        ranks: string[];
+        turn: string;
+        castling: string[];
+        halfMove: number;
+        fullMove: number;
     }
 
     interface Rule {
-    	(): boolean;
+        (): boolean;
     }
 }

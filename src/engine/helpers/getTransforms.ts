@@ -1,3 +1,5 @@
+import enums = require("../../enums");
+import Direction = enums.Direction;
 export = getTransforms;
 
 function getTransforms(singleMove: Chess.SingleMove, isWhite: boolean): Chess.Coordinate[] {
@@ -14,37 +16,37 @@ function getTransforms(singleMove: Chess.SingleMove, isWhite: boolean): Chess.Co
 	var kingSide = { rank: 0, file: 1 };
 	var queenSide = { rank: 0, file: -1 };
 	switch (singleMove.direction) {
-		case Chess.Direction.Up:
+		case Direction.Up:
 			return [up];
-		case Chess.Direction.Down:
+		case Direction.Down:
 			return [down];
-		case Chess.Direction.Left:
+		case Direction.Left:
 			return [left];
-		case Chess.Direction.Right:
+		case Direction.Right:
 			return [right];
-		case Chess.Direction.DiagonalUp:
+		case Direction.DiagonalUp:
 			return [upLeft, upRight];
-		case Chess.Direction.DiagonalDown:
+		case Direction.DiagonalDown:
 			return [downLeft, downRight];
-		case Chess.Direction.Diagonal:
+		case Direction.Diagonal:
 			return [upLeft, upRight, downLeft, downRight];
-		case Chess.Direction.Horizontal:
+		case Direction.Horizontal:
 			return [left, right];
-		case Chess.Direction.Vertical:
+		case Direction.Vertical:
 			return [up, down];
-		case Chess.Direction.Lateral:
+		case Direction.Lateral:
 			return [up, down, left, right];
-		case Chess.Direction.UpLeft:
+		case Direction.UpLeft:
 			return [upLeft];
-		case Chess.Direction.UpRight:
+		case Direction.UpRight:
 			return [upRight];
-		case Chess.Direction.DownLeft:
+		case Direction.DownLeft:
 			return [downLeft];
-		case Chess.Direction.DownRight:
+		case Direction.DownRight:
 			return [downRight];
-		case Chess.Direction.KingSide:
+		case Direction.KingSide:
 			return [kingSide];
-		case Chess.Direction.QueenSide:
+		case Direction.QueenSide:
 			return [queenSide];
 		default:
 			throw "InvalidDirectionException: The direction provided was invalid";

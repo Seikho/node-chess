@@ -1,6 +1,7 @@
 import getTransforms = require("./helpers/getTransforms");
 import applyTransform = require("./helpers/applyTransform");
-import enums = require()
+import enums = require("../enums");
+import Direction = enums.Direction;
 export = BasePiece;
 
 class BasePiece implements Chess.BasePiece {
@@ -26,7 +27,7 @@ class BasePiece implements Chess.BasePiece {
 	isWhite: boolean;
 	postMoveFunctions: Chess.PostMoveFunction[];
 
-	getRelativeDestinations(direction: Chess.Direction, count: number): Chess.Coordinate[] {
+	getRelativeDestinations(direction: Direction, count: number): Chess.Coordinate[] {
 		var transforms = getTransforms({ direction: direction, count: 0 }, this.isWhite);
 		var appliedTransforms = transforms.map(t => modifyTransform(t, count));
 		var destinations = appliedTransforms.map(transform => applyTransform(this.location, transform));

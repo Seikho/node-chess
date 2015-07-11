@@ -1,14 +1,16 @@
+import enums = require("../../enums");
+import Direction = enums.Direction;
 export = queen;
 
 var diag = {
-	moves: [{ direction: Chess.Direction.Diagonal, count: 0 }],
+	moves: [{ direction: Direction.Diagonal, count: 0 }],
 	canJump: false,
 	canMove: true,
 	canCapture: true
 }
 
 var lat = {
-	moves: [{ direction: Chess.Direction.Lateral, count: 0 }],
+	moves: [{ direction: Direction.Lateral, count: 0 }],
 	canJump: false,
 	canCapture: true,
 	canMove: true

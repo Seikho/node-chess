@@ -1,14 +1,16 @@
+import enums = require("../../enums");
+import Direction = enums.Direction;
 export = knight;
 
 var horzThenVert = {
-	moves: [{direction: Chess.Direction.Horizontal, count: 2}, {direction: Chess.Direction.Vertical, count: 1}],
+	moves: [{direction: Direction.Horizontal, count: 2}, {direction: Direction.Vertical, count: 1}],
 	canJump: true,
 	canCapture: true,
 	canMove: true
 }
 
 var vertThenHorz = {
-	moves: [{direction: Chess.Direction.Vertical, count: 2}, {direction: Chess.Direction.Horizontal, count: 1}],
+	moves: [{direction: Direction.Vertical, count: 2}, {direction: Direction.Horizontal, count: 1}],
 	canJump: true,
 	canCapture: true,
 	canMove: true

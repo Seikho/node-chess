@@ -1,11 +1,16 @@
 var Engine = require("./engine/engine");
 var classicEngine = require("./engine/instances/classic");
 var classicPieces = require("./engine/pieces/pieces");
-var Direction = require("./engine/direction");
+var enums = require("./enums");
+var Direction = enums.Direction;
 module.exports = {
     Engine: Engine,
-    classicEngine: classicEngine,
-    classicPieces: classicPieces,
+    engines: {
+        classic: {
+            engine: classicEngine,
+            pieces: classicPieces
+        }
+    },
     Direction: Direction
 };
 //# sourceMappingURL=index.js.map

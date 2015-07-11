@@ -1,3 +1,5 @@
+import enums = require("../../enums");
+import Direction = enums.Direction;
 export = pawn;
 
 var firstMoveCondition: Chess.MovePatternConditional = (piece) => {
@@ -5,17 +7,17 @@ var firstMoveCondition: Chess.MovePatternConditional = (piece) => {
 }
 
 var canLeftEnpassant: Chess.MovePatternConditional = (piece, board) => {
-	return hasEnpassantTag(Chess.Direction.UpLeft, piece, board);
+	return hasEnpassantTag(Direction.UpLeft, piece, board);
 }
 
 var canRightEnpassant: Chess.MovePatternConditional = (piece, board) => {
-	return hasEnpassantTag(Chess.Direction.UpRight, piece, board);
+	return hasEnpassantTag(Direction.UpRight, piece, board);
 }
 
 var enpassantPostMove: Chess.PostMoveFunction = {
 	action: (piece, board) => {
 		var pieceCurrentSquare = board.getSquare(piece.location);
-		var coordBelow = piece.getRelativeDestinations(Chess.Direction.Down, 1)[0];
+		var coordBelow = piece.getRelativeDestinations(Direction.Down, 1)[0];
 		var squareBelow = board.getSquare(coordBelow);
 		board.capturedPieces.push(squareBelow.piece);
 		squareBelow.piece = null;
@@ -26,7 +28,7 @@ var enpassantPostMove: Chess.PostMoveFunction = {
 var allowEnpassantCapture: Chess.PostMoveFunction = {
     action: function(piece, board) {
 		// Find the middle square between the originating and desination squares for tagging
-		var coordinateToTag = piece.getRelativeDestinations(Chess.Direction.Down, 1)[0];
+		var coordinateToTag = piece.getRelativeDestinations(Direction.Down, 1)[0];
 		var squareToTag = board.getSquare(coordinateToTag);
         squareToTag.tags["enpassant"] = piece.isWhite;
 		
@@ -41,7 +43,7 @@ var allowEnpassantCapture: Chess.PostMoveFunction = {
 };
 
 var firstMovePattern: Chess.MovePattern = {
-	moves: [{ direction: Chess.Direction.Up, count: 2 }],
+	moves: [{ direction: Direction.Up, count: 2 }],
 	canJump: false,
 	canCapture: false,
 	canMove: true,
@@ -51,7 +53,7 @@ var firstMovePattern: Chess.MovePattern = {
 }
 
 var leftEnpassant: Chess.MovePattern = {
-	moves: [{ direction: Chess.Direction.UpLeft, count: 1 }],
+	moves: [{ direction: Direction.UpLeft, count: 1 }],
 	canJump: false,
 	canCapture: true,
 	canMove: false,
@@ -61,7 +63,7 @@ var leftEnpassant: Chess.MovePattern = {
 }
 
 var rightEnpassant: Chess.MovePattern = {
-	moves: [{ direction: Chess.Direction.UpRight, count: 1 }],
+	moves: [{ direction: Direction.UpRight, count: 1 }],
 	canJump: false,
 	canCapture: true,
 	canMove: false,
@@ -70,7 +72,7 @@ var rightEnpassant: Chess.MovePattern = {
 	postMoveActions: [enpassantPostMove]
 }
 
-function hasEnpassantTag(direction: Chess.Direction, piece: Chess.BasePiece, board: Chess.Engine) {
+function hasEnpassantTag(direction: Direction, piece: Chess.BasePiece, board: Chess.Engine) {
 	var coordinate = piece.getRelativeDestinations(direction, 1);
 	
 	var square = board.getSquare(coordinate[0]);
@@ -84,21 +86,21 @@ function hasEnpassantTag(direction: Chess.Direction, piece: Chess.BasePiece, boa
 }
 
 var moveForward = {
-	moves: [{ direction: Chess.Direction.Up, count: 1 }],
+	moves: [{ direction: Direction.Up, count: 1 }],
 	canJump: false,
 	canCapture: false,
 	canMove: true
 }
 
 var moveCapture = {
-	moves: [{ direction: Chess.Direction.DiagonalUp, count: 1 }],
+	moves: [{ direction: Direction.DiagonalUp, count: 1 }],
 	canJump: false,
 	canCapture: true,
 	canMove: false
 }
 
 var forward: Chess.SingleMove = {
-	direction: Chess.Direction.Up,
+	direction: Direction.Up,
 	count: 1
 }
 
