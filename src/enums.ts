@@ -1,5 +1,4 @@
-export = Direction;
-enum Direction {
+export enum Direction {
 	Up,
 	Down,
 	Left,

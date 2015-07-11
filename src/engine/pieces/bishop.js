@@ -1,5 +1,5 @@
 var diag = {
-    moves: [{ direction: 9 /* Diagonal */, count: 0 }],
+    moves: [{ direction: Chess.Direction.Diagonal, count: 0 }],
     canJump: false,
     canMove: true,
     canCapture: true

@@ -12,37 +12,37 @@ function getTransforms(singleMove, isWhite) {
     var kingSide = { rank: 0, file: 1 };
     var queenSide = { rank: 0, file: -1 };
     switch (singleMove.direction) {
-        case 0 /* Up */:
+        case Chess.Direction.Up:
             return [up];
-        case 1 /* Down */:
+        case Chess.Direction.Down:
             return [down];
-        case 2 /* Left */:
+        case Chess.Direction.Left:
             return [left];
-        case 3 /* Right */:
+        case Chess.Direction.Right:
             return [right];
-        case 4 /* DiagonalUp */:
+        case Chess.Direction.DiagonalUp:
             return [upLeft, upRight];
-        case 5 /* DiagonalDown */:
+        case Chess.Direction.DiagonalDown:
             return [downLeft, downRight];
-        case 9 /* Diagonal */:
+        case Chess.Direction.Diagonal:
             return [upLeft, upRight, downLeft, downRight];
-        case 7 /* Horizontal */:
+        case Chess.Direction.Horizontal:
             return [left, right];
-        case 8 /* Vertical */:
+        case Chess.Direction.Vertical:
             return [up, down];
-        case 6 /* Lateral */:
+        case Chess.Direction.Lateral:
             return [up, down, left, right];
-        case 10 /* UpLeft */:
+        case Chess.Direction.UpLeft:
             return [upLeft];
-        case 11 /* UpRight */:
+        case Chess.Direction.UpRight:
             return [upRight];
-        case 12 /* DownLeft */:
+        case Chess.Direction.DownLeft:
             return [downLeft];
-        case 13 /* DownRight */:
+        case Chess.Direction.DownRight:
             return [downRight];
-        case 14 /* KingSide */:
+        case Chess.Direction.KingSide:
             return [kingSide];
-        case 15 /* QueenSide */:
+        case Chess.Direction.QueenSide:
             return [queenSide];
         default:
             throw "InvalidDirectionException: The direction provided was invalid";

@@ -1,4 +1,3 @@
-var Direction;
 (function (Direction) {
     Direction[Direction["Up"] = 0] = "Up";
     Direction[Direction["Down"] = 1] = "Down";
@@ -16,6 +15,6 @@ var Direction;
     Direction[Direction["DownRight"] = 13] = "DownRight";
     Direction[Direction["KingSide"] = 14] = "KingSide";
     Direction[Direction["QueenSide"] = 15] = "QueenSide";
-})(Direction || (Direction = {}));
-module.exports = Direction;
-//# sourceMappingURL=direction.js.map
+})(exports.Direction || (exports.Direction = {}));
+var Direction = exports.Direction;
+//# sourceMappingURL=enums.js.map

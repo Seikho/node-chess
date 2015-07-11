@@ -1,3 +1,7 @@
+declare module "node-chess" {
+    export = Chess;
+}
+
 declare module Chess {
     interface Engine {
     	rankCount: number;
@@ -76,27 +80,8 @@ declare module Chess {
     }
 
     interface BasePiece extends Piece {
-        getRelativeDestinations: (direction: Direction, count: number) => Chess.Coordinate[];
+        getRelativeDestinations: (direction: number, count: number) => Chess.Coordinate[];
         postMoveFunctions: PostMoveFunction[];
-    }
-
-    const enum Direction {
-        Up,
-        Down,
-        Left,
-        Right,
-        DiagonalUp,
-        DiagonalDown,
-        Lateral,
-        Horizontal,
-        Vertical,
-        Diagonal,
-        UpLeft,
-        UpRight,
-        DownLeft,
-        DownRight,
-        KingSide,
-        QueenSide
     }
 
     /**

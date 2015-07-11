@@ -1,5 +1,6 @@
 import getTransforms = require("./helpers/getTransforms");
 import applyTransform = require("./helpers/applyTransform");
+import enums = require()
 export = BasePiece;
 
 class BasePiece implements Chess.BasePiece {
