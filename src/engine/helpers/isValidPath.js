@@ -1,0 +1,30 @@
+function isValidPath(board, piece, path, move) {
+    // TODO: Rules API would be used here
+    var isWhite = !!piece.isWhite;
+    var lastCoordinateIndex = path.length - 1;
+    var lastCoordinate = path[lastCoordinateIndex];
+    var lastSquare = board.getSquare(lastCoordinate);
+    // Optimisations
+    // Ensure all squares leading up to the destination are vacant
+    if (!move.canJump) {
+        var isPathVacant = path.slice(0, -1).every(function (coord) { return !board.getSquare(coord).piece; });
+        if (!isPathVacant)
+            return false;
+    }
+    // Destination occupied optimisations
+    if (!!lastSquare.piece) {
+        // Can't land on your own piece
+        if (!!isWhite === !!lastSquare.piece.isWhite)
+            return false;
+        // Must be able to capture if pieces are opposing colours
+        if (!move.canCapture)
+            return false;
+    }
+    else {
+        if (!move.canMove)
+            return false;
+    }
+    return true;
+}
+module.exports = isValidPath;
+//# sourceMappingURL=isValidPath.js.map

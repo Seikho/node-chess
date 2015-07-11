@@ -1,50 +1,21 @@
 import getPaths = require("./getPaths");
+import isValidPath = require("./isValidPath")
 export = getMoves;
 
 // TODO: Desperately requires refactoring
 function getMoves(coordinate: Chess.Coordinate): Chess.Move[] {
-    var stopwatch = Date.now();
-    var self: Chess.Engine = this;
-    var square: Chess.Square = self.getSquare(coordinate);
+    var stopwatch = Date.now(); // Benchmarking
+    var board: Chess.Engine = this;
+    var square: Chess.Square = board.getSquare(coordinate);
 
     // No piece, no moves.
     var piece = square.piece;
     if (!piece) return [];
-    if (piece.isWhite !== self.whitesTurn) return [];
+    
+    var isMoveablePiece = piece.isWhite === board.whitesTurn;
+    if (!isMoveablePiece) return [];
+
     var bounds = { file: this.fileCount, rank: this.rankCount };
-
-    function isValidPath(path: Chess.Coordinate[], move: Chess.MovePattern): boolean {
-        // TODO: Rules API would be used here
-        var isWhite = !!piece.isWhite;
-        var lastCoordinateIndex = path.length - 1;
-        var lastCoordinate = path[lastCoordinateIndex];
-        var lastSquare = self.getSquare(lastCoordinate);
-
-        // Optimisations
-
-        // Ensure all squares leading up to the destination are vacant
-        if (!move.canJump) {
-            var isPathVacant = path.slice(0, -1).every(coord => !self.getSquare(coord).piece);
-            if (!isPathVacant) return false;
-        }
-
-        // Destination occupied optimisations
-        if (!!lastSquare.piece) {
-
-            // Can't land on your own piece
-            if (!!isWhite === !!lastSquare.piece.isWhite) return false;
-
-            // Must be able to capture if pieces are opposing colours
-            if (!move.canCapture) return false;
-        }
-
-        // Destination unoccupied optimisations
-        else {
-            if (!move.canMove) return false;
-        }
-
-        return true;
-    }
 
     var pathings: Array<Chess.Coordinate[]> = [];
 
@@ -56,7 +27,7 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Move[] {
         var validPathings = newPathings.forEach(pathing => {
             // If it's a vanilla move pattern, use the standard path validation strategy
             if (!move.conditions) {
-                if (isValidPath(pathing, move)) {
+                if (isValidPath(board, piece, pathing, move)) {
                     moves.push({
                         to: pathing[pathing.length - 1],
                         postMoveActions: []
@@ -65,8 +36,8 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Move[] {
                 return;
             }
             // Otherwise we use the logic provided with the move pattern
-            var defaultValidPath = !!move.useDefaultConditions ? isValidPath(pathing, move) : true;
-            var movePatternEvaluation = move.conditions.every(cond => cond(piece, self));
+            var defaultValidPath = !!move.useDefaultConditions ? isValidPath(board, piece, pathing, move) : true;
+            var movePatternEvaluation = move.conditions.every(cond => cond(piece, board));
             if (defaultValidPath && movePatternEvaluation) {
                 moves.push({
                     to: pathing[pathing.length - 1],

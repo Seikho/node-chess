@@ -12,6 +12,8 @@
         "test/**/*.ts"
     ],
     "files": [
+        "test/fen-parser.ts",
+        "test/increments.ts",
         "src/analyzer.ts",
         "src/castling.ts",
         "src/engine/basePiece.ts",
@@ -25,6 +27,7 @@
         "src/engine/helpers/getPaths.ts",
         "src/engine/helpers/getTransforms.ts",
         "src/engine/helpers/isInBounds.ts",
+        "src/engine/helpers/isValidPath.ts",
         "src/engine/helpers/movePiece.ts",
         "src/engine/helpers/toString.ts",
         "src/engine/instances/classic.ts",
@@ -45,8 +48,6 @@
         "src/typings/mocha/mocha.d.ts",
         "src/typings/node-chess/node-chess.d.ts",
         "src/typings/node/node.d.ts",
-        "src/typings/tsd.d.ts",
-        "test/fen-parser.ts",
-        "test/increments.ts"
+        "src/typings/tsd.d.ts"
     ]
 }
