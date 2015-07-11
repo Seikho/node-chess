@@ -5,7 +5,8 @@
   "main": "src/board.js",
   "scripts": {
     "test": "mocha",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "build": "tsglob && tsc"
   },
   "repository": {
     "type": "git",
