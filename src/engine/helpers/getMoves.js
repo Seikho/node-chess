@@ -10,8 +10,9 @@ function getMoves(coordinate) {
     if (!piece)
         return [];
     var isMoveablePiece = piece.isWhite === board.whitesTurn;
-    if (!isMoveablePiece)
-        return [];
+    // We want all moves available on the entire board for calculation purposes
+    // Therefore we leave this commented out
+    //if (!isMoveablePiece) return [];
     var bounds = { file: this.fileCount, rank: this.rankCount };
     var pathings = [];
     var movePatterns = piece.movement.slice(0);

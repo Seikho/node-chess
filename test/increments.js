@@ -10,9 +10,9 @@ describe("available move tests", function () {
     pieceAvailableMovesTest("will find all available moves for c1 bishop from the starting position", coord(3, 1), []);
     pieceAvailableMovesTest("will find all available moves for d1 queen from the starting position", coord(4, 1), []);
     pieceAvailableMovesTest("will find all available moves for e1 king from the starting position", coord(5, 1), []);
-    pieceAvailableMovesTest("will find all available moves for b7 pawn from the starting position", coord(2, 7), []);
-    pieceAvailableMovesTest("will find no available moves for b8 knight from the starting position", coord(2, 8), []);
-    pieceAvailableMovesTest("will find all available moves for a7 pawn form the start position", coord(1, 7), []);
+    pieceAvailableMovesTest("will find all available moves for b7 pawn from the starting position", coord(2, 7), [coord(2, 6), coord(2, 5)]);
+    pieceAvailableMovesTest("will find no available moves for b8 knight from the starting position", coord(2, 8), [coord(1, 6), coord(3, 6)]);
+    pieceAvailableMovesTest("will find all available moves for a7 pawn form the start position", coord(1, 7), [coord(1, 6), coord(1, 5)]);
 });
 describe("movement tests", function () {
     pieceMoveTest("[White] will move a2-a3", coord(1, 2), coord(1, 3), true);
