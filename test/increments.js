@@ -1,7 +1,7 @@
 var nodeChess = require("../src/index");
 var chai = require("chai");
 var expect = chai.expect;
-var classicEngine = nodeChess.classicEngine();
+var classicEngine = nodeChess.classic.engine();
 classicEngine.populateAvailableMoves();
 console.log(classicEngine.toString());
 describe("available move tests", function () {
