@@ -1,6 +1,6 @@
 {
   "name": "node-chess",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "An isomorphic and fully customisable JavaScript chess engine",
   "main": "src/board.js",
   "scripts": {
