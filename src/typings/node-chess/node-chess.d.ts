@@ -13,6 +13,7 @@ declare module "node-chess" {
         populateAvailableMoves();
         getSquare(square: Coordinate): Square;
         movePiece(from: Coordinate, to: Coordinate): boolean;
+        pieceFactory: BasePiece;
         toString(): string;
         whitesTurn: boolean;
         createPiece(notation: string, location: Coordinate): BasePiece;
@@ -45,26 +46,26 @@ declare module "node-chess" {
     /**
      * Defines a single move that a piece can perform
      */
-    interface PieceMovement {
+    export interface PieceMovement {
         movePatterns: MovePattern[];
     }
 
-    interface PostMoveFunction {
+    export interface PostMoveFunction {
         moveNumber?: number;
         action: (piece: BasePiece, board: Engine) => any;
     }
 
-    interface Coordinate {
+    export interface Coordinate {
         file: number; // Board x-axis
         rank: number; // Board y-axis
     }
 
-    interface Rank {
+    export interface Rank {
         rank: number;
         squares: Square[];
     }
 
-    interface Square {
+    export interface Square {
         rank: number;
         file: number;
         piece: BasePiece;
@@ -74,13 +75,13 @@ declare module "node-chess" {
         tags: any;
     }
 
-    interface Move {
+    export interface Move {
         from?: Coordinate;
         to: Coordinate;
         postMoveActions?: PostMoveFunction[];
     }
 
-    interface Piece {
+    export interface Piece {
         location: Coordinate;
         name: string;
         movement: MovePattern[];
@@ -94,7 +95,7 @@ declare module "node-chess" {
         postMoveFunctions?: PostMoveFunction[];
     }
 
-    interface BasePiece extends Piece {
+    export interface BasePiece extends Piece {
         getRelativeDestinations: (direction: number, count: number) => Coordinate[];
         postMoveFunctions: PostMoveFunction[];
     }
@@ -105,7 +106,7 @@ declare module "node-chess" {
      * @param canMove Can the piece move there without capturing
      * @param canCapture Can the piece capture at the location
      */
-    interface MovePattern {
+    export interface MovePattern {
         moves: SingleMove[];
         canJump?: boolean;
         canCapture?: boolean;
@@ -115,7 +116,7 @@ declare module "node-chess" {
         useDefaultConditions?: boolean;
     }
 
-    interface MovePatternConditional {
+    export interface MovePatternConditional {
         (piece: BasePiece, board: Engine): boolean;
     }
 
@@ -123,7 +124,7 @@ declare module "node-chess" {
      * @param direction The direction of movement from the perspective of the piece owner
      * @param count Number of squares in the direction. 0: All squares (e.g. rooks, queens, bishops). Otherwise 1 .. N. SingleMoves with negative numbers are ignored.
      * */
-    interface SingleMove {
+    export interface SingleMove {
         direction: number;
         count: number;
     }
@@ -133,21 +134,21 @@ declare module "node-chess" {
      * @param depth The maximum ply-depth that the analysis will reach. 5 by default.
      * @param time The maxmium calculation time. The engine will stop analysing the position after this time in seconds. 5s default.
      */
-    interface AnalysisOptions {
+    export interface AnalysisOptions {
         interval?: number;
         depth?: number;
         time?: number;
     }
 
-    interface PositionParser {
+    export interface PositionParser {
         (position?: string): void;
     }
 
-    interface StringParser {
+    export interface StringParser {
         parse(position: string): BoardInput;
     }
 
-    interface BoardInput {
+    export interface BoardInput {
         ranks: string[];
         turn: string;
         castling: string[];
@@ -155,7 +156,7 @@ declare module "node-chess" {
         fullMove: number;
     }
 
-    interface Rule {
+    export interface Rule {
         (): boolean;
     }
 }
