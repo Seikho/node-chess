@@ -13,7 +13,6 @@ declare module "node-chess" {
         populateAvailableMoves();
         getSquare(square: Coordinate): Square;
         movePiece(from: Coordinate, to: Coordinate): boolean;
-        pieceFactory: BasePiece;
         toString(): string;
         whitesTurn: boolean;
         createPiece(notation: string, location: Coordinate): BasePiece;
