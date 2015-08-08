@@ -17,7 +17,8 @@ declare module "node-chess" {
         whitesTurn: boolean;
         createPiece(notation: string, location: Coordinate): BasePiece;
         moveConditions?: any[];
-        postMoveActions: PostMoveFunction[];
+        postMoveFunctions: MoveFunction[];
+        preMoveFunctions: MoveFunction[];
 
         // TODO: Same as Square interface, needs to be more strongly typed.
         tags: any;
@@ -49,7 +50,7 @@ declare module "node-chess" {
         movePatterns: MovePattern[];
     }
 
-    export interface PostMoveFunction {
+    export interface MoveFunction {
         moveNumber?: number;
         action: (piece: BasePiece, board: Engine) => any;
     }
@@ -77,7 +78,7 @@ declare module "node-chess" {
     export interface Move {
         from?: Coordinate;
         to: Coordinate;
-        postMoveActions?: PostMoveFunction[];
+        postMoveActions?: MoveFunction[];
     }
 
     export interface Piece {
@@ -91,12 +92,12 @@ declare module "node-chess" {
         isWhite?: boolean;
         moveHistory?: Move[];
         getConditionalMovePatterns?: (board: Engine) => MovePattern[];
-        postMoveFunctions?: PostMoveFunction[];
+        postMoveFunctions?: MoveFunction[];
     }
 
     export interface BasePiece extends Piece {
         getRelativeDestinations: (direction: number, count: number) => Coordinate[];
-        postMoveFunctions: PostMoveFunction[];
+        postMoveFunctions: MoveFunction[];
     }
 
     /**
@@ -110,7 +111,7 @@ declare module "node-chess" {
         canJump?: boolean;
         canCapture?: boolean;
         canMove?: boolean;
-        postMoveActions?: PostMoveFunction[];
+        postMoveActions?: MoveFunction[];
         conditions?: MovePatternConditional[];
         useDefaultConditions?: boolean;
     }

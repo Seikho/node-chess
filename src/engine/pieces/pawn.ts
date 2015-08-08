@@ -15,7 +15,7 @@ var canRightEnpassant: Chess.MovePatternConditional = (piece, board) => {
 	return hasEnpassantTag(Direction.UpRight, piece, board);
 }
 
-var enpassantPostMove: Chess.PostMoveFunction = {
+var enpassantPostMove: Chess.MoveFunction = {
 	action: (piece, board) => {
 		var pieceCurrentSquare = board.getSquare(piece.location);
 		var coordBelow = piece.getRelativeDestinations(Direction.Down, 1)[0];
@@ -26,14 +26,14 @@ var enpassantPostMove: Chess.PostMoveFunction = {
 	}
 }
 
-var allowEnpassantCapture: Chess.PostMoveFunction = {
+var allowEnpassantCapture: Chess.MoveFunction = {
     action: function(piece, board) {
 		// Find the middle square between the originating and desination squares for tagging
 		var coordinateToTag = piece.getRelativeDestinations(Direction.Down, 1)[0];
 		var squareToTag = board.getSquare(coordinateToTag);
         squareToTag.tags["enpassant"] = piece.isWhite;
 		
-		board.postMoveActions.push({
+		board.postMoveFunctions.push({
 			moveNumber: board.moveNumber+1,
 			action: (piece, board) => {
 				

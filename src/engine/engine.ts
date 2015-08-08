@@ -32,6 +32,7 @@ class Engine implements Chess.Engine {
     pieces = [];
     capturedPieces = [];
     postMoveFunctions = [];
+    preMoveFunctions = [];
 
     positionParser = fenParser.bind(this);
     toString = toString.bind(this);
@@ -39,8 +40,6 @@ class Engine implements Chess.Engine {
     pieceFactory = BasePiece;
     availableMoves = getMoves.bind(this);
     movePiece = movePiece.bind(this);
-    preMoveActions = [];
-    postMoveActions = [];
     tags = {};
 
     getSquare = getSquare.bind(this);

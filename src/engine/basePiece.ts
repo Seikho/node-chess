@@ -26,7 +26,7 @@ class BasePiece implements Chess.BasePiece {
 	notation: string;
 	moveHistory: Chess.Move[];
 	isWhite: boolean;
-	postMoveFunctions: Chess.PostMoveFunction[];
+	postMoveFunctions: Chess.MoveFunction[];
 
 	getRelativeDestinations(direction: Direction, count: number): Chess.Coordinate[] {
 		var transforms = getTransforms({ direction: direction, count: 0 }, this.isWhite);

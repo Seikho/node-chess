@@ -37,7 +37,7 @@ var kingSideCastleCondition: Chess.MovePatternConditional = (piece, board) => {
     return !rookHasMoved;
 }
 
-var postQueenSideCastle: Chess.PostMoveFunction = {
+var postQueenSideCastle: Chess.MoveFunction = {
     action: (piece, board) => {
         var rookSquare = getSquare(piece, board, Direction.QueenSide, 2);
         var nextSquare = getSquare(piece, board, Direction.KingSide, 1);
@@ -46,7 +46,7 @@ var postQueenSideCastle: Chess.PostMoveFunction = {
     }
 }
 
-var postKingSideCastle: Chess.PostMoveFunction = {
+var postKingSideCastle: Chess.MoveFunction = {
     action: (piece, board) => {
         var rookSquare = getSquare(piece, board, Direction.KingSide, 1);
         var nextSquare = getSquare(piece, board, Direction.QueenSide, 1);

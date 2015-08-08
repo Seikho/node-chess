@@ -35,7 +35,7 @@ function movePiece(from: Chess.Coordinate, to: Chess.Coordinate) {
 	self.whitesTurn = !self.whitesTurn;
 	self.populateAvailableMoves();
 
-	var enginePostMoveActions: Chess.PostMoveFunction[] = self.postMoveActions || [];
+	var enginePostMoveActions: Chess.MoveFunction[] = self.postMoveFunctions || [];
 
 	enginePostMoveActions.forEach(postMove => {
 		if (!postMove.moveNumber || postMove.moveNumber === self.moveNumber)
@@ -43,7 +43,7 @@ function movePiece(from: Chess.Coordinate, to: Chess.Coordinate) {
 	});
 	
 	self.moveNumber++;
-	self.postMoveActions = enginePostMoveActions.filter(pmf => pmf.moveNumber >= self.moveNumber);
+	self.postMoveFunctions = enginePostMoveActions.filter(pmf => pmf.moveNumber >= self.moveNumber);
 	
 	return true;
 }

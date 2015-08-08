@@ -25,7 +25,7 @@ var allowEnpassantCapture = {
         var coordinateToTag = piece.getRelativeDestinations(Direction.Down, 1)[0];
         var squareToTag = board.getSquare(coordinateToTag);
         squareToTag.tags["enpassant"] = piece.isWhite;
-        board.postMoveActions.push({
+        board.postMoveFunctions.push({
             moveNumber: board.moveNumber + 1,
             action: function (piece, board) {
             }

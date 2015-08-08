@@ -28,13 +28,13 @@ function movePiece(from, to) {
     origin.availableMoves = [];
     self.whitesTurn = !self.whitesTurn;
     self.populateAvailableMoves();
-    var enginePostMoveActions = self.postMoveActions || [];
+    var enginePostMoveActions = self.postMoveFunctions || [];
     enginePostMoveActions.forEach(function (postMove) {
         if (!postMove.moveNumber || postMove.moveNumber === self.moveNumber)
             postMove.action(destination.piece, self);
     });
     self.moveNumber++;
-    self.postMoveActions = enginePostMoveActions.filter(function (pmf) { return pmf.moveNumber >= self.moveNumber; });
+    self.postMoveFunctions = enginePostMoveActions.filter(function (pmf) { return pmf.moveNumber >= self.moveNumber; });
     return true;
 }
 module.exports = movePiece;
