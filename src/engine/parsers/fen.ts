@@ -1,4 +1,4 @@
-
+import Chess = require("node-chess");
 import fenStringParser = require("./stringParsers/fen");
 export = fenParser;
 

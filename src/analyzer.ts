@@ -1,3 +1,4 @@
+import Chess = require("node-chess");
 import Engine = require("./engine/engine");
 export = Analyzer;
 

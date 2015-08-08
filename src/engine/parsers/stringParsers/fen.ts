@@ -1,3 +1,4 @@
+import Chess = require("node-chess");
 var PEG = require("pegjs");
 export = parser;
 

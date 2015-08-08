@@ -1,3 +1,4 @@
+import Chess = require("node-chess");
 /**
  * If the board has the 'check' tag,
  */

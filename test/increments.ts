@@ -1,3 +1,4 @@
+import Chess = require("node-chess");
 import nodeChess = require("../src/index");
 import chai = require("chai");
 var expect = chai.expect;

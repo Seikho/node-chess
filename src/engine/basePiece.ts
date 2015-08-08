@@ -1,3 +1,4 @@
+import Chess = require("node-chess");
 import getTransforms = require("./helpers/getTransforms");
 import applyTransform = require("./helpers/applyTransform");
 import enums = require("../enums");

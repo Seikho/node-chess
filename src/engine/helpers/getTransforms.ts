@@ -1,3 +1,4 @@
+import Chess = require("node-chess");
 import enums = require("../../enums");
 import Direction = enums.Direction;
 export = getTransforms;

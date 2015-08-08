@@ -1,3 +1,4 @@
+import Chess = require("node-chess");
 export = createSquares;
 
 function createSquares() {

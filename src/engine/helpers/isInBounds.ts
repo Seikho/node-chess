@@ -1,3 +1,4 @@
+import Chess = require("node-chess");
 export = isInBounds;
 
 function isInBounds(coordinate: Chess.Coordinate, bounds: Chess.Coordinate) {

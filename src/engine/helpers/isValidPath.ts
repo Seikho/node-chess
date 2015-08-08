@@ -1,3 +1,4 @@
+import Chess = require("node-chess");
 export = isValidPath;
 
 function isValidPath(board: Chess.Engine, piece: Chess.Piece, path: Chess.Coordinate[], move: Chess.MovePattern): boolean {

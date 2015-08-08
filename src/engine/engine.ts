@@ -1,3 +1,4 @@
+import Chess = require("node-chess");
 import toString = require("./helpers/toString");
 import getMoves = require("./helpers/getMoves");
 import movePiece = require("./helpers/movePiece");

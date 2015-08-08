@@ -1,3 +1,4 @@
+import Chess = require("node-chess");
 export = movePiece;
 function movePiece(from: Chess.Coordinate, to: Chess.Coordinate) {
 	var self: Chess.Engine = this;

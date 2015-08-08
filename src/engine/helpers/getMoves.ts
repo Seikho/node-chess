@@ -1,3 +1,4 @@
+import Chess = require("node-chess");
 import getPaths = require("./getPaths");
 import isValidPath = require("./isValidPath")
 export = getMoves;
