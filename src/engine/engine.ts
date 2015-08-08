@@ -30,34 +30,38 @@ class Engine implements Chess.Engine {
     capturedPieces = [];
     postMoveFunctions = [];
 
-    positionParser = fenParser;
-    toString = toString;
-    create = createSqaures;
+    positionParser = fenParser.bind(this);
+    toString = toString.bind(this);
+    create = createSqaures.bind(this);
     pieceFactory = BasePiece;
-    availableMoves = getMoves;
-    movePiece = movePiece;
-	preMoveActions = [];
+    availableMoves = getMoves.bind(this);
+    movePiece = movePiece.bind(this);
+    preMoveActions = [];
     postMoveActions = [];
-	tags = {};
+    tags = {};
 
-    getSquare(square: Chess.Coordinate): Chess.Square {
-        if (!this.ranks[square.rank]) return null;
-        return this.ranks[square.rank].squares[square.file] || null;
-    }
+    getSquare = getSquare.bind(this);
+    populateAvailableMoves = availableMoves.bind(this);
+    createPiece = createPiece.bind(this);
+}
 
-    populateAvailableMoves(): void {
-        this.ranks.forEach(rank => {
-            rank.squares.forEach(square => {
-                square.availableMoves = this.availableMoves({ file: square.file, rank: rank.rank });
-            });
+function getSquare(square: Chess.Coordinate): Chess.Square {
+    if (!this.ranks[square.rank]) return null;
+    return this.ranks[square.rank].squares[square.file] || null;
+}
+
+function availableMoves() {
+    this.ranks.forEach(rank => {
+        rank.squares.forEach(square => {
+            square.availableMoves = this.availableMoves({ file: square.file, rank: rank.rank });
         });
-    }
+    });
+}
 
-    createPiece(notation: string, location: Chess.Coordinate): Chess.BasePiece {
+function createPiece(notation: string, location: Chess.Coordinate): Chess.BasePiece {
         var matchingPiece = this.pieces.filter(p => p.notation === notation.toLocaleLowerCase());
         if (matchingPiece.length === 0) return null;
         var newPiece = new this.pieceFactory(matchingPiece[0], notation);
         newPiece.location = location;
         return newPiece;
     }
-}

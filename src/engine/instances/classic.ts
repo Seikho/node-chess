@@ -9,6 +9,5 @@ function classEngine() {
 		.forEach(p => board.pieces.push(pieces[p]));
 
 	board.positionParser();
-	board.ranks.length;
 	return board;
 }
