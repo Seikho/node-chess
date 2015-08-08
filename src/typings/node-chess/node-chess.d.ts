@@ -4,7 +4,8 @@ declare module "node-chess" {
         fileCount: number;
         moveNumber: number;
 
-        ranks: Rank[];
+        boardState: BoardState;
+
         pieces: Piece[];
         positionParser: PositionParser;
         capturedPieces: Piece[];
@@ -12,16 +13,22 @@ declare module "node-chess" {
         availableMoves(coordinate: Coordinate): Move[];
         populateAvailableMoves();
         getSquare(square: Coordinate): Square;
-        movePiece(from: Coordinate, to: Coordinate): boolean;
+        movePiece(from: Coordinate, to: Coordinate): BoardState;
         toString(): string;
         whitesTurn: boolean;
         createPiece(notation: string, location: Coordinate): BasePiece;
-        moveConditions?: any[];
+
         postMoveFunctions: MoveFunction[];
         preMoveFunctions: MoveFunction[];
-
-        // TODO: Same as Square interface, needs to be more strongly typed.
-        tags: any;
+    }
+    
+    export interface BoardState {
+        ranks: Rank[];
+        tags: BoardTag;
+    }
+    
+    export interface BoardTag {
+        [index: string]: any;
     }
 
     export enum Direction {

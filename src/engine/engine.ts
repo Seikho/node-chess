@@ -28,7 +28,11 @@ class Engine implements Chess.Engine {
     moveNumber: number = 1;
     whitesTurn: boolean;
 
-    ranks = [];
+    boardState = {
+        ranks: [],
+        tags: <Chess.BoardTag>{}
+    }
+
     pieces = [];
     capturedPieces = [];
     postMoveFunctions = [];
@@ -40,7 +44,6 @@ class Engine implements Chess.Engine {
     pieceFactory = BasePiece;
     availableMoves = getMoves.bind(this);
     movePiece = movePiece.bind(this);
-    tags = {};
 
     getSquare = getSquare.bind(this);
     populateAvailableMoves = availableMoves.bind(this);
