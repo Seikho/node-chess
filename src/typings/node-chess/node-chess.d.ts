@@ -12,8 +12,8 @@ declare module "node-chess" {
         create(): void;
         availableMoves(coordinate: Coordinate): Move[];
         populateAvailableMoves();
-        getSquare(square: Coordinate): Square;
-        movePiece(from: Coordinate, to: Coordinate): BoardState;
+        getSquare(square: Coordinate, boardState?: BoardState): Square;
+        movePiece(from: Coordinate, to: Coordinate, boardState?: BoardState): BoardState;
         toString(): string;
         whitesTurn: boolean;
         createPiece(notation: string, location: Coordinate): BasePiece;
