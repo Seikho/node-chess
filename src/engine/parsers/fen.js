@@ -1,12 +1,12 @@
 var fenStringParser = require("./stringParsers/fen");
 var defaultPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 function fenParser(position) {
-    var engine = this;
+    var self = this;
     var engineInput = fenStringParser.parse(position || defaultPosition);
-    engine.whitesTurn = engineInput.turn === "w";
-    var rankCount = this.rankCount;
+    self.whitesTurn = engineInput.turn === "w";
+    var rankCount = self.rankCount;
     engineInput.ranks.forEach(function (rank) {
-        engine.ranks[rankCount] = createFilesForRank(engine, rank, rankCount);
+        self.boardState.ranks[rankCount] = createFilesForRank(self, rank, rankCount);
         rankCount--;
     });
 }

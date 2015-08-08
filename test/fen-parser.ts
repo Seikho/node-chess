@@ -11,7 +11,7 @@ describe("fen parsing tests", () => {
 	engine.positionParser();
 
 	it("will have a pawn at 7,2", () => {
-		var rankEight = engine.ranks[7];
+		var rankEight = engine.boardState.ranks[7];
 		var fileOne = rankEight.squares[2];
 		expect(fileOne.piece).to.exist;
 	});

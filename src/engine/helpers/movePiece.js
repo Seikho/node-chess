@@ -1,15 +1,16 @@
-function movePiece(from, to) {
+function movePiece(from, to, boardState) {
     var self = this;
-    var origin = self.getSquare(from);
+    boardState = boardState || self.boardState;
+    var origin = self.getSquare(from, boardState);
     if (!origin || !origin.piece)
-        return false;
+        return boardState;
     // Enforce turn-based movement
     if (self.whitesTurn !== origin.piece.isWhite)
-        return false;
+        return boardState;
     // The 'destination' square must be in the square's list of available moves
     var moveMatches = origin.availableMoves.filter(function (m) { return m.to.file === to.file && m.to.rank === to.rank; });
     if (moveMatches.length === 0)
-        return false;
+        return boardState;
     var move = moveMatches[0];
     var destination = self.getSquare(to);
     if (destination.piece)
@@ -35,7 +36,7 @@ function movePiece(from, to) {
     });
     self.moveNumber++;
     self.postMoveFunctions = enginePostMoveActions.filter(function (pmf) { return pmf.moveNumber >= self.moveNumber; });
-    return true;
+    return boardState;
 }
 module.exports = movePiece;
 //# sourceMappingURL=movePiece.js.map

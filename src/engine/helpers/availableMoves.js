@@ -1,8 +1,8 @@
 function availableMoves() {
-    var _this = this;
-    this.ranks.forEach(function (rank) {
+    var self = this;
+    self.boardState.ranks.forEach(function (rank) {
         rank.squares.forEach(function (square) {
-            square.availableMoves = _this.availableMoves({ file: square.file, rank: rank.rank });
+            square.availableMoves = self.availableMoves({ file: square.file, rank: rank.rank });
         });
     });
 }

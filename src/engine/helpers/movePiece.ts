@@ -1,16 +1,22 @@
 import Chess = require("node-chess");
 export = movePiece;
-function movePiece(from: Chess.Coordinate, to: Chess.Coordinate) {
+
+function movePiece(from: Chess.Coordinate, to: Chess.Coordinate, boardState?: Chess.BoardState): Chess.BoardState {
 	var self: Chess.Engine = this;
-	var origin: Chess.Square = self.getSquare(from);
-	if (!origin || !origin.piece) return false;
+	
+	boardState = boardState || self.boardState;
+	
+	var origin: Chess.Square = self.getSquare(from, boardState);
+	if (!origin || !origin.piece) return boardState;
 		
+	
+	
 	// Enforce turn-based movement
-	if (self.whitesTurn !== origin.piece.isWhite) return false; 
+	if (self.whitesTurn !== origin.piece.isWhite) return boardState; 
 		
 	// The 'destination' square must be in the square's list of available moves
 	var moveMatches = origin.availableMoves.filter(m => m.to.file === to.file && m.to.rank === to.rank);
-	if (moveMatches.length === 0) return false;
+	if (moveMatches.length === 0) return boardState;
 	var move = moveMatches[0];
 
 	var destination: Chess.Square = self.getSquare(to);
@@ -45,5 +51,5 @@ function movePiece(from: Chess.Coordinate, to: Chess.Coordinate) {
 	self.moveNumber++;
 	self.postMoveFunctions = enginePostMoveActions.filter(pmf => pmf.moveNumber >= self.moveNumber);
 	
-	return true;
+	return boardState;
 }

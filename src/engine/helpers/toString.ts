@@ -1,12 +1,15 @@
+import Chess = require("node-chess");
 export = toString;
 
 function toString(): string {
+    var self: Chess.Engine = this;
+    
     var ranks: string[] = [];
     var fileLabels = ['-'];
-    for (var i = this.rankCount;i > 0; i--) {
+    for (var i = self.rankCount;i > 0; i--) {
         fileLabels[i] = "_" + i + "_";
         var pieces: any[] = [i];
-        var rank = this.ranks[i];
+        var rank = self.boardState.ranks[i];
         for (var p in rank.squares) {
             var s = rank.squares[p];
             var val = s.piece == null?"_":s.piece.notation;

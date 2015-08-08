@@ -13,7 +13,10 @@ var createPiece = require("./helpers/createPiece");
 var Engine = (function () {
     function Engine(ranks, files) {
         this.moveNumber = 1;
-        this.ranks = [];
+        this.boardState = {
+            ranks: [],
+            tags: {}
+        };
         this.pieces = [];
         this.capturedPieces = [];
         this.postMoveFunctions = [];
@@ -24,7 +27,6 @@ var Engine = (function () {
         this.pieceFactory = BasePiece;
         this.availableMoves = getMoves.bind(this);
         this.movePiece = movePiece.bind(this);
-        this.tags = {};
         this.getSquare = getSquare.bind(this);
         this.populateAvailableMoves = availableMoves.bind(this);
         this.createPiece = createPiece.bind(this);

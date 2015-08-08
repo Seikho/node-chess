@@ -5,13 +5,13 @@ export = fenParser;
 var defaultPosition: string = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 function fenParser(position?: string): void {
-	var engine: Chess.Engine = this;
+	var self: Chess.Engine = this;
 	var engineInput = fenStringParser.parse(position || defaultPosition);
 	
-	engine.whitesTurn = engineInput.turn === "w";
-	var rankCount = this.rankCount;
+	self.whitesTurn = engineInput.turn === "w";
+	var rankCount = self.rankCount;
 	engineInput.ranks.forEach(rank => {
-		engine.ranks[rankCount] = createFilesForRank(engine, rank, rankCount);
+		self.boardState.ranks[rankCount] = createFilesForRank(self, rank, rankCount);
 		rankCount--;
 	});
 }
