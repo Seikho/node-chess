@@ -13,9 +13,9 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Move[] {
     var piece = square.piece;
     if (!piece) return [];
     
-    var isMoveablePiece = piece.isWhite === board.whitesTurn;
     // We want all moves available on the entire board for calculation purposes
     // Therefore we leave this commented out
+    // var isMoveablePiece = piece.isWhite === board.whitesTurn;
     //if (!isMoveablePiece) return [];
 
     var bounds = { file: this.fileCount, rank: this.rankCount };
