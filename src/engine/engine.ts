@@ -5,6 +5,9 @@ import movePiece = require("./helpers/movePiece");
 import fenParser = require("./parsers/fen")
 import createSqaures = require("./helpers/createSquares");
 import BasePiece = require("./basePiece");
+import availableMoves = require("./helpers/availableMoves");
+import getSquare = require("./helpers/getSquare");
+import createPiece = require("./helpers/createPiece");
 export = Engine;
 
 /**
@@ -45,16 +48,7 @@ class Engine implements Chess.Engine {
     createPiece = createPiece.bind(this);
 }
 
-function getSquare(square: Chess.Coordinate): Chess.Square {
-    if (!this.ranks[square.rank]) return null;
-    return this.ranks[square.rank].squares[square.file] || null;
-}
 
-function availableMoves() {
-    this.ranks.forEach(rank => {
-        rank.squares.forEach(square => {
-            square.availableMoves = this.availableMoves({ file: square.file, rank: rank.rank });
-        });
-    });
-}
+
+
 

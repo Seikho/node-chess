@@ -4,6 +4,9 @@ var movePiece = require("./helpers/movePiece");
 var fenParser = require("./parsers/fen");
 var createSqaures = require("./helpers/createSquares");
 var BasePiece = require("./basePiece");
+var availableMoves = require("./helpers/availableMoves");
+var getSquare = require("./helpers/getSquare");
+var createPiece = require("./helpers/createPiece");
 /**
  * Board: extensible board (TODO: more detail)
  */
@@ -36,18 +39,5 @@ var Engine = (function () {
     }
     return Engine;
 })();
-function getSquare(square) {
-    if (!this.ranks[square.rank])
-        return null;
-    return this.ranks[square.rank].squares[square.file] || null;
-}
-function availableMoves() {
-    var _this = this;
-    this.ranks.forEach(function (rank) {
-        rank.squares.forEach(function (square) {
-            square.availableMoves = _this.availableMoves({ file: square.file, rank: rank.rank });
-        });
-    });
-}
 module.exports = Engine;
 //# sourceMappingURL=engine.js.map
