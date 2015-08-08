@@ -2,7 +2,7 @@ declare module "node-chess" {
     export = Chess;
 }
 
-declare module Chess {
+module Chess {
     export interface Engine {
         rankCount: number;
         fileCount: number;
