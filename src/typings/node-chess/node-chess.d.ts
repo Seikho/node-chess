@@ -15,7 +15,7 @@ declare module "node-chess" {
         movePiece(from: Coordinate, to: Coordinate): boolean;
         toString(): string;
         whitesTurn: boolean;
-        createPiece(notation: string, location: Coordinate): Chess.BasePiece;
+        createPiece(notation: string, location: Coordinate): BasePiece;
         moveConditions?: any[];
         postMoveActions: PostMoveFunction[];
 
@@ -95,7 +95,7 @@ declare module "node-chess" {
     }
 
     interface BasePiece extends Piece {
-        getRelativeDestinations: (direction: number, count: number) => Chess.Coordinate[];
+        getRelativeDestinations: (direction: number, count: number) => Coordinate[];
         postMoveFunctions: PostMoveFunction[];
     }
 
