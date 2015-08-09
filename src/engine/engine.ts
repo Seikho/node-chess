@@ -25,16 +25,16 @@ class Engine implements Chess.Engine {
     }
     rankCount: number;
     fileCount: number;
-    moveNumber: number = 1;
-    whitesTurn: boolean;
 
     boardState = {
         ranks: [],
-        tags: <Chess.BoardTag>{}
+        tags: <Chess.BoardTag>{},
+        capturedPieces: [],
+        whitesTurn: true,
+        moveNumber: 1
     }
 
     pieces = [];
-    capturedPieces = [];
     postMoveFunctions = [];
     preMoveFunctions = [];
 

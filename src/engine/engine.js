@@ -12,13 +12,14 @@ var createPiece = require("./helpers/createPiece");
  */
 var Engine = (function () {
     function Engine(ranks, files) {
-        this.moveNumber = 1;
         this.boardState = {
             ranks: [],
-            tags: {}
+            tags: {},
+            capturedPieces: [],
+            whitesTurn: true,
+            moveNumber: 1
         };
         this.pieces = [];
-        this.capturedPieces = [];
         this.postMoveFunctions = [];
         this.preMoveFunctions = [];
         this.positionParser = fenParser.bind(this);
