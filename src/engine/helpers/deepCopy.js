@@ -4,7 +4,7 @@ function deepCopy(boardState) {
         tags: shallowCopy(boardState.tags),
         moveNumber: boardState.moveNumber,
         whitesTurn: boardState.whitesTurn,
-        capturedPieces: boardState.capturedPieces.map(shallowCopy),
+        capturedPieces: boardState.capturedPieces.map(copyPiece),
         preMoveFunctions: shallowCopyArray(boardState.preMoveFunctions),
         postMoveFunctions: shallowCopyArray(boardState.postMoveFunctions)
     };
@@ -15,14 +15,14 @@ function copyRank(rank) {
         rank: rank.rank,
         squares: []
     };
-    rank.squares.forEach(function (sq) {
-        copy.squares.push({
+    rank.squares.forEach(function (sq, i) {
+        copy.squares[i] = {
             rank: sq.rank,
             file: sq.file,
-            piece: shallowCopy(sq.piece),
+            piece: copyPiece(sq.piece),
             tags: shallowCopy(sq.tags),
             availableMoves: copyAvailableMoves(sq.availableMoves)
-        });
+        };
     });
     return copy;
 }
@@ -33,6 +33,15 @@ function shallowCopy(object) {
     var add = function (key) { return copy[key] = object[key]; };
     Object.keys(object)
         .forEach(add);
+    return copy;
+}
+function copyPiece(piece) {
+    if (!piece)
+        return null;
+    var copy = shallowCopy(piece);
+    copy.location = { rank: piece.location.rank, file: piece.location.file };
+    copy.movement = shallowCopyArray(piece.movement);
+    copy.getRelativeDestinations = piece.getRelativeDestinations;
     return copy;
 }
 function copyAvailableMoves(moves) {

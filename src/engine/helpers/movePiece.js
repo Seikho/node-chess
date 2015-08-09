@@ -3,7 +3,7 @@ function movePiece(from, to, boardState) {
     var self = this;
     // TODO: Replace with better method
     // If no boardState is provided, the result of this function is stored as the calling engine's new board state 
-    var saveToBoard = !!boardState;
+    var saveToBoard = !boardState;
     boardState = deepCopy(boardState || self.boardState);
     var origin = self.getSquare(from, boardState);
     if (!origin || !origin.piece)

@@ -7,7 +7,7 @@ function movePiece(from: Chess.Coordinate, to: Chess.Coordinate, boardState?: Ch
 	
 	// TODO: Replace with better method
 	// If no boardState is provided, the result of this function is stored as the calling engine's new board state 
-	var saveToBoard = !!boardState;
+	var saveToBoard = !boardState;
 	boardState = deepCopy(boardState || self.boardState);
 	
 	var origin: Chess.Square = self.getSquare(from, boardState);
