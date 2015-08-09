@@ -2,21 +2,18 @@ declare module "node-chess" {
     export interface Engine {
         rankCount: number;
         fileCount: number;
-        moveNumber: number;
 
         boardState: BoardState;
 
         pieces: Piece[];
         positionParser: PositionParser;
-        capturedPieces: Piece[];
         create(): void;
         availableMoves(coordinate: Coordinate): Move[];
         populateAvailableMoves();
         getSquare(square: Coordinate, boardState?: BoardState): Square;
         movePiece(from: Coordinate, to: Coordinate, boardState?: BoardState): BoardState;
-        toString(): string;
-        whitesTurn: boolean;
         createPiece(notation: string, location: Coordinate): BasePiece;
+        toString(): string;
 
         postMoveFunctions: MoveFunction[];
         preMoveFunctions: MoveFunction[];
@@ -25,6 +22,9 @@ declare module "node-chess" {
     export interface BoardState {
         ranks: Rank[];
         tags: BoardTag;
+        moveNumber: number;
+        whitesTurn: boolean;
+        capturedPieces: Piece[];
     }
     
     export interface BoardTag {
