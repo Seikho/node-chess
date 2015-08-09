@@ -15,8 +15,6 @@ declare module "node-chess" {
         createPiece(notation: string, location: Coordinate): BasePiece;
         toString(): string;
 
-        postMoveFunctions: MoveFunction[];
-        preMoveFunctions: MoveFunction[];
     }
     
     export interface BoardState {
@@ -25,6 +23,8 @@ declare module "node-chess" {
         moveNumber: number;
         whitesTurn: boolean;
         capturedPieces: Piece[];
+        postMoveFunctions: MoveFunction[];
+        preMoveFunctions: MoveFunction[];
     }
     
     export interface BoardTag {
