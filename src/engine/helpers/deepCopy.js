@@ -4,7 +4,9 @@ function deepCopy(boardState) {
         tags: shallowCopy(boardState.tags),
         moveNumber: boardState.moveNumber,
         whitesTurn: boardState.whitesTurn,
-        capturedPieces: boardState.capturedPieces.map(shallowCopy)
+        capturedPieces: boardState.capturedPieces.map(shallowCopy),
+        preMoveFunctions: shallowCopyArray(boardState.preMoveFunctions),
+        postMoveFunctions: shallowCopyArray(boardState.postMoveFunctions)
     };
     return copy;
 }
@@ -36,10 +38,13 @@ function copyAvailableMoves(moves) {
         return {
             from: shallowCopy(move.from),
             to: shallowCopy(move.to),
-            postMoveActions: move.postMoveActions ? move.postMoveActions.slice() : []
+            postMoveActions: shallowCopyArray(move.postMoveActions)
         };
     }
     return moves.map(copyMove);
+}
+function shallowCopyArray(array) {
+    return array ? array.slice() || [] : ;
 }
 module.exports = deepCopy;
 //# sourceMappingURL=deepCopy.js.map
