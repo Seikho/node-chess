@@ -1,4 +1,6 @@
 import Chess = require("node-chess");
+export = deepCopy;
+
 function deepCopy(boardState: Chess.BoardState) {
 
 	var copy: Chess.BoardState = {
