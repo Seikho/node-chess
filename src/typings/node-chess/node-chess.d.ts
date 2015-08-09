@@ -59,7 +59,7 @@ declare module "node-chess" {
 
     export interface MoveFunction {
         moveNumber?: number;
-        action: (piece: BasePiece, board: Engine) => any;
+        action: (piece: BasePiece, boardState: BoardState, board: Engine) => any;
     }
 
     export interface Coordinate {

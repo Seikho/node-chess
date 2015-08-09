@@ -8,7 +8,7 @@ function fenParser(position?: string): void {
 	var self: Chess.Engine = this;
 	var engineInput = fenStringParser.parse(position || defaultPosition);
 	
-	self.whitesTurn = engineInput.turn === "w";
+	self.boardState.whitesTurn = engineInput.turn === "w";
 	var rankCount = self.rankCount;
 	engineInput.ranks.forEach(rank => {
 		self.boardState.ranks[rankCount] = createFilesForRank(self, rank, rankCount);

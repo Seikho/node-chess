@@ -20,7 +20,7 @@ var enpassantPostMove: Chess.MoveFunction = {
 		var pieceCurrentSquare = board.getSquare(piece.location);
 		var coordBelow = piece.getRelativeDestinations(Direction.Down, 1)[0];
 		var squareBelow = board.getSquare(coordBelow);
-		board.capturedPieces.push(squareBelow.piece);
+		board.boardState.capturedPieces.push(squareBelow.piece);
 		squareBelow.piece = null;
 		pieceCurrentSquare.tags["enpassant"] = undefined;
 	}
@@ -34,7 +34,7 @@ var allowEnpassantCapture: Chess.MoveFunction = {
         squareToTag.tags["enpassant"] = piece.isWhite;
 		
 		board.postMoveFunctions.push({
-			moveNumber: board.moveNumber+1,
+			moveNumber: board.boardState.moveNumber+1,
 			action: (piece, board) => {
 				
 			}

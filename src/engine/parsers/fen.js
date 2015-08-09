@@ -3,7 +3,7 @@ var defaultPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 function fenParser(position) {
     var self = this;
     var engineInput = fenStringParser.parse(position || defaultPosition);
-    self.whitesTurn = engineInput.turn === "w";
+    self.boardState.whitesTurn = engineInput.turn === "w";
     var rankCount = self.rankCount;
     engineInput.ranks.forEach(function (rank) {
         self.boardState.ranks[rankCount] = createFilesForRank(self, rank, rankCount);
