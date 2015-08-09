@@ -1,7 +1,10 @@
 function deepCopy(boardState) {
     var copy = {
         ranks: boardState.ranks.map(copyRank),
-        tags: shallowCopy(boardState.tags)
+        tags: shallowCopy(boardState.tags),
+        moveNumber: boardState.moveNumber,
+        whitesTurn: boardState.whitesTurn,
+        capturedPieces: boardState.capturedPieces.map(shallowCopy)
     };
     return copy;
 }
@@ -38,4 +41,5 @@ function copyAvailableMoves(moves) {
     }
     return moves.map(copyMove);
 }
+module.exports = deepCopy;
 //# sourceMappingURL=deepCopy.js.map

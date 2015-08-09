@@ -5,7 +5,10 @@ function deepCopy(boardState: Chess.BoardState) {
 
 	var copy: Chess.BoardState = {
 		ranks: boardState.ranks.map(copyRank),
-		tags: shallowCopy(boardState.tags)
+		tags: shallowCopy(boardState.tags),
+		moveNumber: boardState.moveNumber,
+		whitesTurn: boardState.whitesTurn,
+		capturedPieces: boardState.capturedPieces.map(shallowCopy)
 	}
 
 	return copy;
