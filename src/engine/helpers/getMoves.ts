@@ -4,10 +4,10 @@ import isValidPath = require("./isValidPath")
 export = getMoves;
 
 // TODO: Desperately requires refactoring
-function getMoves(coordinate: Chess.Coordinate): Chess.Move[] {
+function getMoves(coordinate: Chess.Coordinate, boardState: Chess.BoardState): Chess.Move[] {
     var stopwatch = Date.now(); // Benchmarking
-    var board: Chess.Engine = this;
-    var square: Chess.Square = board.getSquare(coordinate);
+    var self: Chess.Engine = this;
+    var square: Chess.Square = self.getSquare(coordinate, boardState);
 
     // No piece, no moves.
     var piece = square.piece;
@@ -18,7 +18,7 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Move[] {
     // var isMoveablePiece = piece.isWhite === board.whitesTurn;
     //if (!isMoveablePiece) return [];
 
-    var bounds = { file: board.fileCount, rank: board.rankCount };
+    var bounds = { file: self.fileCount, rank: self.rankCount };
 
     var pathings: Array<Chess.Coordinate[]> = [];
 
@@ -30,17 +30,16 @@ function getMoves(coordinate: Chess.Coordinate): Chess.Move[] {
         var validPathings = newPathings.forEach(pathing => {
             // If it's a vanilla move pattern, use the standard path validation strategy
             if (!move.conditions) {
-                if (isValidPath(board, piece, pathing, move)) {
-                    moves.push({
-                        to: pathing[pathing.length - 1],
-                        postMoveActions: []
-                    });
-                }
-                return;
+                if (!isValidPath(self, piece, pathing, move)) return;
+                
+                moves.push({
+                    to: pathing[pathing.length - 1],
+                    postMoveActions: []
+                });
             }
             // Otherwise we use the logic provided with the move pattern
-            var defaultValidPath = !!move.useDefaultConditions ? isValidPath(board, piece, pathing, move) : true;
-            var movePatternEvaluation = move.conditions.every(cond => cond(piece, board));
+            var defaultValidPath = !!move.useDefaultConditions ? isValidPath(self, piece, pathing, move) : true;
+            var movePatternEvaluation = move.conditions.every(cond => cond(piece, self));
             if (defaultValidPath && movePatternEvaluation) {
                 moves.push({
                     to: pathing[pathing.length - 1],
