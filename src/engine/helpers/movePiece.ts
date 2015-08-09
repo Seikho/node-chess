@@ -31,11 +31,11 @@ function movePiece(from: Chess.Coordinate, to: Chess.Coordinate, boardState?: Ch
 	
 	var movePatternPostActions = move.postMoveActions || [];
 	movePatternPostActions.forEach(func => {
-		func.action(destination.piece, self);
+		func.action(destination.piece, boardState, self);
 	});
 	
 	var pieceFunctions = destination.piece.postMoveFunctions || [];
-	pieceFunctions.forEach(fn => fn.action(destination.piece, self));
+	pieceFunctions.forEach(fn => fn.action(destination.piece, boardState, self));
 	
 	origin.piece = null;
 	origin.availableMoves = [];
@@ -47,7 +47,7 @@ function movePiece(from: Chess.Coordinate, to: Chess.Coordinate, boardState?: Ch
 
 	enginePostMoveActions.forEach(postMove => {
 		if (!postMove.moveNumber || postMove.moveNumber === boardState.moveNumber)
-			postMove.action(destination.piece, self);
+			postMove.action(destination.piece, boardState, self);
 	});
 	
 	boardState.moveNumber++;

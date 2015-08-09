@@ -3,13 +3,13 @@ import enums = require("../../enums");
 import Direction = enums.Direction;
 export = king;
 
-var queenSideCastleCondition: Chess.MovePatternConditional = (piece, board) => {
+var queenSideCastleCondition: Chess.MovePatternConditional = (piece, boardState, board) => {
     if (piece.moveHistory.length > 0) return false;
 
-    var queenSquare = getSquare(piece, board, Direction.QueenSide, 1);
-    var bishopSquare = getSquare(piece, board, Direction.QueenSide, 2);
-    var knightSquare = getSquare(piece, board, Direction.QueenSide, 3);
-    var rookSquare = getSquare(piece, board, Direction.QueenSide, 4);
+    var queenSquare = getSquare(piece, board, boardState, Direction.QueenSide, 1);
+    var bishopSquare = getSquare(piece, board, boardState, Direction.QueenSide, 2);
+    var knightSquare = getSquare(piece, board, boardState, Direction.QueenSide, 3);
+    var rookSquare = getSquare(piece, board, boardState, Direction.QueenSide, 4);
 
     var squaresAreVacant = !queenSquare.piece
         && !bishopSquare.piece
@@ -21,12 +21,12 @@ var queenSideCastleCondition: Chess.MovePatternConditional = (piece, board) => {
     return !rookHasMoved;
 }
 
-var kingSideCastleCondition: Chess.MovePatternConditional = (piece, board) => {
+var kingSideCastleCondition: Chess.MovePatternConditional = (piece, boardState, board) => {
     if (piece.moveHistory.length > 0) return false;
 
-    var bishopSquare = getSquare(piece, board, Direction.KingSide, 1);
-    var knightSquare = getSquare(piece, board, Direction.KingSide, 2);
-    var rookSquare = getSquare(piece, board, Direction.KingSide, 3);
+    var bishopSquare = getSquare(piece, board, boardState, Direction.KingSide, 1);
+    var knightSquare = getSquare(piece, board, boardState, Direction.KingSide, 2);
+    var rookSquare = getSquare(piece, board, boardState, Direction.KingSide, 3);
 
     var squaresAreVacant = !bishopSquare.piece
         && !knightSquare.piece
@@ -38,18 +38,18 @@ var kingSideCastleCondition: Chess.MovePatternConditional = (piece, board) => {
 }
 
 var postQueenSideCastle: Chess.MoveFunction = {
-    action: (piece, board) => {
-        var rookSquare = getSquare(piece, board, Direction.QueenSide, 2);
-        var nextSquare = getSquare(piece, board, Direction.KingSide, 1);
+    action: (piece, boardState, board) => {
+        var rookSquare = getSquare(piece, board, boardState, Direction.QueenSide, 2);
+        var nextSquare = getSquare(piece, board, boardState, Direction.KingSide, 1);
         nextSquare.piece = rookSquare.piece;
         rookSquare.piece = null;
     }
 }
 
 var postKingSideCastle: Chess.MoveFunction = {
-    action: (piece, board) => {
-        var rookSquare = getSquare(piece, board, Direction.KingSide, 1);
-        var nextSquare = getSquare(piece, board, Direction.QueenSide, 1);
+    action: (piece, boardState, board) => {
+        var rookSquare = getSquare(piece, board, boardState, Direction.KingSide, 1);
+        var nextSquare = getSquare(piece, board, boardState, Direction.QueenSide, 1);
         nextSquare.piece = rookSquare.piece;
         rookSquare.piece = null;
     }
@@ -75,9 +75,9 @@ var kingSideCastle: Chess.MovePattern = {
     postMoveActions: [postKingSideCastle]
 }
 
-function getSquare(piece: Chess.BasePiece, board: Chess.Engine, direction: Direction, count: number) {
+function getSquare(piece: Chess.BasePiece, board: Chess.Engine, boardState: Chess.BoardState, direction: Direction, count: number) {
     var coord = piece.getRelativeDestinations(direction, count)[0];
-    return board.getSquare(coord);
+    return board.getSquare(coord, boardState);
 }
 
 var diag = {

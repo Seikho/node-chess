@@ -6,7 +6,7 @@ function availableMoves(boardState: Chess.BoardState) {
     
     boardState.ranks.forEach(rank => {
         rank.squares.forEach(square => {
-            square.availableMoves = self.availableMoves({ file: square.file, rank: rank.rank });
+            square.availableMoves = self.availableMoves({ file: square.file, rank: rank.rank }, boardState);
         });
     });
 }

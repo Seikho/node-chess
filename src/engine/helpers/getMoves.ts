@@ -30,16 +30,17 @@ function getMoves(coordinate: Chess.Coordinate, boardState: Chess.BoardState): C
         var validPathings = newPathings.forEach(pathing => {
             // If it's a vanilla move pattern, use the standard path validation strategy
             if (!move.conditions) {
-                if (!isValidPath(self, piece, pathing, move)) return;
-                
-                moves.push({
-                    to: pathing[pathing.length - 1],
-                    postMoveActions: []
-                });
+                if (isValidPath(self, boardState, piece, pathing, move)) {
+                    moves.push({
+                        to: pathing[pathing.length - 1],
+                        postMoveActions: []
+                    });
+                }
+                return;
             }
             // Otherwise we use the logic provided with the move pattern
-            var defaultValidPath = !!move.useDefaultConditions ? isValidPath(self, piece, pathing, move) : true;
-            var movePatternEvaluation = move.conditions.every(cond => cond(piece, self));
+            var defaultValidPath = !!move.useDefaultConditions ? isValidPath(self, boardState, piece, pathing, move) : true;
+            var movePatternEvaluation = move.conditions.every(cond => cond(piece, boardState, self));
             if (defaultValidPath && movePatternEvaluation) {
                 moves.push({
                     to: pathing[pathing.length - 1],

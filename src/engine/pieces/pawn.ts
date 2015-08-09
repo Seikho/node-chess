@@ -7,33 +7,33 @@ var firstMoveCondition: Chess.MovePatternConditional = (piece) => {
 	return (piece.moveHistory.length === 0);
 }
 
-var canLeftEnpassant: Chess.MovePatternConditional = (piece, board) => {
-	return hasEnpassantTag(Direction.UpLeft, piece, board);
+var canLeftEnpassant: Chess.MovePatternConditional = (piece, boardState, board) => {
+	return hasEnpassantTag(Direction.UpLeft, piece, boardState, board);
 }
 
-var canRightEnpassant: Chess.MovePatternConditional = (piece, board) => {
-	return hasEnpassantTag(Direction.UpRight, piece, board);
+var canRightEnpassant: Chess.MovePatternConditional = (piece, boardState, board) => {
+	return hasEnpassantTag(Direction.UpRight, piece, boardState, board);
 }
 
 var enpassantPostMove: Chess.MoveFunction = {
-	action: (piece, board) => {
-		var pieceCurrentSquare = board.getSquare(piece.location);
+	action: (piece, boardState, board) => {
+		var pieceCurrentSquare = board.getSquare(piece.location, boardState);
 		var coordBelow = piece.getRelativeDestinations(Direction.Down, 1)[0];
-		var squareBelow = board.getSquare(coordBelow);
-		board.boardState.capturedPieces.push(squareBelow.piece);
+		var squareBelow = board.getSquare(coordBelow, boardState);
+		boardState.capturedPieces.push(squareBelow.piece);
 		squareBelow.piece = null;
 		pieceCurrentSquare.tags["enpassant"] = undefined;
 	}
 }
 
 var allowEnpassantCapture: Chess.MoveFunction = {
-    action: function(piece, board) {
+    action: function(piece, boardState, board) {
 		// Find the middle square between the originating and desination squares for tagging
 		var coordinateToTag = piece.getRelativeDestinations(Direction.Down, 1)[0];
-		var squareToTag = board.getSquare(coordinateToTag);
+		var squareToTag = board.getSquare(coordinateToTag, boardState);
         squareToTag.tags["enpassant"] = piece.isWhite;
 		
-		board.postMoveFunctions.push({
+		boardState.postMoveFunctions.push({
 			moveNumber: board.boardState.moveNumber+1,
 			action: (piece, board) => {
 				
@@ -73,10 +73,10 @@ var rightEnpassant: Chess.MovePattern = {
 	postMoveActions: [enpassantPostMove]
 }
 
-function hasEnpassantTag(direction: Direction, piece: Chess.BasePiece, board: Chess.Engine) {
+function hasEnpassantTag(direction: Direction, piece: Chess.BasePiece, boardState: Chess.BoardState, board: Chess.Engine) {
 	var coordinate = piece.getRelativeDestinations(direction, 1);
 	
-	var square = board.getSquare(coordinate[0]);
+	var square = board.getSquare(coordinate[0], boardState);
 	
 	if (square === null) return false;
 	if (square.tags === null) return false;

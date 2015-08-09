@@ -37,6 +37,8 @@ function copyRank(rank: Chess.Rank) {
 
 function shallowCopy(object: Object) {
 	var copy: any = {};
+	if (!object) return copy;
+	
 	var add = key => copy[key] = object[key];
 	
 	Object.keys(object)
@@ -58,5 +60,5 @@ function copyAvailableMoves(moves: Chess.Move[]) {
 }
 
 function shallowCopyArray(array: any[]) {
-	return array ? array.slice() || []; 
+	return array ? array.slice() : []; 
 }

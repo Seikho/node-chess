@@ -3,29 +3,29 @@ var Direction = enums.Direction;
 var firstMoveCondition = function (piece) {
     return (piece.moveHistory.length === 0);
 };
-var canLeftEnpassant = function (piece, board) {
-    return hasEnpassantTag(Direction.UpLeft, piece, board);
+var canLeftEnpassant = function (piece, boardState, board) {
+    return hasEnpassantTag(Direction.UpLeft, piece, boardState, board);
 };
-var canRightEnpassant = function (piece, board) {
-    return hasEnpassantTag(Direction.UpRight, piece, board);
+var canRightEnpassant = function (piece, boardState, board) {
+    return hasEnpassantTag(Direction.UpRight, piece, boardState, board);
 };
 var enpassantPostMove = {
-    action: function (piece, board) {
-        var pieceCurrentSquare = board.getSquare(piece.location);
+    action: function (piece, boardState, board) {
+        var pieceCurrentSquare = board.getSquare(piece.location, boardState);
         var coordBelow = piece.getRelativeDestinations(Direction.Down, 1)[0];
-        var squareBelow = board.getSquare(coordBelow);
-        board.boardState.capturedPieces.push(squareBelow.piece);
+        var squareBelow = board.getSquare(coordBelow, boardState);
+        boardState.capturedPieces.push(squareBelow.piece);
         squareBelow.piece = null;
         pieceCurrentSquare.tags["enpassant"] = undefined;
     }
 };
 var allowEnpassantCapture = {
-    action: function (piece, board) {
+    action: function (piece, boardState, board) {
         // Find the middle square between the originating and desination squares for tagging
         var coordinateToTag = piece.getRelativeDestinations(Direction.Down, 1)[0];
-        var squareToTag = board.getSquare(coordinateToTag);
+        var squareToTag = board.getSquare(coordinateToTag, boardState);
         squareToTag.tags["enpassant"] = piece.isWhite;
-        board.postMoveFunctions.push({
+        boardState.postMoveFunctions.push({
             moveNumber: board.boardState.moveNumber + 1,
             action: function (piece, board) {
             }
@@ -60,9 +60,9 @@ var rightEnpassant = {
     conditions: [canRightEnpassant],
     postMoveActions: [enpassantPostMove]
 };
-function hasEnpassantTag(direction, piece, board) {
+function hasEnpassantTag(direction, piece, boardState, board) {
     var coordinate = piece.getRelativeDestinations(direction, 1);
-    var square = board.getSquare(coordinate[0]);
+    var square = board.getSquare(coordinate[0], boardState);
     if (square === null)
         return false;
     if (square.tags === null)

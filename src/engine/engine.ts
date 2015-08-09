@@ -31,12 +31,12 @@ class Engine implements Chess.Engine {
         tags: <Chess.BoardTag>{},
         capturedPieces: [],
         whitesTurn: true,
-        moveNumber: 1
+        moveNumber: 1,
+        preMoveFunctions: [],
+        postMoveFunctions: []
     }
 
     pieces = [];
-    postMoveFunctions = [];
-    preMoveFunctions = [];
 
     positionParser = fenParser.bind(this);
     toString = toString.bind(this);

@@ -28,6 +28,8 @@ function copyRank(rank) {
 }
 function shallowCopy(object) {
     var copy = {};
+    if (!object)
+        return copy;
     var add = function (key) { return copy[key] = object[key]; };
     Object.keys(object)
         .forEach(add);
@@ -44,7 +46,7 @@ function copyAvailableMoves(moves) {
     return moves.map(copyMove);
 }
 function shallowCopyArray(array) {
-    return array ? array.slice() || [] : ;
+    return array ? array.slice() : [];
 }
 module.exports = deepCopy;
 //# sourceMappingURL=deepCopy.js.map

@@ -4,7 +4,7 @@ import chai = require("chai");
 var expect = chai.expect;
 
 var classicEngine = nodeChess.classic.engine();
-classicEngine.populateAvailableMoves();
+classicEngine.populateAvailableMoves(classicEngine.boardState);
 console.log(classicEngine.toString());
 
 

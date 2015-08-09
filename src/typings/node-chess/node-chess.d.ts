@@ -10,7 +10,7 @@ declare module "node-chess" {
         create(): void;
         availableMoves(coordinate: Coordinate, boardState: BoardState): Move[];
         populateAvailableMoves(boardState: BoardState);
-        getSquare(square: Coordinate, boardState?: BoardState): Square;
+        getSquare(square: Coordinate, boardState: BoardState): Square;
         movePiece(from: Coordinate, to: Coordinate, boardState?: BoardState): BoardState;
         createPiece(notation: string, location: Coordinate): BasePiece;
         toString(): string;
@@ -124,7 +124,7 @@ declare module "node-chess" {
     }
 
     export interface MovePatternConditional {
-        (piece: BasePiece, board: Engine): boolean;
+        (piece: BasePiece, boardState: BoardState, board: Engine): boolean;
     }
 
     /**

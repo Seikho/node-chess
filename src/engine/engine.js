@@ -17,11 +17,11 @@ var Engine = (function () {
             tags: {},
             capturedPieces: [],
             whitesTurn: true,
-            moveNumber: 1
+            moveNumber: 1,
+            preMoveFunctions: [],
+            postMoveFunctions: []
         };
         this.pieces = [];
-        this.postMoveFunctions = [];
-        this.preMoveFunctions = [];
         this.positionParser = fenParser.bind(this);
         this.toString = toString.bind(this);
         this.create = createSqaures.bind(this);

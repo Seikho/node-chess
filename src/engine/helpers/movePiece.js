@@ -25,10 +25,10 @@ function movePiece(from, to, boardState) {
     destination.piece.moveHistory.push({ from: from, to: to });
     var movePatternPostActions = move.postMoveActions || [];
     movePatternPostActions.forEach(function (func) {
-        func.action(destination.piece, self);
+        func.action(destination.piece, boardState, self);
     });
     var pieceFunctions = destination.piece.postMoveFunctions || [];
-    pieceFunctions.forEach(function (fn) { return fn.action(destination.piece, self); });
+    pieceFunctions.forEach(function (fn) { return fn.action(destination.piece, boardState, self); });
     origin.piece = null;
     origin.availableMoves = [];
     boardState.whitesTurn = !boardState.whitesTurn;
@@ -36,7 +36,7 @@ function movePiece(from, to, boardState) {
     var enginePostMoveActions = boardState.postMoveFunctions || [];
     enginePostMoveActions.forEach(function (postMove) {
         if (!postMove.moveNumber || postMove.moveNumber === boardState.moveNumber)
-            postMove.action(destination.piece, self);
+            postMove.action(destination.piece, boardState, self);
     });
     boardState.moveNumber++;
     boardState.postMoveFunctions = enginePostMoveActions.filter(function (pmf) { return pmf.moveNumber >= boardState.moveNumber; });

@@ -1,12 +1,12 @@
 var enums = require("../../enums");
 var Direction = enums.Direction;
-var queenSideCastleCondition = function (piece, board) {
+var queenSideCastleCondition = function (piece, boardState, board) {
     if (piece.moveHistory.length > 0)
         return false;
-    var queenSquare = getSquare(piece, board, Direction.QueenSide, 1);
-    var bishopSquare = getSquare(piece, board, Direction.QueenSide, 2);
-    var knightSquare = getSquare(piece, board, Direction.QueenSide, 3);
-    var rookSquare = getSquare(piece, board, Direction.QueenSide, 4);
+    var queenSquare = getSquare(piece, board, boardState, Direction.QueenSide, 1);
+    var bishopSquare = getSquare(piece, board, boardState, Direction.QueenSide, 2);
+    var knightSquare = getSquare(piece, board, boardState, Direction.QueenSide, 3);
+    var rookSquare = getSquare(piece, board, boardState, Direction.QueenSide, 4);
     var squaresAreVacant = !queenSquare.piece
         && !bishopSquare.piece
         && !knightSquare.piece
@@ -16,12 +16,12 @@ var queenSideCastleCondition = function (piece, board) {
     var rookHasMoved = rookSquare.piece.moveHistory.length > 0;
     return !rookHasMoved;
 };
-var kingSideCastleCondition = function (piece, board) {
+var kingSideCastleCondition = function (piece, boardState, board) {
     if (piece.moveHistory.length > 0)
         return false;
-    var bishopSquare = getSquare(piece, board, Direction.KingSide, 1);
-    var knightSquare = getSquare(piece, board, Direction.KingSide, 2);
-    var rookSquare = getSquare(piece, board, Direction.KingSide, 3);
+    var bishopSquare = getSquare(piece, board, boardState, Direction.KingSide, 1);
+    var knightSquare = getSquare(piece, board, boardState, Direction.KingSide, 2);
+    var rookSquare = getSquare(piece, board, boardState, Direction.KingSide, 3);
     var squaresAreVacant = !bishopSquare.piece
         && !knightSquare.piece
         && !!rookSquare.piece;
@@ -31,17 +31,17 @@ var kingSideCastleCondition = function (piece, board) {
     return !rookHasMoved;
 };
 var postQueenSideCastle = {
-    action: function (piece, board) {
-        var rookSquare = getSquare(piece, board, Direction.QueenSide, 2);
-        var nextSquare = getSquare(piece, board, Direction.KingSide, 1);
+    action: function (piece, boardState, board) {
+        var rookSquare = getSquare(piece, board, boardState, Direction.QueenSide, 2);
+        var nextSquare = getSquare(piece, board, boardState, Direction.KingSide, 1);
         nextSquare.piece = rookSquare.piece;
         rookSquare.piece = null;
     }
 };
 var postKingSideCastle = {
-    action: function (piece, board) {
-        var rookSquare = getSquare(piece, board, Direction.KingSide, 1);
-        var nextSquare = getSquare(piece, board, Direction.QueenSide, 1);
+    action: function (piece, boardState, board) {
+        var rookSquare = getSquare(piece, board, boardState, Direction.KingSide, 1);
+        var nextSquare = getSquare(piece, board, boardState, Direction.QueenSide, 1);
         nextSquare.piece = rookSquare.piece;
         rookSquare.piece = null;
     }
@@ -64,9 +64,9 @@ var kingSideCastle = {
     conditions: [kingSideCastleCondition],
     postMoveActions: [postKingSideCastle]
 };
-function getSquare(piece, board, direction, count) {
+function getSquare(piece, board, boardState, direction, count) {
     var coord = piece.getRelativeDestinations(direction, count)[0];
-    return board.getSquare(coord);
+    return board.getSquare(coord, boardState);
 }
 var diag = {
     moves: [{ direction: Direction.Diagonal, count: 1 }],

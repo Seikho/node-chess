@@ -1,18 +1,18 @@
 import Chess = require("node-chess");
 export = isValidPath;
 
-function isValidPath(board: Chess.Engine, piece: Chess.Piece, path: Chess.Coordinate[], move: Chess.MovePattern): boolean {
+function isValidPath(board: Chess.Engine, boardState: Chess.BoardState, piece: Chess.Piece, path: Chess.Coordinate[], move: Chess.MovePattern): boolean {
     // TODO: Rules API would be used here
     var isWhite = !!piece.isWhite;
     var lastCoordinateIndex = path.length - 1;
     var lastCoordinate = path[lastCoordinateIndex];
-    var lastSquare = board.getSquare(lastCoordinate);
+    var lastSquare = board.getSquare(lastCoordinate, boardState);
 
     // Optimisations
 
     // Ensure all squares leading up to the destination are vacant
     if (!move.canJump) {
-        var isPathVacant = path.slice(0, -1).every(coord => !board.getSquare(coord).piece);
+        var isPathVacant = path.slice(0, -1).every(coord => !board.getSquare(coord, boardState).piece);
         if (!isPathVacant) return false;
     }
 
