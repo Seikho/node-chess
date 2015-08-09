@@ -1,20 +1,24 @@
+var deepCopy = require("./deepCopy");
 function movePiece(from, to, boardState) {
     var self = this;
-    boardState = boardState || self.boardState;
+    // TODO: Replace with better method
+    // If no boardState is provided, the result of this function is stored as the calling engine's new board state 
+    var saveToBoard = !!boardState;
+    boardState = deepCopy(boardState || self.boardState);
     var origin = self.getSquare(from, boardState);
     if (!origin || !origin.piece)
         return boardState;
     // Enforce turn-based movement
-    if (self.whitesTurn !== origin.piece.isWhite)
+    if (boardState.whitesTurn !== origin.piece.isWhite)
         return boardState;
     // The 'destination' square must be in the square's list of available moves
     var moveMatches = origin.availableMoves.filter(function (m) { return m.to.file === to.file && m.to.rank === to.rank; });
     if (moveMatches.length === 0)
         return boardState;
     var move = moveMatches[0];
-    var destination = self.getSquare(to);
+    var destination = self.getSquare(to, boardState);
     if (destination.piece)
-        self.capturedPieces.push(destination.piece);
+        boardState.capturedPieces.push(destination.piece);
     destination.piece = origin.piece;
     destination.piece.location = { file: to.file, rank: to.rank };
     destination.availableMoves = [];
@@ -27,15 +31,17 @@ function movePiece(from, to, boardState) {
     pieceFunctions.forEach(function (fn) { return fn.action(destination.piece, self); });
     origin.piece = null;
     origin.availableMoves = [];
-    self.whitesTurn = !self.whitesTurn;
-    self.populateAvailableMoves();
-    var enginePostMoveActions = self.postMoveFunctions || [];
+    boardState.whitesTurn = !boardState.whitesTurn;
+    self.populateAvailableMoves(boardState);
+    var enginePostMoveActions = boardState.postMoveFunctions || [];
     enginePostMoveActions.forEach(function (postMove) {
-        if (!postMove.moveNumber || postMove.moveNumber === self.moveNumber)
+        if (!postMove.moveNumber || postMove.moveNumber === boardState.moveNumber)
             postMove.action(destination.piece, self);
     });
-    self.moveNumber++;
-    self.postMoveFunctions = enginePostMoveActions.filter(function (pmf) { return pmf.moveNumber >= self.moveNumber; });
+    boardState.moveNumber++;
+    boardState.postMoveFunctions = enginePostMoveActions.filter(function (pmf) { return pmf.moveNumber >= boardState.moveNumber; });
+    if (saveToBoard)
+        self.boardState = boardState;
     return boardState;
 }
 module.exports = movePiece;
