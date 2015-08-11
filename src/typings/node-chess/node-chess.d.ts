@@ -25,6 +25,7 @@ declare module "node-chess" {
         capturedPieces: Piece[];
         postMoveFunctions: MoveFunction[];
         preMoveFunctions: MoveFunction[];
+        moves: Move[];
     }
     
     export interface BoardTag {
@@ -86,6 +87,7 @@ declare module "node-chess" {
         from?: Coordinate;
         to: Coordinate;
         postMoveActions?: MoveFunction[];
+        isWhite: boolean;
     }
 
     export interface Piece {
