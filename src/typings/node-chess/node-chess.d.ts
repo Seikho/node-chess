@@ -25,6 +25,7 @@ declare module "node-chess" {
         capturedPieces: Piece[];
         postMoveFunctions: MoveFunction[];
         preMoveFunctions: MoveFunction[];
+        moves: Move[];
     }
     
     export interface BoardTag {
