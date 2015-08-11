@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "start": "node src/index.js",
-    "build": "tsglob && tsc"
+    "build": "tsglob && tsc && browserify src/index.js -o node-chess.js"
   },
   "repository": {
     "type": "git",
