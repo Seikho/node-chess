@@ -12,10 +12,12 @@ function movePiece(from, to, boardState) {
     if (boardState.whitesTurn !== origin.piece.isWhite)
         return boardState;
     // The 'destination' square must be in the square's list of available moves
-    var moveMatches = boardState.moves.filter(function (m) { return m.to.file === to.file && m.to.rank === to.rank; });
-    if (moveMatches.length === 0)
+    var move = boardState.moves.filter(function (m) {
+        return m.from.file === from.file && m.from.rank === from.rank &&
+            m.to.file === to.file && m.to.rank === to.rank;
+    })[0];
+    if (!move)
         return boardState;
-    var move = moveMatches[0];
     var destination = self.getSquare(to, boardState);
     if (destination.piece)
         boardState.capturedPieces.push(destination.piece);
