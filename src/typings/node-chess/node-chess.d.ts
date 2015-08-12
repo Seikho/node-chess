@@ -4,17 +4,18 @@ declare module "node-chess" {
         fileCount: number;
 
         boardState: BoardState;
-
         pieces: Piece[];
         positionParser: PositionParser;
-        create(): void;
-        inferMoves(coordinate: Coordinate, boardState?: BoardState): Move[];
-        populateAvailableMoves(boardState?: BoardState);
-        getSquare(square: Coordinate, boardState?: BoardState): Square;
-        movePiece(from: Coordinate, to: Coordinate, boardState?: BoardState): BoardState;
-        createPiece(notation: string, location: Coordinate): BasePiece;
-        toString(): string;
 
+        movePiece(from: Coordinate, to: Coordinate, boardState?: BoardState): BoardState;
+        getSquare(square: Coordinate, boardState?: BoardState): Square;
+        getMoves(coordinate: Coordinate, boardState?: BoardState): Move[];
+
+        create(): void;
+        populateAvailableMoves(boardState?: BoardState);
+        createPiece(notation: string, location: Coordinate): BasePiece;
+        inferMoves(coordinate: Coordinate, boardState?: BoardState): Move[];
+        toString(): string;
     }
     
     export interface BoardState {

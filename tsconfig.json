@@ -29,6 +29,7 @@
         "src/engine/helpers/getPaths.ts",
         "src/engine/helpers/getSquare.ts",
         "src/engine/helpers/getTransforms.ts",
+        "src/engine/helpers/inferMoves.ts",
         "src/engine/helpers/isInBounds.ts",
         "src/engine/helpers/isValidPath.ts",
         "src/engine/helpers/movePiece.ts",

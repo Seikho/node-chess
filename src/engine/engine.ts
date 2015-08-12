@@ -1,5 +1,6 @@
 import Chess = require("node-chess");
 import toString = require("./helpers/toString");
+import getMoves = require("./helpers/getMoves");
 import inferMoves = require("./helpers/inferMoves");
 import movePiece = require("./helpers/movePiece");
 import fenParser = require("./parsers/fen")
@@ -38,15 +39,16 @@ class Engine implements Chess.Engine {
     }
 
     pieces = [];
-
     positionParser = fenParser.bind(this);
-    toString = toString.bind(this);
-    create = createSqaures.bind(this);
-    pieceFactory = BasePiece;
-    inferMoves = inferMoves.bind(this);
-    movePiece = movePiece.bind(this);
 
+    movePiece = movePiece.bind(this);
     getSquare = getSquare.bind(this);
+    getMoves = getMoves.bind(this);
+    
+    create = createSqaures.bind(this);
+    inferMoves = inferMoves.bind(this);
+    toString = toString.bind(this);
+    pieceFactory = BasePiece;
     populateAvailableMoves = availableMoves.bind(this);
     createPiece = createPiece.bind(this);
 }

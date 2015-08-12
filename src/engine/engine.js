@@ -1,4 +1,5 @@
 var toString = require("./helpers/toString");
+var getMoves = require("./helpers/getMoves");
 var inferMoves = require("./helpers/inferMoves");
 var movePiece = require("./helpers/movePiece");
 var fenParser = require("./parsers/fen");
@@ -24,12 +25,13 @@ var Engine = (function () {
         };
         this.pieces = [];
         this.positionParser = fenParser.bind(this);
-        this.toString = toString.bind(this);
-        this.create = createSqaures.bind(this);
-        this.pieceFactory = BasePiece;
-        this.inferMoves = inferMoves.bind(this);
         this.movePiece = movePiece.bind(this);
         this.getSquare = getSquare.bind(this);
+        this.getMoves = getMoves.bind(this);
+        this.create = createSqaures.bind(this);
+        this.inferMoves = inferMoves.bind(this);
+        this.toString = toString.bind(this);
+        this.pieceFactory = BasePiece;
         this.populateAvailableMoves = availableMoves.bind(this);
         this.createPiece = createPiece.bind(this);
         ranks = ranks || 8;
