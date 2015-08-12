@@ -8,7 +8,7 @@ function availableMoves(boardState?: Chess.BoardState) {
     
     boardState.ranks.forEach(rank => {
         rank.squares.forEach(square => {
-            moves = moves.concat(self.getMoves({file: square.file, rank: rank.rank }, boardState));
+            moves = moves.concat(self.inferMoves({file: square.file, rank: rank.rank }, boardState));
         });
     });
     
