@@ -24,8 +24,10 @@ function getMoves(coordinate, boardState) {
             if (!move.conditions) {
                 if (isValidPath(self, boardState, piece, pathing, move)) {
                     moves.push({
+                        from: coordinate,
                         to: pathing[pathing.length - 1],
-                        postMoveActions: []
+                        postMoveActions: [],
+                        isWhite: piece.isWhite
                     });
                 }
                 return;
@@ -35,8 +37,10 @@ function getMoves(coordinate, boardState) {
             var movePatternEvaluation = move.conditions.every(function (cond) { return cond(piece, boardState, self); });
             if (defaultValidPath && movePatternEvaluation) {
                 moves.push({
+                    from: coordinate,
                     to: pathing[pathing.length - 1],
-                    postMoveActions: move.postMoveActions || []
+                    postMoveActions: move.postMoveActions || [],
+                    isWhite: piece.isWhite
                 });
             }
         });

@@ -32,8 +32,10 @@ function getMoves(coordinate: Chess.Coordinate, boardState: Chess.BoardState): C
             if (!move.conditions) {
                 if (isValidPath(self, boardState, piece, pathing, move)) {
                     moves.push({
+                        from: coordinate,
                         to: pathing[pathing.length - 1],
-                        postMoveActions: []
+                        postMoveActions: [],
+                        isWhite: piece.isWhite
                     });
                 }
                 return;
@@ -43,8 +45,10 @@ function getMoves(coordinate: Chess.Coordinate, boardState: Chess.BoardState): C
             var movePatternEvaluation = move.conditions.every(cond => cond(piece, boardState, self));
             if (defaultValidPath && movePatternEvaluation) {
                 moves.push({
+                    from: coordinate,
                     to: pathing[pathing.length - 1],
-                    postMoveActions: move.postMoveActions || []
+                    postMoveActions: move.postMoveActions || [],
+                    isWhite: piece.isWhite
                 });
             }
         });
