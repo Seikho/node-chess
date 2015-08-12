@@ -8,10 +8,6 @@ function getMoves(coordinate: Chess.Coordinate, boardState?: Chess.BoardState): 
     var self: Chess.Engine = this;
     boardState = boardState || self.boardState;
     
-    if (boardState.moveNumber === boardState.moveNumber) {
-        return boardState.moves.filter(m => m.from.file === coordinate.file && m.from.rank === coordinate.rank);
-    }
-    
     var square: Chess.Square = self.getSquare(coordinate, boardState);
 
     // No piece, no moves.

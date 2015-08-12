@@ -5026,9 +5026,9 @@ function modifyTransform(transform, count) {
 }
 module.exports = BasePiece;
 
-},{"./helpers/applyTransform":14,"./helpers/getTransforms":22}],13:[function(require,module,exports){
+},{"./helpers/applyTransform":14,"./helpers/getTransforms":21}],13:[function(require,module,exports){
 var toString = require("./helpers/toString");
-var getMoves = require("./helpers/getMoves");
+var inferMoves = require("./helpers/inferMoves");
 var movePiece = require("./helpers/movePiece");
 var fenParser = require("./parsers/fen");
 var createSqaures = require("./helpers/createSquares");
@@ -5056,7 +5056,7 @@ var Engine = (function () {
         this.toString = toString.bind(this);
         this.create = createSqaures.bind(this);
         this.pieceFactory = BasePiece;
-        this.getMoves = getMoves.bind(this);
+        this.inferMoves = inferMoves.bind(this);
         this.movePiece = movePiece.bind(this);
         this.getSquare = getSquare.bind(this);
         this.populateAvailableMoves = availableMoves.bind(this);
@@ -5073,7 +5073,7 @@ var Engine = (function () {
 })();
 module.exports = Engine;
 
-},{"./basePiece":12,"./helpers/availableMoves":15,"./helpers/createPiece":16,"./helpers/createSquares":17,"./helpers/getMoves":19,"./helpers/getSquare":21,"./helpers/movePiece":25,"./helpers/toString":26,"./parsers/fen":28}],14:[function(require,module,exports){
+},{"./basePiece":12,"./helpers/availableMoves":15,"./helpers/createPiece":16,"./helpers/createSquares":17,"./helpers/getSquare":20,"./helpers/inferMoves":22,"./helpers/movePiece":25,"./helpers/toString":26,"./parsers/fen":28}],14:[function(require,module,exports){
 function applyTransform(coordinate, transform) {
     return { file: coordinate.file + transform.file, rank: coordinate.rank + transform.rank };
 }
@@ -5086,7 +5086,7 @@ function availableMoves(boardState) {
     var moves = [];
     boardState.ranks.forEach(function (rank) {
         rank.squares.forEach(function (square) {
-            moves = moves.concat(self.getMoves({ file: square.file, rank: rank.rank }, boardState));
+            moves = moves.concat(self.inferMoves({ file: square.file, rank: rank.rank }, boardState));
         });
     });
     boardState.moves = moves;
@@ -5193,61 +5193,6 @@ function shallowCopyArray(array) {
 module.exports = deepCopy;
 
 },{}],19:[function(require,module,exports){
-var getPaths = require("./getPaths");
-var isValidPath = require("./isValidPath");
-// TODO: Desperately requires refactoring
-function getMoves(coordinate, boardState) {
-    var self = this;
-    boardState = boardState || self.boardState;
-    if (boardState.moveNumber === boardState.moveNumber) {
-        return boardState.moves.filter(function (m) { return m.from.file === coordinate.file && m.from.rank === coordinate.rank; });
-    }
-    var square = self.getSquare(coordinate, boardState);
-    // No piece, no moves.
-    var piece = square.piece;
-    if (!piece)
-        return [];
-    // We want all moves available on the entire board for calculation purposes
-    // Therefore we leave this commented out
-    // var isMoveablePiece = piece.isWhite === board.whitesTurn;
-    //if (!isMoveablePiece) return [];
-    var bounds = { file: self.fileCount, rank: self.rankCount };
-    var pathings = [];
-    var movePatterns = piece.movement.slice(0);
-    var moves = [];
-    movePatterns.forEach(function (move) {
-        var newPathings = getPaths(coordinate, move, piece.isWhite, bounds);
-        var validPathings = newPathings.forEach(function (pathing) {
-            // If it's a vanilla move pattern, use the standard path validation strategy
-            if (!move.conditions) {
-                if (isValidPath(self, boardState, piece, pathing, move)) {
-                    moves.push({
-                        from: coordinate,
-                        to: pathing[pathing.length - 1],
-                        postMoveActions: [],
-                        isWhite: piece.isWhite
-                    });
-                }
-                return;
-            }
-            // Otherwise we use the logic provided with the move pattern
-            var defaultValidPath = !!move.useDefaultConditions ? isValidPath(self, boardState, piece, pathing, move) : true;
-            var movePatternEvaluation = move.conditions.every(function (cond) { return cond(piece, boardState, self); });
-            if (defaultValidPath && movePatternEvaluation) {
-                moves.push({
-                    from: coordinate,
-                    to: pathing[pathing.length - 1],
-                    postMoveActions: move.postMoveActions || [],
-                    isWhite: piece.isWhite
-                });
-            }
-        });
-    });
-    return moves;
-}
-module.exports = getMoves;
-
-},{"./getPaths":20,"./isValidPath":24}],20:[function(require,module,exports){
 var isInBounds = require("./isInBounds");
 var getTransforms = require("./getTransforms");
 function getPaths(coordinate, movePattern, isWhite, bounds) {
@@ -5306,7 +5251,7 @@ function combinePathings(leftPathings, rightPathings) {
 }
 module.exports = getPaths;
 
-},{"./getTransforms":22,"./isInBounds":23}],21:[function(require,module,exports){
+},{"./getTransforms":21,"./isInBounds":23}],20:[function(require,module,exports){
 function getSquare(square, boardState) {
     var self = this;
     boardState = boardState || self.boardState;
@@ -5316,7 +5261,7 @@ function getSquare(square, boardState) {
 }
 module.exports = getSquare;
 
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var enums = require("../../enums");
 var Direction = enums.Direction;
 function getTransforms(singleMove, isWhite) {
@@ -5371,7 +5316,59 @@ function getTransforms(singleMove, isWhite) {
 }
 module.exports = getTransforms;
 
-},{"../../enums":37}],23:[function(require,module,exports){
+},{"../../enums":37}],22:[function(require,module,exports){
+var getPaths = require("./getPaths");
+var isValidPath = require("./isValidPath");
+// TODO: Desperately requires refactoring
+function getMoves(coordinate, boardState) {
+    var self = this;
+    boardState = boardState || self.boardState;
+    var square = self.getSquare(coordinate, boardState);
+    // No piece, no moves.
+    var piece = square.piece;
+    if (!piece)
+        return [];
+    // We want all moves available on the entire board for calculation purposes
+    // Therefore we leave this commented out
+    // var isMoveablePiece = piece.isWhite === board.whitesTurn;
+    //if (!isMoveablePiece) return [];
+    var bounds = { file: self.fileCount, rank: self.rankCount };
+    var pathings = [];
+    var movePatterns = piece.movement.slice(0);
+    var moves = [];
+    movePatterns.forEach(function (move) {
+        var newPathings = getPaths(coordinate, move, piece.isWhite, bounds);
+        var validPathings = newPathings.forEach(function (pathing) {
+            // If it's a vanilla move pattern, use the standard path validation strategy
+            if (!move.conditions) {
+                if (isValidPath(self, boardState, piece, pathing, move)) {
+                    moves.push({
+                        from: coordinate,
+                        to: pathing[pathing.length - 1],
+                        postMoveActions: [],
+                        isWhite: piece.isWhite
+                    });
+                }
+                return;
+            }
+            // Otherwise we use the logic provided with the move pattern
+            var defaultValidPath = !!move.useDefaultConditions ? isValidPath(self, boardState, piece, pathing, move) : true;
+            var movePatternEvaluation = move.conditions.every(function (cond) { return cond(piece, boardState, self); });
+            if (defaultValidPath && movePatternEvaluation) {
+                moves.push({
+                    from: coordinate,
+                    to: pathing[pathing.length - 1],
+                    postMoveActions: move.postMoveActions || [],
+                    isWhite: piece.isWhite
+                });
+            }
+        });
+    });
+    return moves;
+}
+module.exports = getMoves;
+
+},{"./getPaths":19,"./isValidPath":24}],23:[function(require,module,exports){
 function isInBounds(coordinate, bounds) {
     return coordinate.rank <= bounds.rank && coordinate.file <= bounds.file && coordinate.rank > 0 && coordinate.file > 0;
 }
@@ -5418,17 +5415,17 @@ function movePiece(from, to, boardState) {
     boardState = deepCopy(boardState || self.boardState);
     var origin = self.getSquare(from, boardState);
     if (!origin || !origin.piece)
-        return boardState;
+        return null;
     // Enforce turn-based movement
     if (boardState.whitesTurn !== origin.piece.isWhite)
-        return boardState;
+        return null;
     // The 'destination' square must be in the square's list of available moves
     var move = boardState.moves.filter(function (m) {
         return m.from.file === from.file && m.from.rank === from.rank &&
             m.to.file === to.file && m.to.rank === to.rank;
     })[0];
     if (!move)
-        return boardState;
+        return null;
     var destination = self.getSquare(to, boardState);
     if (destination.piece)
         boardState.capturedPieces.push(destination.piece);

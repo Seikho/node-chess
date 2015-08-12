@@ -4,9 +4,6 @@ var isValidPath = require("./isValidPath");
 function getMoves(coordinate, boardState) {
     var self = this;
     boardState = boardState || self.boardState;
-    if (boardState.moveNumber === boardState.moveNumber) {
-        return boardState.moves.filter(function (m) { return m.from.file === coordinate.file && m.from.rank === coordinate.rank; });
-    }
     var square = self.getSquare(coordinate, boardState);
     // No piece, no moves.
     var piece = square.piece;
@@ -51,4 +48,4 @@ function getMoves(coordinate, boardState) {
     return moves;
 }
 module.exports = getMoves;
-//# sourceMappingURL=getMoves.js.map
+//# sourceMappingURL=inferMoves.js.map

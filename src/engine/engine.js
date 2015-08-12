@@ -1,5 +1,5 @@
 var toString = require("./helpers/toString");
-var getMoves = require("./helpers/getMoves");
+var inferMoves = require("./helpers/inferMoves");
 var movePiece = require("./helpers/movePiece");
 var fenParser = require("./parsers/fen");
 var createSqaures = require("./helpers/createSquares");
@@ -27,7 +27,7 @@ var Engine = (function () {
         this.toString = toString.bind(this);
         this.create = createSqaures.bind(this);
         this.pieceFactory = BasePiece;
-        this.getMoves = getMoves.bind(this);
+        this.inferMoves = inferMoves.bind(this);
         this.movePiece = movePiece.bind(this);
         this.getSquare = getSquare.bind(this);
         this.populateAvailableMoves = availableMoves.bind(this);
