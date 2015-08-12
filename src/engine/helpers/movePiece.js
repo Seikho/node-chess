@@ -12,7 +12,7 @@ function movePiece(from, to, boardState) {
     if (boardState.whitesTurn !== origin.piece.isWhite)
         return boardState;
     // The 'destination' square must be in the square's list of available moves
-    var moveMatches = origin.availableMoves.filter(function (m) { return m.to.file === to.file && m.to.rank === to.rank; });
+    var moveMatches = boardState.moves.filter(function (m) { return m.to.file === to.file && m.to.rank === to.rank; });
     if (moveMatches.length === 0)
         return boardState;
     var move = moveMatches[0];
@@ -21,8 +21,7 @@ function movePiece(from, to, boardState) {
         boardState.capturedPieces.push(destination.piece);
     destination.piece = origin.piece;
     destination.piece.location = { file: to.file, rank: to.rank };
-    destination.availableMoves = [];
-    destination.piece.moveHistory.push({ from: from, to: to });
+    destination.piece.moveHistory.push({ from: from, to: to, isWhite: origin.piece.isWhite });
     var movePatternPostActions = move.postMoveActions || [];
     movePatternPostActions.forEach(function (func) {
         func.action(destination.piece, boardState, self);
@@ -30,7 +29,6 @@ function movePiece(from, to, boardState) {
     var pieceFunctions = destination.piece.postMoveFunctions || [];
     pieceFunctions.forEach(function (fn) { return fn.action(destination.piece, boardState, self); });
     origin.piece = null;
-    origin.availableMoves = [];
     boardState.whitesTurn = !boardState.whitesTurn;
     self.populateAvailableMoves(boardState);
     var enginePostMoveActions = boardState.postMoveFunctions || [];
