@@ -20,34 +20,32 @@ With node-chess you can:
 Add it as a dependency to your project
 ```javascript
 npm install node-chess
-// In your project
-var chess = require("node-chess");
 ```
 
 In the browser
 ```html
 <script src="node-chess.js">
-	var engine =  
+	var game = chess.classic.engine();
 </script>
 ```
 
 The engine comes with a 'classic' implementation of Chess.
 ```javascript
-var classicEngine = chess.classicEngine();
+var chess = require("node-chess");
+var game = chess.classic.engine();
 ``` 
 
 ###Using the board
 ```javascript
-var classicEngine = chess.classicEngine();
 // Move the E2 pawn to E4
-classicEngine.movePiece({ file: 5, rank: 2 } /* from */,{ file: 5, rank: 4 } /* to */);
+game.movePiece({ file: 5, rank: 2 } /* from */,{ file: 5, rank: 4 } /* to */);
 
 // Move the B8 knight to C6 
-classicEngine.movePiece({ file: 2, rank: 8 }, { file: 3, rank: 6 });
+game.movePiece({ file: 2, rank: 8 }, { file: 3, rank: 6 });
 
 // Try and make an invalid move
 // No piece is on B8
-classicEngine.movePiece({ file: 2, rank: 8}, { file: 3, rank: 6 }) === null; // true
+game.movePiece({ file: 2, rank: 8}, { file: 3, rank: 6 }) === null; // true
 
 // Print the available moves of the C6 knight to the console
 console.log(classicEngine.getMoves({ file: 3, rank: 6 }));
