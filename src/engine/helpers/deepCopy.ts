@@ -54,7 +54,7 @@ function copyPiece(piece: Chess.BasePiece): Chess.BasePiece {
 	copy.location = { rank: piece.location.rank, file: piece.location.file };
 	copy.movement = shallowCopyArray(piece.movement);
 	copy.getRelativeDestinations = piece.getRelativeDestinations
-	
+	copy.postMoveFunctions = piece.postMoveFunctions.slice();
 	return copy; 
 }
 
