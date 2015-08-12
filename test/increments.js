@@ -4,7 +4,6 @@ var expect = chai.expect;
 var classicEngine = nodeChess.classic.engine();
 classicEngine.populateAvailableMoves();
 console.log(classicEngine.toString());
-console.log(classicEngine.getSquare({ file: 5, rank: 8 }));
 describe("available move tests", function () {
     pieceAvailableMovesTest("will find all available moves for the b2 pawn from the starting position", coord(2, 2), [coord(2, 3), coord(2, 4)]);
     pieceAvailableMovesTest("will find all available moves for b1 knight from the starting position", coord(2, 1), [coord(3, 3), coord(1, 3)]);
@@ -85,6 +84,10 @@ function pieceMoveTest(message, from, to, wont) {
         var newState = classicEngine.movePiece(from, to);
         var moved = classicEngine.getSquare(expected, newState);
         var movedPiece = moved.piece;
+        if (wont) {
+            expect(newState).to.be.null;
+            return;
+        }
         // A bit elaborate due to immutability of movePiece function
         expect(movedPiece).to.exist;
         expect(movedPiece.location.file).to.equal(expected.file);
