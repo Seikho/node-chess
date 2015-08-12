@@ -3,12 +3,11 @@ import classicEngine = require("./engine/instances/classic");
 import classicPieces = require("./engine/pieces/pieces");
 import enums = require("./enums");
 import Directions = enums.Direction;
+export = chess;
 
-export var engine = Engine;
-
-export var classic = {
+var chess: any = Engine;
+chess.classic = {
 	engine: classicEngine,
 	pieces: classicPieces
-};
-
-export var Direction = Directions;
+}
+chess.Direction = enums.Direction;

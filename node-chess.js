@@ -5878,12 +5878,12 @@ var Engine = require("./engine/engine");
 var classicEngine = require("./engine/instances/classic");
 var classicPieces = require("./engine/pieces/pieces");
 var enums = require("./enums");
-var Directions = enums.Direction;
-exports.engine = Engine;
-exports.classic = {
+var chess = Engine;
+chess.classic = {
     engine: classicEngine,
     pieces: classicPieces
 };
-exports.Direction = Directions;
+chess.Direction = enums.Direction;
+module.exports = chess;
 
 },{"./engine/engine":13,"./engine/instances/classic":28,"./engine/pieces/pieces":35,"./enums":38}]},{},[39]);

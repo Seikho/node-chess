@@ -24,6 +24,13 @@ npm install node-chess
 var chess = require("node-chess");
 ```
 
+In the browser
+```html
+<script src="node-chess.js">
+	var engine =  
+</script>
+```
+
 The engine comes with a 'classic' implementation of Chess.
 ```javascript
 var classicEngine = chess.classicEngine();
@@ -38,8 +45,12 @@ classicEngine.movePiece({ file: 5, rank: 2 } /* from */,{ file: 5, rank: 4 } /* 
 // Move the B8 knight to C6 
 classicEngine.movePiece({ file: 2, rank: 8 }, { file: 3, rank: 6 });
 
+// Try and make an invalid move
+// No piece is on B8
+classicEngine.movePiece({ file: 2, rank: 8}, { file: 3, rank: 6 }) === null; // true
+
 // Print the available moves of the C6 knight to the console
-console.log(classicEngine.getSquare({ file: 3, rank: 6 }).availableMoves);
+console.log(classicEngine.getMoves({ file: 3, rank: 6 }));
 ```
 
 ### Defining your own pieces
