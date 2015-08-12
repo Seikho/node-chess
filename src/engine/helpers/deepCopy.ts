@@ -11,7 +11,7 @@ function deepCopy(boardState: Chess.BoardState) {
 		capturedPieces: boardState.capturedPieces.map(copyPiece),
 		preMoveFunctions: shallowCopyArray(boardState.preMoveFunctions),
 		postMoveFunctions: shallowCopyArray(boardState.postMoveFunctions),
-		moves: shallowCopyArray(boardState.moves)
+		moves: copyAvailableMoves(boardState.moves)
 	}
 
 	return copy;
@@ -63,7 +63,8 @@ function copyAvailableMoves(moves: Chess.Move[]) {
 		return {
 			from: shallowCopy(move.from),
 			to: shallowCopy(move.to),
-			postMoveActions: shallowCopyArray(move.postMoveActions)
+			postMoveActions: shallowCopyArray(move.postMoveActions),
+			isWhite: move.isWhite
 		};
 	}
 	

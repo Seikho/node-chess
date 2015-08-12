@@ -7,7 +7,7 @@ function deepCopy(boardState) {
         capturedPieces: boardState.capturedPieces.map(copyPiece),
         preMoveFunctions: shallowCopyArray(boardState.preMoveFunctions),
         postMoveFunctions: shallowCopyArray(boardState.postMoveFunctions),
-        moves: shallowCopyArray(boardState.moves)
+        moves: copyAvailableMoves(boardState.moves)
     };
     return copy;
 }
@@ -49,7 +49,8 @@ function copyAvailableMoves(moves) {
         return {
             from: shallowCopy(move.from),
             to: shallowCopy(move.to),
-            postMoveActions: shallowCopyArray(move.postMoveActions)
+            postMoveActions: shallowCopyArray(move.postMoveActions),
+            isWhite: move.isWhite
         };
     }
     return moves.map(copyMove);
