@@ -6,7 +6,7 @@ import Directions = enums.Direction;
 export = chess;
 
 var chess = {
-	engine: Engine,
+	Engine: Engine,
 	classic: {
 		engine: classicEngine,
 		pieces: classicPieces,
