@@ -1,4 +1,7 @@
-declare module "node-chess" {
+declare module "node-chess" {   
+    
+    //TODO: Type the API interface     
+    
     export interface Engine {
         rankCount: number;
         fileCount: number;

@@ -5,9 +5,11 @@ import enums = require("./enums");
 import Directions = enums.Direction;
 export = chess;
 
-var chess: any = Engine;
-chess.classic = {
-	engine: classicEngine,
-	pieces: classicPieces
-}
-chess.Direction = enums.Direction;
+var chess = {
+	engine: Engine,
+	classic: {
+		engine: classicEngine,
+		pieces: classicPieces,
+	},
+	Direction: enums.Direction
+};
