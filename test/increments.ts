@@ -4,8 +4,9 @@ import chai = require("chai");
 var expect = chai.expect;
 
 var classicEngine: Chess.Engine = nodeChess.classic.engine();
-classicEngine.populateAvailableMoves(classicEngine.boardState);
+classicEngine.populateAvailableMoves();
 console.log(classicEngine.toString());
+console.log(classicEngine.getSquare({file: 5, rank: 8}));
 
 
 describe("available move tests", () => {
@@ -43,21 +44,20 @@ describe("movement tests", () => {
 	pieceMoveTest("[White] will castle king side (Ke1-Kg1 or O-O)", coord(5, 1), coord(7, 1));
 	pieceLocationTest("will have white rook on f1 after castling", coord(6, 1), "R");
 	pieceAvailableMovesTest("[Black] will be able to move Ke8-Kc8 (o-o-o) and Ke8-Kd8", coord(5, 8), [coord(3, 8), coord(4, 8)]);
-	pieceMoveTest("[Black] will castle queen side (Ke8-Kc8 or o-o-o)", coord(5, 8), coord(3, 8));
+	pieceMoveTest("[Black] will castle queen side (Ke8-Kc8 or o-o-o)", coord(5, 8), coord(3, 8));	
 	pieceLocationTest("will have black rook on d8 after castling", coord(4, 8), "r");
-
 });
 
 function tagTest(message: string, coordinate: Chess.Coordinate, tagName: string, expected: any) {
 	it(message, () => {
-		var square = classicEngine.getSquare(coordinate, classicEngine.boardState);
+		var square = classicEngine.getSquare(coordinate);
 		expect(square.tags[tagName]).to.equal(expected);
 	});
 }
 
 function pieceLocationTest(message: string, location: Chess.Coordinate, notation: string) {
 	it(message, () => {
-		var square = classicEngine.getSquare(location, classicEngine.boardState);
+		var square = classicEngine.getSquare(location);
 		expect(square.piece.notation).to.equal(notation);
 	});
 }
@@ -92,8 +92,8 @@ var count = 0;
 function pieceMoveTest(message: string, from: Chess.Coordinate, to: Chess.Coordinate, wont = false) {
 	it(message, () => {
 		var expected = wont ? from : to;
-		var square: Chess.Square = classicEngine.getSquare(from, classicEngine.boardState);
-		var piece: Chess.Piece = classicEngine.getSquare(from, classicEngine.boardState).piece;
+		var square: Chess.Square = classicEngine.getSquare(from);
+		var piece: Chess.Piece = classicEngine.getSquare(from).piece;
 		var newState = classicEngine.movePiece(from, to);
 		var moved: Chess.Square = classicEngine.getSquare(expected, newState);
 		var movedPiece = moved.piece;	

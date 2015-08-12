@@ -2,8 +2,9 @@ var nodeChess = require("../src/index");
 var chai = require("chai");
 var expect = chai.expect;
 var classicEngine = nodeChess.classic.engine();
-classicEngine.populateAvailableMoves(classicEngine.boardState);
+classicEngine.populateAvailableMoves();
 console.log(classicEngine.toString());
+console.log(classicEngine.getSquare({ file: 5, rank: 8 }));
 describe("available move tests", function () {
     pieceAvailableMovesTest("will find all available moves for the b2 pawn from the starting position", coord(2, 2), [coord(2, 3), coord(2, 4)]);
     pieceAvailableMovesTest("will find all available moves for b1 knight from the starting position", coord(2, 1), [coord(3, 3), coord(1, 3)]);
@@ -43,13 +44,13 @@ describe("movement tests", function () {
 });
 function tagTest(message, coordinate, tagName, expected) {
     it(message, function () {
-        var square = classicEngine.getSquare(coordinate, classicEngine.boardState);
+        var square = classicEngine.getSquare(coordinate);
         expect(square.tags[tagName]).to.equal(expected);
     });
 }
 function pieceLocationTest(message, location, notation) {
     it(message, function () {
-        var square = classicEngine.getSquare(location, classicEngine.boardState);
+        var square = classicEngine.getSquare(location);
         expect(square.piece.notation).to.equal(notation);
     });
 }
@@ -79,8 +80,8 @@ function pieceMoveTest(message, from, to, wont) {
     if (wont === void 0) { wont = false; }
     it(message, function () {
         var expected = wont ? from : to;
-        var square = classicEngine.getSquare(from, classicEngine.boardState);
-        var piece = classicEngine.getSquare(from, classicEngine.boardState).piece;
+        var square = classicEngine.getSquare(from);
+        var piece = classicEngine.getSquare(from).piece;
         var newState = classicEngine.movePiece(from, to);
         var moved = classicEngine.getSquare(expected, newState);
         var movedPiece = moved.piece;
