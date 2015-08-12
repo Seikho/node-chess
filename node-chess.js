@@ -5082,6 +5082,7 @@ module.exports = applyTransform;
 },{}],15:[function(require,module,exports){
 function availableMoves(boardState) {
     var self = this;
+    boardState = boardState || self.boardState;
     var moves = [];
     boardState.ranks.forEach(function (rank) {
         rank.squares.forEach(function (square) {
@@ -5172,6 +5173,7 @@ function copyPiece(piece) {
     copy.location = { rank: piece.location.rank, file: piece.location.file };
     copy.movement = shallowCopyArray(piece.movement);
     copy.getRelativeDestinations = piece.getRelativeDestinations;
+    copy.postMoveFunctions = piece.postMoveFunctions.slice();
     return copy;
 }
 function copyAvailableMoves(moves) {
@@ -5195,8 +5197,8 @@ var getPaths = require("./getPaths");
 var isValidPath = require("./isValidPath");
 // TODO: Desperately requires refactoring
 function getMoves(coordinate, boardState) {
-    var stopwatch = Date.now(); // Benchmarking
     var self = this;
+    boardState = boardState || self.boardState;
     var square = self.getSquare(coordinate, boardState);
     // No piece, no moves.
     var piece = square.piece;
@@ -5219,7 +5221,7 @@ function getMoves(coordinate, boardState) {
                     moves.push({
                         from: coordinate,
                         to: pathing[pathing.length - 1],
-                        postMoveActions: [],
+                        postMoveActions: move.postMoveActions || [],
                         isWhite: piece.isWhite
                     });
                 }
@@ -5303,6 +5305,8 @@ module.exports = getPaths;
 
 },{"./getTransforms":22,"./isInBounds":23}],21:[function(require,module,exports){
 function getSquare(square, boardState) {
+    var self = this;
+    boardState = boardState || self.boardState;
     if (!boardState.ranks[square.rank])
         return null;
     return boardState.ranks[square.rank].squares[square.file] || null;
@@ -5416,10 +5420,12 @@ function movePiece(from, to, boardState) {
     if (boardState.whitesTurn !== origin.piece.isWhite)
         return boardState;
     // The 'destination' square must be in the square's list of available moves
-    var moveMatches = boardState.moves.filter(function (m) { return m.to.file === to.file && m.to.rank === to.rank; });
-    if (moveMatches.length === 0)
+    var move = boardState.moves.filter(function (m) {
+        return m.from.file === from.file && m.from.rank === from.rank &&
+            m.to.file === to.file && m.to.rank === to.rank;
+    })[0];
+    if (!move)
         return boardState;
-    var move = moveMatches[0];
     var destination = self.getSquare(to, boardState);
     if (destination.piece)
         boardState.capturedPieces.push(destination.piece);
@@ -5559,10 +5565,11 @@ var Direction = enums.Direction;
 var queenSideCastleCondition = function (piece, boardState, board) {
     if (piece.moveHistory.length > 0)
         return false;
-    var queenSquare = getSquare(piece, board, boardState, Direction.QueenSide, 1);
-    var bishopSquare = getSquare(piece, board, boardState, Direction.QueenSide, 2);
-    var knightSquare = getSquare(piece, board, boardState, Direction.QueenSide, 3);
-    var rookSquare = getSquare(piece, board, boardState, Direction.QueenSide, 4);
+    var f = function (num) { return getSquare(piece, board, boardState, Direction.QueenSide, num); };
+    var queenSquare = f(1);
+    var bishopSquare = f(2);
+    var knightSquare = f(3);
+    var rookSquare = f(4);
     var squaresAreVacant = !queenSquare.piece
         && !bishopSquare.piece
         && !knightSquare.piece
@@ -5575,9 +5582,10 @@ var queenSideCastleCondition = function (piece, boardState, board) {
 var kingSideCastleCondition = function (piece, boardState, board) {
     if (piece.moveHistory.length > 0)
         return false;
-    var bishopSquare = getSquare(piece, board, boardState, Direction.KingSide, 1);
-    var knightSquare = getSquare(piece, board, boardState, Direction.KingSide, 2);
-    var rookSquare = getSquare(piece, board, boardState, Direction.KingSide, 3);
+    var f = function (num) { return getSquare(piece, board, boardState, Direction.KingSide, num); };
+    var bishopSquare = f(1);
+    var knightSquare = f(2);
+    var rookSquare = f(3);
     var squaresAreVacant = !bishopSquare.piece
         && !knightSquare.piece
         && !!rookSquare.piece;
