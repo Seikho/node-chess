@@ -9,7 +9,7 @@ declare module "node-chess" {
         positionParser: PositionParser;
         create(): void;
         getMoves(coordinate: Coordinate, boardState?: BoardState): Move[];
-        populateAvailableMoves(boardState: BoardState);
+        populateAvailableMoves(boardState?: BoardState);
         getSquare(square: Coordinate, boardState?: BoardState): Square;
         movePiece(from: Coordinate, to: Coordinate, boardState?: BoardState): BoardState;
         createPiece(notation: string, location: Coordinate): BasePiece;

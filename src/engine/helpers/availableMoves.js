@@ -1,5 +1,6 @@
 function availableMoves(boardState) {
     var self = this;
+    boardState = boardState || self.boardState;
     var moves = [];
     boardState.ranks.forEach(function (rank) {
         rank.squares.forEach(function (square) {
