@@ -56,7 +56,8 @@ function pieceLocationTest(message, location, notation) {
 function pieceAvailableMovesTest(message, start, expectedMoves) {
     it(message, function () {
         var moves = classicEngine.boardState.moves
-            .filter(function (move) { return move.from.file === start.file && move.from.rank === start.rank; });
+            .filter(function (move) { return move.from.file === start.file && move.from.rank === start.rank; })
+            .map(function (move) { return move.to; });
         expectedMoves.forEach(function (m) { return expect(moves).to.include({ rank: m.rank, file: m.file }); });
         expect(expectedMoves.length).to.equal(moves.length);
     });
