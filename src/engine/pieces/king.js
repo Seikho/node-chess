@@ -3,10 +3,11 @@ var Direction = enums.Direction;
 var queenSideCastleCondition = function (piece, boardState, board) {
     if (piece.moveHistory.length > 0)
         return false;
-    var queenSquare = getSquare(piece, board, boardState, Direction.QueenSide, 1);
-    var bishopSquare = getSquare(piece, board, boardState, Direction.QueenSide, 2);
-    var knightSquare = getSquare(piece, board, boardState, Direction.QueenSide, 3);
-    var rookSquare = getSquare(piece, board, boardState, Direction.QueenSide, 4);
+    var f = function (num) { return getSquare(piece, board, boardState, Direction.QueenSide, num); };
+    var queenSquare = f(1);
+    var bishopSquare = f(2);
+    var knightSquare = f(3);
+    var rookSquare = f(4);
     var squaresAreVacant = !queenSquare.piece
         && !bishopSquare.piece
         && !knightSquare.piece
@@ -19,9 +20,10 @@ var queenSideCastleCondition = function (piece, boardState, board) {
 var kingSideCastleCondition = function (piece, boardState, board) {
     if (piece.moveHistory.length > 0)
         return false;
-    var bishopSquare = getSquare(piece, board, boardState, Direction.KingSide, 1);
-    var knightSquare = getSquare(piece, board, boardState, Direction.KingSide, 2);
-    var rookSquare = getSquare(piece, board, boardState, Direction.KingSide, 3);
+    var f = function (num) { return getSquare(piece, board, boardState, Direction.KingSide, num); };
+    var bishopSquare = f(1);
+    var knightSquare = f(2);
+    var rookSquare = f(3);
     var squaresAreVacant = !bishopSquare.piece
         && !knightSquare.piece
         && !!rookSquare.piece;
