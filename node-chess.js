@@ -5048,14 +5048,15 @@ var Engine = (function () {
             whitesTurn: true,
             moveNumber: 1,
             preMoveFunctions: [],
-            postMoveFunctions: []
+            postMoveFunctions: [],
+            moves: []
         };
         this.pieces = [];
         this.positionParser = fenParser.bind(this);
         this.toString = toString.bind(this);
         this.create = createSqaures.bind(this);
         this.pieceFactory = BasePiece;
-        this.availableMoves = getMoves.bind(this);
+        this.getMoves = getMoves.bind(this);
         this.movePiece = movePiece.bind(this);
         this.getSquare = getSquare.bind(this);
         this.populateAvailableMoves = availableMoves.bind(this);
@@ -5081,11 +5082,13 @@ module.exports = applyTransform;
 },{}],15:[function(require,module,exports){
 function availableMoves(boardState) {
     var self = this;
+    var moves = [];
     boardState.ranks.forEach(function (rank) {
         rank.squares.forEach(function (square) {
-            square.availableMoves = self.availableMoves({ file: square.file, rank: rank.rank }, boardState);
+            moves = moves.concat(self.getMoves({ file: square.file, rank: rank.rank }, boardState));
         });
     });
+    boardState.moves = moves;
 }
 module.exports = availableMoves;
 
@@ -5133,7 +5136,8 @@ function deepCopy(boardState) {
         whitesTurn: boardState.whitesTurn,
         capturedPieces: boardState.capturedPieces.map(copyPiece),
         preMoveFunctions: shallowCopyArray(boardState.preMoveFunctions),
-        postMoveFunctions: shallowCopyArray(boardState.postMoveFunctions)
+        postMoveFunctions: shallowCopyArray(boardState.postMoveFunctions),
+        moves: copyAvailableMoves(boardState.moves)
     };
     return copy;
 }
@@ -5148,7 +5152,6 @@ function copyRank(rank) {
             file: sq.file,
             piece: copyPiece(sq.piece),
             tags: shallowCopy(sq.tags),
-            availableMoves: copyAvailableMoves(sq.availableMoves)
         };
     });
     return copy;
@@ -5176,7 +5179,8 @@ function copyAvailableMoves(moves) {
         return {
             from: shallowCopy(move.from),
             to: shallowCopy(move.to),
-            postMoveActions: shallowCopyArray(move.postMoveActions)
+            postMoveActions: shallowCopyArray(move.postMoveActions),
+            isWhite: move.isWhite
         };
     }
     return moves.map(copyMove);
@@ -5213,8 +5217,10 @@ function getMoves(coordinate, boardState) {
             if (!move.conditions) {
                 if (isValidPath(self, boardState, piece, pathing, move)) {
                     moves.push({
+                        from: coordinate,
                         to: pathing[pathing.length - 1],
-                        postMoveActions: []
+                        postMoveActions: [],
+                        isWhite: piece.isWhite
                     });
                 }
                 return;
@@ -5224,8 +5230,10 @@ function getMoves(coordinate, boardState) {
             var movePatternEvaluation = move.conditions.every(function (cond) { return cond(piece, boardState, self); });
             if (defaultValidPath && movePatternEvaluation) {
                 moves.push({
+                    from: coordinate,
                     to: pathing[pathing.length - 1],
-                    postMoveActions: move.postMoveActions || []
+                    postMoveActions: move.postMoveActions || [],
+                    isWhite: piece.isWhite
                 });
             }
         });
@@ -5408,7 +5416,7 @@ function movePiece(from, to, boardState) {
     if (boardState.whitesTurn !== origin.piece.isWhite)
         return boardState;
     // The 'destination' square must be in the square's list of available moves
-    var moveMatches = origin.availableMoves.filter(function (m) { return m.to.file === to.file && m.to.rank === to.rank; });
+    var moveMatches = boardState.moves.filter(function (m) { return m.to.file === to.file && m.to.rank === to.rank; });
     if (moveMatches.length === 0)
         return boardState;
     var move = moveMatches[0];
@@ -5417,8 +5425,7 @@ function movePiece(from, to, boardState) {
         boardState.capturedPieces.push(destination.piece);
     destination.piece = origin.piece;
     destination.piece.location = { file: to.file, rank: to.rank };
-    destination.availableMoves = [];
-    destination.piece.moveHistory.push({ from: from, to: to });
+    destination.piece.moveHistory.push({ from: from, to: to, isWhite: origin.piece.isWhite });
     var movePatternPostActions = move.postMoveActions || [];
     movePatternPostActions.forEach(function (func) {
         func.action(destination.piece, boardState, self);
@@ -5426,7 +5433,6 @@ function movePiece(from, to, boardState) {
     var pieceFunctions = destination.piece.postMoveFunctions || [];
     pieceFunctions.forEach(function (fn) { return fn.action(destination.piece, boardState, self); });
     origin.piece = null;
-    origin.availableMoves = [];
     boardState.whitesTurn = !boardState.whitesTurn;
     self.populateAvailableMoves(boardState);
     var enginePostMoveActions = boardState.postMoveFunctions || [];

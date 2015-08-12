@@ -55,10 +55,8 @@ function pieceLocationTest(message, location, notation) {
 }
 function pieceAvailableMovesTest(message, start, expectedMoves) {
     it(message, function () {
-        var moves = classicEngine
-            .getSquare(start, classicEngine.boardState)
-            .availableMoves
-            .map(function (am) { return am.to; });
+        var moves = classicEngine.boardState.moves
+            .filter(function (move) { return move.from.file === start.file && move.from.rank === start.rank; });
         expectedMoves.forEach(function (m) { return expect(moves).to.include({ rank: m.rank, file: m.file }); });
         expect(expectedMoves.length).to.equal(moves.length);
     });

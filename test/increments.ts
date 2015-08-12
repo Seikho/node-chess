@@ -64,10 +64,8 @@ function pieceLocationTest(message: string, location: Chess.Coordinate, notation
 
 function pieceAvailableMovesTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {
 	it(message, () => {
-		var moves = classicEngine
-			.getSquare(start, classicEngine.boardState)
-			.availableMoves
-			.map(am => am.to);
+		var moves = classicEngine.boardState.moves
+			.filter(move => move.from.file === start.file && move.from.rank === start.rank);
 
 		expectedMoves.forEach(m => expect(moves).to.include({ rank: m.rank, file: m.file }));
 		expect(expectedMoves.length).to.equal(moves.length);
