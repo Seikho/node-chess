@@ -11,16 +11,16 @@ function movePiece(from: Chess.Coordinate, to: Chess.Coordinate, boardState?: Ch
 	boardState = deepCopy(boardState || self.boardState);
 	
 	var origin: Chess.Square = self.getSquare(from, boardState);
-	if (!origin || !origin.piece) return boardState;			
+	if (!origin || !origin.piece) return null;			
 	
 	// Enforce turn-based movement
-	if (boardState.whitesTurn !== origin.piece.isWhite) return boardState; 
+	if (boardState.whitesTurn !== origin.piece.isWhite) return null; 
 		
 	// The 'destination' square must be in the square's list of available moves
 	var move = boardState.moves.filter(m =>
 		m.from.file === from.file && m.from.rank === from.rank && 
 		m.to.file === to.file && m.to.rank === to.rank)[0];
-	if (!move) return boardState;
+	if (!move) return null;
 
 	var destination: Chess.Square = self.getSquare(to, boardState);
 	if (destination.piece) boardState.capturedPieces.push(destination.piece)
