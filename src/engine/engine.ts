@@ -43,7 +43,7 @@ class Engine implements Chess.Engine {
     toString = toString.bind(this);
     create = createSqaures.bind(this);
     pieceFactory = BasePiece;
-    availableMoves = getMoves.bind(this);
+    getMoves = getMoves.bind(this);
     movePiece = movePiece.bind(this);
 
     getSquare = getSquare.bind(this);
