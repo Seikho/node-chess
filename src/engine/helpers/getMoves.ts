@@ -4,9 +4,10 @@ import isValidPath = require("./isValidPath")
 export = getMoves;
 
 // TODO: Desperately requires refactoring
-function getMoves(coordinate: Chess.Coordinate, boardState: Chess.BoardState): Chess.Move[] {
-    var stopwatch = Date.now(); // Benchmarking
+function getMoves(coordinate: Chess.Coordinate, boardState?: Chess.BoardState): Chess.Move[] {
     var self: Chess.Engine = this;
+    boardState = boardState || self.boardState;
+    
     var square: Chess.Square = self.getSquare(coordinate, boardState);
 
     // No piece, no moves.

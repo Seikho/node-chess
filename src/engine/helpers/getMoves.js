@@ -2,8 +2,8 @@ var getPaths = require("./getPaths");
 var isValidPath = require("./isValidPath");
 // TODO: Desperately requires refactoring
 function getMoves(coordinate, boardState) {
-    var stopwatch = Date.now(); // Benchmarking
     var self = this;
+    boardState = boardState || self.boardState;
     var square = self.getSquare(coordinate, boardState);
     // No piece, no moves.
     var piece = square.piece;
