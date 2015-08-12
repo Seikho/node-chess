@@ -77,7 +77,6 @@ declare module "node-chess" {
         rank: number;
         file: number;
         piece: BasePiece;
-        availableMoves?: Move[];
 
         // TODO: Change to more strongly typed interface
         tags: any;
