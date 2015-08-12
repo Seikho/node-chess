@@ -6,7 +6,8 @@ function deepCopy(boardState) {
         whitesTurn: boardState.whitesTurn,
         capturedPieces: boardState.capturedPieces.map(copyPiece),
         preMoveFunctions: shallowCopyArray(boardState.preMoveFunctions),
-        postMoveFunctions: shallowCopyArray(boardState.postMoveFunctions)
+        postMoveFunctions: shallowCopyArray(boardState.postMoveFunctions),
+        moves: shallowCopyArray(boardState.moves)
     };
     return copy;
 }
@@ -21,7 +22,6 @@ function copyRank(rank) {
             file: sq.file,
             piece: copyPiece(sq.piece),
             tags: shallowCopy(sq.tags),
-            availableMoves: copyAvailableMoves(sq.availableMoves)
         };
     });
     return copy;
