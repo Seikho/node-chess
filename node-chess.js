@@ -5608,12 +5608,15 @@ function createFilesForRank(engine, fenRank, rankNumber) {
         rank: rankNumber,
         squares: []
     };
+    var lastNotationNumber = 0;
+    var index = 0;
     for (var i = 1; i <= engine.fileCount; i++) {
-        var notation = fenRank[i - 1];
+        var notation = fenRank[index];
         var notationNumber = parseInt(notation);
         // If the notation is a number, that many squares from this square contain no piece.
         // TODO Consider refactoring--export to function for readability
         if (!isNaN(notationNumber)) {
+            lastNotationNumber += notationNumber;
             // Insert the next notation after the blank squares.
             if (!!fenRank[i + 1])
                 fenRank[i + notationNumber] = fenRank[i + 1];
@@ -5622,6 +5625,7 @@ function createFilesForRank(engine, fenRank, rankNumber) {
                 rank.squares[j] = { rank: rankNumber, file: j, piece: null, tags: [] };
             }
             i += notationNumber - 1;
+            index++;
             continue;
         }
         var square = {
@@ -5631,6 +5635,7 @@ function createFilesForRank(engine, fenRank, rankNumber) {
             tags: []
         };
         rank.squares[i] = square;
+        index++;
     }
     return rank;
 }
@@ -5638,7 +5643,7 @@ module.exports = fenParser;
 
 },{"./stringParsers/fen":31}],31:[function(require,module,exports){
 var PEG = require("pegjs");
-var parser = PEG.buildParser("\n\tStart\n\t= r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move\n\t{ return {\n\tranks: r,\n\tturn: t,\n\tcastling: c,\n\thalfMove: h,\n\tfullMove: t };\n\t}\n\tRankList\n\t= head:Rank \"/\" tail:RankList { return [].concat(head,tail); }\n\t/ Rank\n\n\tRank\n\t= rank:[a-zA-Z0-9]+ { return rank.join(''); }\n\n\tWS\n\t= \" \"* { return null; }\n\n\tTurn\n\t= turn:[w|b] { return turn }\n\n\tCastling\n\t= [k|q|K|Q|\"-\"]+\n\n\tEnpassant\n\t= [a-h1-8]{1}\n\t/ \"-\"\n\n\tHalfMove\n\t= [0-9]+\n\n\tMove\n\t= [0-9]+\n");
+var parser = PEG.buildParser("\n\tStart\n\t= WS r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move WS\n\t{ return {\n\tranks: r,\n\tturn: t,\n\tcastling: c,\n\thalfMove: h,\n\tfullMove: t };\n\t}\n\tRankList\n\t= head:Rank \"/\" tail:RankList { return [].concat(head,tail); }\n\t/ Rank\n\n\tRank\n\t= rank:[a-zA-Z0-9]+ { return rank.join(''); }\n\n\tWS\n\t= \" \"* { return null; }\n\n\tTurn\n\t= turn:[w|b] { return turn }\n\n\tCastling\n\t= [k|q|K|Q|\"-\"]+\n\n\tEnpassant\n\t= [a-h1-8]{1}\n\t/ \"-\"\n\n\tHalfMove\n\t= [0-9]+\n\n\tMove\n\t= [0-9]+\n");
 module.exports = parser;
 
 },{"pegjs":10}],32:[function(require,module,exports){

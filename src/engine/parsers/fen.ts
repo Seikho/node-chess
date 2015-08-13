@@ -21,14 +21,16 @@ function createFilesForRank(engine: Chess.Engine, fenRank: string, rankNumber: n
 		rank: rankNumber,
 		squares: []
 	}
+	var lastNotationNumber = 0;
+	var index = 0;
 	for (var i = 1; i <= engine.fileCount; i++) {
-		var notation = fenRank[i - 1];
+		var notation = fenRank[index];
 		var notationNumber = parseInt(notation);
-
+		
 		// If the notation is a number, that many squares from this square contain no piece.
 		// TODO Consider refactoring--export to function for readability
 		if (!isNaN(notationNumber)) {
-
+			lastNotationNumber += notationNumber;
 			// Insert the next notation after the blank squares.
 			if (!!fenRank[i + 1]) fenRank[i + notationNumber] = fenRank[i + 1];
 
@@ -37,6 +39,7 @@ function createFilesForRank(engine: Chess.Engine, fenRank: string, rankNumber: n
 				rank.squares[j] = { rank: rankNumber, file: j, piece: null, tags: [] };
 			}
 			i += notationNumber - 1;
+			index++;
 			continue;
 		}
 		var square: Chess.Square = {
@@ -45,8 +48,8 @@ function createFilesForRank(engine: Chess.Engine, fenRank: string, rankNumber: n
 			piece: engine.createPiece(notation, { file: i, rank: rankNumber }),
 			tags: []
 		}
-
 		rank.squares[i] = square;
+		index++;
 	}
 	return rank;
 }
