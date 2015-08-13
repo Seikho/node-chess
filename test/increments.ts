@@ -12,13 +12,13 @@ var classicTagTest = hasTagTest.bind(classic);
 var classicLocationTest = atLocationTest.bind(classic);
 
 var checkmate: Chess.Engine = nodeChess.classic.engine();
-checkmate.positionParser("6bk/6pp/3N4/8/8/8/PP2PPPP/RNBQKB1R w KQkq - 0 1");
+checkmate.positionParser("6rk/6pp/3N4/8/8/8/PP2PPPP/RNBQKB1R w KQkq - 0 1");
 checkmate.populateAvailableMoves();
 var cmMoveTest = pieceMoveTest.bind(checkmate);
 
 
 describe("available move tests", () => {
-	
+
 	classicMovesTest("will find all available moves for the b2 pawn from the starting position", coord(2, 2), [coord(2, 3), coord(2, 4)]);
 	classicMovesTest("will find all available moves for b1 knight from the starting position", coord(2, 1), [coord(3, 3), coord(1, 3)]);
 	classicMovesTest("will find all available moves for c1 bishop from the starting position", coord(3, 1), []);
@@ -30,7 +30,7 @@ describe("available move tests", () => {
 });
 
 describe("movement tests", () => {
-	
+
 	classicMoveTest("[White] will move a2-a3", coord(1, 2), coord(1, 3));
 	classicMoveTest("[White] will not move a3-a4 due to being black's turn", coord(1, 3), coord(1, 4), true);
 	classicMoveTest("[Black] will move a7-a6", coord(1, 7), coord(1, 6));
@@ -54,12 +54,17 @@ describe("movement tests", () => {
 	classicMoveTest("[White] will castle king side (Ke1-Kg1 or O-O)", coord(5, 1), coord(7, 1));
 	classicLocationTest("will have white rook on f1 after castling", coord(6, 1), "R");
 	classicMovesTest("[Black] will be able to move Ke8-Kc8 (o-o-o) and Ke8-Kd8", coord(5, 8), [coord(3, 8), coord(4, 8)]);
-	classicMoveTest("[Black] will castle queen side (Ke8-Kc8 or o-o-o)", coord(5, 8), coord(3, 8));	
+	classicMoveTest("[Black] will castle queen side (Ke8-Kc8 or o-o-o)", coord(5, 8), coord(3, 8));
 	classicLocationTest("will have black rook on d8 after castling", coord(4, 8), "r");
 });
 
 describe("game conclusion tests", () => {
-	cmMoveTest("[CheckMate] will move Nf7#", coord(4,6), coord(6,7));
+	cmMoveTest("[CheckMate] will move Nf7#", coord(4, 6), coord(6, 7));
+
+	it("Will declare that white is the winner", () => {
+		expect(checkmate.boardState.winnerIsWhite).to.be.true;
+	});
+
 });
 
 function hasTagTest(message: string, coordinate: Chess.Coordinate, tagName: string, expected: any) {
@@ -108,15 +113,15 @@ function move(direction: Chess.Direction, count: number): Chess.SingleMove {
 var count = 0;
 function pieceMoveTest(message: string, from: Chess.Coordinate, to: Chess.Coordinate, wont = false) {
 	var board: Chess.Engine = this;
-	
+
 	it(message, () => {
 		var expected = wont ? from : to;
 		var square: Chess.Square = board.getSquare(from);
 		var piece: Chess.Piece = board.getSquare(from).piece;
 		var newState = board.movePiece(from, to);
 		var moved: Chess.Square = board.getSquare(expected, newState);
-		var movedPiece = moved.piece;	
-		
+		var movedPiece = moved.piece;
+
 		if (wont) {
 			expect(newState).to.be.null;
 			return;

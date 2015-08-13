@@ -1,13 +1,6 @@
 /**
  * If the board has the 'check' tag,
  */
-exports.allowedMoves = {
-    action: function (piece, boardState, board) {
-        var isLegit = function (move) { return isMoveAllowed(move, boardState); };
-        var legitMoves = boardState.moves.filter(isLegit);
-        return legitMoves;
-    }
-};
 exports.checkmatePostMove = {
     action: function (piece, boardState, board) {
         var isGameOver = isCheckmate(boardState, board);
@@ -28,23 +21,27 @@ exports.stalematePostMove = {
         return true;
     }
 };
-function isMoveAllowed(move, boardState) {
-    var self = this;
+function isMoveAllowed(move, boardState, board) {
+    if (boardState.whitesTurn !== move.isWhite)
+        return false;
     var isInCheck = isCheck(boardState.whitesTurn, boardState);
     if (!isInCheck)
         return true;
-    var future = self.movePiece(move.from, move.to, boardState);
+    var future = board.movePiece(move.from, move.to, boardState);
     var futureIsInCheck = isCheck(!boardState.whitesTurn, future);
     if (futureIsInCheck)
         return false;
 }
+function allowedMoves(boardState, board) {
+    var isLegit = function (move) { return isMoveAllowed(move, boardState, board); };
+    var legitMoves = boardState.moves.filter(isLegit);
+    return legitMoves;
+}
 function isCheckmate(boardState, board) {
-    var isInCheck = isCheck(!boardState.whitesTurn, boardState);
+    var isInCheck = isCheck(boardState.whitesTurn, boardState);
     if (!isInCheck)
         return false;
-    var moves = boardState
-        .moves
-        .filter(function (move) { return move.isWhite === boardState.whitesTurn; });
+    var moves = allowedMoves(boardState, board);
     var hasMoves = moves.length > 0;
     return isInCheck && !hasMoves;
 }
@@ -52,9 +49,7 @@ function isStalement(boardState, board) {
     var isInCheck = isCheck(boardState.whitesTurn, boardState);
     if (isInCheck)
         return false;
-    var moves = boardState
-        .moves
-        .filter(function (move) { return move.isWhite === boardState.whitesTurn; });
+    var moves = allowedMoves(boardState, board);
     var hasMoves = moves.length > 0;
     return !isInCheck && !hasMoves;
 }
@@ -64,7 +59,7 @@ function isCheck(checkWhite, boardState) {
         rank.squares.forEach(function (square) {
             if (!square.piece)
                 return;
-            var isKing = square.piece.name === "King" && square.piece.isWhite === !checkWhite;
+            var isKing = square.piece.name === "King" && square.piece.isWhite === checkWhite;
             if (isKing)
                 kingSquare = square;
         });

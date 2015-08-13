@@ -7,7 +7,6 @@ function classEngine() {
         .forEach(function (p) { return board.pieces.push(pieces[p]); });
     board.positionParser();
     board.postMoveFunctions = [
-        rules.allowedMoves,
         rules.checkmatePostMove,
         rules.stalematePostMove
     ];

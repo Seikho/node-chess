@@ -12,7 +12,6 @@ function classEngine() {
 	board.positionParser();
 
 	board.postMoveFunctions = [
-		rules.allowedMoves,
 		rules.checkmatePostMove,
 		rules.stalematePostMove	
 	];

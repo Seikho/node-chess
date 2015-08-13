@@ -8,7 +8,7 @@ var classicMovesTest = hasMovesTest.bind(classic);
 var classicTagTest = hasTagTest.bind(classic);
 var classicLocationTest = atLocationTest.bind(classic);
 var checkmate = nodeChess.classic.engine();
-checkmate.positionParser("6bk/6pp/3N4/8/8/8/PP2PPPP/RNBQKB1R w KQkq - 0 1");
+checkmate.positionParser("6rk/6pp/3N4/8/8/8/PP2PPPP/RNBQKB1R w KQkq - 0 1");
 checkmate.populateAvailableMoves();
 var cmMoveTest = pieceMoveTest.bind(checkmate);
 describe("available move tests", function () {
@@ -50,6 +50,9 @@ describe("movement tests", function () {
 });
 describe("game conclusion tests", function () {
     cmMoveTest("[CheckMate] will move Nf7#", coord(4, 6), coord(6, 7));
+    it("Will declare that white is the winner", function () {
+        expect(checkmate.boardState.winnerIsWhite).to.be.true;
+    });
 });
 function hasTagTest(message, coordinate, tagName, expected) {
     var _this = this;
