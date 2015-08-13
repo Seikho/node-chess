@@ -11,6 +11,10 @@ var checkmate = nodeChess.classic.engine();
 checkmate.positionParser("6rk/6pp/3N4/8/8/8/PP2PPPP/RNBQKB1R w KQkq - 0 1");
 checkmate.populateAvailableMoves();
 var cmMoveTest = pieceMoveTest.bind(checkmate);
+var blackCheckmate = nodeChess.classic.engine();
+blackCheckmate.positionParser("r5bk/6pp/3N4/8/8/8/4PPPP/7K b KQkq - 0 1");
+blackCheckmate.populateAvailableMoves();
+var blackCmMoveTest = pieceMoveTest.bind(blackCheckmate);
 describe("available move tests", function () {
     classicMovesTest("will find all available moves for the b2 pawn from the starting position", coord(2, 2), [coord(2, 3), coord(2, 4)]);
     classicMovesTest("will find all available moves for b1 knight from the starting position", coord(2, 1), [coord(3, 3), coord(1, 3)]);
@@ -52,6 +56,10 @@ describe("game conclusion tests", function () {
     cmMoveTest("[CheckMate] will move Nf7#", coord(4, 6), coord(6, 7));
     it("Will declare that white is the winner", function () {
         expect(checkmate.boardState.winnerIsWhite).to.be.true;
+    });
+    blackCmMoveTest("[CheckMate] will move Ra1#", coord(1, 8), coord(1, 1));
+    it("Will declare that white is the winner", function () {
+        expect(checkmate.boardState.winnerIsWhite).to.be.equal(false);
     });
 });
 function hasTagTest(message, coordinate, tagName, expected) {

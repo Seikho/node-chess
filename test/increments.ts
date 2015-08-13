@@ -16,6 +16,10 @@ checkmate.positionParser("6rk/6pp/3N4/8/8/8/PP2PPPP/RNBQKB1R w KQkq - 0 1");
 checkmate.populateAvailableMoves();
 var cmMoveTest = pieceMoveTest.bind(checkmate);
 
+var blackCheckmate: Chess.Engine = nodeChess.classic.engine();
+blackCheckmate.positionParser("r5bk/6pp/3N4/8/8/8/4PPPP/7K b KQkq - 0 1");
+blackCheckmate.populateAvailableMoves();
+var blackCmMoveTest = pieceMoveTest.bind(blackCheckmate);
 
 describe("available move tests", () => {
 
@@ -64,7 +68,12 @@ describe("game conclusion tests", () => {
 	it("Will declare that white is the winner", () => {
 		expect(checkmate.boardState.winnerIsWhite).to.be.true;
 	});
+	
+	blackCmMoveTest("[CheckMate] will move Ra1#", coord(1,8), coord(1,1));
 
+	it("Will declare that white is the winner", () => {
+		expect(checkmate.boardState.winnerIsWhite).to.be.equal(false);
+	});
 });
 
 function hasTagTest(message: string, coordinate: Chess.Coordinate, tagName: string, expected: any) {
