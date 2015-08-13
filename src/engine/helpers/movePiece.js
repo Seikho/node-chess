@@ -40,6 +40,9 @@ function movePiece(from, to, boardState) {
     });
     boardState.moveNumber++;
     boardState.postMoveFunctions = enginePostMoveActions.filter(function (pmf) { return !pmf.moveNumber || pmf.moveNumber >= boardState.moveNumber; });
+    self.postMoveFunctions.forEach(function (moveFn) {
+        moveFn.action(destination.piece, boardState, self);
+    });
     if (saveToBoard)
         self.boardState = boardState;
     return boardState;

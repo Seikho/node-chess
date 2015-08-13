@@ -12,9 +12,9 @@ function classEngine() {
 	board.positionParser();
 
 	board.postMoveFunctions = [
-		rules.allowedMoves.bind(board),
-		rules.checkmatePostMove.bind(board),
-		rules.stalematePostMove.bind(board)	
+		rules.allowedMoves,
+		rules.checkmatePostMove,
+		rules.stalematePostMove	
 	];
 	
 	return board;

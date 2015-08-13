@@ -2,42 +2,49 @@ import Chess = require("node-chess");
 /**
  * If the board has the 'check' tag,
  */
- 
-export function allowedMoves(boardState: Chess.BoardState) {
-    var self: Chess.Engine = this;
-    var isLegit = move => isMoveAllowed(move, boardState);
-    
-    var legitMoves = boardState.moves.filter(isLegit);
-    return legitMoves;
+
+
+
+export var allowedMoves = {
+    action: (piece, boardState: Chess.BoardState, board: Chess.Engine) => {
+        var isLegit = move => isMoveAllowed(move, boardState);
+
+        var legitMoves = boardState.moves.filter(isLegit);
+        return legitMoves;
+    }
 }
 
-export function checkmatePostMove(piece, boardState: Chess.BoardState, board: Chess.Engine) {
-    var isGameOver = isCheckmate(boardState, board);
-    if (!isGameOver) return false;
-    
-    boardState.winnerIsWhite = !boardState.whitesTurn;
-    boardState.moves = [];
-    return true;
+export var checkmatePostMove = {
+    action: (piece, boardState: Chess.BoardState, board: Chess.Engine) => {
+        var isGameOver = isCheckmate(boardState, board);
+        if (!isGameOver) return false;
+
+        boardState.winnerIsWhite = !boardState.whitesTurn;
+        boardState.moves = [];
+        return true;
+    }
 }
 
-export function stalematePostMove(piece, boardState: Chess.BoardState, board: Chess.Engine) {
-    var isGameOver = isStalement(boardState, board);
-    if (!isGameOver) return false;
-    
-    boardState.winnerIsWhite = !boardState.whitesTurn;
-    boardState.moves = [];
-    return true;
+export var stalematePostMove = {
+    action: (piece, boardState: Chess.BoardState, board: Chess.Engine) => {
+        var isGameOver = isStalement(boardState, board);
+        if (!isGameOver) return false;
+
+        boardState.winnerIsWhite = !boardState.whitesTurn;
+        boardState.moves = [];
+        return true;
+    }
 }
- 
+
 function isMoveAllowed(move: Chess.Move, boardState: Chess.BoardState) {
     var self: Chess.Engine = this;
     var isInCheck = isCheck(boardState.whitesTurn, boardState);
     if (!isInCheck) return true;
-    
+
     var future = self.movePiece(move.from, move.to, boardState);
     var futureIsInCheck = isCheck(!boardState.whitesTurn, future);
 
-    if (futureIsInCheck) return false;    
+    if (futureIsInCheck) return false;
 }
 
 function isCheckmate(boardState: Chess.BoardState, board: Chess.Engine) {
@@ -69,6 +76,7 @@ function isCheck(checkWhite: boolean, boardState: Chess.BoardState) {
 
     boardState.ranks.forEach(rank => {
         rank.squares.forEach(square => {
+            if (!square.piece) return;
             var isKing = square.piece.name === "King" && square.piece.isWhite === !checkWhite;
             if (isKing) kingSquare = square;
         });

@@ -1,31 +1,33 @@
 /**
  * If the board has the 'check' tag,
  */
-function allowedMoves(boardState) {
-    var self = this;
-    var isLegit = function (move) { return isMoveAllowed(move, boardState); };
-    var legitMoves = boardState.moves.filter(isLegit);
-    return legitMoves;
-}
-exports.allowedMoves = allowedMoves;
-function checkmatePostMove(piece, boardState, board) {
-    var isGameOver = isCheckmate(boardState, board);
-    if (!isGameOver)
-        return false;
-    boardState.winnerIsWhite = !boardState.whitesTurn;
-    boardState.moves = [];
-    return true;
-}
-exports.checkmatePostMove = checkmatePostMove;
-function stalematePostMove(piece, boardState, board) {
-    var isGameOver = isStalement(boardState, board);
-    if (!isGameOver)
-        return false;
-    boardState.winnerIsWhite = !boardState.whitesTurn;
-    boardState.moves = [];
-    return true;
-}
-exports.stalematePostMove = stalematePostMove;
+exports.allowedMoves = {
+    action: function (piece, boardState, board) {
+        var isLegit = function (move) { return isMoveAllowed(move, boardState); };
+        var legitMoves = boardState.moves.filter(isLegit);
+        return legitMoves;
+    }
+};
+exports.checkmatePostMove = {
+    action: function (piece, boardState, board) {
+        var isGameOver = isCheckmate(boardState, board);
+        if (!isGameOver)
+            return false;
+        boardState.winnerIsWhite = !boardState.whitesTurn;
+        boardState.moves = [];
+        return true;
+    }
+};
+exports.stalematePostMove = {
+    action: function (piece, boardState, board) {
+        var isGameOver = isStalement(boardState, board);
+        if (!isGameOver)
+            return false;
+        boardState.winnerIsWhite = !boardState.whitesTurn;
+        boardState.moves = [];
+        return true;
+    }
+};
 function isMoveAllowed(move, boardState) {
     var self = this;
     var isInCheck = isCheck(boardState.whitesTurn, boardState);
@@ -60,6 +62,8 @@ function isCheck(checkWhite, boardState) {
     var kingSquare;
     boardState.ranks.forEach(function (rank) {
         rank.squares.forEach(function (square) {
+            if (!square.piece)
+                return;
             var isKing = square.piece.name === "King" && square.piece.isWhite === !checkWhite;
             if (isKing)
                 kingSquare = square;
