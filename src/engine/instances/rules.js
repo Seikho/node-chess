@@ -1,31 +1,73 @@
 /**
  * If the board has the 'check' tag,
  */
-function isMoveAllowed(move, boardState, board) {
-    var isInCheck = isCheck(boardState);
+function allowedMoves(boardState) {
+    var self = this;
+    var isLegit = function (move) { return isMoveAllowed(move, boardState); };
+    var legitMoves = boardState.moves.filter(isLegit);
+    return legitMoves;
+}
+exports.allowedMoves = allowedMoves;
+function checkmatePostMove(piece, boardState, board) {
+    var isGameOver = isCheckmate(boardState, board);
+    if (!isGameOver)
+        return false;
+    boardState.winnerIsWhite = !boardState.whitesTurn;
+    boardState.moves = [];
+    return true;
+}
+exports.checkmatePostMove = checkmatePostMove;
+function stalematePostMove(piece, boardState, board) {
+    var isGameOver = isStalement(boardState, board);
+    if (!isGameOver)
+        return false;
+    boardState.winnerIsWhite = !boardState.whitesTurn;
+    boardState.moves = [];
+    return true;
+}
+exports.stalematePostMove = stalematePostMove;
+function isMoveAllowed(move, boardState) {
+    var self = this;
+    var isInCheck = isCheck(boardState.whitesTurn, boardState);
     if (!isInCheck)
         return true;
-    var future = board.movePiece(move.from, move.to, boardState);
-    var futureIsInCheck = isCheck(future);
+    var future = self.movePiece(move.from, move.to, boardState);
+    var futureIsInCheck = isCheck(!boardState.whitesTurn, future);
     if (futureIsInCheck)
         return false;
 }
-function isCheckmate(move, boardState, board) {
-    var isInCheck = isCheck(boardState);
-    // need all available moves module
+function isCheckmate(boardState, board) {
+    var isInCheck = isCheck(!boardState.whitesTurn, boardState);
+    if (!isInCheck)
+        return false;
+    var moves = boardState
+        .moves
+        .filter(function (move) { return move.isWhite === boardState.whitesTurn; });
+    var hasMoves = moves.length > 0;
+    return isInCheck && !hasMoves;
 }
-function isCheck(boardState) {
-    var oppositeKing;
+function isStalement(boardState, board) {
+    var isInCheck = isCheck(boardState.whitesTurn, boardState);
+    if (isInCheck)
+        return false;
+    var moves = boardState
+        .moves
+        .filter(function (move) { return move.isWhite === boardState.whitesTurn; });
+    var hasMoves = moves.length > 0;
+    return !isInCheck && !hasMoves;
+}
+function isCheck(checkWhite, boardState) {
+    var kingSquare;
     boardState.ranks.forEach(function (rank) {
         rank.squares.forEach(function (square) {
-            var isOpposingKing = square.piece.name === "King" && square.piece.isWhite === !boardState.whitesTurn;
-            if (isOpposingKing)
-                oppositeKing = square;
+            var isKing = square.piece.name === "King" && square.piece.isWhite === !checkWhite;
+            if (isKing)
+                kingSquare = square;
         });
     });
-    if (!oppositeKing)
+    if (!kingSquare)
         throw new Error("Unable to locate opposing king");
-    var attackFilter = function (move) { return move.to.file === oppositeKing.file && move.to.rank === oppositeKing.rank; };
+    var attackFilter = function (move) { return move.to.file === kingSquare.file && move.to.rank === kingSquare.rank; };
     var kingAttackers = boardState.moves.filter(attackFilter);
     var isInCheck = kingAttackers.length > 0;
     return isInCheck;

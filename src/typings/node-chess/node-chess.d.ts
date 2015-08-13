@@ -2,7 +2,7 @@ declare module "node-chess" {
     
     //TODO: Type the API interface     
     
-    export interface Engine {
+    export class Engine {
         rankCount: number;
         fileCount: number;
 
@@ -30,6 +30,7 @@ declare module "node-chess" {
         postMoveFunctions: MoveFunction[];
         preMoveFunctions: MoveFunction[];
         moves: Move[];
+        winnerIsWhite?: boolean;
     }
     
     export interface BoardTag {
