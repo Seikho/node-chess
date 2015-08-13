@@ -4,7 +4,7 @@ export = parser;
 
 var parser: Chess.StringParser = PEG.buildParser(`
 	Start
-	= r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move
+	= WS r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move WS
 	{ return {
 	ranks: r,
 	turn: t,
