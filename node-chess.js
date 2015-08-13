@@ -5075,7 +5075,7 @@ var Engine = (function () {
 })();
 module.exports = Engine;
 
-},{"./basePiece":12,"./helpers/availableMoves":15,"./helpers/createPiece":16,"./helpers/createSquares":17,"./helpers/getMoves":19,"./helpers/getSquare":21,"./helpers/inferMoves":23,"./helpers/movePiece":26,"./helpers/toString":27,"./parsers/fen":29}],14:[function(require,module,exports){
+},{"./basePiece":12,"./helpers/availableMoves":15,"./helpers/createPiece":16,"./helpers/createSquares":17,"./helpers/getMoves":19,"./helpers/getSquare":21,"./helpers/inferMoves":23,"./helpers/movePiece":26,"./helpers/toString":27,"./parsers/fen":30}],14:[function(require,module,exports){
 function applyTransform(coordinate, transform) {
     return { file: coordinate.file + transform.file, rank: coordinate.rank + transform.rank };
 }
@@ -5327,7 +5327,7 @@ function getTransforms(singleMove, isWhite) {
 }
 module.exports = getTransforms;
 
-},{"../../enums":38}],23:[function(require,module,exports){
+},{"../../enums":39}],23:[function(require,module,exports){
 var getPaths = require("./getPaths");
 var isValidPath = require("./isValidPath");
 // TODO: Desperately requires refactoring
@@ -5491,16 +5491,98 @@ module.exports = toString;
 },{}],28:[function(require,module,exports){
 var Engine = require("../engine");
 var pieces = require("../pieces/pieces");
+var rules = require("./rules");
 function classEngine() {
     var board = new Engine();
     Object.keys(pieces)
         .forEach(function (p) { return board.pieces.push(pieces[p]); });
     board.positionParser();
+    board.boardState.postMoveFunctions = [
+        rules.allowedMoves.bind(board),
+        rules.checkmatePostMove.bind(board),
+        rules.stalematePostMove.bind(board)
+    ];
     return board;
 }
 module.exports = classEngine;
 
-},{"../engine":13,"../pieces/pieces":35}],29:[function(require,module,exports){
+},{"../engine":13,"../pieces/pieces":36,"./rules":29}],29:[function(require,module,exports){
+/**
+ * If the board has the 'check' tag,
+ */
+function allowedMoves(boardState) {
+    var self = this;
+    var isLegit = function (move) { return isMoveAllowed(move, boardState); };
+    var legitMoves = boardState.moves.filter(isLegit);
+    return legitMoves;
+}
+exports.allowedMoves = allowedMoves;
+function checkmatePostMove(piece, boardState, board) {
+    var isGameOver = isCheckmate(boardState, board);
+    if (!isGameOver)
+        return false;
+    boardState.winnerIsWhite = !boardState.whitesTurn;
+    boardState.moves = [];
+    return true;
+}
+exports.checkmatePostMove = checkmatePostMove;
+function stalematePostMove(piece, boardState, board) {
+    var isGameOver = isStalement(boardState, board);
+    if (!isGameOver)
+        return false;
+    boardState.winnerIsWhite = !boardState.whitesTurn;
+    boardState.moves = [];
+    return true;
+}
+exports.stalematePostMove = stalematePostMove;
+function isMoveAllowed(move, boardState) {
+    var self = this;
+    var isInCheck = isCheck(boardState.whitesTurn, boardState);
+    if (!isInCheck)
+        return true;
+    var future = self.movePiece(move.from, move.to, boardState);
+    var futureIsInCheck = isCheck(!boardState.whitesTurn, future);
+    if (futureIsInCheck)
+        return false;
+}
+function isCheckmate(boardState, board) {
+    var isInCheck = isCheck(!boardState.whitesTurn, boardState);
+    if (!isInCheck)
+        return false;
+    var moves = boardState
+        .moves
+        .filter(function (move) { return move.isWhite === boardState.whitesTurn; });
+    var hasMoves = moves.length > 0;
+    return isInCheck && !hasMoves;
+}
+function isStalement(boardState, board) {
+    var isInCheck = isCheck(boardState.whitesTurn, boardState);
+    if (isInCheck)
+        return false;
+    var moves = boardState
+        .moves
+        .filter(function (move) { return move.isWhite === boardState.whitesTurn; });
+    var hasMoves = moves.length > 0;
+    return !isInCheck && !hasMoves;
+}
+function isCheck(checkWhite, boardState) {
+    var kingSquare;
+    boardState.ranks.forEach(function (rank) {
+        rank.squares.forEach(function (square) {
+            var isKing = square.piece.name === "King" && square.piece.isWhite === !checkWhite;
+            if (isKing)
+                kingSquare = square;
+        });
+    });
+    if (!kingSquare)
+        throw new Error("Unable to locate opposing king");
+    var attackFilter = function (move) { return move.to.file === kingSquare.file && move.to.rank === kingSquare.rank; };
+    var kingAttackers = boardState.moves.filter(attackFilter);
+    var isInCheck = kingAttackers.length > 0;
+    return isInCheck;
+}
+
+},{}],30:[function(require,module,exports){
 var fenStringParser = require("./stringParsers/fen");
 var defaultPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 function fenParser(position) {
@@ -5546,12 +5628,12 @@ function createFilesForRank(engine, fenRank, rankNumber) {
 }
 module.exports = fenParser;
 
-},{"./stringParsers/fen":30}],30:[function(require,module,exports){
+},{"./stringParsers/fen":31}],31:[function(require,module,exports){
 var PEG = require("pegjs");
 var parser = PEG.buildParser("\n\tStart\n\t= r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move\n\t{ return {\n\tranks: r,\n\tturn: t,\n\tcastling: c,\n\thalfMove: h,\n\tfullMove: t };\n\t}\n\tRankList\n\t= head:Rank \"/\" tail:RankList { return [].concat(head,tail); }\n\t/ Rank\n\n\tRank\n\t= rank:[a-zA-Z0-9]+ { return rank.join(''); }\n\n\tWS\n\t= \" \"* { return null; }\n\n\tTurn\n\t= turn:[w|b] { return turn }\n\n\tCastling\n\t= [k|q|K|Q|\"-\"]+\n\n\tEnpassant\n\t= [a-h1-8]{1}\n\t/ \"-\"\n\n\tHalfMove\n\t= [0-9]+\n\n\tMove\n\t= [0-9]+\n");
 module.exports = parser;
 
-},{"pegjs":10}],31:[function(require,module,exports){
+},{"pegjs":10}],32:[function(require,module,exports){
 var enums = require("../../enums");
 var Direction = enums.Direction;
 var diag = {
@@ -5570,7 +5652,7 @@ var bishop = {
 };
 module.exports = bishop;
 
-},{"../../enums":38}],32:[function(require,module,exports){
+},{"../../enums":39}],33:[function(require,module,exports){
 var enums = require("../../enums");
 var Direction = enums.Direction;
 var queenSideCastleCondition = function (piece, boardState, board) {
@@ -5665,7 +5747,7 @@ var king = {
 };
 module.exports = king;
 
-},{"../../enums":38}],33:[function(require,module,exports){
+},{"../../enums":39}],34:[function(require,module,exports){
 var enums = require("../../enums");
 var Direction = enums.Direction;
 var horzThenVert = {
@@ -5690,7 +5772,7 @@ var knight = {
 };
 module.exports = knight;
 
-},{"../../enums":38}],34:[function(require,module,exports){
+},{"../../enums":39}],35:[function(require,module,exports){
 var enums = require("../../enums");
 var Direction = enums.Direction;
 var firstMoveCondition = function (piece) {
@@ -5791,7 +5873,7 @@ var pawn = {
 };
 module.exports = pawn;
 
-},{"../../enums":38}],35:[function(require,module,exports){
+},{"../../enums":39}],36:[function(require,module,exports){
 var Pawn = require("./pawn");
 var Rook = require("./rook");
 var Knight = require("./knight");
@@ -5808,7 +5890,7 @@ var pieces = {
 };
 module.exports = pieces;
 
-},{"./bishop":31,"./king":32,"./knight":33,"./pawn":34,"./queen":36,"./rook":37}],36:[function(require,module,exports){
+},{"./bishop":32,"./king":33,"./knight":34,"./pawn":35,"./queen":37,"./rook":38}],37:[function(require,module,exports){
 var enums = require("../../enums");
 var Direction = enums.Direction;
 var diag = {
@@ -5833,7 +5915,7 @@ var queen = {
 };
 module.exports = queen;
 
-},{"../../enums":38}],37:[function(require,module,exports){
+},{"../../enums":39}],38:[function(require,module,exports){
 var enums = require("../../enums");
 var Direction = enums.Direction;
 var lat = {
@@ -5852,7 +5934,7 @@ var rook = {
 };
 module.exports = rook;
 
-},{"../../enums":38}],38:[function(require,module,exports){
+},{"../../enums":39}],39:[function(require,module,exports){
 (function (Direction) {
     Direction[Direction["Up"] = 0] = "Up";
     Direction[Direction["Down"] = 1] = "Down";
@@ -5873,7 +5955,7 @@ module.exports = rook;
 })(exports.Direction || (exports.Direction = {}));
 var Direction = exports.Direction;
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 var Engine = require("./engine/engine");
 var classicEngine = require("./engine/instances/classic");
 var classicPieces = require("./engine/pieces/pieces");
@@ -5888,4 +5970,4 @@ var chess = {
 };
 module.exports = chess;
 
-},{"./engine/engine":13,"./engine/instances/classic":28,"./engine/pieces/pieces":35,"./enums":38}]},{},[39]);
+},{"./engine/engine":13,"./engine/instances/classic":28,"./engine/pieces/pieces":36,"./enums":39}]},{},[40]);
