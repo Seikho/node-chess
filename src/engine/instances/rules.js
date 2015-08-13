@@ -15,6 +15,19 @@ function isCheckmate(move, boardState, board) {
     // need all available moves module
 }
 function isCheck(boardState) {
-    return boardState.tags["check"] === true;
+    var oppositeKing;
+    boardState.ranks.forEach(function (rank) {
+        rank.squares.forEach(function (square) {
+            var isOpposingKing = square.piece.name === "King" && square.piece.isWhite === !boardState.whitesTurn;
+            if (isOpposingKing)
+                oppositeKing = square;
+        });
+    });
+    if (!oppositeKing)
+        throw new Error("Unable to locate opposing king");
+    var attackFilter = function (move) { return move.to.file === oppositeKing.file && move.to.rank === oppositeKing.rank; };
+    var kingAttackers = boardState.moves.filter(attackFilter);
+    var isInCheck = kingAttackers.length > 0;
+    return isInCheck;
 }
 //# sourceMappingURL=rules.js.map
