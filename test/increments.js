@@ -1,9 +1,13 @@
 var nodeChess = require("../src/index");
 var chai = require("chai");
 var expect = chai.expect;
-var classicEngine = nodeChess.classic.engine();
-classicEngine.populateAvailableMoves();
-console.log(classicEngine.toString());
+var board = nodeChess.classic.engine();
+board.populateAvailableMoves();
+var checkmate = nodeChess.classic.engine();
+checkmate.positionParser("6bk/6pp/3N4/8/8/8/PP2PPPP/RNBQKB1R w KQkq - 0 1");
+checkmate.populateAvailableMoves();
+console.log(checkmate.toString());
+//console.log(board.toString());
 describe("available move tests", function () {
     pieceAvailableMovesTest("will find all available moves for the b2 pawn from the starting position", coord(2, 2), [coord(2, 3), coord(2, 4)]);
     pieceAvailableMovesTest("will find all available moves for b1 knight from the starting position", coord(2, 1), [coord(3, 3), coord(1, 3)]);
@@ -43,19 +47,19 @@ describe("movement tests", function () {
 });
 function tagTest(message, coordinate, tagName, expected) {
     it(message, function () {
-        var square = classicEngine.getSquare(coordinate);
+        var square = board.getSquare(coordinate);
         expect(square.tags[tagName]).to.equal(expected);
     });
 }
 function pieceLocationTest(message, location, notation) {
     it(message, function () {
-        var square = classicEngine.getSquare(location);
+        var square = board.getSquare(location);
         expect(square.piece.notation).to.equal(notation);
     });
 }
 function pieceAvailableMovesTest(message, start, expectedMoves) {
     it(message, function () {
-        var moves = classicEngine.boardState.moves
+        var moves = board.boardState.moves
             .filter(function (move) { return move.from.file === start.file && move.from.rank === start.rank; })
             .map(function (move) { return move.to; });
         expectedMoves.forEach(function (m) { return expect(moves).to.include({ rank: m.rank, file: m.file }); });
@@ -79,10 +83,10 @@ function pieceMoveTest(message, from, to, wont) {
     if (wont === void 0) { wont = false; }
     it(message, function () {
         var expected = wont ? from : to;
-        var square = classicEngine.getSquare(from);
-        var piece = classicEngine.getSquare(from).piece;
-        var newState = classicEngine.movePiece(from, to);
-        var moved = classicEngine.getSquare(expected, newState);
+        var square = board.getSquare(from);
+        var piece = board.getSquare(from).piece;
+        var newState = board.movePiece(from, to);
+        var moved = board.getSquare(expected, newState);
         var movedPiece = moved.piece;
         if (wont) {
             expect(newState).to.be.null;
