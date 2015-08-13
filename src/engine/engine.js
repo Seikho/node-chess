@@ -13,6 +13,7 @@ var createPiece = require("./helpers/createPiece");
  */
 var Engine = (function () {
     function Engine(ranks, files) {
+        this.postMoveFunctions = [];
         this.boardState = {
             ranks: [],
             tags: {},
