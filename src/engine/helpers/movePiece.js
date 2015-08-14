@@ -40,11 +40,13 @@ function movePiece(from, to, boardState) {
     });
     boardState.moveNumber++;
     boardState.postMoveFunctions = enginePostMoveActions.filter(function (pmf) { return !pmf.moveNumber || pmf.moveNumber >= boardState.moveNumber; });
-    self.postMoveFunctions.forEach(function (moveFn) {
-        moveFn.action(destination.piece, boardState, self);
-    });
-    if (saveToBoard)
+    if (saveToBoard) {
+        // We only call post move functions if we're saving state
+        self.postMoveFunctions.forEach(function (moveFn) {
+            moveFn.action(destination.piece, boardState, self);
+        });
         self.boardState = boardState;
+    }
     return boardState;
 }
 module.exports = movePiece;
