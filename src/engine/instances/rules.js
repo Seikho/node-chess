@@ -27,10 +27,14 @@ function isMoveAllowed(move, boardState, board) {
     var isInCheck = isCheck(boardState.whitesTurn, boardState);
     if (!isInCheck)
         return true;
-    var future = board.movePiece(move.from, move.to, boardState);
-    var futureIsInCheck = isCheck(!boardState.whitesTurn, future);
-    if (futureIsInCheck)
+    try {
+        var future = board.movePiece(move.from, move.to, boardState);
+        var futureIsInCheck = isCheck(boardState.whitesTurn, future);
+        return !futureIsInCheck;
+    }
+    catch (ex) {
         return false;
+    }
 }
 function allowedMoves(boardState, board) {
     var isLegit = function (move) { return isMoveAllowed(move, boardState, board); };

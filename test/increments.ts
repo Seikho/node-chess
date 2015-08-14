@@ -66,13 +66,13 @@ describe("game conclusion tests", () => {
 	cmMoveTest("[CheckMate] will move Nf7#", coord(4, 6), coord(6, 7));
 
 	it("Will declare that white is the winner", () => {
-		expect(checkmate.boardState.winnerIsWhite).to.be.true;
+		expect(checkmate.boardState.winnerIsWhite).to.equal(true);
 	});
 	
 	blackCmMoveTest("[CheckMate] will move Ra1#", coord(1,8), coord(1,1));
 
 	it("Will declare that white is the winner", () => {
-		expect(checkmate.boardState.winnerIsWhite).to.be.equal(false);
+		expect(blackCheckmate.boardState.winnerIsWhite).to.equal(false);
 	});
 });
 
@@ -121,9 +121,9 @@ function move(direction: Chess.Direction, count: number): Chess.SingleMove {
  */
 var count = 0;
 function pieceMoveTest(message: string, from: Chess.Coordinate, to: Chess.Coordinate, wont = false) {
-	var board: Chess.Engine = this;
 
 	it(message, () => {
+		var board: Chess.Engine = this;
 		var expected = wont ? from : to;
 		var square: Chess.Square = board.getSquare(from);
 		var piece: Chess.Piece = board.getSquare(from).piece;

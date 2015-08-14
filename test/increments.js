@@ -55,11 +55,11 @@ describe("movement tests", function () {
 describe("game conclusion tests", function () {
     cmMoveTest("[CheckMate] will move Nf7#", coord(4, 6), coord(6, 7));
     it("Will declare that white is the winner", function () {
-        expect(checkmate.boardState.winnerIsWhite).to.be.true;
+        expect(checkmate.boardState.winnerIsWhite).to.equal(true);
     });
     blackCmMoveTest("[CheckMate] will move Ra1#", coord(1, 8), coord(1, 1));
     it("Will declare that white is the winner", function () {
-        expect(checkmate.boardState.winnerIsWhite).to.be.equal(false);
+        expect(blackCheckmate.boardState.winnerIsWhite).to.equal(false);
     });
 });
 function hasTagTest(message, coordinate, tagName, expected) {
@@ -103,9 +103,10 @@ function move(direction, count) {
  */
 var count = 0;
 function pieceMoveTest(message, from, to, wont) {
+    var _this = this;
     if (wont === void 0) { wont = false; }
-    var board = this;
     it(message, function () {
+        var board = _this;
         var expected = wont ? from : to;
         var square = board.getSquare(from);
         var piece = board.getSquare(from).piece;
