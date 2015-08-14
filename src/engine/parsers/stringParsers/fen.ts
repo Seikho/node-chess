@@ -26,7 +26,7 @@ var parser: Chess.StringParser = PEG.buildParser(`
 	= turn:[w|b] { return turn }
 
 	Castling
-	= [k|q|K|Q|"-"]+
+	= castling:[k|q|K|Q|-]+ { return castling.filter(function(c) { return c !== '-'; }); }
 
 	Enpassant
 	= [a-h1-8]{1}
