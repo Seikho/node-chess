@@ -5460,11 +5460,13 @@ function movePiece(from, to, boardState) {
     });
     boardState.moveNumber++;
     boardState.postMoveFunctions = enginePostMoveActions.filter(function (pmf) { return !pmf.moveNumber || pmf.moveNumber >= boardState.moveNumber; });
-    self.postMoveFunctions.forEach(function (moveFn) {
-        moveFn.action(destination.piece, boardState, self);
-    });
-    if (saveToBoard)
+    if (saveToBoard) {
+        // We only call post move functions if we're saving state
+        self.postMoveFunctions.forEach(function (moveFn) {
+            moveFn.action(destination.piece, boardState, self);
+        });
         self.boardState = boardState;
+    }
     return boardState;
 }
 module.exports = movePiece;
@@ -5539,10 +5541,14 @@ function isMoveAllowed(move, boardState, board) {
     var isInCheck = isCheck(boardState.whitesTurn, boardState);
     if (!isInCheck)
         return true;
-    var future = board.movePiece(move.from, move.to, boardState);
-    var futureIsInCheck = isCheck(!boardState.whitesTurn, future);
-    if (futureIsInCheck)
+    try {
+        var future = board.movePiece(move.from, move.to, boardState);
+        var futureIsInCheck = isCheck(boardState.whitesTurn, future);
+        return !futureIsInCheck;
+    }
+    catch (ex) {
         return false;
+    }
 }
 function allowedMoves(boardState, board) {
     var isLegit = function (move) { return isMoveAllowed(move, boardState, board); };
@@ -5637,7 +5643,7 @@ module.exports = fenParser;
 
 },{"./stringParsers/fen":31}],31:[function(require,module,exports){
 var PEG = require("pegjs");
-var parser = PEG.buildParser("\n\tStart\n\t= WS r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move WS\n\t{ return {\n\tranks: r,\n\tturn: t,\n\tcastling: c,\n\thalfMove: h,\n\tfullMove: t };\n\t}\n\tRankList\n\t= head:Rank \"/\" tail:RankList { return [].concat(head,tail); }\n\t/ Rank\n\n\tRank\n\t= rank:[a-zA-Z0-9]+ { return rank.join(''); }\n\n\tWS\n\t= \" \"* { return null; }\n\n\tTurn\n\t= turn:[w|b] { return turn }\n\n\tCastling\n\t= castling:[k|q|K|Q|-]+ { return castling.filter(function(c) { return c !== '-'; }); }\n\n\tEnpassant\n\t= [a-h1-8]{1}\n\t/ \"-\"\n\n\tHalfMove\n\t= [0-9]+\n\n\tMove\n\t= [0-9]+\n");
+var parser = PEG.buildParser("\n\tStart\n\t= WS r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move WS\n\t{ return {\n\tranks: r,\n\tturn: t,\n\tcastling: c,\n\thalfMove: h,\n\tfullMove: t };\n\t}\n\tRankList\n\t= head:Rank \"/\" tail:RankList { return [].concat(head,tail); }\n\t/ Rank\n\n\tRank\n\t= rank:[a-zA-Z0-9]+ { return rank.join(''); }\n\n\tWS\n\t= \" \"* { return null; }\n\n\tTurn\n\t= turn:[w|b] { return turn }\n\n\tCastling\n\t= castling:[k|q|K|Q|-]+ { return castling.filter(function(c) { return c !== '-'; }); }\n\n\tEnpassant\n\t= ([a-h]{1})([1-8]{1})\n\t/ \"-\"\n\n\tHalfMove\n\t= [0-9]+\n\n\tMove\n\t= [0-9]+\n");
 module.exports = parser;
 
 },{"pegjs":10}],32:[function(require,module,exports){

@@ -29,7 +29,7 @@ var parser: Chess.StringParser = PEG.buildParser(`
 	= castling:[k|q|K|Q|-]+ { return castling.filter(function(c) { return c !== '-'; }); }
 
 	Enpassant
-	= [a-h1-8]{1}
+	= ([a-h]{1})([1-8]{1})
 	/ "-"
 
 	HalfMove
