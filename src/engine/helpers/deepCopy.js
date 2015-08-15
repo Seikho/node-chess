@@ -41,6 +41,7 @@ function copyPiece(piece) {
     var copy = shallowCopy(piece);
     copy.location = { rank: piece.location.rank, file: piece.location.file };
     copy.movement = shallowCopyArray(piece.movement);
+    copy.moveHistory = copyAvailableMoves(piece.moveHistory);
     copy.getRelativeDestinations = piece.getRelativeDestinations;
     copy.postMoveFunctions = piece.postMoveFunctions.slice();
     return copy;
