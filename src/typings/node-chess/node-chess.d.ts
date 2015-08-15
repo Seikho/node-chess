@@ -32,6 +32,7 @@ declare module "node-chess" {
         preMoveFunctions: MoveFunction[];
         moves: Move[];
         winnerIsWhite?: boolean;
+        gameIsDrawn?: boolean;
     }
     
     export interface BoardTag {
