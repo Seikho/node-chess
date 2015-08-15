@@ -12,6 +12,7 @@
         "test/**/*.ts"
     ],
     "files": [
+        "test/copy.ts",
         "test/fen-parser.ts",
         "test/increments.ts",
         "src/analyzer.ts",

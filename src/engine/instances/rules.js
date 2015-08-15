@@ -1,38 +1,27 @@
 /**
  * If the board has the 'check' tag,
  */
-exports.checkmatePostMove = {
+exports.postMove = {
     action: function (piece, boardState, board) {
-        var isGameOver = isCheckmate(boardState, board);
-        if (!isGameOver)
-            return false;
-        boardState.winnerIsWhite = !boardState.whitesTurn;
-        boardState.moves = [];
-        return true;
-    }
-};
-exports.stalematePostMove = {
-    action: function (piece, boardState, board) {
-        var isGameOver = isStalement(boardState, board);
-        if (!isGameOver)
-            return false;
-        boardState.gameIsDrawn = true;
-        boardState.moves = [];
-        return true;
+        var gameState = isGameOver(boardState, board);
+        return gameState;
     }
 };
 function isMoveAllowed(move, boardState, board) {
-    if (boardState.whitesTurn !== move.isWhite)
+    var turn = boardState.whitesTurn;
+    if (turn !== move.isWhite)
         return false;
-    var isInCheck = isCheck(boardState.whitesTurn, boardState);
-    if (!isInCheck)
-        return true;
+    // var isInCheck = isCheck(turn, boardState);        
+    // if (!isInCheck) return true;
     try {
         var future = board.movePiece(move.from, move.to, boardState);
-        var futureIsInCheck = isCheck(boardState.whitesTurn, future);
+        if (!future)
+            return false;
+        var futureIsInCheck = isCheck(turn, future);
         return !futureIsInCheck;
     }
     catch (ex) {
+        // No king due to being captured
         return false;
     }
 }
@@ -41,21 +30,22 @@ function allowedMoves(boardState, board) {
     var legitMoves = boardState.moves.filter(isLegit);
     return legitMoves;
 }
-function isCheckmate(boardState, board) {
+function isGameOver(boardState, board) {
     var isInCheck = isCheck(boardState.whitesTurn, boardState);
     if (!isInCheck)
         return false;
     var moves = allowedMoves(boardState, board);
     var hasMoves = moves.length > 0;
-    return isInCheck && !hasMoves;
-}
-function isStalement(boardState, board) {
-    var isInCheck = isCheck(boardState.whitesTurn, boardState);
-    if (isInCheck)
+    if (hasMoves)
         return false;
-    var moves = allowedMoves(boardState, board);
-    var hasMoves = moves.length > 0;
-    return !isInCheck && !hasMoves;
+    boardState.moves = [];
+    if (isInCheck) {
+        boardState.winnerIsWhite = !boardState.whitesTurn;
+    }
+    else {
+        boardState.gameIsDrawn = true;
+    }
+    return true;
 }
 function isCheck(checkWhite, boardState) {
     var kingSquare;

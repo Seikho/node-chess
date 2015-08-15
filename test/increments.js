@@ -1,17 +1,20 @@
-var nodeChess = require("../src/index");
+var chess = require("../src/index");
 var chai = require("chai");
 var expect = chai.expect;
-var classic = nodeChess.classic.engine();
+var classic = chess.classic.engine();
 var classicMoveTest = pieceMoveTest.bind(classic);
 var classicMovesTest = hasMovesTest.bind(classic);
 var classicTagTest = hasTagTest.bind(classic);
 var classicLocationTest = atLocationTest.bind(classic);
-var checkmate = nodeChess.classic.engine();
+var checkmate = chess.classic.engine();
 checkmate.positionParser("6rk/6pp/3N4/8/8/8/PP2PPPP/RNBQKB1R w KQkq - 0 1");
 var cmMoveTest = pieceMoveTest.bind(checkmate);
-var blackCheckmate = nodeChess.classic.engine();
+var blackCheckmate = chess.classic.engine();
 blackCheckmate.positionParser("r5bk/6pp/3N4/8/8/8/4PPPP/7K b KQkq - 0 1");
 var blackCmMoveTest = pieceMoveTest.bind(blackCheckmate);
+var stalemate = chess.classic.engine();
+stalemate.positionParser("k7/p7/2R5/8/8/8/8/1R2K3 w - - 0 1");
+var stalementCmMoveTest = pieceMoveTest.bind(stalemate);
 describe("available move tests", function () {
     classicMovesTest("will find all available moves for the b2 pawn from the starting position", coord(2, 2), [coord(2, 3), coord(2, 4)]);
     classicMovesTest("will find all available moves for b1 knight from the starting position", coord(2, 1), [coord(3, 3), coord(1, 3)]);
@@ -50,13 +53,22 @@ describe("movement tests", function () {
     classicLocationTest("will have black rook on d8 after castling", coord(4, 8), "r");
 });
 describe("game conclusion tests", function () {
-    cmMoveTest("[CheckMate] will move Nf7#", coord(4, 6), coord(6, 7));
+    cmMoveTest("[Checkmate] will move Nf7#", coord(4, 6), coord(6, 7));
     it("Will declare that white is the winner", function () {
         expect(checkmate.boardState.winnerIsWhite).to.equal(true);
     });
-    blackCmMoveTest("[CheckMate] will move Ra1#", coord(1, 8), coord(1, 1));
+    blackCmMoveTest("[Checkmate] will move Ra1#", coord(1, 8), coord(1, 1));
     it("Will declare that white is the winner", function () {
         expect(blackCheckmate.boardState.winnerIsWhite).to.equal(false);
+    });
+    stalementCmMoveTest("[Stalemate] will move Ra6", coord(3, 6), coord(1, 6));
+    it("Will delcare that the game is drawn by stalement", function () {
+        // stalemate.boardState.moves
+        // 	.filter(m => !m.isWhite)
+        // 	.forEach(m => console.log(m));
+        // console.log(stalemate.boardState.winnerIsWhite);
+        // console.log(stalemate.boardState.gameIsDrawn);
+        expect(stalemate.boardState.gameIsDrawn).to.equal(true);
     });
 });
 function hasTagTest(message, coordinate, tagName, expected) {
@@ -103,6 +115,7 @@ function pieceMoveTest(message, from, to, wont) {
     var _this = this;
     if (wont === void 0) { wont = false; }
     it(message, function () {
+        var isShitMove = from.file === 2 && from.rank === 7;
         var board = _this;
         var expected = wont ? from : to;
         var square = board.getSquare(from);

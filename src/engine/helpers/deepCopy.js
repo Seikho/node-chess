@@ -54,7 +54,9 @@ function copyAvailableMoves(moves) {
             isWhite: move.isWhite
         };
     }
-    return moves.map(copyMove);
+    var newMoves = [];
+    moves.forEach(function (m) { return newMoves.push(copyMove(m)); });
+    return newMoves;
 }
 function shallowCopyArray(array) {
     return array ? array.slice() : [];

@@ -1,22 +1,26 @@
 import Chess = require("node-chess");
-import nodeChess = require("../src/index");
+import chess = require("../src/index");
 import chai = require("chai");
 var expect = chai.expect;
 
-var classic = nodeChess.classic.engine();
+var classic = chess.classic.engine();
 
 var classicMoveTest = pieceMoveTest.bind(classic);
 var classicMovesTest = hasMovesTest.bind(classic);
 var classicTagTest = hasTagTest.bind(classic);
 var classicLocationTest = atLocationTest.bind(classic);
 
-var checkmate = nodeChess.classic.engine();
+var checkmate = chess.classic.engine();
 checkmate.positionParser("6rk/6pp/3N4/8/8/8/PP2PPPP/RNBQKB1R w KQkq - 0 1");
 var cmMoveTest = pieceMoveTest.bind(checkmate);
 
-var blackCheckmate = nodeChess.classic.engine();
+var blackCheckmate = chess.classic.engine();
 blackCheckmate.positionParser("r5bk/6pp/3N4/8/8/8/4PPPP/7K b KQkq - 0 1");
 var blackCmMoveTest = pieceMoveTest.bind(blackCheckmate);
+
+var stalemate = chess.classic.engine();
+stalemate.positionParser("k7/p7/2R5/8/8/8/8/1R2K3 w - - 0 1");
+var stalementCmMoveTest = pieceMoveTest.bind(stalemate);
 
 describe("available move tests", () => {
 
@@ -60,17 +64,29 @@ describe("movement tests", () => {
 });
 
 describe("game conclusion tests", () => {
-	cmMoveTest("[CheckMate] will move Nf7#", coord(4, 6), coord(6, 7));
+	cmMoveTest("[Checkmate] will move Nf7#", coord(4, 6), coord(6, 7));
 
 	it("Will declare that white is the winner", () => {
 		expect(checkmate.boardState.winnerIsWhite).to.equal(true);
 	});
-	
-	blackCmMoveTest("[CheckMate] will move Ra1#", coord(1,8), coord(1,1));
+
+	blackCmMoveTest("[Checkmate] will move Ra1#", coord(1, 8), coord(1, 1));
 
 	it("Will declare that white is the winner", () => {
 		expect(blackCheckmate.boardState.winnerIsWhite).to.equal(false);
 	});
+
+	stalementCmMoveTest("[Stalemate] will move Ra6", coord(3, 6), coord(1, 6));
+
+	it("Will delcare that the game is drawn by stalement", () => {
+		// stalemate.boardState.moves
+		// 	.filter(m => !m.isWhite)
+		// 	.forEach(m => console.log(m));
+		// console.log(stalemate.boardState.winnerIsWhite);
+		// console.log(stalemate.boardState.gameIsDrawn);
+		
+		expect(stalemate.boardState.gameIsDrawn).to.equal(true);
+	})
 });
 
 function hasTagTest(message: string, coordinate: Chess.Coordinate, tagName: string, expected: any) {
@@ -120,6 +136,9 @@ var count = 0;
 function pieceMoveTest(message: string, from: Chess.Coordinate, to: Chess.Coordinate, wont = false) {
 
 	it(message, () => {
+
+		var isShitMove = from.file === 2 && from.rank === 7;
+
 		var board: Chess.Engine = this;
 		var expected = wont ? from : to;
 		var square: Chess.Square = board.getSquare(from);
@@ -127,11 +146,12 @@ function pieceMoveTest(message: string, from: Chess.Coordinate, to: Chess.Coordi
 		var newState = board.movePiece(from, to);
 		var moved: Chess.Square = board.getSquare(expected, newState);
 		var movedPiece = moved.piece;
-
+		
 		if (wont) {
 			expect(newState).to.be.null;
 			return;
 		}
+		
 		// A bit elaborate due to immutability of movePiece function
 		expect(movedPiece).to.exist;
 		expect(movedPiece.location.file).to.equal(expected.file);

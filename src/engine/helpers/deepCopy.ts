@@ -67,8 +67,9 @@ function copyAvailableMoves(moves: Chess.Move[]) {
 			isWhite: move.isWhite
 		};
 	}
-	
-	return moves.map(copyMove);
+	var newMoves = [];
+	moves.forEach(m => newMoves.push(copyMove(m)));
+	return newMoves;
 }
 
 function shallowCopyArray(array: any[]) {

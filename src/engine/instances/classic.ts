@@ -13,8 +13,7 @@ function classEngine(): Chess.Engine {
 	board.positionParser();
 
 	board.postMoveFunctions = [
-		rules.checkmatePostMove,
-		rules.stalematePostMove	
+		rules.postMove,	
 	];
 	
 	return board;
