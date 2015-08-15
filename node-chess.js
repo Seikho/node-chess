@@ -5530,7 +5530,7 @@ exports.stalematePostMove = {
         var isGameOver = isStalement(boardState, board);
         if (!isGameOver)
             return false;
-        boardState.winnerIsWhite = !boardState.whitesTurn;
+        boardState.gameIsDrawn = true;
         boardState.moves = [];
         return true;
     }
