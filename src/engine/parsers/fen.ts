@@ -14,6 +14,8 @@ function fenParser(position?: string): void {
 		self.boardState.ranks[rankCount] = createFilesForRank(self, rank, rankCount);
 		rankCount--;
 	});
+	
+	self.populateAvailableMoves();
 }
 
 function createFilesForRank(engine: Chess.Engine, fenRank: string, rankNumber: number): Chess.Rank {

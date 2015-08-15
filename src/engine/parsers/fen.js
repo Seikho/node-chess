@@ -9,6 +9,7 @@ function fenParser(position) {
         self.boardState.ranks[rankCount] = createFilesForRank(self, rank, rankCount);
         rankCount--;
     });
+    self.populateAvailableMoves();
 }
 function createFilesForRank(engine, fenRank, rankNumber) {
     var rank = {
