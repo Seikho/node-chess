@@ -2,18 +2,15 @@ var nodeChess = require("../src/index");
 var chai = require("chai");
 var expect = chai.expect;
 var classic = nodeChess.classic.engine();
-classic.populateAvailableMoves();
 var classicMoveTest = pieceMoveTest.bind(classic);
 var classicMovesTest = hasMovesTest.bind(classic);
 var classicTagTest = hasTagTest.bind(classic);
 var classicLocationTest = atLocationTest.bind(classic);
 var checkmate = nodeChess.classic.engine();
 checkmate.positionParser("6rk/6pp/3N4/8/8/8/PP2PPPP/RNBQKB1R w KQkq - 0 1");
-checkmate.populateAvailableMoves();
 var cmMoveTest = pieceMoveTest.bind(checkmate);
 var blackCheckmate = nodeChess.classic.engine();
 blackCheckmate.positionParser("r5bk/6pp/3N4/8/8/8/4PPPP/7K b KQkq - 0 1");
-blackCheckmate.populateAvailableMoves();
 var blackCmMoveTest = pieceMoveTest.bind(blackCheckmate);
 describe("available move tests", function () {
     classicMovesTest("will find all available moves for the b2 pawn from the starting position", coord(2, 2), [coord(2, 3), coord(2, 4)]);
