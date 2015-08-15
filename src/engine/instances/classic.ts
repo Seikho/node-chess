@@ -1,9 +1,10 @@
+import Chess = require("node-chess");
 import Engine = require("../engine");
 import pieces = require("../pieces/pieces");
 import rules = require("./rules");
 export = classEngine;
 
-function classEngine() {
+function classEngine(): Chess.Engine {
 	var board = new Engine();
 
 	Object.keys(pieces)

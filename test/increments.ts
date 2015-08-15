@@ -3,18 +3,18 @@ import nodeChess = require("../src/index");
 import chai = require("chai");
 var expect = chai.expect;
 
-var classic: Chess.Engine = nodeChess.classic.engine();
+var classic = nodeChess.classic.engine();
 
 var classicMoveTest = pieceMoveTest.bind(classic);
 var classicMovesTest = hasMovesTest.bind(classic);
 var classicTagTest = hasTagTest.bind(classic);
 var classicLocationTest = atLocationTest.bind(classic);
 
-var checkmate: Chess.Engine = nodeChess.classic.engine();
+var checkmate = nodeChess.classic.engine();
 checkmate.positionParser("6rk/6pp/3N4/8/8/8/PP2PPPP/RNBQKB1R w KQkq - 0 1");
 var cmMoveTest = pieceMoveTest.bind(checkmate);
 
-var blackCheckmate: Chess.Engine = nodeChess.classic.engine();
+var blackCheckmate = nodeChess.classic.engine();
 blackCheckmate.positionParser("r5bk/6pp/3N4/8/8/8/4PPPP/7K b KQkq - 0 1");
 var blackCmMoveTest = pieceMoveTest.bind(blackCheckmate);
 
