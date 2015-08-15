@@ -13,9 +13,6 @@ function isMoveAllowed(move: Chess.Move, boardState: Chess.BoardState, board: Ch
     var turn = boardState.whitesTurn;
     if (turn !== move.isWhite) return false;
 
-    // var isInCheck = isCheck(turn, boardState);        
-    // if (!isInCheck) return true;
-
     try {
         var future = board.movePiece(move.from, move.to, boardState);
         if (!future) return false;        
@@ -37,7 +34,7 @@ function allowedMoves(boardState: Chess.BoardState, board: Chess.Engine) {
 
 function isGameOver(boardState: Chess.BoardState, board: Chess.Engine) {
     var isInCheck = isCheck(boardState.whitesTurn, boardState);
-    if (!isInCheck) return false;
+    // if (!isInCheck) return false;
     var moves = allowedMoves(boardState, board);
     
     var hasMoves = moves.length > 0;
