@@ -33,6 +33,7 @@ declare module "node-chess" {
         moves: Move[];
         winnerIsWhite?: boolean;
         gameIsDrawn?: boolean;
+        moveHistory: MoveHistory[];
     }
     
     export interface BoardTag {
@@ -96,6 +97,13 @@ declare module "node-chess" {
         postMoveActions?: MoveFunction[];
         isWhite?: boolean;
     }
+    
+    export interface MoveHistory {
+        from: Coordinate;
+        to: Coordinate;
+        options?: any;
+        piece: Piece;
+    }
 
     export interface Piece {
         location: Coordinate;
@@ -106,7 +114,6 @@ declare module "node-chess" {
         canQueen: boolean;
         canSpawn: boolean;
         isWhite?: boolean;
-        moveHistory?: Move[];
         getConditionalMovePatterns?: (board: Engine) => MovePattern[];
         postMoveFunctions?: MoveFunction[];
     }
