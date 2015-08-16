@@ -5422,8 +5422,10 @@ module.exports = isValidPath;
 
 },{}],26:[function(require,module,exports){
 var deepCopy = require("./deepCopy");
-function movePiece(from, to, boardState) {
+function movePiece(move, boardState) {
     var self = this;
+    var from = move.from;
+    var to = move.to;
     // TODO: Replace with better method
     // If no boardState is provided, the result of this function is stored as the calling engine's new board state 
     var saveToBoard = !boardState;

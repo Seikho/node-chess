@@ -2,8 +2,12 @@ import Chess = require("node-chess");
 import deepCopy = require("./deepCopy");
 export = movePiece;
 
-function movePiece(from: Chess.Coordinate, to: Chess.Coordinate, boardState?: Chess.BoardState): Chess.BoardState {
+function movePiece(move: Chess.Move, boardState?: Chess.BoardState): Chess.BoardState {
 	var self: Chess.Engine = this;
+	
+	var from = move.from;
+	var to = move.to;
+	
 	// TODO: Replace with better method
 	// If no boardState is provided, the result of this function is stored as the calling engine's new board state 
 	var saveToBoard = !boardState;
