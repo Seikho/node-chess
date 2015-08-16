@@ -5530,7 +5530,7 @@ function isMoveAllowed(move, boardState, board) {
     if (turn !== move.isWhite)
         return false;
     try {
-        var future = board.movePiece(move.from, move.to, boardState);
+        var future = board.movePiece(move, boardState);
         if (!future)
             return false;
         var futureIsInCheck = isCheck(turn, future);

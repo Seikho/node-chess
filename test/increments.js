@@ -120,7 +120,7 @@ function pieceMoveTest(message, from, to, wont) {
         var expected = wont ? from : to;
         var square = board.getSquare(from);
         var piece = board.getSquare(from).piece;
-        var newState = board.movePiece(from, to);
+        var newState = board.movePiece({ from: from, to: to });
         var moved = board.getSquare(expected, newState);
         var movedPiece = moved.piece;
         if (wont) {

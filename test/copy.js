@@ -25,7 +25,7 @@ describe("deep copy tests", function () {
         var board = newBoard();
         var copy = deepCopy(board.boardState);
         var original = board.boardState;
-        var future = board.movePiece({ file: 1, rank: 2 }, { file: 1, rank: 3 }, board.boardState);
+        var future = board.movePiece({ from: c(1, 2), to: c(1, 3) }, board.boardState);
         var originalSquare = board.boardState.ranks[2].squares[1];
         var futureSquare = future.ranks[2].squares[1];
         expect(originalSquare.piece).to.exist;
@@ -35,12 +35,15 @@ describe("deep copy tests", function () {
         var board = newBoard();
         board.positionParser("k6n/7p/8/8/8/8/7P/K6N w KQkq - 0 1");
         var o = board.boardState;
-        var future = board.movePiece(c(8, 2), c(8, 3), o);
+        var future = board.movePiece(m(c(8, 2), c(8, 3)), o);
         expect(o.moves.length).to.equal(future.moves.length + 1);
-        var realFuture = board.movePiece(c(8, 2), c(8, 3));
+        var realFuture = board.movePiece(m(c(8, 2), c(8, 3)));
         expect(board.boardState.moves.length).to.equal(realFuture.moves.length);
     });
 });
+function m(from, to) {
+    return { from: from, to: to };
+}
 function c(file, rank) {
     return { file: file, rank: rank };
 }

@@ -143,7 +143,7 @@ function pieceMoveTest(message: string, from: Chess.Coordinate, to: Chess.Coordi
 		var expected = wont ? from : to;
 		var square: Chess.Square = board.getSquare(from);
 		var piece: Chess.Piece = board.getSquare(from).piece;
-		var newState = board.movePiece(from, to);
+		var newState = board.movePiece( { from, to });
 		var moved: Chess.Square = board.getSquare(expected, newState);
 		var movedPiece = moved.piece;
 		
