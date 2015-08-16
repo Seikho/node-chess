@@ -106,6 +106,7 @@ declare module "node-chess" {
     }
 
     export interface Piece {
+        id: number;
         location: Coordinate;
         name: string;
         movement: MovePattern[];
