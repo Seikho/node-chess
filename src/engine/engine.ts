@@ -36,7 +36,8 @@ class Engine implements Chess.Engine {
         moveNumber: 1,
         preMoveFunctions: [],
         postMoveFunctions: [],
-        moves: []
+        moves: [],
+        moveHistory: []
     }
 
     pieces = [];

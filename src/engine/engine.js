@@ -22,7 +22,8 @@ var Engine = (function () {
             moveNumber: 1,
             preMoveFunctions: [],
             postMoveFunctions: [],
-            moves: []
+            moves: [],
+            moveHistory: []
         };
         this.pieces = [];
         this.positionParser = fenParser.bind(this);
