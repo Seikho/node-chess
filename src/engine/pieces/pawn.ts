@@ -3,8 +3,9 @@ import enums = require("../../enums");
 import Direction = enums.Direction;
 export = pawn;
 
-var firstMoveCondition: Chess.MovePatternConditional = (piece) => {
-	return (piece.moveHistory.length === 0);
+var firstMoveCondition: Chess.MovePatternConditional = (piece: Chess.Piece, boardState: Chess.BoardState, board: Chess.Engine) => {
+	var history = boardState.moveHistory.filter(m => m.piece.id === piece.id);
+	return (history.length === 0);
 }
 
 var canLeftEnpassant: Chess.MovePatternConditional = (piece, boardState, board) => {
@@ -106,6 +107,7 @@ var forward: Chess.SingleMove = {
 }
 
 var pawn: Chess.Piece = {
+	id: 0,
 	location: null,
 	name: "Pawn",
 	movement: [moveForward, moveCapture, firstMovePattern, leftEnpassant, rightEnpassant],

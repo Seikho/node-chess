@@ -1,7 +1,8 @@
 var enums = require("../../enums");
 var Direction = enums.Direction;
 var queenSideCastleCondition = function (piece, boardState, board) {
-    if (piece.moveHistory.length > 0)
+    var history = getHistory(piece, boardState, board);
+    if (history.length > 0)
         return false;
     var f = function (num) { return getSquare(piece, board, boardState, Direction.QueenSide, num); };
     var queenSquare = f(1);
@@ -14,11 +15,13 @@ var queenSideCastleCondition = function (piece, boardState, board) {
         && !!rookSquare.piece;
     if (!squaresAreVacant)
         return false;
-    var rookHasMoved = rookSquare.piece.moveHistory.length > 0;
+    var rookHistory = getHistory(rookSquare.piece, boardState, board);
+    var rookHasMoved = rookHistory.length > 0;
     return !rookHasMoved;
 };
 var kingSideCastleCondition = function (piece, boardState, board) {
-    if (piece.moveHistory.length > 0)
+    var history = getHistory(piece, boardState, board);
+    if (history.length > 0)
         return false;
     var f = function (num) { return getSquare(piece, board, boardState, Direction.KingSide, num); };
     var bishopSquare = f(1);
@@ -29,7 +32,8 @@ var kingSideCastleCondition = function (piece, boardState, board) {
         && !!rookSquare.piece;
     if (!squaresAreVacant)
         return false;
-    var rookHasMoved = rookSquare.piece.moveHistory.length > 0;
+    var rookHistory = getHistory(rookSquare.piece, boardState, board);
+    var rookHasMoved = rookHistory.length > 0;
     return !rookHasMoved;
 };
 var postQueenSideCastle = {
@@ -66,6 +70,9 @@ var kingSideCastle = {
     conditions: [kingSideCastleCondition],
     postMoveActions: [postKingSideCastle]
 };
+function getHistory(piece, boardState, board) {
+    return boardState.moveHistory.filter(function (history) { return history.piece.id === piece.id; });
+}
 function getSquare(piece, board, boardState, direction, count) {
     var coord = piece.getRelativeDestinations(direction, count)[0];
     return board.getSquare(coord, boardState);

@@ -1,7 +1,8 @@
 var enums = require("../../enums");
 var Direction = enums.Direction;
-var firstMoveCondition = function (piece) {
-    return (piece.moveHistory.length === 0);
+var firstMoveCondition = function (piece, boardState, board) {
+    var history = boardState.moveHistory.filter(function (m) { return m.piece.id === piece.id; });
+    return (history.length === 0);
 };
 var canLeftEnpassant = function (piece, boardState, board) {
     return hasEnpassantTag(Direction.UpLeft, piece, boardState, board);
@@ -88,6 +89,7 @@ var forward = {
     count: 1
 };
 var pawn = {
+    id: 0,
     location: null,
     name: "Pawn",
     movement: [moveForward, moveCapture, firstMovePattern, leftEnpassant, rightEnpassant],

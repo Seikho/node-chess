@@ -4,7 +4,8 @@ import Direction = enums.Direction;
 export = king;
 
 var queenSideCastleCondition: Chess.MovePatternConditional = (piece, boardState, board) => {
-    if (piece.moveHistory.length > 0) return false;
+    var history = getHistory(piece, boardState, board);
+    if (history.length > 0) return false;
     var f = num => getSquare(piece, board, boardState, Direction.QueenSide, num);
     
     var queenSquare = f(1);
@@ -18,12 +19,14 @@ var queenSideCastleCondition: Chess.MovePatternConditional = (piece, boardState,
         && !!rookSquare.piece;
     if (!squaresAreVacant) return false;
 
-    var rookHasMoved = rookSquare.piece.moveHistory.length > 0;
+    var rookHistory = getHistory(rookSquare.piece, boardState, board);
+    var rookHasMoved = rookHistory.length > 0;
     return !rookHasMoved;
 }
 
 var kingSideCastleCondition: Chess.MovePatternConditional = (piece, boardState, board) => {
-    if (piece.moveHistory.length > 0) return false;
+    var history = getHistory(piece, boardState, board);
+    if (history.length > 0) return false;
     var f = num => getSquare(piece, board, boardState, Direction.KingSide, num);
     var bishopSquare = f(1);
     var knightSquare = f(2);
@@ -34,7 +37,8 @@ var kingSideCastleCondition: Chess.MovePatternConditional = (piece, boardState, 
         && !!rookSquare.piece;
     if (!squaresAreVacant) return false;
 
-    var rookHasMoved = rookSquare.piece.moveHistory.length > 0;
+    var rookHistory = getHistory(rookSquare.piece, boardState, board);
+    var rookHasMoved = rookHistory.length > 0;
     return !rookHasMoved;
 }
 
@@ -74,6 +78,10 @@ var kingSideCastle: Chess.MovePattern = {
     useDefaultConditions: false,
     conditions: [kingSideCastleCondition],
     postMoveActions: [postKingSideCastle]
+}
+
+function getHistory(piece: Chess.Piece, boardState: Chess.BoardState, board: Chess.Engine) {
+    return boardState.moveHistory.filter(history => history.piece.id === piece.id);
 }
 
 function getSquare(piece: Chess.BasePiece, board: Chess.Engine, boardState: Chess.BoardState, direction: Direction, count: number) {
