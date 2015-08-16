@@ -94,7 +94,7 @@ declare module "node-chess" {
         to: Coordinate;
         options?: any;
         postMoveActions?: MoveFunction[];
-        isWhite: boolean;
+        isWhite?: boolean;
     }
 
     export interface Piece {
