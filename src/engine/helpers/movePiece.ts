@@ -30,7 +30,7 @@ function movePiece(move: Chess.Move, boardState?: Chess.BoardState): Chess.Board
 
 	destination.piece = origin.piece;
 	destination.piece.location = { file: to.file, rank: to.rank };
-	destination.piece.moveHistory.push({ from: from, to: to, isWhite: origin.piece.isWhite });
+	boardState.moveHistory.push({ from: from, to: to, piece: destination.piece });
 
 	var movePatternPostActions = move.postMoveActions || [];
 	movePatternPostActions.forEach(func => {

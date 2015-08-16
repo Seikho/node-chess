@@ -25,7 +25,7 @@ function movePiece(move, boardState) {
         boardState.capturedPieces.push(destination.piece);
     destination.piece = origin.piece;
     destination.piece.location = { file: to.file, rank: to.rank };
-    destination.piece.moveHistory.push({ from: from, to: to, isWhite: origin.piece.isWhite });
+    boardState.moveHistory.push({ from: from, to: to, piece: destination.piece });
     var movePatternPostActions = move.postMoveActions || [];
     movePatternPostActions.forEach(function (func) {
         func.action(destination.piece, boardState, self);
