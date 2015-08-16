@@ -11,7 +11,8 @@ function deepCopy(boardState: Chess.BoardState) {
 		capturedPieces: boardState.capturedPieces.map(copyPiece),
 		preMoveFunctions: shallowCopyArray(boardState.preMoveFunctions),
 		postMoveFunctions: shallowCopyArray(boardState.postMoveFunctions),
-		moves: copyAvailableMoves(boardState.moves)
+		moves: copyAvailableMoves(boardState.moves),
+		moveHistory: copyMoveHistory(boardState.moveHistory)
 	}
 
 	return copy;
@@ -53,7 +54,6 @@ function copyPiece(piece: Chess.BasePiece): Chess.BasePiece {
 	var copy: Chess.BasePiece = shallowCopy(piece);
 	copy.location = { rank: piece.location.rank, file: piece.location.file };
 	copy.movement = shallowCopyArray(piece.movement);
-	copy.moveHistory = copyAvailableMoves(piece.moveHistory);
 	copy.getRelativeDestinations = piece.getRelativeDestinations
 	copy.postMoveFunctions = piece.postMoveFunctions.slice();
 	return copy; 
@@ -71,6 +71,19 @@ function copyAvailableMoves(moves: Chess.Move[]) {
 	var newMoves = [];
 	moves.forEach(m => newMoves.push(copyMove(m)));
 	return newMoves;
+}
+
+function copyMoveHistory(history: Chess.MoveHistory[]) {
+	function copyHistory(hist: Chess.MoveHistory): Chess.MoveHistory {
+		return {
+			from: shallowCopy(hist.from),
+			to: shallowCopy(hist.to),
+			piece: hist.piece
+		};
+	}
+	var newHistory = [];
+	history.forEach(h => newHistory.push(copyHistory(h)));
+	return newHistory;
 }
 
 function shallowCopyArray(array: any[]) {
