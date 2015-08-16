@@ -4999,6 +4999,7 @@ var getTransforms = require("./helpers/getTransforms");
 var applyTransform = require("./helpers/applyTransform");
 var BasePiece = (function () {
     function BasePiece(piece, notation) {
+        this.id = 0;
         this.isWhite = notation === piece.notation.toUpperCase();
         this.name = piece.name;
         this.movement = piece.movement;
@@ -5051,7 +5052,8 @@ var Engine = (function () {
             moveNumber: 1,
             preMoveFunctions: [],
             postMoveFunctions: [],
-            moves: []
+            moves: [],
+            moveHistory: []
         };
         this.pieces = [];
         this.positionParser = fenParser.bind(this);
@@ -5102,7 +5104,11 @@ function createPiece(notation, location) {
     var matchingPiece = self.pieces.filter(function (p) { return p.notation === notation.toLocaleLowerCase(); });
     if (matchingPiece.length === 0)
         return null;
+    var count = self.boardState.tags["pieceCount"] || 0;
+    count++;
+    self.boardState.tags["pieceCount"] = count;
     var newPiece = new this.pieceFactory(matchingPiece[0], notation);
+    newPiece.id = count;
     newPiece.location = location;
     return newPiece;
 }
@@ -5141,7 +5147,8 @@ function deepCopy(boardState) {
         capturedPieces: boardState.capturedPieces.map(copyPiece),
         preMoveFunctions: shallowCopyArray(boardState.preMoveFunctions),
         postMoveFunctions: shallowCopyArray(boardState.postMoveFunctions),
-        moves: copyAvailableMoves(boardState.moves)
+        moves: copyAvailableMoves(boardState.moves),
+        moveHistory: copyMoveHistory(boardState.moveHistory)
     };
     return copy;
 }
@@ -5175,7 +5182,6 @@ function copyPiece(piece) {
     var copy = shallowCopy(piece);
     copy.location = { rank: piece.location.rank, file: piece.location.file };
     copy.movement = shallowCopyArray(piece.movement);
-    copy.moveHistory = copyAvailableMoves(piece.moveHistory);
     copy.getRelativeDestinations = piece.getRelativeDestinations;
     copy.postMoveFunctions = piece.postMoveFunctions.slice();
     return copy;
@@ -5192,6 +5198,18 @@ function copyAvailableMoves(moves) {
     var newMoves = [];
     moves.forEach(function (m) { return newMoves.push(copyMove(m)); });
     return newMoves;
+}
+function copyMoveHistory(history) {
+    function copyHistory(hist) {
+        return {
+            from: shallowCopy(hist.from),
+            to: shallowCopy(hist.to),
+            piece: hist.piece
+        };
+    }
+    var newHistory = [];
+    history.forEach(function (h) { return newHistory.push(copyHistory(h)); });
+    return newHistory;
 }
 function shallowCopyArray(array) {
     return array ? array.slice() : [];
@@ -5448,7 +5466,7 @@ function movePiece(move, boardState) {
         boardState.capturedPieces.push(destination.piece);
     destination.piece = origin.piece;
     destination.piece.location = { file: to.file, rank: to.rank };
-    destination.piece.moveHistory.push({ from: from, to: to, isWhite: origin.piece.isWhite });
+    boardState.moveHistory.push({ from: from, to: to, piece: destination.piece });
     var movePatternPostActions = move.postMoveActions || [];
     movePatternPostActions.forEach(function (func) {
         func.action(destination.piece, boardState, self);
@@ -5661,7 +5679,8 @@ module.exports = bishop;
 var enums = require("../../enums");
 var Direction = enums.Direction;
 var queenSideCastleCondition = function (piece, boardState, board) {
-    if (piece.moveHistory.length > 0)
+    var history = getHistory(piece, boardState, board);
+    if (history.length > 0)
         return false;
     var f = function (num) { return getSquare(piece, board, boardState, Direction.QueenSide, num); };
     var queenSquare = f(1);
@@ -5674,11 +5693,13 @@ var queenSideCastleCondition = function (piece, boardState, board) {
         && !!rookSquare.piece;
     if (!squaresAreVacant)
         return false;
-    var rookHasMoved = rookSquare.piece.moveHistory.length > 0;
+    var rookHistory = getHistory(rookSquare.piece, boardState, board);
+    var rookHasMoved = rookHistory.length > 0;
     return !rookHasMoved;
 };
 var kingSideCastleCondition = function (piece, boardState, board) {
-    if (piece.moveHistory.length > 0)
+    var history = getHistory(piece, boardState, board);
+    if (history.length > 0)
         return false;
     var f = function (num) { return getSquare(piece, board, boardState, Direction.KingSide, num); };
     var bishopSquare = f(1);
@@ -5689,7 +5710,8 @@ var kingSideCastleCondition = function (piece, boardState, board) {
         && !!rookSquare.piece;
     if (!squaresAreVacant)
         return false;
-    var rookHasMoved = rookSquare.piece.moveHistory.length > 0;
+    var rookHistory = getHistory(rookSquare.piece, boardState, board);
+    var rookHasMoved = rookHistory.length > 0;
     return !rookHasMoved;
 };
 var postQueenSideCastle = {
@@ -5726,6 +5748,9 @@ var kingSideCastle = {
     conditions: [kingSideCastleCondition],
     postMoveActions: [postKingSideCastle]
 };
+function getHistory(piece, boardState, board) {
+    return boardState.moveHistory.filter(function (history) { return history.piece.id === piece.id; });
+}
 function getSquare(piece, board, boardState, direction, count) {
     var coord = piece.getRelativeDestinations(direction, count)[0];
     return board.getSquare(coord, boardState);
@@ -5780,8 +5805,9 @@ module.exports = knight;
 },{"../../enums":39}],35:[function(require,module,exports){
 var enums = require("../../enums");
 var Direction = enums.Direction;
-var firstMoveCondition = function (piece) {
-    return (piece.moveHistory.length === 0);
+var firstMoveCondition = function (piece, boardState, board) {
+    var history = boardState.moveHistory.filter(function (m) { return m.piece.id === piece.id; });
+    return (history.length === 0);
 };
 var canLeftEnpassant = function (piece, boardState, board) {
     return hasEnpassantTag(Direction.UpLeft, piece, boardState, board);
@@ -5868,6 +5894,7 @@ var forward = {
     count: 1
 };
 var pawn = {
+    id: 0,
     location: null,
     name: "Pawn",
     movement: [moveForward, moveCapture, firstMovePattern, leftEnpassant, rightEnpassant],

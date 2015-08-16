@@ -2,6 +2,7 @@ var getTransforms = require("./helpers/getTransforms");
 var applyTransform = require("./helpers/applyTransform");
 var BasePiece = (function () {
     function BasePiece(piece, notation) {
+        this.id = 0;
         this.isWhite = notation === piece.notation.toUpperCase();
         this.name = piece.name;
         this.movement = piece.movement;

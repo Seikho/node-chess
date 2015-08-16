@@ -17,6 +17,7 @@ class BasePiece implements Chess.BasePiece {
 		this.moveHistory = [];
 		this.postMoveFunctions = piece.postMoveFunctions || [];
 	}
+	id = 0;
 	location: Chess.Coordinate;
 	name: string;
 	movement: Chess.MovePattern[];
