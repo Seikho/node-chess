@@ -38,14 +38,14 @@ var game = chess.classic.engine();
 ###Using the board
 ```javascript
 // Move the E2 pawn to E4
-game.movePiece({ file: 5, rank: 2 } /* from */,{ file: 5, rank: 4 } /* to */);
+game.movePiece( { from: { file: 5, rank: 2 } , to: { file: 5, rank: 4 } });
 
 // Move the B8 knight to C6 
-game.movePiece({ file: 2, rank: 8 }, { file: 3, rank: 6 });
+game.movePiece( { from: { file: 2, rank: 8 }, to: { file: 3, rank: 6 } });
 
 // Try and make an invalid move
 // No piece is on B8
-game.movePiece({ file: 2, rank: 8}, { file: 3, rank: 6 }) === null; // true
+game.movePiece({ from: { file: 2, rank: 8 }, to: { file: 3, rank: 6 } }); === null; // true
 
 // Print the available moves of the C6 knight to the console
 console.log(classicEngine.getMoves({ file: 3, rank: 6 }));
