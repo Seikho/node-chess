@@ -51,12 +51,12 @@ function movePiece(from: Chess.Coordinate, to: Chess.Coordinate, boardState?: Ch
 	boardState.moveNumber++;
 	boardState.postMoveFunctions = enginePostMoveActions.filter(pmf => !pmf.moveNumber || pmf.moveNumber >= boardState.moveNumber);
 
-	if (saveToBoard) {
-		// We only call post move functions if we're saving state
-		self.postMoveFunctions.forEach(moveFn => {
-			moveFn.action(destination.piece, boardState, self);
-		});
-		self.boardState = boardState;
-	}
+	// We only call post move functions if we're saving state
+	if (!saveToBoard) return boardState;
+	
+	self.postMoveFunctions.forEach(moveFn => {
+		moveFn.action(destination.piece, boardState, self);
+	});
+	self.boardState = boardState;
 	return boardState;
 }
