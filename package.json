@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "start": "node src/index.js",
-    "build": "tsglob && tsc && browserify src/index.js -o node-chess.js"
+    "build": "tsglob && tsc && browserify src/index.js -o node-chess.js && browserify test/increments.js -o profile/increments.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/seikho/node-chess",
   "devDependencies": {
+    "analysis": "^0.2.4",
     "chai": "^2.1.2",
     "mocha": "^2.2.1"
   },
