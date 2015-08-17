@@ -27,7 +27,7 @@ function getMoves(coordinate: Chess.Coordinate, boardState?: Chess.BoardState): 
     var moves: Chess.Move[] = [];
 
     movePatterns.forEach(move => {
-        var newPathings = getPaths(coordinate, move, piece.isWhite, bounds);
+        var newPathings = getPaths(coordinate, move, piece.isWhite);
         var validPathings = newPathings.forEach(pathing => {
             // If it's a vanilla move pattern, use the standard path validation strategy
             if (!move.conditions) {

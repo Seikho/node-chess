@@ -15,17 +15,10 @@ export = Engine;
  * Board: extensible board (TODO: more detail)
  */
 class Engine implements Chess.Engine {
-    constructor(ranks?: number, files?: number) {
-        ranks = ranks || 8;
-        files = files || 8;
-        if (isNaN(ranks) || isNaN(files)) throw "InvalidArgumentException: 'ranks' and 'files' must be a number";
-
-        // Only accept positive, whole, organic, gluten-free numbers.
-        this.rankCount = Math.floor(ranks);
-        this.fileCount = Math.floor(files);
-    }
-    rankCount: number;
-    fileCount: number;
+    constructor(){}
+    
+    rankCount: number = 8;
+    fileCount: number = 8;
     postMoveFunctions: Chess.MoveFunction[] = [];
 
     boardState = {

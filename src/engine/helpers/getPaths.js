@@ -1,10 +1,9 @@
-var isInBounds = require("./isInBounds");
 var getTransforms = require("./getTransforms");
-function getPaths(coordinate, movePattern, isWhite, bounds) {
+function getPaths(coordinate, movePattern, isWhite) {
     // TODO: Refactor
     var move = movePattern.moves[0];
     var transforms = getTransforms(move, isWhite);
-    var pathings = getPathingForTransforms(coordinate, transforms, move.count, bounds);
+    var pathings = getPathingForTransforms(coordinate, transforms, move.count);
     // No further work is necessary for movePatterns with one move.
     if (!movePattern.moves[1])
         return pathings;
@@ -14,19 +13,17 @@ function getPaths(coordinate, movePattern, isWhite, bounds) {
         var pathing = pathings[p];
         var lastCoordinateInPath = pathing[pathing.length - 1];
         // We need every permutation of originalPathing + newPathing.
-        var nextPathings = getPathingForTransforms(lastCoordinateInPath, transforms, movePattern.moves[1].count, bounds);
+        var nextPathings = getPathingForTransforms(lastCoordinateInPath, transforms, movePattern.moves[1].count);
         joinedPathings = joinedPathings.concat(combinePathings(pathing, nextPathings));
     }
     return joinedPathings;
 }
-function getPathingForTransforms(coordinate, transforms, count, bounds) {
+function getPathingForTransforms(coordinate, transforms, count) {
     var paths = [];
     // If the count is 0, return paths for 1 to [bound of the board]
     if (count === 0) {
-        // Get a sensible 'count' value
-        var max = Math.max(bounds.file, bounds.rank);
-        for (var i = 1; i <= max; i++) {
-            paths = paths.concat(getPathingForTransforms(coordinate, transforms, i, bounds));
+        for (var i = 1; i <= 8; i++) {
+            paths = paths.concat(getPathingForTransforms(coordinate, transforms, i));
         }
         return paths;
     }
@@ -41,7 +38,7 @@ function getPathingForTransforms(coordinate, transforms, count, bounds) {
             });
         }
         // Only return the path if every coordinate in the path is within the bounds of the board
-        if (newPath.every(function (coord) { return isInBounds(coord, bounds); }))
+        if (newPath.every(function (coord) { return isInBounds(coord); }))
             paths.push(newPath);
     });
     return paths;
@@ -53,6 +50,11 @@ function combinePathings(leftPathings, rightPathings) {
         pathings.push(newPathing.concat(rightPathing));
     });
     return pathings;
+}
+// Optimisation: Boards are fixed 8x8
+function isInBounds(coordinate) {
+    return coordinate.file > 0 && coordinate.file <= 8
+        && coordinate.rank > 0 && coordinate.rank <= 8;
 }
 module.exports = getPaths;
 //# sourceMappingURL=getPaths.js.map

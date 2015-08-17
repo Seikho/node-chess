@@ -16,6 +16,20 @@ class BasePiece implements Chess.BasePiece {
 		this.notation = notation;
 		this.moveHistory = [];
 		this.postMoveFunctions = piece.postMoveFunctions || [];
+		
+		// Optimisation: Caching evaluated MovePatterns
+		piece.movement.forEach(move => {
+			var pattern = {
+				canJump: move.canJump,
+				canMove: move.canMove,
+				canCapture: move.canCapture,
+				moves: null
+			}
+			move.moves.forEach(m => {
+				var moves = getTransforms(m, this.isWhite);
+				this.transformCache.push({ moves, pattern })
+			});			
+		});
 	}
 	id = 0;
 	location: Chess.Coordinate;
@@ -26,6 +40,7 @@ class BasePiece implements Chess.BasePiece {
 	value: number;
 	notation: string;
 	moveHistory: Chess.Move[];
+	transformCache: Array<{ moves: Chess.Coordinate[], pattern: Chess.MovePattern }>;
 	isWhite: boolean;
 	postMoveFunctions: Chess.MoveFunction[];
 

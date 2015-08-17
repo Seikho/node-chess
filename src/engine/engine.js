@@ -12,7 +12,9 @@ var createPiece = require("./helpers/createPiece");
  * Board: extensible board (TODO: more detail)
  */
 var Engine = (function () {
-    function Engine(ranks, files) {
+    function Engine() {
+        this.rankCount = 8;
+        this.fileCount = 8;
         this.postMoveFunctions = [];
         this.boardState = {
             ranks: [],
@@ -36,13 +38,6 @@ var Engine = (function () {
         this.pieceFactory = BasePiece;
         this.populateAvailableMoves = availableMoves.bind(this);
         this.createPiece = createPiece.bind(this);
-        ranks = ranks || 8;
-        files = files || 8;
-        if (isNaN(ranks) || isNaN(files))
-            throw "InvalidArgumentException: 'ranks' and 'files' must be a number";
-        // Only accept positive, whole, organic, gluten-free numbers.
-        this.rankCount = Math.floor(ranks);
-        this.fileCount = Math.floor(files);
     }
     return Engine;
 })();

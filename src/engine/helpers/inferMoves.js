@@ -18,7 +18,7 @@ function getMoves(coordinate, boardState) {
     var movePatterns = piece.movement.slice(0);
     var moves = [];
     movePatterns.forEach(function (move) {
-        var newPathings = getPaths(coordinate, move, piece.isWhite, bounds);
+        var newPathings = getPaths(coordinate, move, piece.isWhite);
         var validPathings = newPathings.forEach(function (pathing) {
             // If it's a vanilla move pattern, use the standard path validation strategy
             if (!move.conditions) {
