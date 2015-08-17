@@ -9,10 +9,10 @@ function deepCopy(boardState: Chess.BoardState) {
 		moveNumber: boardState.moveNumber,
 		whitesTurn: boardState.whitesTurn,
 		capturedPieces: boardState.capturedPieces.map(copyPiece),
-		preMoveFunctions: shallowCopyArray(boardState.preMoveFunctions),
-		postMoveFunctions: shallowCopyArray(boardState.postMoveFunctions),
+		preMoveFunctions: boardState.preMoveFunctions.slice(),
+		postMoveFunctions: boardState.postMoveFunctions.slice(),
 		moves: copyAvailableMoves(boardState.moves),
-		moveHistory: copyMoveHistory(boardState.moveHistory)
+		moveHistory: boardState.moveHistory.slice()
 	}
 
 	return copy;
