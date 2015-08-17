@@ -4,10 +4,10 @@ function deepCopy(boardState) {
         tags: shallowCopy(boardState.tags),
         moveNumber: boardState.moveNumber,
         whitesTurn: boardState.whitesTurn,
-        capturedPieces: boardState.capturedPieces.map(copyPiece),
+        capturedPieces: boardState.capturedPieces.slice(),
         preMoveFunctions: boardState.preMoveFunctions.slice(),
         postMoveFunctions: boardState.postMoveFunctions.slice(),
-        moves: copyAvailableMoves(boardState.moves),
+        moves: boardState.moves.slice(),
         moveHistory: boardState.moveHistory.slice()
     };
     return copy;
