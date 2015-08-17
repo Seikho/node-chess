@@ -20,16 +20,6 @@ describe("deep copy tests", () => {
 		expect(states.left.moves.length < states.right.moves.length).to.be.true;
 	});
 
-	it("will mutate the first move and not affect the other first move (no shared reference)", () => {
-		var states = copyState();
-
-		states.left.moves[0].from = { file: 80, rank: 80 };
-		var left = states.left.moves[0].from;
-		var right = states.right.moves[0].from;
-		expect(left.file).to.not.equal(right.file);
-		expect(left.rank).to.not.equal(right.rank);
-	});
-
 	it("will move a piece and not mutate the board's boardState", () => {
 		var board = newBoard();
 		var copy = deepCopy(board.boardState);
