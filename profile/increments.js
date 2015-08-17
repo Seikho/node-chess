@@ -12310,7 +12310,6 @@ module.exports = isValidPath;
 var deepCopy = require("./deepCopy");
 function movePiece(move, boardState) {
     var self = this;
-    var start = Date.now();
     var from = move.from;
     var to = move.to;
     // TODO: Replace with better method

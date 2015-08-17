@@ -12,6 +12,7 @@
         "test/**/*.ts"
     ],
     "files": [
+        "test/benchmark.ts",
         "test/copy.ts",
         "test/fen-parser.ts",
         "test/increments.ts",
@@ -35,7 +36,6 @@
         "src/engine/helpers/isValidPath.ts",
         "src/engine/helpers/movePiece.ts",
         "src/engine/helpers/toString.ts",
-        "src/engine/instances/classic.ts",
         "src/engine/instances/classic/engine.ts",
         "src/engine/instances/classic/pieces/bishop.ts",
         "src/engine/instances/classic/pieces/king.ts",
@@ -54,7 +54,6 @@
         "src/typings/chai/chai.d.ts",
         "src/typings/mocha/mocha.d.ts",
         "src/typings/node-chess/node-chess.d.ts",
-        "src/typings/node/node.d.ts",
-        "src/typings/tsd.d.ts"
+        "src/typings/node/node.d.ts"
     ]
 }

@@ -46,12 +46,11 @@ function movePiece(move: Chess.Move, boardState?: Chess.BoardState): Chess.Board
 	self.populateAvailableMoves(boardState);
 
 	var enginePostMoveActions: Chess.MoveFunction[] = boardState.postMoveFunctions || [];
-
+		
 	enginePostMoveActions.forEach(postMove => {
 		if (!postMove.moveNumber || postMove.moveNumber === boardState.moveNumber)
 			postMove.action(destination.piece, boardState, self);
-	});
-
+	});	
 	boardState.moveNumber++;
 	boardState.postMoveFunctions = enginePostMoveActions.filter(pmf => !pmf.moveNumber || pmf.moveNumber >= boardState.moveNumber);
 
@@ -60,7 +59,7 @@ function movePiece(move: Chess.Move, boardState?: Chess.BoardState): Chess.Board
 	
 	self.postMoveFunctions.forEach(moveFn => {
 		moveFn.action(destination.piece, boardState, self);
-	});
-	self.boardState = boardState;
+	});	
+	self.boardState = boardState;	
 	return boardState;
 }
