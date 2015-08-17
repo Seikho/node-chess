@@ -1,12 +1,10 @@
 var Engine = require("./engine/engine");
-var classicEngine = require("./engine/instances/classic");
-var classicPieces = require("./engine/pieces/pieces");
+var classicEngine = require("./engine/instances/classic/engine");
 var enums = require("./enums");
 var chess = {
     Engine: Engine,
     classic: {
         engine: classicEngine,
-        pieces: classicPieces,
     },
     Direction: enums.Direction
 };

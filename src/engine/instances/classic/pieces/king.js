@@ -1,4 +1,4 @@
-var enums = require("../../enums");
+var enums = require("../../../../enums");
 var Direction = enums.Direction;
 var queenSideCastleCondition = function (piece, boardState, board) {
     var history = getHistory(piece, boardState, board);

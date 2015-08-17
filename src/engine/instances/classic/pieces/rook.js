@@ -1,4 +1,4 @@
-var enums = require("../../enums");
+var enums = require("../../../../enums");
 var Direction = enums.Direction;
 var lat = {
     moves: [{ direction: Direction.Lateral, count: 0 }],

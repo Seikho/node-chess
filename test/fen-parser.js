@@ -1,4 +1,4 @@
-var classicEngine = require("../src/engine/instances/classic");
+var classicEngine = require("../src/engine/instances/classic/engine");
 var chai = require("chai");
 var expect = chai.expect;
 describe("fen parsing tests", function () {

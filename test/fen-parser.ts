@@ -1,5 +1,4 @@
-import classicEngine = require("../src/engine/instances/classic");
-import pieces = require("../src/engine/pieces/pieces");
+import classicEngine = require("../src/engine/instances/classic/engine");
 import chai = require("chai");
 var expect = chai.expect;
 

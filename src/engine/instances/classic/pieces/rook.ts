@@ -1,4 +1,4 @@
-import enums = require("../../enums");
+import enums = require("../../../../enums");
 import Direction = enums.Direction;
 export = rook;
 

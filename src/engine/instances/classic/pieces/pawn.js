@@ -1,4 +1,4 @@
-var enums = require("../../enums");
+var enums = require("../../../../enums");
 var Direction = enums.Direction;
 var firstMoveCondition = function (piece, boardState, board) {
     var history = boardState.moveHistory.filter(function (m) { return m.piece.id === piece.id; });
