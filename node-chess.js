@@ -5001,6 +5001,7 @@ var BasePiece = (function () {
     function BasePiece(piece, notation) {
         var _this = this;
         this.id = 0;
+        this.transformCache = [];
         this.isWhite = notation === piece.notation.toUpperCase();
         this.name = piece.name;
         this.movement = piece.movement;

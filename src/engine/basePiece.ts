@@ -40,7 +40,7 @@ class BasePiece implements Chess.BasePiece {
 	value: number;
 	notation: string;
 	moveHistory: Chess.Move[];
-	transformCache: Array<{ moves: Chess.Coordinate[], pattern: Chess.MovePattern }>;
+	transformCache: Array<{ moves: Chess.Coordinate[], pattern: Chess.MovePattern }> = [];
 	isWhite: boolean;
 	postMoveFunctions: Chess.MoveFunction[];
 
