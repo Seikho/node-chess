@@ -1,5 +1,6 @@
 import Chess = require("node-chess");
 import getTransforms = require("./helpers/getTransforms");
+import getMovePatternTransform = require("./helpers/getPatternTransform");
 import applyTransform = require("./helpers/applyTransform");
 import enums = require("../enums");
 import Direction = enums.Direction;
@@ -18,17 +19,12 @@ class BasePiece implements Chess.BasePiece {
 		this.postMoveFunctions = piece.postMoveFunctions || [];
 		
 		// Optimisation: Caching evaluated MovePatterns
+		var cachedPaths = [];
 		piece.movement.forEach(move => {
-			var pattern = {
-				canJump: move.canJump,
-				canMove: move.canMove,
-				canCapture: move.canCapture,
-				moves: null
-			}
-			move.moves.forEach(m => {
-				var moves = getTransforms(m, this.isWhite);
-				this.transformCache.push({ moves, pattern })
-			});			
+			var paths = getMovePatternTransform(move, this.isWhite);
+			paths.forEach(p => {
+				this.transformCache.push({ moves: p, pattern: move });
+			});
 		});
 	}
 	id = 0;

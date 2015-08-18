@@ -32,9 +32,9 @@ var kingSideCastleCondition: Chess.MovePatternConditional = (piece, boardState, 
     var knightSquare = f(2);
     var rookSquare = f(3);
 
-    var squaresAreVacant = !bishopSquare.piece
+    var squaresAreVacant = !bishopSquare || !bishopSquare.piece
         && !knightSquare.piece
-        && !!rookSquare.piece;
+        && !rookSquare.piece;
     if (!squaresAreVacant) return false;
 
     var rookHistory = getHistory(rookSquare.piece, boardState, board);
@@ -86,7 +86,7 @@ function getHistory(piece: Chess.Piece, boardState: Chess.BoardState, board: Che
 
 function getSquare(piece: Chess.BasePiece, board: Chess.Engine, boardState: Chess.BoardState, direction: Direction, count: number) {
     var coord = piece.getRelativeDestinations(direction, count)[0];
-    return board.getSquare(coord, boardState);
+    return board.getSquare(coord, boardState) || <any>{};
 }
 
 var diag = {

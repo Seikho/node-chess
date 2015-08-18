@@ -11864,6 +11864,7 @@ module.exports = utils;
 
 },{}],50:[function(require,module,exports){
 var getTransforms = require("./helpers/getTransforms");
+var getMovePatternTransform = require("./helpers/getPatternTransform");
 var applyTransform = require("./helpers/applyTransform");
 var BasePiece = (function () {
     function BasePiece(piece, notation) {
@@ -11880,16 +11881,11 @@ var BasePiece = (function () {
         this.moveHistory = [];
         this.postMoveFunctions = piece.postMoveFunctions || [];
         // Optimisation: Caching evaluated MovePatterns
+        var cachedPaths = [];
         piece.movement.forEach(function (move) {
-            var pattern = {
-                canJump: move.canJump,
-                canMove: move.canMove,
-                canCapture: move.canCapture,
-                moves: null
-            };
-            move.moves.forEach(function (m) {
-                var moves = getTransforms(m, _this.isWhite);
-                _this.transformCache.push({ moves: moves, pattern: pattern });
+            var paths = getMovePatternTransform(move, _this.isWhite);
+            paths.forEach(function (p) {
+                _this.transformCache.push({ moves: p, pattern: move });
             });
         });
     }
@@ -11910,7 +11906,7 @@ function modifyTransform(transform, count) {
 }
 module.exports = BasePiece;
 
-},{"./helpers/applyTransform":52,"./helpers/getTransforms":60}],51:[function(require,module,exports){
+},{"./helpers/applyTransform":52,"./helpers/getPatternTransform":58,"./helpers/getTransforms":60}],51:[function(require,module,exports){
 var toString = require("./helpers/toString");
 var getMoves = require("./helpers/getMoves");
 var inferMoves = require("./helpers/inferMoves");
@@ -12104,67 +12100,89 @@ function getMoves(coordinate, boardState) {
 module.exports = getMoves;
 
 },{}],58:[function(require,module,exports){
-var getTransforms = require("./getTransforms");
-function getPaths(coordinate, movePattern, isWhite) {
-    // TODO: Refactor
-    var move = movePattern.moves[0];
-    var transforms = getTransforms(move, isWhite);
-    var pathings = getPathingForTransforms(coordinate, transforms, move.count);
-    // No further work is necessary for movePatterns with one move.
-    if (!movePattern.moves[1])
-        return pathings;
-    transforms = getTransforms(movePattern.moves[1], isWhite);
-    var joinedPathings = [];
-    for (var p in pathings) {
-        var pathing = pathings[p];
-        var lastCoordinateInPath = pathing[pathing.length - 1];
-        // We need every permutation of originalPathing + newPathing.
-        var nextPathings = getPathingForTransforms(lastCoordinateInPath, transforms, movePattern.moves[1].count);
-        joinedPathings = joinedPathings.concat(combinePathings(pathing, nextPathings));
-    }
-    return joinedPathings;
-}
-function getPathingForTransforms(coordinate, transforms, count) {
+var enums = require("../../enums");
+var Direction = enums.Direction;
+function getTransforms(movePattern, isWhite) {
     var paths = [];
-    // If the count is 0, return paths for 1 to [bound of the board]
-    if (count === 0) {
-        for (var i = 1; i <= 8; i++) {
-            paths = paths.concat(getPathingForTransforms(coordinate, transforms, i));
-        }
-        return paths;
-    }
-    // TODO: Refactor
-    // Incrementally apply the transform to create a 'path' 
-    transforms.forEach(function (transform) {
-        var newPath = [];
-        for (var i = 1; i <= count; i++) {
-            newPath.push({
-                file: coordinate.file + (transform.file * i),
-                rank: coordinate.rank + (transform.rank * i)
-            });
-        }
-        // Only return the path if every coordinate in the path is within the bounds of the board
-        if (newPath.every(function (coord) { return isInBounds(coord); }))
-            paths.push(newPath);
+    var firstMove = movePattern.moves[0];
+    var secondMove = movePattern.moves[1];
+    var firstMods = getModifiers(firstMove, isWhite);
+    var firstTransforms = applyTransforms(firstMods, firstMove.count);
+    if (!secondMove)
+        return [firstTransforms];
+    var secondMods = getModifiers(secondMove, isWhite);
+    var secondTransforms = applyTransforms(secondMods, secondMove.count);
+    firstTransforms.forEach(function (ft) {
+        secondTransforms.forEach(function (st) {
+            paths.push([ft, st]);
+        });
     });
     return paths;
 }
-function combinePathings(leftPathings, rightPathings) {
-    var pathings = [];
-    rightPathings.forEach(function (rightPathing) {
-        var newPathing = leftPathings.slice(0);
-        pathings.push(newPathing.concat(rightPathing));
-    });
-    return pathings;
+function applyTransforms(modifiers, count) {
+    if (count > 0) {
+        var newCoords = modifiers.map(function (c) { return { file: c.file * count, rank: c.rank * count }; });
+        return newCoords;
+    }
+    var coords = [];
+    for (var x = 1; x <= 8; x++) {
+        coords = coords.concat(applyTransforms(modifiers, x));
+    }
+    return coords;
 }
-// Optimisation: Boards are fixed 8x8
-function isInBounds(coordinate) {
-    return coordinate.file > 0 && coordinate.file <= 8
-        && coordinate.rank > 0 && coordinate.rank <= 8;
+function getModifiers(singleMove, isWhite) {
+    // Return the inverse of the transform if from black perspective
+    var x = isWhite ? 1 : -1;
+    var up = { rank: 1 * x, file: 0 };
+    var down = { rank: -1 * x, file: 0 };
+    var left = { rank: 0, file: -1 * x };
+    var right = { rank: 0, file: 1 * x };
+    var upLeft = { rank: 1 * x, file: -1 * x };
+    var upRight = { rank: 1 * x, file: 1 * x };
+    var downLeft = { rank: -1 * x, file: -1 * x };
+    var downRight = { rank: -1 * x, file: 1 * x };
+    var kingSide = { rank: 0, file: 1 };
+    var queenSide = { rank: 0, file: -1 };
+    switch (singleMove.direction) {
+        case Direction.Up:
+            return [up];
+        case Direction.Down:
+            return [down];
+        case Direction.Left:
+            return [left];
+        case Direction.Right:
+            return [right];
+        case Direction.DiagonalUp:
+            return [upLeft, upRight];
+        case Direction.DiagonalDown:
+            return [downLeft, downRight];
+        case Direction.Diagonal:
+            return [upLeft, upRight, downLeft, downRight];
+        case Direction.Horizontal:
+            return [left, right];
+        case Direction.Vertical:
+            return [up, down];
+        case Direction.Lateral:
+            return [up, down, left, right];
+        case Direction.UpLeft:
+            return [upLeft];
+        case Direction.UpRight:
+            return [upRight];
+        case Direction.DownLeft:
+            return [downLeft];
+        case Direction.DownRight:
+            return [downRight];
+        case Direction.KingSide:
+            return [kingSide];
+        case Direction.QueenSide:
+            return [queenSide];
+        default:
+            throw "InvalidDirectionException: The direction provided was invalid";
+    }
 }
-module.exports = getPaths;
+module.exports = getTransforms;
 
-},{"./getTransforms":60}],59:[function(require,module,exports){
+},{"../../enums":76}],59:[function(require,module,exports){
 function getSquare(square, boardState) {
     var self = this;
     boardState = boardState || self.boardState;
@@ -12230,8 +12248,7 @@ function getTransforms(singleMove, isWhite) {
 module.exports = getTransforms;
 
 },{"../../enums":76}],61:[function(require,module,exports){
-var getPaths = require("./getPaths");
-var isValidPath = require("./isValidPath");
+var validatePath = require("./isValidPath");
 // TODO: Desperately requires refactoring
 function getMoves(coordinate, boardState) {
     var self = this;
@@ -12247,68 +12264,94 @@ function getMoves(coordinate, boardState) {
     //if (!isMoveablePiece) return [];
     var bounds = { file: self.fileCount, rank: self.rankCount };
     var pathings = [];
-    var movePatterns = piece.movement.slice(0);
+    var movePatterns = piece.movement;
     var moves = [];
-    movePatterns.forEach(function (move) {
-        var newPathings = getPaths(coordinate, move, piece.isWhite);
-        var validPathings = newPathings.forEach(function (pathing) {
-            // If it's a vanilla move pattern, use the standard path validation strategy
-            if (!move.conditions) {
-                if (isValidPath(self, boardState, piece, pathing, move)) {
-                    moves.push({
-                        from: coordinate,
-                        to: pathing[pathing.length - 1],
-                        postMoveActions: [],
-                        isWhite: piece.isWhite
-                    });
-                }
-                return;
-            }
-            // Otherwise we use the logic provided with the move pattern
-            var defaultValidPath = !!move.useDefaultConditions ? isValidPath(self, boardState, piece, pathing, move) : true;
-            var movePatternEvaluation = move.conditions.every(function (cond) { return cond(piece, boardState, self); });
-            if (defaultValidPath && movePatternEvaluation) {
+    // var newPathings = getPaths(coordinate, move, piece.isWhite);
+    var validPathings = piece.transformCache.forEach(function (pathing) {
+        var pathMoves = pathing.moves;
+        var move = pathing.pattern;
+        // If it's a vanilla move pattern, use the standard path validation strategy
+        if (!move.conditions) {
+            var validPath_1 = validatePath(self, boardState, piece, pathMoves, move);
+            if (validPath_1) {
                 moves.push({
                     from: coordinate,
-                    to: pathing[pathing.length - 1],
-                    postMoveActions: move.postMoveActions || [],
+                    to: validPath_1[validPath_1.length - 1],
+                    postMoveActions: [],
                     isWhite: piece.isWhite
                 });
             }
-        });
+            return;
+        }
+        // Otherwise we use the logic provided with the move pattern
+        var validPath = !!move.useDefaultConditions ? validatePath(self, boardState, piece, pathMoves, move) : null;
+        if (!validPath)
+            return;
+        var movePatternEvaluation = move.conditions.every(function (cond) { return cond(piece, boardState, self); });
+        if (validPath && movePatternEvaluation) {
+            moves.push({
+                from: coordinate,
+                to: validPath[validPath.length - 1],
+                postMoveActions: move.postMoveActions || [],
+                isWhite: piece.isWhite
+            });
+        }
     });
     return moves;
 }
 module.exports = getMoves;
 
-},{"./getPaths":58,"./isValidPath":62}],62:[function(require,module,exports){
+},{"./isValidPath":62}],62:[function(require,module,exports){
 function isValidPath(board, boardState, piece, path, move) {
     // TODO: Rules API would be used here
     var isWhite = !!piece.isWhite;
-    var lastCoordinateIndex = path.length - 1;
-    var lastCoordinate = path[lastCoordinateIndex];
+    var appliedPath = applyPaths(piece.location, path);
+    var lastCoordinateIndex = appliedPath.length - 1;
+    var lastCoordinate = appliedPath[lastCoordinateIndex];
     var lastSquare = board.getSquare(lastCoordinate, boardState);
+    if (!lastSquare)
+        return null;
     // Optimisations
     // Ensure all squares leading up to the destination are vacant
     if (!move.canJump) {
-        var isPathVacant = path.slice(0, -1).every(function (coord) { return !board.getSquare(coord, boardState).piece; });
+        var every = function (coord) {
+            var sq = board.getSquare(coord, boardState);
+            if (!sq)
+                return false;
+            return !board.getSquare(coord, boardState).piece;
+        };
+        var isPathVacant = appliedPath.slice(0, -1).every(every);
         if (!isPathVacant)
-            return false;
+            return null;
     }
     // Destination occupied optimisations
     if (!!lastSquare.piece) {
         // Can't land on your own piece
         if (!!isWhite === !!lastSquare.piece.isWhite)
-            return false;
+            return null;
         // Must be able to capture if pieces are opposing colours
         if (!move.canCapture)
-            return false;
+            return null;
     }
     else {
         if (!move.canMove)
-            return false;
+            return null;
     }
-    return true;
+    return appliedPath;
+}
+function applyPaths(start, path) {
+    var first = {
+        file: start.file + path[0].file,
+        rank: start.rank + path[0].rank
+    };
+    var finalPath = [first];
+    if (!path[1])
+        return finalPath;
+    finalPath.push({
+        file: first.file + path[1].file,
+        rank: first.rank + path[1].rank
+    });
+    return finalPath;
 }
 module.exports = isValidPath;
 
@@ -12456,9 +12499,9 @@ var kingSideCastleCondition = function (piece, boardState, board) {
     var bishopSquare = f(1);
     var knightSquare = f(2);
     var rookSquare = f(3);
-    var squaresAreVacant = !bishopSquare.piece
+    var squaresAreVacant = !bishopSquare || !bishopSquare.piece
         && !knightSquare.piece
-        && !!rookSquare.piece;
+        && !rookSquare.piece;
     if (!squaresAreVacant)
         return false;
     var rookHistory = getHistory(rookSquare.piece, boardState, board);
@@ -12504,7 +12547,7 @@ function getHistory(piece, boardState, board) {
 }
 function getSquare(piece, board, boardState, direction, count) {
     var coord = piece.getRelativeDestinations(direction, count)[0];
-    return board.getSquare(coord, boardState);
+    return board.getSquare(coord, boardState) || {};
 }
 var diag = {
     moves: [{ direction: Direction.Diagonal, count: 1 }],
@@ -12971,6 +13014,7 @@ function hasMovesTest(message, start, expectedMoves) {
         var moves = board.boardState.moves
             .filter(function (move) { return move.from.file === start.file && move.from.rank === start.rank; })
             .map(function (move) { return move.to; });
+        console.log(moves);
         expectedMoves.forEach(function (m) { return expect(moves).to.include({ rank: m.rank, file: m.file }); });
         expect(expectedMoves.length).to.equal(moves.length);
     });

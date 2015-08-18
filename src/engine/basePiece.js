@@ -1,4 +1,5 @@
 var getTransforms = require("./helpers/getTransforms");
+var getMovePatternTransform = require("./helpers/getPatternTransform");
 var applyTransform = require("./helpers/applyTransform");
 var BasePiece = (function () {
     function BasePiece(piece, notation) {
@@ -15,16 +16,11 @@ var BasePiece = (function () {
         this.moveHistory = [];
         this.postMoveFunctions = piece.postMoveFunctions || [];
         // Optimisation: Caching evaluated MovePatterns
+        var cachedPaths = [];
         piece.movement.forEach(function (move) {
-            var pattern = {
-                canJump: move.canJump,
-                canMove: move.canMove,
-                canCapture: move.canCapture,
-                moves: null
-            };
-            move.moves.forEach(function (m) {
-                var moves = getTransforms(m, _this.isWhite);
-                _this.transformCache.push({ moves: moves, pattern: pattern });
+            var paths = getMovePatternTransform(move, _this.isWhite);
+            paths.forEach(function (p) {
+                _this.transformCache.push({ moves: p, pattern: move });
             });
         });
     }

@@ -27,9 +27,9 @@ var kingSideCastleCondition = function (piece, boardState, board) {
     var bishopSquare = f(1);
     var knightSquare = f(2);
     var rookSquare = f(3);
-    var squaresAreVacant = !bishopSquare.piece
+    var squaresAreVacant = !bishopSquare || !bishopSquare.piece
         && !knightSquare.piece
-        && !!rookSquare.piece;
+        && !rookSquare.piece;
     if (!squaresAreVacant)
         return false;
     var rookHistory = getHistory(rookSquare.piece, boardState, board);
@@ -75,7 +75,7 @@ function getHistory(piece, boardState, board) {
 }
 function getSquare(piece, board, boardState, direction, count) {
     var coord = piece.getRelativeDestinations(direction, count)[0];
-    return board.getSquare(coord, boardState);
+    return board.getSquare(coord, boardState) || {};
 }
 var diag = {
     moves: [{ direction: Direction.Diagonal, count: 1 }],

@@ -29,6 +29,7 @@
         "src/engine/helpers/getIncrements.ts",
         "src/engine/helpers/getMoves.ts",
         "src/engine/helpers/getPaths.ts",
+        "src/engine/helpers/getPatternTransform.ts",
         "src/engine/helpers/getSquare.ts",
         "src/engine/helpers/getTransforms.ts",
         "src/engine/helpers/inferMoves.ts",

@@ -111,6 +111,8 @@ function hasMovesTest(message: string, start: Chess.Coordinate, expectedMoves: C
 		var moves = board.boardState.moves
 			.filter(move => move.from.file === start.file && move.from.rank === start.rank)
 			.map(move => move.to);
+			
+		console.log(moves);
 
 		expectedMoves.forEach(m => expect(moves).to.include({ rank: m.rank, file: m.file }));
 		expect(expectedMoves.length).to.equal(moves.length);
