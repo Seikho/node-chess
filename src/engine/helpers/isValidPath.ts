@@ -5,7 +5,14 @@ function isValidPath(board: Chess.Engine, boardState: Chess.BoardState, piece: C
     // TODO: Rules API would be used here
     var isWhite = !!piece.isWhite;
     var appliedPath = applyPaths(piece.location, path);
+
+    var isInBounds = appliedPath.every(p => {
+        return p.file > 0 && p.file <= 8
+            && p.rank > 0 && p.rank <= 8;
+    });
     
+    if (!isInBounds) return null;
+
     var lastCoordinateIndex = appliedPath.length - 1;
     var lastCoordinate = appliedPath[lastCoordinateIndex];
     var lastSquare = board.getSquare(lastCoordinate, boardState);
@@ -48,15 +55,15 @@ function applyPaths(start: Chess.Coordinate, path: Chess.Coordinate[]): Chess.Co
         file: start.file + path[0].file,
         rank: start.rank + path[0].rank
     };
-    
+
     var finalPath = [first];
-    
+
     if (!path[1]) return finalPath;
-    
+
     finalPath.push({
         file: first.file + path[1].file,
         rank: first.rank + path[1].rank
     });
-    
+
     return finalPath;
 }
