@@ -26,7 +26,7 @@ function getMoves(coordinate, boardState) {
                 moves.push({
                     from: coordinate,
                     to: validPath_1[validPath_1.length - 1],
-                    postMoveActions: [],
+                    postMoveActions: move.postMoveActions || [],
                     isWhite: piece.isWhite
                 });
             }

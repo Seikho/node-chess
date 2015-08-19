@@ -64,11 +64,6 @@ describe("game conclusion tests", function () {
     });
     stalementCmMoveTest("[Stalemate] will move Ra6", coord(3, 6), coord(1, 6));
     it("Will delcare that the game is drawn by stalement", function () {
-        // stalemate.boardState.moves
-        // 	.filter(m => !m.isWhite)
-        // 	.forEach(m => console.log(m));
-        // console.log(stalemate.boardState.winnerIsWhite);
-        // console.log(stalemate.boardState.gameIsDrawn);
         expect(stalemate.boardState.gameIsDrawn).to.equal(true);
     });
 });
@@ -95,7 +90,6 @@ function hasMovesTest(message, start, expectedMoves) {
         var moves = board.boardState.moves
             .filter(function (move) { return move.from.file === start.file && move.from.rank === start.rank; })
             .map(function (move) { return move.to; });
-        console.log(moves);
         expectedMoves.forEach(function (m) { return expect(moves).to.include({ rank: m.rank, file: m.file }); });
         expect(expectedMoves.length).to.equal(moves.length);
     });
@@ -129,6 +123,7 @@ function pieceMoveTest(message, from, to, wont) {
             expect(newState).to.be.null;
             return;
         }
+        console.log(board.toString());
         // A bit elaborate due to immutability of movePiece function
         expect(movedPiece).to.exist;
         expect(movedPiece.location.file).to.equal(expected.file);

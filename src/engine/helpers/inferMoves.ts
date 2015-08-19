@@ -36,7 +36,7 @@ function getMoves(coordinate: Chess.Coordinate, boardState?: Chess.BoardState): 
                 moves.push({
                     from: coordinate,
                     to: validPath[validPath.length - 1],
-                    postMoveActions: [],
+                    postMoveActions: move.postMoveActions || [],
                     isWhite: piece.isWhite
                 });
             }

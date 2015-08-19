@@ -79,13 +79,7 @@ describe("game conclusion tests", () => {
 
 	stalementCmMoveTest("[Stalemate] will move Ra6", coord(3, 6), coord(1, 6));
 
-	it("Will delcare that the game is drawn by stalement", () => {
-		// stalemate.boardState.moves
-		// 	.filter(m => !m.isWhite)
-		// 	.forEach(m => console.log(m));
-		// console.log(stalemate.boardState.winnerIsWhite);
-		// console.log(stalemate.boardState.gameIsDrawn);
-		
+	it("Will delcare that the game is drawn by stalement", () => {		
 		expect(stalemate.boardState.gameIsDrawn).to.equal(true);
 	})
 });
@@ -112,9 +106,6 @@ function hasMovesTest(message: string, start: Chess.Coordinate, expectedMoves: C
 		var moves = board.boardState.moves
 			.filter(move => move.from.file === start.file && move.from.rank === start.rank)
 			.map(move => move.to);
-			
-		console.log(moves);
-
 		expectedMoves.forEach(m => expect(moves).to.include({ rank: m.rank, file: m.file }));
 		expect(expectedMoves.length).to.equal(moves.length);
 	});
@@ -154,7 +145,7 @@ function pieceMoveTest(message: string, from: Chess.Coordinate, to: Chess.Coordi
 			expect(newState).to.be.null;
 			return;
 		}
-		
+		console.log(board.toString());
 		// A bit elaborate due to immutability of movePiece function
 		expect(movedPiece).to.exist;
 		expect(movedPiece.location.file).to.equal(expected.file);
