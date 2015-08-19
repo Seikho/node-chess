@@ -6,12 +6,13 @@ var expect = chai.expect;
 describe("benchmarks", function () {
     this.timeout(60000);
     var engines = [];
-    it("will create a classic board 500 times", function () {
-        for (var x = 0; x < 500; x++) {
+    var times = 100;
+    it("will create a classic board " + times + " times", function () {
+        for (var x = 0; x < times; x++) {
             engines.push(chess.classic.engine());
         }
     });
-    it("will move a2-a3 500 times", function () {
+    it("will move a2-a3 " + times + " times", function () {
         var times = engines.map(function (e) {
             var timer = new Timer();
             e.movePiece({ from: { file: 2, rank: 2 }, to: { file: 2, rank: 3 } });
