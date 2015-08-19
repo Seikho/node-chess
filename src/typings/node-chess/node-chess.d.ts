@@ -28,6 +28,7 @@ declare module "node-chess" {
         moveNumber: number;
         whitesTurn: boolean;
         capturedPieces: Piece[];
+        activePiecies: Piece[];
         postMoveFunctions: MoveFunction[];
         preMoveFunctions: MoveFunction[];
         moves: Move[];
