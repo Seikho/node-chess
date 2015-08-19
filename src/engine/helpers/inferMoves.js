@@ -12,7 +12,6 @@ function getMoves(coordinate, boardState) {
     // Therefore we leave this commented out
     // var isMoveablePiece = piece.isWhite === board.whitesTurn;
     //if (!isMoveablePiece) return [];
-    var bounds = { file: self.fileCount, rank: self.rankCount };
     var pathings = [];
     var movePatterns = piece.movement;
     var moves = [];

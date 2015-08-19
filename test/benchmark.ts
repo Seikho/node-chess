@@ -9,7 +9,7 @@ describe("benchmarks", function() {
 	this.timeout(60000);
 	var engines: Chess.Engine[] = [];
 	
-	it("will create a classic board 5000 times", () => {
+	it("will create a classic board 500 times", () => {
 		for (var x = 0; x < 500; x++) {
 			engines.push(chess.classic.engine());
 		}

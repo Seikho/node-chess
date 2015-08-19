@@ -19,8 +19,6 @@ function getMoves(coordinate: Chess.Coordinate, boardState?: Chess.BoardState): 
     // var isMoveablePiece = piece.isWhite === board.whitesTurn;
     //if (!isMoveablePiece) return [];
 
-    var bounds = { file: self.fileCount, rank: self.rankCount };
-
     var pathings: Array<Chess.Coordinate[]> = [];
 
     var movePatterns = piece.movement;
