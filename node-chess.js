@@ -5154,7 +5154,7 @@ function deepCopy(boardState) {
         preMoveFunctions: boardState.preMoveFunctions.slice(),
         postMoveFunctions: boardState.postMoveFunctions.slice(),
         moves: boardState.moves.slice(),
-        moveHistory: boardState.moveHistory.slice()
+        moveHistory: boardState.moveHistory.slice(),
     };
     return copy;
 }
@@ -5394,7 +5394,6 @@ function getMoves(coordinate, boardState) {
     // Therefore we leave this commented out
     // var isMoveablePiece = piece.isWhite === board.whitesTurn;
     //if (!isMoveablePiece) return [];
-    var bounds = { file: self.fileCount, rank: self.rankCount };
     var pathings = [];
     var movePatterns = piece.movement;
     var moves = [];
@@ -5409,7 +5408,7 @@ function getMoves(coordinate, boardState) {
                 moves.push({
                     from: coordinate,
                     to: validPath_1[validPath_1.length - 1],
-                    postMoveActions: [],
+                    postMoveActions: move.postMoveActions || [],
                     isWhite: piece.isWhite
                 });
             }
@@ -5438,6 +5437,12 @@ function isValidPath(board, boardState, piece, path, move) {
     // TODO: Rules API would be used here
     var isWhite = !!piece.isWhite;
     var appliedPath = applyPaths(piece.location, path);
+    var isInBounds = appliedPath.every(function (p) {
+        return p.file > 0 && p.file <= 8
+            && p.rank > 0 && p.rank <= 8;
+    });
+    if (!isInBounds)
+        return null;
     var lastCoordinateIndex = appliedPath.length - 1;
     var lastCoordinate = appliedPath[lastCoordinateIndex];
     var lastSquare = board.getSquare(lastCoordinate, boardState);

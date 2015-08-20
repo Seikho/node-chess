@@ -12,7 +12,7 @@ function deepCopy(boardState: Chess.BoardState) {
 		preMoveFunctions: boardState.preMoveFunctions.slice(),
 		postMoveFunctions: boardState.postMoveFunctions.slice(),
 		moves: boardState.moves.slice(),
-		moveHistory: boardState.moveHistory.slice()
+		moveHistory: boardState.moveHistory.slice(),
 	}
 
 	return copy;

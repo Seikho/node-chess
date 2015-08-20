@@ -21,7 +21,7 @@ class Engine implements Chess.Engine {
     fileCount: number = 8;
     postMoveFunctions: Chess.MoveFunction[] = [];
 
-    boardState = {
+    boardState: Chess.BoardState = {
         ranks: [],
         tags: <Chess.BoardTag>{},
         capturedPieces: [],

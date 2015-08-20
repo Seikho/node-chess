@@ -12022,7 +12022,7 @@ function deepCopy(boardState) {
         preMoveFunctions: boardState.preMoveFunctions.slice(),
         postMoveFunctions: boardState.postMoveFunctions.slice(),
         moves: boardState.moves.slice(),
-        moveHistory: boardState.moveHistory.slice()
+        moveHistory: boardState.moveHistory.slice(),
     };
     return copy;
 }
@@ -12262,7 +12262,6 @@ function getMoves(coordinate, boardState) {
     // Therefore we leave this commented out
     // var isMoveablePiece = piece.isWhite === board.whitesTurn;
     //if (!isMoveablePiece) return [];
-    var bounds = { file: self.fileCount, rank: self.rankCount };
     var pathings = [];
     var movePatterns = piece.movement;
     var moves = [];
@@ -12277,7 +12276,7 @@ function getMoves(coordinate, boardState) {
                 moves.push({
                     from: coordinate,
                     to: validPath_1[validPath_1.length - 1],
-                    postMoveActions: [],
+                    postMoveActions: move.postMoveActions || [],
                     isWhite: piece.isWhite
                 });
             }
@@ -12306,6 +12305,12 @@ function isValidPath(board, boardState, piece, path, move) {
     // TODO: Rules API would be used here
     var isWhite = !!piece.isWhite;
     var appliedPath = applyPaths(piece.location, path);
+    var isInBounds = appliedPath.every(function (p) {
+        return p.file > 0 && p.file <= 8
+            && p.rank > 0 && p.rank <= 8;
+    });
+    if (!isInBounds)
+        return null;
     var lastCoordinateIndex = appliedPath.length - 1;
     var lastCoordinate = appliedPath[lastCoordinateIndex];
     var lastSquare = board.getSquare(lastCoordinate, boardState);
@@ -12954,6 +12959,7 @@ describe("movement tests", function () {
     classicMoveTest("[White] will move not move a4-a5 due to 'cannot capture'", coord(1, 5), coord(1, 6), true);
     classicMoveTest("[White] will move g1-h3", coord(7, 1), coord(8, 3));
     classicMoveTest("[Black] will move b7-b5", coord(2, 7), coord(2, 5));
+    classicMovesTest("will have enpassant available for the a4 pawn", coord(1, 4), [coord(2, 5)]);
     classicMoveTest("[White] will capture from a4-b5", coord(1, 4), coord(2, 5));
     classicMoveTest("[Black] will move c7-c5, enabling enpassant capture on c6", coord(3, 7), coord(3, 5));
     classicMovesTest("will find all available moves for white pawn on b5", coord(2, 5), [coord(2, 6), coord(3, 6)]);
@@ -12983,11 +12989,6 @@ describe("game conclusion tests", function () {
     });
     stalementCmMoveTest("[Stalemate] will move Ra6", coord(3, 6), coord(1, 6));
     it("Will delcare that the game is drawn by stalement", function () {
-        // stalemate.boardState.moves
-        // 	.filter(m => !m.isWhite)
-        // 	.forEach(m => console.log(m));
-        // console.log(stalemate.boardState.winnerIsWhite);
-        // console.log(stalemate.boardState.gameIsDrawn);
         expect(stalemate.boardState.gameIsDrawn).to.equal(true);
     });
 });
@@ -13014,7 +13015,6 @@ function hasMovesTest(message, start, expectedMoves) {
         var moves = board.boardState.moves
             .filter(function (move) { return move.from.file === start.file && move.from.rank === start.rank; })
             .map(function (move) { return move.to; });
-        console.log(moves);
         expectedMoves.forEach(function (m) { return expect(moves).to.include({ rank: m.rank, file: m.file }); });
         expect(expectedMoves.length).to.equal(moves.length);
     });
@@ -13048,6 +13048,7 @@ function pieceMoveTest(message, from, to, wont) {
             expect(newState).to.be.null;
             return;
         }
+        console.log(board.toString());
         // A bit elaborate due to immutability of movePiece function
         expect(movedPiece).to.exist;
         expect(movedPiece.location.file).to.equal(expected.file);
