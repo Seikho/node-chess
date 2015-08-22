@@ -4,6 +4,8 @@ function availableMoves(boardState) {
     var moves = [];
     boardState.ranks.forEach(function (rank) {
         rank.squares.forEach(function (square) {
+            if (square.piece == null)
+                return;
             moves = moves.concat(self.inferMoves({ file: square.file, rank: rank.rank }, boardState));
         });
     });
