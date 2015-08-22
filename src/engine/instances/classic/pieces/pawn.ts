@@ -32,6 +32,7 @@ var allowEnpassantCapture: Chess.MoveFunction = {
 		// Find the middle square between the originating and desination squares for tagging
 		var coordinateToTag = piece.getRelativeDestinations(Direction.Down, 1)[0];
 		var squareToTag = board.getSquare(coordinateToTag, boardState);
+		
         squareToTag.tags["enpassant"] = piece.isWhite;
 		
 		boardState.postMoveFunctions.push({
