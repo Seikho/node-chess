@@ -25,7 +25,9 @@ function getMoves(coordinate: Chess.Coordinate, boardState?: Chess.BoardState): 
     var moves: Chess.Move[] = [];
 
     // var newPathings = getPaths(coordinate, move, piece.isWhite);
+
     var validPathings = piece.transformCache.forEach(pathing => {
+
         var pathMoves = pathing.moves;
         var move = pathing.pattern;
         
@@ -44,8 +46,9 @@ function getMoves(coordinate: Chess.Coordinate, boardState?: Chess.BoardState): 
         }
         // Otherwise we use the logic provided with the move pattern
         let validPath = !!move.useDefaultConditions ? validatePath(self, boardState, piece, pathMoves, move) : null;
-        if (!validPath) return; 
-        
+
+        if (!validPath) return;
+
         var movePatternEvaluation = move.conditions.every(cond => cond(piece, boardState, self));
         if (validPath && movePatternEvaluation) {
             moves.push({
@@ -56,7 +59,6 @@ function getMoves(coordinate: Chess.Coordinate, boardState?: Chess.BoardState): 
             });
         }
     });
-
-
+    
     return moves;
 }

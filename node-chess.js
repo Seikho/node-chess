@@ -5097,6 +5097,8 @@ function availableMoves(boardState) {
     var moves = [];
     boardState.ranks.forEach(function (rank) {
         rank.squares.forEach(function (square) {
+            if (square.piece == null)
+                return;
             moves = moves.concat(self.inferMoves({ file: square.file, rank: rank.rank }, boardState));
         });
     });
@@ -5134,7 +5136,6 @@ function createSquares() {
                 rank: rank,
                 file: file,
                 piece: null,
-                availableMoves: [],
                 tags: []
             };
         }
@@ -5241,7 +5242,7 @@ function getTransforms(movePattern, isWhite) {
     var firstMods = getModifiers(firstMove, isWhite);
     var firstTransforms = applyTransforms(firstMods, firstMove.count);
     if (!secondMove)
-        return [firstTransforms];
+        return firstTransforms.map(function (ft) { return [ft]; });
     var secondMods = getModifiers(secondMove, isWhite);
     var secondTransforms = applyTransforms(secondMods, secondMove.count);
     firstTransforms.forEach(function (ft) {
@@ -5509,11 +5510,11 @@ function movePiece(move, boardState) {
     if (boardState.whitesTurn !== origin.piece.isWhite)
         return null;
     // The 'destination' square must be in the square's list of available moves
-    var move = boardState.moves.filter(function (m) {
+    var pieceMove = boardState.moves.filter(function (m) {
         return m.from.file === from.file && m.from.rank === from.rank &&
             m.to.file === to.file && m.to.rank === to.rank;
     })[0];
-    if (!move)
+    if (!pieceMove)
         return null;
     var destination = self.getSquare(to, boardState);
     if (destination.piece)
@@ -5521,7 +5522,7 @@ function movePiece(move, boardState) {
     destination.piece = origin.piece;
     destination.piece.location = { file: to.file, rank: to.rank };
     boardState.moveHistory.push({ from: from, to: to, piece: destination.piece });
-    var movePatternPostActions = move.postMoveActions || [];
+    var movePatternPostActions = pieceMove.postMoveActions || [];
     movePatternPostActions.forEach(function (func) {
         func.action(destination.piece, boardState, self);
     });

@@ -22,6 +22,9 @@ class BasePiece implements Chess.BasePiece {
 		var cachedPaths = [];
 		piece.movement.forEach(move => {
 			var paths = getMovePatternTransform(move, this.isWhite);
+			
+			
+
 			paths.forEach(p => {
 				this.transformCache.push({ moves: p, pattern: move });
 			});

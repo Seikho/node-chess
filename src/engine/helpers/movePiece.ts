@@ -20,10 +20,10 @@ function movePiece(move: Chess.Move, boardState?: Chess.BoardState): Chess.Board
 	if (boardState.whitesTurn !== origin.piece.isWhite) return null; 
 		
 	// The 'destination' square must be in the square's list of available moves
-	var move = boardState.moves.filter(m =>
+	var pieceMove = boardState.moves.filter(m =>
 		m.from.file === from.file && m.from.rank === from.rank &&
 		m.to.file === to.file && m.to.rank === to.rank)[0];
-	if (!move) return null;
+	if (!pieceMove) return null;
 
 	var destination: Chess.Square = self.getSquare(to, boardState);
 	if (destination.piece) boardState.capturedPieces.push(destination.piece)
@@ -32,7 +32,7 @@ function movePiece(move: Chess.Move, boardState?: Chess.BoardState): Chess.Board
 	destination.piece.location = { file: to.file, rank: to.rank };
 	boardState.moveHistory.push({ from: from, to: to, piece: destination.piece });
 
-	var movePatternPostActions = move.postMoveActions || [];
+	var movePatternPostActions = pieceMove.postMoveActions || [];
 	movePatternPostActions.forEach(func => {
 		func.action(destination.piece, boardState, self);
 	});
@@ -43,6 +43,7 @@ function movePiece(move: Chess.Move, boardState?: Chess.BoardState): Chess.Board
 	origin.piece = null;
 
 	boardState.whitesTurn = !boardState.whitesTurn;
+
 	self.populateAvailableMoves(boardState);
 
 	var enginePostMoveActions: Chess.MoveFunction[] = boardState.postMoveFunctions || [];

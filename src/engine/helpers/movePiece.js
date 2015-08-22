@@ -14,11 +14,11 @@ function movePiece(move, boardState) {
     if (boardState.whitesTurn !== origin.piece.isWhite)
         return null;
     // The 'destination' square must be in the square's list of available moves
-    var move = boardState.moves.filter(function (m) {
+    var pieceMove = boardState.moves.filter(function (m) {
         return m.from.file === from.file && m.from.rank === from.rank &&
             m.to.file === to.file && m.to.rank === to.rank;
     })[0];
-    if (!move)
+    if (!pieceMove)
         return null;
     var destination = self.getSquare(to, boardState);
     if (destination.piece)
@@ -26,7 +26,7 @@ function movePiece(move, boardState) {
     destination.piece = origin.piece;
     destination.piece.location = { file: to.file, rank: to.rank };
     boardState.moveHistory.push({ from: from, to: to, piece: destination.piece });
-    var movePatternPostActions = move.postMoveActions || [];
+    var movePatternPostActions = pieceMove.postMoveActions || [];
     movePatternPostActions.forEach(function (func) {
         func.action(destination.piece, boardState, self);
     });

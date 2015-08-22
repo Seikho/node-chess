@@ -11965,6 +11965,8 @@ function availableMoves(boardState) {
     var moves = [];
     boardState.ranks.forEach(function (rank) {
         rank.squares.forEach(function (square) {
+            if (square.piece == null)
+                return;
             moves = moves.concat(self.inferMoves({ file: square.file, rank: rank.rank }, boardState));
         });
     });
@@ -12002,7 +12004,6 @@ function createSquares() {
                 rank: rank,
                 file: file,
                 piece: null,
-                availableMoves: [],
                 tags: []
             };
         }
@@ -12109,7 +12110,7 @@ function getTransforms(movePattern, isWhite) {
     var firstMods = getModifiers(firstMove, isWhite);
     var firstTransforms = applyTransforms(firstMods, firstMove.count);
     if (!secondMove)
-        return [firstTransforms];
+        return firstTransforms.map(function (ft) { return [ft]; });
     var secondMods = getModifiers(secondMove, isWhite);
     var secondTransforms = applyTransforms(secondMods, secondMove.count);
     firstTransforms.forEach(function (ft) {
@@ -12377,11 +12378,11 @@ function movePiece(move, boardState) {
     if (boardState.whitesTurn !== origin.piece.isWhite)
         return null;
     // The 'destination' square must be in the square's list of available moves
-    var move = boardState.moves.filter(function (m) {
+    var pieceMove = boardState.moves.filter(function (m) {
         return m.from.file === from.file && m.from.rank === from.rank &&
             m.to.file === to.file && m.to.rank === to.rank;
     })[0];
-    if (!move)
+    if (!pieceMove)
         return null;
     var destination = self.getSquare(to, boardState);
     if (destination.piece)
@@ -12389,7 +12390,7 @@ function movePiece(move, boardState) {
     destination.piece = origin.piece;
     destination.piece.location = { file: to.file, rank: to.rank };
     boardState.moveHistory.push({ from: from, to: to, piece: destination.piece });
-    var movePatternPostActions = move.postMoveActions || [];
+    var movePatternPostActions = pieceMove.postMoveActions || [];
     movePatternPostActions.forEach(function (func) {
         func.action(destination.piece, boardState, self);
     });
@@ -12959,7 +12960,6 @@ describe("movement tests", function () {
     classicMoveTest("[White] will move not move a4-a5 due to 'cannot capture'", coord(1, 5), coord(1, 6), true);
     classicMoveTest("[White] will move g1-h3", coord(7, 1), coord(8, 3));
     classicMoveTest("[Black] will move b7-b5", coord(2, 7), coord(2, 5));
-    classicMovesTest("will have enpassant available for the a4 pawn", coord(1, 4), [coord(2, 5)]);
     classicMoveTest("[White] will capture from a4-b5", coord(1, 4), coord(2, 5));
     classicMoveTest("[Black] will move c7-c5, enabling enpassant capture on c6", coord(3, 7), coord(3, 5));
     classicMovesTest("will find all available moves for white pawn on b5", coord(2, 5), [coord(2, 6), coord(3, 6)]);
@@ -13048,7 +13048,6 @@ function pieceMoveTest(message, from, to, wont) {
             expect(newState).to.be.null;
             return;
         }
-        console.log(board.toString());
         // A bit elaborate due to immutability of movePiece function
         expect(movedPiece).to.exist;
         expect(movedPiece.location.file).to.equal(expected.file);
