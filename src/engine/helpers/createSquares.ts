@@ -16,7 +16,6 @@ function createSquares() {
                 rank: rank,
                 file: file,
                 piece: null,
-                availableMoves: [],
                 tags: []
             }
         }
