@@ -7,7 +7,7 @@ function getTransforms(movePattern, isWhite) {
     var firstMods = getModifiers(firstMove, isWhite);
     var firstTransforms = applyTransforms(firstMods, firstMove.count);
     if (!secondMove)
-        return [firstTransforms];
+        return firstTransforms.map(function (ft) { return [ft]; });
     var secondMods = getModifiers(secondMove, isWhite);
     var secondTransforms = applyTransforms(secondMods, secondMove.count);
     firstTransforms.forEach(function (ft) {
