@@ -19,7 +19,7 @@ var knight = {
     canQueen: false,
     canSpawn: true,
     value: 3,
-    notation: "k"
+    notation: "n"
 };
 module.exports = knight;
 //# sourceMappingURL=knight.js.map

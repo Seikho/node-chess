@@ -27,5 +27,5 @@ var knight: Chess.NewPiece = {
 	canQueen: false,
 	canSpawn: true,
 	value: 3,
-	notation: "k"
+	notation: "n"
 }
