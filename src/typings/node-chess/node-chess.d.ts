@@ -156,16 +156,26 @@ declare module "node-chess" {
     }
 
     interface MoveDefinition {
-        transforms: Transform|Transform[];
+        transforms?: Transform|Transform[];
+        incrementer?: Increment;
         canMove?: boolean;
         canCapture?: boolean;
         postMoveAction?: MoveFunction;
         preCondition?: MovePatternConditional;
     }
+    
+    interface Increment {
+        file: number,
+        rank: number,
+        
+        limit?: number;
+        canJump?: boolean
+    }
 
     interface Transform {
         file: number;
         rank: number;
+        
         squaresBetween?: boolean;
         canJump?: boolean;
     }
