@@ -21,7 +21,7 @@ declare module "node-chess" {
         inferMoves(coordinate: Coordinate, boardState?: BoardState): Move[];
         toString(): string;
     }
-    
+
     export interface BoardState {
         ranks: Rank[];
         tags: BoardTag;
@@ -35,7 +35,7 @@ declare module "node-chess" {
         gameIsDrawn?: boolean;
         moveHistory: MoveHistory[];
     }
-    
+
     export interface BoardTag {
         [index: string]: any;
     }
@@ -97,7 +97,7 @@ declare module "node-chess" {
         postMoveActions?: MoveFunction[];
         isWhite?: boolean;
     }
-    
+
     export interface MoveHistory {
         from: Coordinate;
         to: Coordinate;
@@ -125,6 +125,20 @@ declare module "node-chess" {
         transformCache: Array<{ moves: Coordinate[], pattern: MovePattern }>;
     }
 
+    export interface NewPiece {
+        id?: number;
+        location?: Coordinate;
+        name: string;
+        movement: MoveDefinition[];
+        notation: string;
+        value: number;
+        canQueen: boolean;
+        canSpawn: boolean;
+        isWhite?: boolean;
+        getConditionalMovePatterns?: (board: Engine) => MovePattern[];
+        postMoveFunctions?: MoveFunction[];
+    }
+
     /**
      * @param moves The complete pattern of movement
      * @param canJump Can the piece jump over pieces to reach the location
@@ -140,7 +154,7 @@ declare module "node-chess" {
         conditions?: MovePatternConditional[];
         useDefaultConditions?: boolean;
     }
-    
+
     interface MoveDefinition {
         transforms: Transform|Transform[];
         canMove?: boolean;
@@ -148,7 +162,7 @@ declare module "node-chess" {
         postMoveAction?: MoveFunction;
         preCondition?: MovePatternConditional;
     }
-    
+
     interface Transform {
         file: number;
         rank: number;
