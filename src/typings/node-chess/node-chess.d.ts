@@ -162,12 +162,13 @@ declare module "node-chess" {
         canCapture?: boolean;
         postMoveAction?: MoveFunction;
         preCondition?: MovePatternConditional;
+        postCondition?: MovePatternConditional;
     }
     
     interface Increment {
         file: number,
         rank: number,
-        
+        absolute?: boolean; // TODO: Docs...
         limit?: number;
         canJump?: boolean
     }
@@ -175,7 +176,7 @@ declare module "node-chess" {
     interface Transform {
         file: number;
         rank: number;
-        
+        absolute?: boolean; // TODO: Docs...
         squaresBetween?: boolean;
         canJump?: boolean;
     }
