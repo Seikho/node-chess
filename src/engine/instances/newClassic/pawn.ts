@@ -1,5 +1,6 @@
 import Chess = require("node-chess");
 import Dir = Chess.Direction;
+export = pawn;
 
 var moveForward: Chess.MoveDefinition = {
 	canMove: true,
@@ -56,4 +57,13 @@ function enpassantPostMove(dir: Dir) {
 		state.capturedPieces.push(square.piece);
 		square.piece = null;
 	}
+}
+
+var pawn: Chess.NewPiece = {
+	notation: "p",
+	name: "Pawn",
+	movement: [moveForward, firstMove, leftCapture, rightCapture, leftEnpassant, rightEnpassant],
+	canQueen: true,
+	canSpawn: false,
+	value: 1
 }

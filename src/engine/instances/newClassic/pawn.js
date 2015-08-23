@@ -50,4 +50,13 @@ function enpassantPostMove(dir) {
         square.piece = null;
     };
 }
+var pawn = {
+    notation: "p",
+    name: "Pawn",
+    movement: [moveForward, firstMove, leftCapture, rightCapture, leftEnpassant, rightEnpassant],
+    canQueen: true,
+    canSpawn: false,
+    value: 1
+};
+module.exports = pawn;
 //# sourceMappingURL=pawn.js.map
