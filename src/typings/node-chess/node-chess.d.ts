@@ -140,6 +140,21 @@ declare module "node-chess" {
         conditions?: MovePatternConditional[];
         useDefaultConditions?: boolean;
     }
+    
+    interface MoveDefinition {
+        transforms: Transform[];
+        canMove?: boolean;
+        canCapture?: boolean;
+        postMoveActions?: MoveFunction[];
+        preCondition?: MovePatternConditional;
+    }
+    
+    interface Transform {
+        file: number;
+        rank: number;
+        squaresBetween: boolean;
+        canJump?: boolean;
+    }
 
     export interface MovePatternConditional {
         (piece: BasePiece, boardState: BoardState, board: Engine): boolean;
