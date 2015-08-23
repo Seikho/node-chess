@@ -142,17 +142,17 @@ declare module "node-chess" {
     }
     
     interface MoveDefinition {
-        transforms: Transform[];
+        transforms: Transform|Transform[];
         canMove?: boolean;
         canCapture?: boolean;
-        postMoveActions?: MoveFunction[];
+        postMoveAction?: MoveFunction;
         preCondition?: MovePatternConditional;
     }
     
     interface Transform {
         file: number;
         rank: number;
-        squaresBetween: boolean;
+        squaresBetween?: boolean;
         canJump?: boolean;
     }
 
