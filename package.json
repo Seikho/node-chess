@@ -30,8 +30,10 @@
   "homepage": "https://github.com/seikho/node-chess",
   "devDependencies": {
     "analysis": "^0.2.4",
+    "browserify": "^11.0.1",
     "chai": "^2.1.2",
-    "mocha": "^2.2.1"
+    "mocha": "^2.2.1",
+    "ts-globber": "^0.3.6"
   },
   "dependencies": {
     "pegjs": "^0.8.0"
