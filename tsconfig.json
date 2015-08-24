@@ -36,6 +36,7 @@
         "src/engine/helpers/isInBounds.ts",
         "src/engine/helpers/isValidPath.ts",
         "src/engine/helpers/movePiece.ts",
+        "src/engine/helpers/newInferMoves.ts",
         "src/engine/helpers/toString.ts",
         "src/engine/instances/classic/engine.ts",
         "src/engine/instances/classic/pieces/bishop.ts",
