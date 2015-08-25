@@ -1,12 +1,25 @@
 import Chess = require("node-chess");
 
+/**
+ * Intentionally not using any closures to improve performance
+ * This code can potentially be called thousands of times after a single move has been played
+ */
 function infer(piece: Chess.NewPiece, boardState?: Chess.BoardState) {
 	var self: Chess.Engine = this;
 	boardState = boardState || self.boardState;
-
+	var moves: Chess.Coordinate[] = [];
+	
+	for (var key in piece.movement) {
+		var move = piece.movement[key];
+		
+		if (move.transforms) moves = moves.concat(processTransform(move, piece, boardState, self));
+		else moves = moves.concat(processIncrementer(move, piece, boardState, self));
+	}
+	
+	return moves;
 }
 
-function process(move: Chess.MoveDefinition, piece: Chess.NewPiece, boardState: Chess.BoardState, board: Chess.Engine) {
+function processTransform(move: Chess.MoveDefinition, piece: Chess.NewPiece, boardState: Chess.BoardState, board: Chess.Engine) {
 	var modifier = piece.isWhite ? 1 : -1;
 
 	var steps = [piece.location];
@@ -60,6 +73,10 @@ function process(move: Chess.MoveDefinition, piece: Chess.NewPiece, boardState: 
 		if (!canMove) return null;
 		return [step];
 	}
+}
+
+function processIncrementer(move: Chess.MoveDefinition, piece: Chess.NewPiece, state: Chess.BoardState, board: Chess.Engine): Chess.Coordinate[] {
+	return [];
 }
 
 // TODO: Shrink function signature. Take an object instead
