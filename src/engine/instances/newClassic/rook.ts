@@ -20,5 +20,5 @@ var rook: Chess.NewPiece = {
 	movement: [up, down, left, right],
 	canQueen: false,
 	canSpawn: false,
-	value: 3
+	value: 5
 }

@@ -1,8 +1,21 @@
+/**
+ * Intentionally not using any closures to improve performance
+ * This code can potentially be called thousands of times after a single move has been played
+ */
 function infer(piece, boardState) {
     var self = this;
     boardState = boardState || self.boardState;
+    var moves = [];
+    for (var key in piece.movement) {
+        var move = piece.movement[key];
+        if (move.transforms)
+            moves = moves.concat(processTransform(move, piece, boardState, self));
+        else
+            moves = moves.concat(processIncrementer(move, piece, boardState, self));
+    }
+    return moves;
 }
-function process(move, piece, boardState, board) {
+function processTransform(move, piece, boardState, board) {
     var modifier = piece.isWhite ? 1 : -1;
     var steps = [piece.location];
     var transforms = move.transforms;
@@ -41,6 +54,9 @@ function process(move, piece, boardState, board) {
             return null;
         return [step];
     }
+}
+function processIncrementer(move, piece, state, board) {
+    return [];
 }
 // TODO: Shrink function signature. Take an object instead
 function checkBetween(start, end, piece, transform, boardState, board) {

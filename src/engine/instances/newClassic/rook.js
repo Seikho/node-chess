@@ -15,7 +15,7 @@ var rook = {
     movement: [up, down, left, right],
     canQueen: false,
     canSpawn: false,
-    value: 3
+    value: 5
 };
 module.exports = rook;
 //# sourceMappingURL=rook.js.map
