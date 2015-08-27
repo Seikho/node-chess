@@ -163,6 +163,7 @@ declare module "node-chess" {
         postMoveAction?: MoveFunction;
         preCondition?: MovePatternConditional;
         postCondition?: MovePatternConditional;
+        useDefaultConditions?: boolean;
     }
     
     interface Increment {

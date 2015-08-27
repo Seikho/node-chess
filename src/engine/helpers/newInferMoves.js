@@ -2,21 +2,43 @@
  * Intentionally not using any closures to improve performance
  * This code can potentially be called thousands of times after a single move has been played
  */
-function infer(piece, boardState) {
-    var self = this;
-    boardState = boardState || self.boardState;
+function infer(piece, state) {
+    var board = this;
+    state = state || board.boardState;
     var moves = [];
     for (var key in piece.movement) {
         var move = piece.movement[key];
-        if (move.transforms)
-            moves = moves.concat(processTransform(move, piece, boardState, self));
-        else
-            moves = moves.concat(processIncrementer(move, piece, boardState, self));
+        var canProcess = move.preCondition(piece, state, board);
+        if (move.transforms) {
+            // Pre-conditions only apply to 
+            if (!canProcess)
+                continue;
+            var newMove = processTransform(move, piece, state, board);
+            if (newMove)
+                moves.push(newMove);
+        }
+        else {
+            var newMoves = processIncrementer(move, piece, state, board);
+            if (move.postMoveAction) {
+                for (var x = 0; x < newMoves.length; x++) {
+                    newMoves[x].postMoveActions = [move.postMoveAction];
+                }
+            }
+            moves = moves.concat(newMoves);
+        }
+        ;
     }
     return moves;
 }
 function processTransform(move, piece, boardState, board) {
     var modifier = piece.isWhite ? 1 : -1;
+    var finalMove = {
+        from: piece.location,
+        to: null,
+    };
+    var canSkipLogic = move.preCondition && !move.useDefaultConditions;
+    if (move.postMoveAction)
+        finalMove.postMoveActions = [move.postMoveAction];
     var steps = [piece.location];
     var transforms = move.transforms;
     if (!Array.isArray(transforms))
@@ -26,6 +48,10 @@ function processTransform(move, piece, boardState, board) {
         steps.push(applyTransform(steps[x], transform, modifier));
     }
     var finalCoord = steps[steps.length - 1];
+    finalMove.to = finalCoord;
+    // Pre-condition has passed and useDefaultConditions is false.
+    if (canSkipLogic)
+        return finalMove;
     var finalSquare = board.getSquare(finalCoord, boardState);
     var finalSquarePiece = finalSquare.piece;
     if (move.canCapture && finalSquarePiece.isWhite != piece.isWhite)
@@ -46,17 +72,49 @@ function processTransform(move, piece, boardState, board) {
             continue;
         }
         if (transform.canJump)
-            return [step];
-        // WIP: Need to check between squares again...
-        // For loop above needs to be converted to a function to be re-used for this section
+            return finalMove;
         var canMove = checkBetween(prev, step, piece, transform, boardState, board);
         if (!canMove)
-            return null;
-        return [step];
+            return finalMove;
     }
+    return null;
 }
 function processIncrementer(move, piece, state, board) {
-    return [];
+    var current = { file: piece.location.file, rank: piece.location.rank };
+    var modifier = piece.isWhite || move.incrementer.absolute ? 1 : -1;
+    var file = move.incrementer.file * modifier;
+    var rank = move.incrementer.rank * modifier;
+    var validMoves = [];
+    while (true) {
+        current.file += file;
+        current.rank += rank;
+        if (!isInBounds(current))
+            break;
+        var square = board.getSquare(current, state);
+        if (square.piece) {
+            if (square.piece.isWhite !== piece.isWhite) {
+                if (!move.incrementer.canJump)
+                    break;
+                validMoves.push({ from: piece.location, to: { file: current.file, rank: current.rank } });
+                continue;
+            }
+            if (move.canCapture) {
+                validMoves.push({ from: piece.location, to: { file: current.file, rank: current.rank } });
+                continue;
+            }
+            break;
+        }
+        if (move.canMove) {
+            validMoves.push({ from: piece.location, to: { file: current.file, rank: current.rank } });
+            continue;
+        }
+        break;
+    }
+    return validMoves;
+}
+function isInBounds(position) {
+    return position.file > 0 && position.file <= 8
+        && position.rank > 0 && position.rank <= 8;
 }
 // TODO: Shrink function signature. Take an object instead
 function checkBetween(start, end, piece, transform, boardState, board) {

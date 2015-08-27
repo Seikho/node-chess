@@ -4,23 +4,50 @@ import Chess = require("node-chess");
  * Intentionally not using any closures to improve performance
  * This code can potentially be called thousands of times after a single move has been played
  */
-function infer(piece: Chess.NewPiece, boardState?: Chess.BoardState) {
-	var self: Chess.Engine = this;
-	boardState = boardState || self.boardState;
-	var moves: Chess.Coordinate[] = [];
-	
+function infer(piece: Chess.NewPiece, state?: Chess.BoardState) {
+	var board: Chess.Engine = this;
+	state = state || board.boardState;
+	var moves: Chess.Move[] = [];
+
 	for (var key in piece.movement) {
 		var move = piece.movement[key];
-		
-		if (move.transforms) moves = moves.concat(processTransform(move, piece, boardState, self));
-		else moves = moves.concat(processIncrementer(move, piece, boardState, self));
+		var canProcess = move.preCondition(<Chess.BasePiece>piece, state, board);
+
+		if (move.transforms) {
+			// Pre-conditions only apply to 
+			if (!canProcess) continue;
+
+			var newMove = processTransform(move, piece, state, board);
+			if (newMove) moves.push(newMove);
+		}
+		else {
+			var newMoves = processIncrementer(move, piece, state, board);
+			
+			if (move.postMoveAction) {
+				for (var x = 0; x < newMoves.length; x++) {
+					newMoves[x].postMoveActions = [move.postMoveAction]
+				}
+			}
+			
+			moves = moves.concat(newMoves);
+		};
 	}
-	
+
 	return moves;
 }
 
 function processTransform(move: Chess.MoveDefinition, piece: Chess.NewPiece, boardState: Chess.BoardState, board: Chess.Engine) {
+
 	var modifier = piece.isWhite ? 1 : -1;
+	var finalMove: Chess.Move = {
+		from: piece.location,
+		to: null,
+	};
+
+	var canSkipLogic = move.preCondition && !move.useDefaultConditions;
+
+	if (move.postMoveAction)
+		finalMove.postMoveActions = [move.postMoveAction];
 
 	var steps = [piece.location];
 	var transforms = <Chess.Transform[]>move.transforms;
@@ -33,6 +60,11 @@ function processTransform(move: Chess.MoveDefinition, piece: Chess.NewPiece, boa
 	}
 
 	var finalCoord = steps[steps.length - 1];
+	finalMove.to = finalCoord;
+	
+	// Pre-condition has passed and useDefaultConditions is false.
+	if (canSkipLogic) return finalMove;
+
 	var finalSquare = board.getSquare(finalCoord, boardState);
 	var finalSquarePiece = finalSquare.piece;
 
@@ -59,9 +91,8 @@ function processTransform(move: Chess.MoveDefinition, piece: Chess.NewPiece, boa
 			continue;
 		}
 
-		if (transform.canJump) return [step];
-		// WIP: Need to check between squares again...
-		// For loop above needs to be converted to a function to be re-used for this section
+		if (transform.canJump) return finalMove;
+
 		var canMove = checkBetween(
 			prev,
 			step,
@@ -69,14 +100,56 @@ function processTransform(move: Chess.MoveDefinition, piece: Chess.NewPiece, boa
 			transform,
 			boardState,
 			board);
-		
-		if (!canMove) return null;
-		return [step];
+
+		if (!canMove) return finalMove;
 	}
+
+	return null;
 }
 
-function processIncrementer(move: Chess.MoveDefinition, piece: Chess.NewPiece, state: Chess.BoardState, board: Chess.Engine): Chess.Coordinate[] {
-	return [];
+function processIncrementer(move: Chess.MoveDefinition, piece: Chess.NewPiece, state: Chess.BoardState, board: Chess.Engine): Chess.Move[] {
+	var current = { file: piece.location.file, rank: piece.location.rank };
+	var modifier = piece.isWhite || move.incrementer.absolute ? 1 : -1;
+	var file = move.incrementer.file * modifier;
+	var rank = move.incrementer.rank * modifier;
+	var validMoves: Chess.Move[] = [];
+
+	while (true) {
+		current.file += file;
+		current.rank += rank;
+		if (!isInBounds(current)) break;
+		var square = board.getSquare(current, state);
+
+		if (square.piece) {
+			if (square.piece.isWhite !== piece.isWhite) {
+				if (!move.incrementer.canJump) break;
+
+				validMoves.push({ from: piece.location, to: { file: current.file, rank: current.rank } });
+				continue;
+			}
+
+			if (move.canCapture) {
+				validMoves.push({ from: piece.location, to: { file: current.file, rank: current.rank } });
+				continue;
+			}
+
+			break;
+		}
+
+		if (move.canMove) {
+			validMoves.push({ from: piece.location, to: { file: current.file, rank: current.rank } });
+			continue;
+		}
+
+		break;
+	}
+
+	return validMoves;
+}
+
+function isInBounds(position: Chess.Coordinate): boolean {
+	return position.file > 0 && position.file <= 8
+		&& position.rank > 0 && position.rank <= 8;
 }
 
 // TODO: Shrink function signature. Take an object instead
