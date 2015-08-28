@@ -1,6 +1,6 @@
 var toString = require("./helpers/toString");
 var getMoves = require("./helpers/getMoves");
-var inferMoves = require("./helpers/inferMoves");
+var inferMoves = require("./helpers/newInferMoves");
 var movePiece = require("./helpers/movePiece");
 var fenParser = require("./parsers/fen");
 var createSqaures = require("./helpers/createSquares");
