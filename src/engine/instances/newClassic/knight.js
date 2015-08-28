@@ -10,7 +10,7 @@ function makeMove(file, rank) {
     return {
         canCapture: true,
         canMove: true,
-        transforms: { file: file, rank: rank }
+        transforms: { file: file, rank: rank, canJump: true },
     };
 }
 var knight = {

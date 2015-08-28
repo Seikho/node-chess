@@ -17,7 +17,7 @@ function makeMove(file: number, rank: number): Chess.MoveDefinition {
 	return {
 		canCapture: true,
 		canMove: true,
-		transforms: { file, rank }
+		transforms: { file, rank, canJump: true },
 	}
 }
 
