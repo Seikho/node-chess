@@ -43,6 +43,7 @@ function castle(dir: Dir, count: number): Chess.MovePatternConditional {
 		var square = board.getSquare(coord, state);
 		
 		// Piece must be a rook and the same colour..
+		if (square == null) return null;		
 		if (square.piece == null) return false;
 		if (square.piece.name !== "Rook") return false;
 		if (square.piece.isWhite !== piece.isWhite) return false;

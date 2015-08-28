@@ -1,5 +1,3 @@
-var Chess = require("node-chess");
-var Dir = Chess.Direction;
 var up = makeMove(0, 1);
 var down = makeMove(0, -1);
 var left = makeMove(-1, 0);
@@ -11,14 +9,14 @@ var downRight = makeMove(1, -1);
 var queenSideCastle = {
     canMove: true,
     transforms: { file: -2, rank: 0, absolute: true },
-    preCondition: castle(Dir.QueenSide, 4),
-    postMoveAction: postCastle(Dir.QueenSide, 2)
+    preCondition: castle(15 /* QueenSide */, 4),
+    postMoveAction: postCastle(15 /* QueenSide */, 2)
 };
 var kingSideCastle = {
     canMove: true,
     transforms: { file: 2, rank: 0, absolute: true },
-    preCondition: castle(Dir.KingSide, 3),
-    postMoveAction: postCastle(Dir.KingSide, 1)
+    preCondition: castle(14 /* KingSide */, 3),
+    postMoveAction: postCastle(14 /* KingSide */, 1)
 };
 function makeMove(file, rank) {
     return {
@@ -36,6 +34,8 @@ function castle(dir, count) {
         var coord = piece.getRelativeDestinations(dir, count)[0];
         var square = board.getSquare(coord, state);
         // Piece must be a rook and the same colour..
+        if (square == null)
+            return null;
         if (square.piece == null)
             return false;
         if (square.piece.name !== "Rook")
@@ -67,9 +67,9 @@ function postCastle(dir, count) {
     };
 }
 function oppositeDirection(dir) {
-    return dir === Dir.QueenSide
-        ? Dir.KingSide
-        : Dir.QueenSide;
+    return dir === 15 /* QueenSide */
+        ? 14 /* KingSide */
+        : 15 /* QueenSide */;
 }
 var king = {
     notation: "k",
