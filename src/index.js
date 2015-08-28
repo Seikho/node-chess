@@ -1,5 +1,5 @@
 var Engine = require("./engine/engine");
-var classicEngine = require("./engine/instances/classic/engine");
+var classicEngine = require("./engine/instances/newClassic/engine");
 var enums = require("./enums");
 var chess = {
     Engine: Engine,

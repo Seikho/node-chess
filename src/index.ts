@@ -1,6 +1,5 @@
 import Engine = require("./engine/engine");
-import classicEngine = require("./engine/instances/classic/engine");
-import classicPieces = require("./engine/instances/classic/pieces/pieces");
+import classicEngine = require("./engine/instances/newClassic/engine");
 import enums = require("./enums");
 import Directions = enums.Direction;
 export = chess;
