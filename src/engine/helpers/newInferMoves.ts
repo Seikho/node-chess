@@ -1,5 +1,5 @@
 import Chess = require("node-chess");
-
+export = infer;
 /**
  * Intentionally not using any closures to improve performance
  * This code can potentially be called thousands of times after a single move has been played
@@ -11,7 +11,10 @@ function infer(piece: Chess.NewPiece, state?: Chess.BoardState) {
 
 	for (var key in piece.movement) {
 		var move = piece.movement[key];
-		var canProcess = move.preCondition(<Chess.BasePiece>piece, state, board);
+
+		var canProcess = true;
+		if (move.preCondition)
+			canProcess = move.preCondition(<Chess.BasePiece>piece, state, board);
 
 		if (move.transforms) {
 			// Pre-conditions only apply to 
@@ -22,13 +25,13 @@ function infer(piece: Chess.NewPiece, state?: Chess.BoardState) {
 		}
 		else {
 			var newMoves = processIncrementer(move, piece, state, board);
-			
+
 			if (move.postMoveAction) {
 				for (var x = 0; x < newMoves.length; x++) {
 					newMoves[x].postMoveActions = [move.postMoveAction]
 				}
 			}
-			
+
 			moves = moves.concat(newMoves);
 		};
 	}
@@ -40,7 +43,7 @@ function processTransform(move: Chess.MoveDefinition, piece: Chess.NewPiece, boa
 
 	var modifier = piece.isWhite ? 1 : -1;
 	var finalMove: Chess.Move = {
-		from: piece.location,
+		from: copyCoord(piece.location),
 		to: null,
 	};
 
@@ -66,10 +69,14 @@ function processTransform(move: Chess.MoveDefinition, piece: Chess.NewPiece, boa
 	if (canSkipLogic) return finalMove;
 
 	var finalSquare = board.getSquare(finalCoord, boardState);
+	if (!finalSquare) return null;
 	var finalSquarePiece = finalSquare.piece;
 
-	if (move.canCapture && finalSquarePiece.isWhite != piece.isWhite) return null;
-	if (move.canMove && finalSquarePiece) return null;
+	var cantCaptureOnFinalSquare = move.canCapture && finalSquarePiece && finalSquarePiece.isWhite != piece.isWhite;
+	if (cantCaptureOnFinalSquare) return null;
+
+	var canMoveButSquareOccupied = move.canMove && finalSquarePiece;
+	if (canMoveButSquareOccupied) return null;
 
 	for (var x = 1; x < steps.length; x++) {
 		var prev = steps[x - 1];
@@ -79,6 +86,28 @@ function processTransform(move: Chess.MoveDefinition, piece: Chess.NewPiece, boa
 		if (step !== finalCoord) {
 			//TODO: Allow 'squaresBetween' here			
 			if (transform.canJump) continue;
+
+			if (transform.squaresBetween) {
+				var canMove = checkBetween(
+					prev,
+					step,
+					piece,
+					transform,
+					boardState,
+					board);
+
+				if (!canMove) return null;
+			}
+
+			continue;
+		}
+
+		// Logic when analyzing the final step in a MoveDefintion
+		
+		// If we can jump, don't checkBetween
+		if (transform.canJump) return finalMove;
+
+		if (transform.squaresBetween) {
 			var canMove = checkBetween(
 				prev,
 				step,
@@ -87,21 +116,15 @@ function processTransform(move: Chess.MoveDefinition, piece: Chess.NewPiece, boa
 				boardState,
 				board);
 
-			if (!canMove) return null;
-			continue;
+			if (!canMove) return finalMove;
 		}
 
-		if (transform.canJump) return finalMove;
+		var isFinalSquareVacant = finalSquare.piece == null;
+		if (move.canMove && isFinalSquareVacant)
+			return finalMove;
 
-		var canMove = checkBetween(
-			prev,
-			step,
-			piece,
-			transform,
-			boardState,
-			board);
-
-		if (!canMove) return finalMove;
+		var isFinalSquareOccupiedByEnemy = finalSquare.piece && finalSquare.piece.isWhite !== piece.isWhite;
+		if (move.canCapture && isFinalSquareOccupiedByEnemy) return finalMove;
 	}
 
 	return null;
@@ -110,6 +133,7 @@ function processTransform(move: Chess.MoveDefinition, piece: Chess.NewPiece, boa
 function processIncrementer(move: Chess.MoveDefinition, piece: Chess.NewPiece, state: Chess.BoardState, board: Chess.Engine): Chess.Move[] {
 	var current = { file: piece.location.file, rank: piece.location.rank };
 	var modifier = piece.isWhite || move.incrementer.absolute ? 1 : -1;
+
 	var file = move.incrementer.file * modifier;
 	var rank = move.incrementer.rank * modifier;
 	var validMoves: Chess.Move[] = [];
@@ -122,14 +146,21 @@ function processIncrementer(move: Chess.MoveDefinition, piece: Chess.NewPiece, s
 
 		if (square.piece) {
 			if (square.piece.isWhite !== piece.isWhite) {
+				if (!move.canCapture && !move.incrementer.canJump) break;
+
+				validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+				continue;
+			}
+
+			if (square.piece.isWhite === piece.isWhite) {
 				if (!move.incrementer.canJump) break;
 
-				validMoves.push({ from: piece.location, to: { file: current.file, rank: current.rank } });
+				validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
 				continue;
 			}
 
 			if (move.canCapture) {
-				validMoves.push({ from: piece.location, to: { file: current.file, rank: current.rank } });
+				validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
 				continue;
 			}
 
@@ -137,7 +168,7 @@ function processIncrementer(move: Chess.MoveDefinition, piece: Chess.NewPiece, s
 		}
 
 		if (move.canMove) {
-			validMoves.push({ from: piece.location, to: { file: current.file, rank: current.rank } });
+			validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
 			continue;
 		}
 
@@ -158,7 +189,8 @@ function checkBetween(start: Chess.Coordinate, end: Chess.Coordinate, piece: Che
 		file: Math.abs(start.file - end.file),
 		rank: Math.abs(start.rank - end.rank)
 	};
-
+	
+	// If 
 	if (difference.file > 0 && difference.rank > 0)
 		throw new Error(`Invalid non-jumpable move in ${piece.name} definition: ${transform}`);
 
@@ -191,5 +223,12 @@ function applyTransform(coordinate: Chess.Coordinate, transform: Chess.Transform
 	return {
 		file,
 		rank
+	};
+}
+
+function copyCoord(coord: Chess.Coordinate) {
+	return {
+		file: coord.file,
+		rank: coord.rank
 	};
 }

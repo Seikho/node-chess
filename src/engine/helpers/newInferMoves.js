@@ -8,7 +8,9 @@ function infer(piece, state) {
     var moves = [];
     for (var key in piece.movement) {
         var move = piece.movement[key];
-        var canProcess = move.preCondition(piece, state, board);
+        var canProcess = true;
+        if (move.preCondition)
+            canProcess = move.preCondition(piece, state, board);
         if (move.transforms) {
             // Pre-conditions only apply to 
             if (!canProcess)
@@ -33,7 +35,7 @@ function infer(piece, state) {
 function processTransform(move, piece, boardState, board) {
     var modifier = piece.isWhite ? 1 : -1;
     var finalMove = {
-        from: piece.location,
+        from: copyCoord(piece.location),
         to: null,
     };
     var canSkipLogic = move.preCondition && !move.useDefaultConditions;
@@ -53,10 +55,14 @@ function processTransform(move, piece, boardState, board) {
     if (canSkipLogic)
         return finalMove;
     var finalSquare = board.getSquare(finalCoord, boardState);
-    var finalSquarePiece = finalSquare.piece;
-    if (move.canCapture && finalSquarePiece.isWhite != piece.isWhite)
+    if (!finalSquare)
         return null;
-    if (move.canMove && finalSquarePiece)
+    var finalSquarePiece = finalSquare.piece;
+    var cantCaptureOnFinalSquare = move.canCapture && finalSquarePiece && finalSquarePiece.isWhite != piece.isWhite;
+    if (cantCaptureOnFinalSquare)
+        return null;
+    var canMoveButSquareOccupied = move.canMove && finalSquarePiece;
+    if (canMoveButSquareOccupied)
         return null;
     for (var x = 1; x < steps.length; x++) {
         var prev = steps[x - 1];
@@ -66,15 +72,27 @@ function processTransform(move, piece, boardState, board) {
             //TODO: Allow 'squaresBetween' here			
             if (transform.canJump)
                 continue;
-            var canMove = checkBetween(prev, step, piece, transform, boardState, board);
-            if (!canMove)
-                return null;
+            if (transform.squaresBetween) {
+                var canMove = checkBetween(prev, step, piece, transform, boardState, board);
+                if (!canMove)
+                    return null;
+            }
             continue;
         }
+        // Logic when analyzing the final step in a MoveDefintion
+        // If we can jump, don't checkBetween
         if (transform.canJump)
             return finalMove;
-        var canMove = checkBetween(prev, step, piece, transform, boardState, board);
-        if (!canMove)
+        if (transform.squaresBetween) {
+            var canMove = checkBetween(prev, step, piece, transform, boardState, board);
+            if (!canMove)
+                return finalMove;
+        }
+        var isFinalSquareVacant = finalSquare.piece == null;
+        if (move.canMove && isFinalSquareVacant)
+            return finalMove;
+        var isFinalSquareOccupiedByEnemy = finalSquare.piece && finalSquare.piece.isWhite !== piece.isWhite;
+        if (move.canCapture && isFinalSquareOccupiedByEnemy)
             return finalMove;
     }
     return null;
@@ -93,19 +111,25 @@ function processIncrementer(move, piece, state, board) {
         var square = board.getSquare(current, state);
         if (square.piece) {
             if (square.piece.isWhite !== piece.isWhite) {
+                if (!move.canCapture && !move.incrementer.canJump)
+                    break;
+                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+                continue;
+            }
+            if (square.piece.isWhite === piece.isWhite) {
                 if (!move.incrementer.canJump)
                     break;
-                validMoves.push({ from: piece.location, to: { file: current.file, rank: current.rank } });
+                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
                 continue;
             }
             if (move.canCapture) {
-                validMoves.push({ from: piece.location, to: { file: current.file, rank: current.rank } });
+                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
                 continue;
             }
             break;
         }
         if (move.canMove) {
-            validMoves.push({ from: piece.location, to: { file: current.file, rank: current.rank } });
+            validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
             continue;
         }
         break;
@@ -122,6 +146,7 @@ function checkBetween(start, end, piece, transform, boardState, board) {
         file: Math.abs(start.file - end.file),
         rank: Math.abs(start.rank - end.rank)
     };
+    // If 
     if (difference.file > 0 && difference.rank > 0)
         throw new Error("Invalid non-jumpable move in " + piece.name + " definition: " + transform);
     if (difference.file === 1 || difference.rank === 1)
@@ -151,4 +176,11 @@ function applyTransform(coordinate, transform, modifier) {
         rank: rank
     };
 }
+function copyCoord(coord) {
+    return {
+        file: coord.file,
+        rank: coord.rank
+    };
+}
+module.exports = infer;
 //# sourceMappingURL=newInferMoves.js.map
