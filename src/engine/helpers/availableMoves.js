@@ -6,7 +6,7 @@ function availableMoves(boardState) {
         rank.squares.forEach(function (square) {
             if (square.piece == null)
                 return;
-            moves = moves.concat(self.inferMoves({ file: square.file, rank: rank.rank }, boardState));
+            moves = moves.concat(self.inferMoves(square.piece, boardState));
         });
     });
     boardState.moves = moves;
