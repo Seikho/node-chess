@@ -4996,11 +4996,9 @@ module.exports = utils;
 
 },{}],12:[function(require,module,exports){
 var getTransforms = require("./helpers/getTransforms");
-var getMovePatternTransform = require("./helpers/getPatternTransform");
 var applyTransform = require("./helpers/applyTransform");
 var BasePiece = (function () {
     function BasePiece(piece, notation) {
-        var _this = this;
         this.id = 0;
         this.transformCache = [];
         this.isWhite = notation === piece.notation.toUpperCase();
@@ -5014,12 +5012,6 @@ var BasePiece = (function () {
         this.postMoveFunctions = piece.postMoveFunctions || [];
         // Optimisation: Caching evaluated MovePatterns
         var cachedPaths = [];
-        piece.movement.forEach(function (move) {
-            var paths = getMovePatternTransform(move, _this.isWhite);
-            paths.forEach(function (p) {
-                _this.transformCache.push({ moves: p, pattern: move });
-            });
-        });
     }
     BasePiece.prototype.getRelativeDestinations = function (direction, count) {
         var _this = this;
@@ -5038,10 +5030,10 @@ function modifyTransform(transform, count) {
 }
 module.exports = BasePiece;
 
-},{"./helpers/applyTransform":14,"./helpers/getPatternTransform":20,"./helpers/getTransforms":22}],13:[function(require,module,exports){
+},{"./helpers/applyTransform":14,"./helpers/getTransforms":21}],13:[function(require,module,exports){
 var toString = require("./helpers/toString");
 var getMoves = require("./helpers/getMoves");
-var inferMoves = require("./helpers/inferMoves");
+var inferMoves = require("./helpers/newInferMoves");
 var movePiece = require("./helpers/movePiece");
 var fenParser = require("./parsers/fen");
 var createSqaures = require("./helpers/createSquares");
@@ -5084,7 +5076,7 @@ var Engine = (function () {
 })();
 module.exports = Engine;
 
-},{"./basePiece":12,"./helpers/availableMoves":15,"./helpers/createPiece":16,"./helpers/createSquares":17,"./helpers/getMoves":19,"./helpers/getSquare":21,"./helpers/inferMoves":23,"./helpers/movePiece":25,"./helpers/toString":26,"./parsers/fen":36}],14:[function(require,module,exports){
+},{"./basePiece":12,"./helpers/availableMoves":15,"./helpers/createPiece":16,"./helpers/createSquares":17,"./helpers/getMoves":19,"./helpers/getSquare":20,"./helpers/movePiece":22,"./helpers/newInferMoves":23,"./helpers/toString":24,"./parsers/fen":32}],14:[function(require,module,exports){
 function applyTransform(coordinate, transform) {
     return { file: coordinate.file + transform.file, rank: coordinate.rank + transform.rank };
 }
@@ -5099,7 +5091,7 @@ function availableMoves(boardState) {
         rank.squares.forEach(function (square) {
             if (square.piece == null)
                 return;
-            moves = moves.concat(self.inferMoves({ file: square.file, rank: rank.rank }, boardState));
+            moves = moves.concat(self.inferMoves(square.piece, boardState));
         });
     });
     boardState.moves = moves;
@@ -5233,89 +5225,6 @@ function getMoves(coordinate, boardState) {
 module.exports = getMoves;
 
 },{}],20:[function(require,module,exports){
-var enums = require("../../enums");
-var Direction = enums.Direction;
-function getTransforms(movePattern, isWhite) {
-    var paths = [];
-    var firstMove = movePattern.moves[0];
-    var secondMove = movePattern.moves[1];
-    var firstMods = getModifiers(firstMove, isWhite);
-    var firstTransforms = applyTransforms(firstMods, firstMove.count);
-    if (!secondMove)
-        return firstTransforms.map(function (ft) { return [ft]; });
-    var secondMods = getModifiers(secondMove, isWhite);
-    var secondTransforms = applyTransforms(secondMods, secondMove.count);
-    firstTransforms.forEach(function (ft) {
-        secondTransforms.forEach(function (st) {
-            paths.push([ft, st]);
-        });
-    });
-    return paths;
-}
-function applyTransforms(modifiers, count) {
-    if (count > 0) {
-        var newCoords = modifiers.map(function (c) { return { file: c.file * count, rank: c.rank * count }; });
-        return newCoords;
-    }
-    var coords = [];
-    for (var x = 1; x <= 8; x++) {
-        coords = coords.concat(applyTransforms(modifiers, x));
-    }
-    return coords;
-}
-function getModifiers(singleMove, isWhite) {
-    // Return the inverse of the transform if from black perspective
-    var x = isWhite ? 1 : -1;
-    var up = { rank: 1 * x, file: 0 };
-    var down = { rank: -1 * x, file: 0 };
-    var left = { rank: 0, file: -1 * x };
-    var right = { rank: 0, file: 1 * x };
-    var upLeft = { rank: 1 * x, file: -1 * x };
-    var upRight = { rank: 1 * x, file: 1 * x };
-    var downLeft = { rank: -1 * x, file: -1 * x };
-    var downRight = { rank: -1 * x, file: 1 * x };
-    var kingSide = { rank: 0, file: 1 };
-    var queenSide = { rank: 0, file: -1 };
-    switch (singleMove.direction) {
-        case Direction.Up:
-            return [up];
-        case Direction.Down:
-            return [down];
-        case Direction.Left:
-            return [left];
-        case Direction.Right:
-            return [right];
-        case Direction.DiagonalUp:
-            return [upLeft, upRight];
-        case Direction.DiagonalDown:
-            return [downLeft, downRight];
-        case Direction.Diagonal:
-            return [upLeft, upRight, downLeft, downRight];
-        case Direction.Horizontal:
-            return [left, right];
-        case Direction.Vertical:
-            return [up, down];
-        case Direction.Lateral:
-            return [up, down, left, right];
-        case Direction.UpLeft:
-            return [upLeft];
-        case Direction.UpRight:
-            return [upRight];
-        case Direction.DownLeft:
-            return [downLeft];
-        case Direction.DownRight:
-            return [downRight];
-        case Direction.KingSide:
-            return [kingSide];
-        case Direction.QueenSide:
-            return [queenSide];
-        default:
-            throw "InvalidDirectionException: The direction provided was invalid";
-    }
-}
-module.exports = getTransforms;
-
-},{"../../enums":38}],21:[function(require,module,exports){
 function getSquare(square, boardState) {
     var self = this;
     boardState = boardState || self.boardState;
@@ -5325,7 +5234,7 @@ function getSquare(square, boardState) {
 }
 module.exports = getSquare;
 
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var enums = require("../../enums");
 var Direction = enums.Direction;
 function getTransforms(singleMove, isWhite) {
@@ -5380,120 +5289,7 @@ function getTransforms(singleMove, isWhite) {
 }
 module.exports = getTransforms;
 
-},{"../../enums":38}],23:[function(require,module,exports){
-var validatePath = require("./isValidPath");
-// TODO: Desperately requires refactoring
-function getMoves(coordinate, boardState) {
-    var self = this;
-    boardState = boardState || self.boardState;
-    var square = self.getSquare(coordinate, boardState);
-    // No piece, no moves.
-    var piece = square.piece;
-    if (!piece)
-        return [];
-    // We want all moves available on the entire board for calculation purposes
-    // Therefore we leave this commented out
-    // var isMoveablePiece = piece.isWhite === board.whitesTurn;
-    //if (!isMoveablePiece) return [];
-    var pathings = [];
-    var movePatterns = piece.movement;
-    var moves = [];
-    // var newPathings = getPaths(coordinate, move, piece.isWhite);
-    var validPathings = piece.transformCache.forEach(function (pathing) {
-        var pathMoves = pathing.moves;
-        var move = pathing.pattern;
-        // If it's a vanilla move pattern, use the standard path validation strategy
-        if (!move.conditions) {
-            var validPath_1 = validatePath(self, boardState, piece, pathMoves, move);
-            if (validPath_1) {
-                moves.push({
-                    from: coordinate,
-                    to: validPath_1[validPath_1.length - 1],
-                    postMoveActions: move.postMoveActions || [],
-                    isWhite: piece.isWhite
-                });
-            }
-            return;
-        }
-        // Otherwise we use the logic provided with the move pattern
-        var validPath = !!move.useDefaultConditions ? validatePath(self, boardState, piece, pathMoves, move) : null;
-        if (!validPath)
-            return;
-        var movePatternEvaluation = move.conditions.every(function (cond) { return cond(piece, boardState, self); });
-        if (validPath && movePatternEvaluation) {
-            moves.push({
-                from: coordinate,
-                to: validPath[validPath.length - 1],
-                postMoveActions: move.postMoveActions || [],
-                isWhite: piece.isWhite
-            });
-        }
-    });
-    return moves;
-}
-module.exports = getMoves;
-
-},{"./isValidPath":24}],24:[function(require,module,exports){
-function isValidPath(board, boardState, piece, path, move) {
-    // TODO: Rules API would be used here
-    var isWhite = !!piece.isWhite;
-    var appliedPath = applyPaths(piece.location, path);
-    var isInBounds = appliedPath.every(function (p) {
-        return p.file > 0 && p.file <= 8
-            && p.rank > 0 && p.rank <= 8;
-    });
-    if (!isInBounds)
-        return null;
-    var lastCoordinateIndex = appliedPath.length - 1;
-    var lastCoordinate = appliedPath[lastCoordinateIndex];
-    var lastSquare = board.getSquare(lastCoordinate, boardState);
-    if (!lastSquare)
-        return null;
-    // Optimisations
-    // Ensure all squares leading up to the destination are vacant
-    if (!move.canJump) {
-        var every = function (coord) {
-            var sq = board.getSquare(coord, boardState);
-            if (!sq)
-                return false;
-            return !board.getSquare(coord, boardState).piece;
-        };
-        var isPathVacant = appliedPath.slice(0, -1).every(every);
-        if (!isPathVacant)
-            return null;
-    }
-    // Destination occupied optimisations
-    if (!!lastSquare.piece) {
-        // Can't land on your own piece
-        if (!!isWhite === !!lastSquare.piece.isWhite)
-            return null;
-        // Must be able to capture if pieces are opposing colours
-        if (!move.canCapture)
-            return null;
-    }
-    else {
-        if (!move.canMove)
-            return null;
-    }
-    return appliedPath;
-}
-function applyPaths(start, path) {
-    var first = {
-        file: start.file + path[0].file,
-        rank: start.rank + path[0].rank
-    };
-    var finalPath = [first];
-    if (!path[1])
-        return finalPath;
-    finalPath.push({
-        file: first.file + path[1].file,
-        rank: first.rank + path[1].rank
-    });
-    return finalPath;
-}
-module.exports = isValidPath;
-
-},{}],25:[function(require,module,exports){
+},{"../../enums":34}],22:[function(require,module,exports){
 var deepCopy = require("./deepCopy");
 function movePiece(move, boardState) {
     var self = this;
@@ -5549,7 +5345,194 @@ function movePiece(move, boardState) {
 }
 module.exports = movePiece;
 
-},{"./deepCopy":18}],26:[function(require,module,exports){
+},{"./deepCopy":18}],23:[function(require,module,exports){
+/**
+ * Intentionally not using any closures to improve performance
+ * This code can potentially be called thousands of times after a single move has been played
+ */
+function infer(piece, state) {
+    var board = this;
+    state = state || board.boardState;
+    var moves = [];
+    for (var key in piece.movement) {
+        var move = piece.movement[key];
+        var canProcess = true;
+        if (move.preCondition)
+            canProcess = move.preCondition(piece, state, board);
+        if (move.transforms) {
+            // Pre-conditions only apply to 
+            if (!canProcess)
+                continue;
+            var newMove = processTransform(move, piece, state, board);
+            if (newMove)
+                moves.push(newMove);
+        }
+        else {
+            var newMoves = processIncrementer(move, piece, state, board);
+            if (move.postMoveAction) {
+                for (var x = 0; x < newMoves.length; x++) {
+                    newMoves[x].postMoveActions = [move.postMoveAction];
+                }
+            }
+            moves = moves.concat(newMoves);
+        }
+        ;
+    }
+    return moves;
+}
+function processTransform(move, piece, boardState, board) {
+    var modifier = piece.isWhite ? 1 : -1;
+    var finalMove = {
+        from: copyCoord(piece.location),
+        to: null,
+    };
+    var canSkipLogic = move.preCondition && !move.useDefaultConditions;
+    if (move.postMoveAction)
+        finalMove.postMoveActions = [move.postMoveAction];
+    var steps = [piece.location];
+    var transforms = move.transforms;
+    if (!Array.isArray(transforms))
+        transforms = [transforms];
+    for (var x = 0; x < transforms.length; x++) {
+        var transform = transforms[x];
+        steps.push(applyTransform(steps[x], transform, modifier));
+    }
+    var finalCoord = steps[steps.length - 1];
+    finalMove.to = finalCoord;
+    // Pre-condition has passed and useDefaultConditions is false.
+    if (canSkipLogic)
+        return finalMove;
+    var finalSquare = board.getSquare(finalCoord, boardState);
+    if (!finalSquare)
+        return null;
+    var finalSquarePiece = finalSquare.piece;
+    var cantCaptureOnFinalSquare = move.canCapture && finalSquarePiece && finalSquarePiece.isWhite != piece.isWhite;
+    if (cantCaptureOnFinalSquare)
+        return null;
+    var canMoveButSquareOccupied = move.canMove && finalSquarePiece;
+    if (canMoveButSquareOccupied)
+        return null;
+    for (var x = 1; x < steps.length; x++) {
+        var prev = steps[x - 1];
+        var step = steps[x];
+        var transform = transforms[x - 1];
+        if (step !== finalCoord) {
+            //TODO: Allow 'squaresBetween' here			
+            if (transform.canJump)
+                continue;
+            if (transform.squaresBetween) {
+                var canMove = checkBetween(prev, step, piece, transform, boardState, board);
+                if (!canMove)
+                    return null;
+            }
+            continue;
+        }
+        // Logic when analyzing the final step in a MoveDefintion
+        // If we can jump, don't checkBetween
+        if (transform.canJump)
+            return finalMove;
+        if (transform.squaresBetween) {
+            var canMove = checkBetween(prev, step, piece, transform, boardState, board);
+            if (!canMove)
+                return finalMove;
+        }
+        var isFinalSquareVacant = finalSquare.piece == null;
+        if (move.canMove && isFinalSquareVacant)
+            return finalMove;
+        var isFinalSquareOccupiedByEnemy = finalSquare.piece && finalSquare.piece.isWhite !== piece.isWhite;
+        if (move.canCapture && isFinalSquareOccupiedByEnemy)
+            return finalMove;
+    }
+    return null;
+}
+function processIncrementer(move, piece, state, board) {
+    var current = { file: piece.location.file, rank: piece.location.rank };
+    var modifier = piece.isWhite || move.incrementer.absolute ? 1 : -1;
+    var file = move.incrementer.file * modifier;
+    var rank = move.incrementer.rank * modifier;
+    var validMoves = [];
+    while (true) {
+        current.file += file;
+        current.rank += rank;
+        if (!isInBounds(current))
+            break;
+        var square = board.getSquare(current, state);
+        if (square.piece) {
+            if (square.piece.isWhite !== piece.isWhite) {
+                if (!move.canCapture && !move.incrementer.canJump)
+                    break;
+                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+                continue;
+            }
+            if (square.piece.isWhite === piece.isWhite) {
+                if (!move.incrementer.canJump)
+                    break;
+                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+                continue;
+            }
+            if (move.canCapture) {
+                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+                continue;
+            }
+            break;
+        }
+        if (move.canMove) {
+            validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+            continue;
+        }
+        break;
+    }
+    return validMoves;
+}
+function isInBounds(position) {
+    return position.file > 0 && position.file <= 8
+        && position.rank > 0 && position.rank <= 8;
+}
+// TODO: Shrink function signature. Take an object instead
+function checkBetween(start, end, piece, transform, boardState, board) {
+    var difference = {
+        file: Math.abs(start.file - end.file),
+        rank: Math.abs(start.rank - end.rank)
+    };
+    // If 
+    if (difference.file > 0 && difference.rank > 0)
+        throw new Error("Invalid non-jumpable move in " + piece.name + " definition: " + transform);
+    if (difference.file === 1 || difference.rank === 1)
+        return false;
+    var dimension = difference.file > 0 ? "file" : "rank";
+    var inc = end[dimension] > start[dimension] ? -1 : 1;
+    // Ensure all squares between current and previous are vacant
+    // Avoid closures to avoid heap allocations
+    for (var y = end[dimension]; y !== start[dimension]; y += inc) {
+        var between = { file: end.file, rank: end.rank };
+        between[dimension] += inc;
+        var sq = board.getSquare(between, boardState);
+        // If a square is occupied, the move is not valid
+        if (sq.piece)
+            return false;
+    }
+    // All squares are vacant
+    return true;
+}
+function applyTransform(coordinate, transform, modifier) {
+    if (transform.absolute)
+        modifier = 1;
+    var file = coordinate.file + (transform.file * modifier);
+    var rank = coordinate.rank + (transform.rank * modifier);
+    return {
+        file: file,
+        rank: rank
+    };
+}
+function copyCoord(coord) {
+    return {
+        file: coord.file,
+        rank: coord.rank
+    };
+}
+module.exports = infer;
+
+},{}],24:[function(require,module,exports){
 function toString() {
     var self = this;
     var ranks = [];
@@ -5572,161 +5555,149 @@ function toString() {
 }
 module.exports = toString;
 
-},{}],27:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
+var upLeft = makeMove(-1, 1);
+var upRight = makeMove(1, 1);
+var downLeft = makeMove(-1, -1);
+var downRight = makeMove(1, -1);
+function makeMove(file, rank) {
+    return {
+        canCapture: true,
+        canMove: true,
+        incrementer: { file: file, rank: rank }
+    };
+}
+var bishop = {
+    notation: "b",
+    name: "Bishop",
+    movement: [upLeft, upRight, downLeft, downRight],
+    canQueen: false,
+    canSpawn: false,
+    value: 3
+};
+module.exports = bishop;
+
+},{}],26:[function(require,module,exports){
 var Engine = require("../../engine");
-var pieces = require("./pieces/pieces");
-var rules = require("./rules");
+var pawn = require("./pawn");
+var knight = require("./knight");
+var bishop = require("./bishop");
+var rook = require("./rook");
+var queen = require("./queen");
+var king = require("./king");
 function classEngine() {
     var board = new Engine();
-    Object.keys(pieces)
-        .forEach(function (p) { return board.pieces.push(pieces[p]); });
-    board.positionParser();
-    board.postMoveFunctions = [
-        rules.postMove,
+    board.pieces = [
+        pawn, knight, bishop, rook, queen, king
     ];
+    board.positionParser();
     return board;
 }
 module.exports = classEngine;
 
-},{"../../engine":13,"./pieces/pieces":32,"./rules":35}],28:[function(require,module,exports){
-var enums = require("../../../../enums");
-var Direction = enums.Direction;
-var diag = {
-    moves: [{ direction: Direction.Diagonal, count: 0 }],
-    canJump: false,
-    canMove: true,
-    canCapture: true
-};
-var bishop = {
-    name: "Bishop",
-    movement: [diag],
-    canQueen: false,
-    canSpawn: true,
-    value: 3,
-    notation: "b"
-};
-module.exports = bishop;
-
-},{"../../../../enums":38}],29:[function(require,module,exports){
-var enums = require("../../../../enums");
-var Direction = enums.Direction;
-var queenSideCastleCondition = function (piece, boardState, board) {
-    var history = getHistory(piece, boardState, board);
-    if (history.length > 0)
-        return false;
-    var f = function (num) { return getSquare(piece, board, boardState, Direction.QueenSide, num); };
-    var queenSquare = f(1);
-    var bishopSquare = f(2);
-    var knightSquare = f(3);
-    var rookSquare = f(4);
-    var squaresAreVacant = !queenSquare.piece
-        && !bishopSquare.piece
-        && !knightSquare.piece
-        && !!rookSquare.piece;
-    if (!squaresAreVacant)
-        return false;
-    var rookHistory = getHistory(rookSquare.piece, boardState, board);
-    var rookHasMoved = rookHistory.length > 0;
-    return !rookHasMoved;
-};
-var kingSideCastleCondition = function (piece, boardState, board) {
-    var history = getHistory(piece, boardState, board);
-    if (history.length > 0)
-        return false;
-    var f = function (num) { return getSquare(piece, board, boardState, Direction.KingSide, num); };
-    var bishopSquare = f(1);
-    var knightSquare = f(2);
-    var rookSquare = f(3);
-    var squaresAreVacant = !bishopSquare || !bishopSquare.piece
-        && !knightSquare.piece
-        && !rookSquare.piece;
-    if (!squaresAreVacant)
-        return false;
-    var rookHistory = getHistory(rookSquare.piece, boardState, board);
-    var rookHasMoved = rookHistory.length > 0;
-    return !rookHasMoved;
-};
-var postQueenSideCastle = {
-    action: function (piece, boardState, board) {
-        var rookSquare = getSquare(piece, board, boardState, Direction.QueenSide, 2);
-        var nextSquare = getSquare(piece, board, boardState, Direction.KingSide, 1);
-        nextSquare.piece = rookSquare.piece;
-        rookSquare.piece = null;
-    }
-};
-var postKingSideCastle = {
-    action: function (piece, boardState, board) {
-        var rookSquare = getSquare(piece, board, boardState, Direction.KingSide, 1);
-        var nextSquare = getSquare(piece, board, boardState, Direction.QueenSide, 1);
-        nextSquare.piece = rookSquare.piece;
-        rookSquare.piece = null;
-    }
-};
+},{"../../engine":13,"./bishop":25,"./king":27,"./knight":28,"./pawn":29,"./queen":30,"./rook":31}],27:[function(require,module,exports){
+var up = makeMove(0, 1);
+var down = makeMove(0, -1);
+var left = makeMove(-1, 0);
+var right = makeMove(1, 0);
+var upLeft = makeMove(-1, 1);
+var upRight = makeMove(1, 1);
+var downLeft = makeMove(-1, -1);
+var downRight = makeMove(1, -1);
 var queenSideCastle = {
-    moves: [{ direction: Direction.QueenSide, count: 2 }],
-    canCapture: false,
     canMove: true,
-    canJump: false,
-    useDefaultConditions: false,
-    conditions: [queenSideCastleCondition],
-    postMoveActions: [postQueenSideCastle]
+    transforms: { file: -2, rank: 0, absolute: true },
+    preCondition: castle(15 /* QueenSide */, 4),
+    postMoveAction: postCastle(15 /* QueenSide */, 2)
 };
 var kingSideCastle = {
-    moves: [{ direction: Direction.KingSide, count: 2 }],
-    canCapture: false,
     canMove: true,
-    canJump: false,
-    useDefaultConditions: false,
-    conditions: [kingSideCastleCondition],
-    postMoveActions: [postKingSideCastle]
+    transforms: { file: 2, rank: 0, absolute: true },
+    preCondition: castle(14 /* KingSide */, 3),
+    postMoveAction: postCastle(14 /* KingSide */, 1)
 };
-function getHistory(piece, boardState, board) {
-    return boardState.moveHistory.filter(function (history) { return history.piece.id === piece.id; });
+function makeMove(file, rank) {
+    return {
+        canCapture: true,
+        canMove: true,
+        transforms: { file: file, rank: rank }
+    };
 }
-function getSquare(piece, board, boardState, direction, count) {
-    var coord = piece.getRelativeDestinations(direction, count)[0];
-    return board.getSquare(coord, boardState) || {};
+function castle(dir, count) {
+    return function (piece, state, board) {
+        // King is not allowed to have moved
+        var kingMoves = state.moveHistory.filter(function (moves) { return moves.piece.id === piece.id; });
+        if (kingMoves.length > 0)
+            return false;
+        var coord = piece.getRelativeDestinations(dir, count)[0];
+        var square = board.getSquare(coord, state);
+        // Piece must be a rook and the same colour..
+        if (square == null)
+            return null;
+        if (square.piece == null)
+            return false;
+        if (square.piece.name !== "Rook")
+            return false;
+        if (square.piece.isWhite !== piece.isWhite)
+            return false;
+        // Rook must not have moved
+        var rookMoves = state.moveHistory.filter(function (move) { return move.piece.id === square.piece.id; });
+        if (rookMoves.length > 0)
+            return false;
+        // All squares between the King and the Rook must be vacant
+        var betweenSquares = [];
+        for (var x = 1; x < count; x++) {
+            betweenSquares.push(board.getSquare(piece.getRelativeDestinations(dir, x)[0], state));
+        }
+        var allVacant = betweenSquares.every(function (sq) { return sq.piece == null; });
+        return allVacant;
+    };
 }
-var diag = {
-    moves: [{ direction: Direction.Diagonal, count: 1 }],
-    canJump: false,
-    canMove: true,
-    canCapture: true
-};
-var lat = {
-    moves: [{ direction: Direction.Lateral, count: 1 }],
-    canJump: false,
-    canMove: true,
-    canCapture: true
-};
+function postCastle(dir, count) {
+    return {
+        action: function (piece, state, board) {
+            var oppositeDir = oppositeDirection(dir);
+            var rookSquare = board.getSquare(piece.getRelativeDestinations(dir, count)[0], state);
+            var newRookSquare = board.getSquare(piece.getRelativeDestinations(oppositeDir, 1)[0], state);
+            newRookSquare.piece = rookSquare.piece;
+            rookSquare.piece = null;
+        }
+    };
+}
+function oppositeDirection(dir) {
+    return dir === 15 /* QueenSide */
+        ? 14 /* KingSide */
+        : 15 /* QueenSide */;
+}
 var king = {
+    notation: "k",
     name: "King",
-    movement: [diag, lat, kingSideCastle, queenSideCastle],
+    movement: [upLeft, upRight, downLeft, downRight, up, down, left, right, queenSideCastle, kingSideCastle],
     canQueen: false,
     canSpawn: false,
-    value: 10,
-    notation: "k"
+    value: 10
 };
 module.exports = king;
 
-},{"../../../../enums":38}],30:[function(require,module,exports){
-var enums = require("../../../../enums");
-var Direction = enums.Direction;
-var horzThenVert = {
-    moves: [{ direction: Direction.Horizontal, count: 2 }, { direction: Direction.Vertical, count: 1 }],
-    canJump: true,
-    canCapture: true,
-    canMove: true
-};
-var vertThenHorz = {
-    moves: [{ direction: Direction.Vertical, count: 2 }, { direction: Direction.Horizontal, count: 1 }],
-    canJump: true,
-    canCapture: true,
-    canMove: true
-};
+},{}],28:[function(require,module,exports){
+var upLeft = makeMove(-1, 2);
+var upRight = makeMove(1, 2);
+var downLeft = makeMove(-1, -2);
+var downRight = makeMove(1, -2);
+var leftUp = makeMove(-2, 1);
+var leftDown = makeMove(-2, -1);
+var rightUp = makeMove(2, 1);
+var rightDown = makeMove(2, -1);
+function makeMove(file, rank) {
+    return {
+        canCapture: true,
+        canMove: true,
+        transforms: { file: file, rank: rank, canJump: true },
+    };
+}
 var knight = {
     name: "Knight",
-    movement: [horzThenVert, vertThenHorz],
+    movement: [upLeft, upRight, downLeft, downRight, leftUp, leftDown, rightUp, rightDown],
     canQueen: false,
     canSpawn: true,
     value: 3,
@@ -5734,237 +5705,116 @@ var knight = {
 };
 module.exports = knight;
 
-},{"../../../../enums":38}],31:[function(require,module,exports){
-var enums = require("../../../../enums");
-var Direction = enums.Direction;
-var firstMoveCondition = function (piece, boardState, board) {
-    var history = boardState.moveHistory.filter(function (m) { return m.piece.id === piece.id; });
-    return (history.length === 0);
-};
-var canLeftEnpassant = function (piece, boardState, board) {
-    return hasEnpassantTag(Direction.UpLeft, piece, boardState, board);
-};
-var canRightEnpassant = function (piece, boardState, board) {
-    return hasEnpassantTag(Direction.UpRight, piece, boardState, board);
-};
-var enpassantPostMove = {
-    action: function (piece, boardState, board) {
-        var pieceCurrentSquare = board.getSquare(piece.location, boardState);
-        var coordBelow = piece.getRelativeDestinations(Direction.Down, 1)[0];
-        var squareBelow = board.getSquare(coordBelow, boardState);
-        boardState.capturedPieces.push(squareBelow.piece);
-        squareBelow.piece = null;
-        pieceCurrentSquare.tags["enpassant"] = undefined;
-    }
-};
-var allowEnpassantCapture = {
-    action: function (piece, boardState, board) {
-        // Find the middle square between the originating and desination squares for tagging
-        var coordinateToTag = piece.getRelativeDestinations(Direction.Down, 1)[0];
-        var squareToTag = board.getSquare(coordinateToTag, boardState);
-        squareToTag.tags["enpassant"] = piece.isWhite;
-        boardState.postMoveFunctions.push({
-            moveNumber: board.boardState.moveNumber + 1,
-            action: function (piece, board) {
-            }
-        });
-        //TODO: Add PostMoveFunction to board to remove the tag after the next move.
-    }
-};
-var firstMovePattern = {
-    moves: [{ direction: Direction.Up, count: 2 }],
-    canJump: false,
-    canCapture: false,
+},{}],29:[function(require,module,exports){
+var moveForward = {
     canMove: true,
-    useDefaultConditions: true,
-    conditions: [firstMoveCondition],
-    postMoveActions: [allowEnpassantCapture]
+    transforms: { file: 0, rank: 1 }
+};
+var firstMove = {
+    canMove: true,
+    transforms: { file: 0, rank: 2 },
+    preCondition: function (piece, boardState) { return boardState.moveHistory.filter(function (m) { return m.piece.id === piece.id; }).length === 0; }
+};
+var leftCapture = {
+    canCapture: true,
+    transforms: { file: 1, rank: 1 }
+};
+var rightCapture = {
+    canCapture: true,
+    transforms: { file: -1, rank: 1 }
 };
 var leftEnpassant = {
-    moves: [{ direction: Direction.UpLeft, count: 1 }],
-    canJump: false,
     canCapture: true,
-    canMove: false,
-    useDefaultConditions: false,
-    conditions: [canLeftEnpassant],
-    postMoveActions: [enpassantPostMove]
+    transforms: { file: -1, rank: 1 },
+    preCondition: enpassantPreMove(10 /* UpLeft */),
+    postMoveAction: {
+        action: enpassantPostMove(2 /* Left */)
+    }
 };
 var rightEnpassant = {
-    moves: [{ direction: Direction.UpRight, count: 1 }],
-    canJump: false,
     canCapture: true,
-    canMove: false,
-    useDefaultConditions: false,
-    conditions: [canRightEnpassant],
-    postMoveActions: [enpassantPostMove]
+    transforms: { file: 1, rank: 1 },
+    preCondition: enpassantPreMove(11 /* UpRight */),
+    postMoveAction: {
+        action: enpassantPostMove(3 /* Right */)
+    }
 };
-function hasEnpassantTag(direction, piece, boardState, board) {
-    var coordinate = piece.getRelativeDestinations(direction, 1);
-    var square = board.getSquare(coordinate[0], boardState);
-    if (square === null)
-        return false;
-    if (square.tags === null)
-        return false;
-    // If the square has an 'enpassant' tag of the opposite color (!thisPiece.isWhite), we can capture.
-    var result = square.tags["enpassant"] === !piece.isWhite;
-    return result;
+function enpassantPreMove(dir) {
+    return function (piece, state, board) {
+        var coord = piece.getRelativeDestinations(dir, 1);
+        var sq = board.getSquare(coord[0], state);
+        if (!sq)
+            return false;
+        return !!sq.tags["enpassant"];
+    };
 }
-var moveForward = {
-    moves: [{ direction: Direction.Up, count: 1 }],
-    canJump: false,
-    canCapture: false,
-    canMove: true
-};
-var moveCapture = {
-    moves: [{ direction: Direction.DiagonalUp, count: 1 }],
-    canJump: false,
-    canCapture: true,
-    canMove: false
-};
-var forward = {
-    direction: Direction.Up,
-    count: 1
-};
+function enpassantPostMove(dir) {
+    return function (piece, state, board) {
+        var coord = piece.getRelativeDestinations(dir, 1);
+        var square = board.getSquare(coord[0], state);
+        state.capturedPieces.push(square.piece);
+        square.piece = null;
+    };
+}
 var pawn = {
-    id: 0,
-    location: null,
+    notation: "p",
     name: "Pawn",
-    movement: [moveForward, moveCapture, firstMovePattern, leftEnpassant, rightEnpassant],
+    movement: [moveForward, firstMove, leftCapture, rightCapture, leftEnpassant, rightEnpassant],
     canQueen: true,
     canSpawn: false,
-    value: 1,
-    notation: "p"
+    value: 1
 };
 module.exports = pawn;
 
-},{"../../../../enums":38}],32:[function(require,module,exports){
-var Pawn = require("./pawn");
-var Rook = require("./rook");
-var Knight = require("./knight");
-var Bishop = require("./bishop");
-var Queen = require("./queen");
-var King = require("./king");
-var pieces = {
-    pawn: Pawn,
-    knight: Knight,
-    bishop: Bishop,
-    rook: Rook,
-    queen: Queen,
-    king: King
-};
-module.exports = pieces;
-
-},{"./bishop":28,"./king":29,"./knight":30,"./pawn":31,"./queen":33,"./rook":34}],33:[function(require,module,exports){
-var enums = require("../../../../enums");
-var Direction = enums.Direction;
-var diag = {
-    moves: [{ direction: Direction.Diagonal, count: 0 }],
-    canJump: false,
-    canMove: true,
-    canCapture: true
-};
-var lat = {
-    moves: [{ direction: Direction.Lateral, count: 0 }],
-    canJump: false,
-    canCapture: true,
-    canMove: true
-};
+},{}],30:[function(require,module,exports){
+var up = makeMove(0, 1);
+var down = makeMove(0, -1);
+var left = makeMove(-1, 0);
+var right = makeMove(1, 0);
+var upLeft = makeMove(-1, 1);
+var upRight = makeMove(1, 1);
+var downLeft = makeMove(-1, -1);
+var downRight = makeMove(1, -1);
+function makeMove(file, rank) {
+    return {
+        canCapture: true,
+        canMove: true,
+        incrementer: { file: file, rank: rank }
+    };
+}
 var queen = {
+    notation: "q",
     name: "Queen",
-    movement: [diag, lat],
+    movement: [upLeft, upRight, downLeft, downRight, up, down, left, right],
     canQueen: false,
-    canSpawn: true,
-    value: 9,
-    notation: "q"
+    canSpawn: false,
+    value: 9
 };
 module.exports = queen;
 
-},{"../../../../enums":38}],34:[function(require,module,exports){
-var enums = require("../../../../enums");
-var Direction = enums.Direction;
-var lat = {
-    moves: [{ direction: Direction.Lateral, count: 0 }],
-    canJump: false,
-    canCapture: true,
-    canMove: true
-};
+},{}],31:[function(require,module,exports){
+var up = makeMove(0, 1);
+var down = makeMove(0, -1);
+var left = makeMove(-1, 0);
+var right = makeMove(1, 0);
+function makeMove(file, rank) {
+    return {
+        canCapture: true,
+        canMove: true,
+        incrementer: { file: file, rank: rank }
+    };
+}
 var rook = {
+    notation: "r",
     name: "Rook",
-    movement: [lat],
+    movement: [up, down, left, right],
     canQueen: false,
-    canSpawn: true,
-    value: 5,
-    notation: "r"
+    canSpawn: false,
+    value: 5
 };
 module.exports = rook;
 
-},{"../../../../enums":38}],35:[function(require,module,exports){
-/**
- * If the board has the 'check' tag,
- */
-exports.postMove = {
-    action: function (piece, boardState, board) {
-        var gameState = isGameOver(boardState, board);
-        return gameState;
-    }
-};
-function isMoveAllowed(move, boardState, board) {
-    var turn = boardState.whitesTurn;
-    if (turn !== move.isWhite)
-        return false;
-    try {
-        var future = board.movePiece(move, boardState);
-        if (!future)
-            return false;
-        var futureIsInCheck = isCheck(turn, future);
-        return !futureIsInCheck;
-    }
-    catch (ex) {
-        // No king due to being captured
-        return false;
-    }
-}
-function allowedMoves(boardState, board) {
-    var isLegit = function (move) { return isMoveAllowed(move, boardState, board); };
-    var legitMoves = boardState.moves.filter(isLegit);
-    return legitMoves;
-}
-function isGameOver(boardState, board) {
-    var isInCheck = isCheck(boardState.whitesTurn, boardState);
-    // if (!isInCheck) return false;
-    var moves = allowedMoves(boardState, board);
-    var hasMoves = moves.length > 0;
-    if (hasMoves)
-        return false;
-    boardState.moves = [];
-    if (isInCheck) {
-        boardState.winnerIsWhite = !boardState.whitesTurn;
-    }
-    else {
-        boardState.gameIsDrawn = true;
-    }
-    return true;
-}
-function isCheck(checkWhite, boardState) {
-    var kingSquare;
-    boardState.ranks.forEach(function (rank) {
-        rank.squares.forEach(function (square) {
-            if (!square.piece)
-                return;
-            var isKing = square.piece.name === "King" && square.piece.isWhite === checkWhite;
-            if (isKing)
-                kingSquare = square;
-        });
-    });
-    if (!kingSquare)
-        throw new Error("Unable to locate opposing king");
-    var attackFilter = function (move) { return move.to.file === kingSquare.file && move.to.rank === kingSquare.rank; };
-    var kingAttackers = boardState.moves.filter(attackFilter);
-    var isInCheck = kingAttackers.length > 0;
-    return isInCheck;
-}
-
-},{}],36:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var fenStringParser = require("./stringParsers/fen");
 var defaultPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 function fenParser(position) {
@@ -6016,12 +5866,12 @@ function createFilesForRank(engine, fenRank, rankNumber) {
 }
 module.exports = fenParser;
 
-},{"./stringParsers/fen":37}],37:[function(require,module,exports){
+},{"./stringParsers/fen":33}],33:[function(require,module,exports){
 var PEG = require("pegjs");
 var parser = PEG.buildParser("\n\tStart\n\t= WS r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move WS\n\t{ return {\n\tranks: r,\n\tturn: t,\n\tcastling: c,\n\thalfMove: h,\n\tfullMove: t };\n\t}\n\tRankList\n\t= head:Rank \"/\" tail:RankList { return [].concat(head,tail); }\n\t/ Rank\n\n\tRank\n\t= rank:[a-zA-Z0-9]+ { return rank.join(''); }\n\n\tWS\n\t= \" \"* { return null; }\n\n\tTurn\n\t= turn:[w|b] { return turn }\n\n\tCastling\n\t= castling:[k|q|K|Q|-]+ { return castling.filter(function(c) { return c !== '-'; }); }\n\n\tEnpassant\n\t= ([a-h]{1})([1-8]{1})\n\t/ \"-\"\n\n\tHalfMove\n\t= [0-9]+\n\n\tMove\n\t= [0-9]+\n");
 module.exports = parser;
 
-},{"pegjs":10}],38:[function(require,module,exports){
+},{"pegjs":10}],34:[function(require,module,exports){
 (function (Direction) {
     Direction[Direction["Up"] = 0] = "Up";
     Direction[Direction["Down"] = 1] = "Down";
@@ -6042,9 +5892,9 @@ module.exports = parser;
 })(exports.Direction || (exports.Direction = {}));
 var Direction = exports.Direction;
 
-},{}],39:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 var Engine = require("./engine/engine");
-var classicEngine = require("./engine/instances/classic/engine");
+var classicEngine = require("./engine/instances/newClassic/engine");
 var enums = require("./enums");
 var chess = {
     Engine: Engine,
@@ -6055,4 +5905,4 @@ var chess = {
 };
 module.exports = chess;
 
-},{"./engine/engine":13,"./engine/instances/classic/engine":27,"./enums":38}]},{},[39]);
+},{"./engine/engine":13,"./engine/instances/newClassic/engine":26,"./enums":34}]},{},[35]);

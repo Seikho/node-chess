@@ -4,6 +4,9 @@ import chai = require("chai");
 var expect = chai.expect;
 
 var classic = chess.classic.engine();
+var sq = classic.getSquare({file: 3, rank: 1});
+var moves = classic.inferMoves(sq.piece);
+console.log(moves);
 
 var classicMoveTest = pieceMoveTest.bind(classic);
 var classicMovesTest = hasMovesTest.bind(classic);

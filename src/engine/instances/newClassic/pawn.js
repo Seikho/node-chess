@@ -1,5 +1,3 @@
-var Chess = require("node-chess");
-var Dir = Chess.Direction;
 var moveForward = {
     canMove: true,
     transforms: { file: 0, rank: 1 }
@@ -20,17 +18,17 @@ var rightCapture = {
 var leftEnpassant = {
     canCapture: true,
     transforms: { file: -1, rank: 1 },
-    preCondition: enpassantPreMove(Dir.UpLeft),
+    preCondition: enpassantPreMove(10 /* UpLeft */),
     postMoveAction: {
-        action: enpassantPostMove(Dir.Left)
+        action: enpassantPostMove(2 /* Left */)
     }
 };
 var rightEnpassant = {
     canCapture: true,
     transforms: { file: 1, rank: 1 },
-    preCondition: enpassantPreMove(Dir.UpRight),
+    preCondition: enpassantPreMove(11 /* UpRight */),
     postMoveAction: {
-        action: enpassantPostMove(Dir.Right)
+        action: enpassantPostMove(3 /* Right */)
     }
 };
 function enpassantPreMove(dir) {
