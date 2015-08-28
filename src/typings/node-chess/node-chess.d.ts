@@ -18,7 +18,7 @@ declare module "node-chess" {
         create(): void;
         populateAvailableMoves(boardState?: BoardState);
         createPiece(notation: string, location: Coordinate): BasePiece;
-        inferMoves(coordinate: Coordinate, boardState?: BoardState): Move[];
+        inferMoves(piece: NewPiece, boardState?: BoardState): Move[];
         toString(): string;
     }
 
@@ -40,7 +40,7 @@ declare module "node-chess" {
         [index: string]: any;
     }
 
-    export enum Direction {
+    const enum Direction {
         Up,
         Down,
         Left,
