@@ -24,13 +24,12 @@ class BasePiece implements Chess.BasePiece {
 	id = 0;
 	location: Chess.Coordinate;
 	name: string;
-	movement: Chess.MovePattern[];
+	movement: Chess.MoveDefinition[];
 	canQueen: boolean;
 	canSpawn: boolean;
 	value: number;
 	notation: string;
 	moveHistory: Chess.Move[];
-	transformCache: Array<{ moves: Chess.Coordinate[], pattern: Chess.MovePattern }> = [];
 	isWhite: boolean;
 	postMoveFunctions: Chess.MoveFunction[];
 

@@ -18,7 +18,7 @@ declare module "node-chess" {
         create(): void;
         populateAvailableMoves(boardState?: BoardState);
         createPiece(notation: string, location: Coordinate): BasePiece;
-        inferMoves(piece: NewPiece, boardState?: BoardState): Move[];
+        inferMoves(piece: Piece, boardState?: BoardState): Move[];
         toString(): string;
     }
 
@@ -57,13 +57,6 @@ declare module "node-chess" {
         DownRight,
         KingSide,
         QueenSide
-    }
-
-    /**
-     * Defines a single move that a piece can perform
-     */
-    export interface PieceMovement {
-        movePatterns: MovePattern[];
     }
 
     export interface MoveFunction {
@@ -105,27 +98,12 @@ declare module "node-chess" {
         piece: Piece;
     }
 
-    export interface Piece {
-        id: number;
-        location: Coordinate;
-        name: string;
-        movement: MovePattern[];
-        notation: string;
-        value: number;
-        canQueen: boolean;
-        canSpawn: boolean;
-        isWhite?: boolean;
-        getConditionalMovePatterns?: (board: Engine) => MovePattern[];
-        postMoveFunctions?: MoveFunction[];
-    }
-
     export interface BasePiece extends Piece {
         getRelativeDestinations: (direction: number, count: number) => Coordinate[];
         postMoveFunctions: MoveFunction[];
-        transformCache: Array<{ moves: Coordinate[], pattern: MovePattern }>;
     }
 
-    export interface NewPiece {
+    export interface Piece {
         id?: number;
         location?: Coordinate;
         name: string;
@@ -135,24 +113,7 @@ declare module "node-chess" {
         canQueen: boolean;
         canSpawn: boolean;
         isWhite?: boolean;
-        getConditionalMovePatterns?: (board: Engine) => MovePattern[];
         postMoveFunctions?: MoveFunction[];
-    }
-
-    /**
-     * @param moves The complete pattern of movement
-     * @param canJump Can the piece jump over pieces to reach the location
-     * @param canMove Can the piece move there without capturing
-     * @param canCapture Can the piece capture at the location
-     */
-    export interface MovePattern {
-        moves: SingleMove[];
-        canJump?: boolean;
-        canCapture?: boolean;
-        canMove?: boolean;
-        postMoveActions?: MoveFunction[];
-        conditions?: MovePatternConditional[];
-        useDefaultConditions?: boolean;
     }
 
     interface MoveDefinition {

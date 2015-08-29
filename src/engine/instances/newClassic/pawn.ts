@@ -68,7 +68,7 @@ function enpassantPostMove(dir: Dir) {
 	}
 }
 
-var pawn: Chess.NewPiece = {
+var pawn: Chess.Piece = {
 	notation: "p",
 	name: "Pawn",
 	movement: [moveForward, firstMove, leftCapture, rightCapture, leftEnpassant, rightEnpassant],

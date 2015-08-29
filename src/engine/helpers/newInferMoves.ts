@@ -4,7 +4,7 @@ export = infer;
  * Intentionally not using any closures to improve performance
  * This code can potentially be called thousands of times after a single move has been played
  */
-function infer(piece: Chess.NewPiece, state?: Chess.BoardState) {
+function infer(piece: Chess.Piece, state?: Chess.BoardState) {
 	var board: Chess.Engine = this;
 	state = state || board.boardState;
 	var moves: Chess.Move[] = [];
@@ -39,7 +39,7 @@ function infer(piece: Chess.NewPiece, state?: Chess.BoardState) {
 	return moves;
 }
 
-function processTransform(move: Chess.MoveDefinition, piece: Chess.NewPiece, boardState: Chess.BoardState, board: Chess.Engine) {
+function processTransform(move: Chess.MoveDefinition, piece: Chess.Piece, boardState: Chess.BoardState, board: Chess.Engine) {
 
 	var modifier = piece.isWhite ? 1 : -1;
 	var finalMove: Chess.Move = {
@@ -133,7 +133,7 @@ function processTransform(move: Chess.MoveDefinition, piece: Chess.NewPiece, boa
 	return null;
 }
 
-function processIncrementer(move: Chess.MoveDefinition, piece: Chess.NewPiece, state: Chess.BoardState, board: Chess.Engine): Chess.Move[] {
+function processIncrementer(move: Chess.MoveDefinition, piece: Chess.Piece, state: Chess.BoardState, board: Chess.Engine): Chess.Move[] {
 	var current = { file: piece.location.file, rank: piece.location.rank };
 	var modifier = piece.isWhite || move.incrementer.absolute ? 1 : -1;
 
@@ -187,7 +187,7 @@ function isInBounds(position: Chess.Coordinate): boolean {
 }
 
 // TODO: Shrink function signature. Take an object instead
-function checkBetween(start: Chess.Coordinate, end: Chess.Coordinate, piece: Chess.NewPiece, transform: Chess.Transform, boardState: Chess.BoardState, board: Chess.Engine) {
+function checkBetween(start: Chess.Coordinate, end: Chess.Coordinate, piece: Chess.Piece, transform: Chess.Transform, boardState: Chess.BoardState, board: Chess.Engine) {
 	var difference = {
 		file: Math.abs(start.file - end.file),
 		rank: Math.abs(start.rank - end.rank)

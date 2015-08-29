@@ -14,7 +14,7 @@ function makeMove(file: number, rank: number): Chess.MoveDefinition {
 	}
 }
 
-var rook: Chess.NewPiece = {
+var rook: Chess.Piece = {
 	notation: "r",
 	name: "Rook",
 	movement: [up, down, left, right],

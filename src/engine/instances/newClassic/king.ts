@@ -89,7 +89,7 @@ function oppositeDirection(dir: Dir): Dir {
 		: Dir.QueenSide;
 }
 
-var king: Chess.NewPiece = {
+var king: Chess.Piece = {
 	notation: "k",
 	name: "King",
 	movement: [upLeft, upRight, downLeft, downRight, up, down, left, right, queenSideCastle, kingSideCastle],
