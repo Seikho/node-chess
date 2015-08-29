@@ -43,6 +43,7 @@ function copyPiece(piece) {
     copy.location = { rank: piece.location.rank, file: piece.location.file };
     copy.movement = shallowCopyArray(piece.movement);
     copy.getRelativeDestination = piece.getRelativeDestination;
+    copy.getAbsoluteDestination = piece.getAbsoluteDestination;
     copy.postMoveFunctions = piece.postMoveFunctions.slice();
     return copy;
 }
