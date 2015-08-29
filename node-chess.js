@@ -5597,7 +5597,7 @@ function castle(rookSquare) {
         // All squares between the King and the Rook must be vacant
         var betweenSquares = [];
         var increment = rookSquare.file > 0 ? 1 : -1;
-        for (var x = 1; x !== rookSquare.file; x += increment) {
+        for (var x = (1 * increment); x !== rookSquare.file; x += increment) {
             var destination = piece.getAbsoluteDestination({ file: x, rank: 0 });
             betweenSquares.push(board.getSquare(destination, state));
         }
