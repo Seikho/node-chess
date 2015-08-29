@@ -27,12 +27,12 @@ class BasePiece implements Chess.BasePiece {
 	isWhite: boolean;
 	postMoveFunctions: Chess.MoveFunction[];
 
-	getRelativeDestination = (transform: Chess.Coordinate): Chess.Coordinate => {		
+	getRelativeDestination(transform: Chess.Coordinate): Chess.Coordinate {		
 		var destination = applyTransform(transform, this.location, this.isWhite);
 		return destination;
 	}
 	
-	getAbsoluteDestination = (transform: Chess.Coordinate): Chess.Coordinate => {
+	getAbsoluteDestination(transform: Chess.Coordinate): Chess.Coordinate {
 		var destination = applyTransform(transform, this.location, true);
 		return destination;
 	}
