@@ -1,7 +1,4 @@
 import Chess = require("node-chess");
-import getTransforms = require("./helpers/getTransforms");
-import getMovePatternTransform = require("./helpers/getPatternTransform");
-import applyTransform = require("./helpers/applyTransform");
 import enums = require("../enums");
 import Direction = enums.Direction;
 export = BasePiece;
@@ -33,12 +30,18 @@ class BasePiece implements Chess.BasePiece {
 	isWhite: boolean;
 	postMoveFunctions: Chess.MoveFunction[];
 
-	getRelativeDestinations(direction: Direction, count: number): Chess.Coordinate[] {
-		var transforms = getTransforms({ direction: direction, count: 0 }, this.isWhite);
-		var appliedTransforms = transforms.map(t => modifyTransform(t, count));
-		var destinations = appliedTransforms.map(transform => applyTransform(this.location, transform));
-		return destinations;
+	getRelativeDestination(transform: Chess.Coordinate): Chess.Coordinate {		
+		var destination = applyTransform(transform, this.location, this.isWhite);
+		return destination;
 	}
+}
+
+function applyTransform(transform: Chess.Coordinate, position: Chess.Coordinate, isWhite: boolean) {
+	var modifier = isWhite ? 1 : -1;
+	return {
+		file: position.file + (transform.file * modifier),
+		rank: position.rank + (transform.rank * modifier)
+	}	
 }
 
 function modifyTransform(transform: Chess.Coordinate, count: number) {

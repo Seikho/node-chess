@@ -1,5 +1,3 @@
-var getTransforms = require("./helpers/getTransforms");
-var applyTransform = require("./helpers/applyTransform");
 var BasePiece = (function () {
     function BasePiece(piece, notation) {
         this.id = 0;
@@ -15,15 +13,19 @@ var BasePiece = (function () {
         // Optimisation: Caching evaluated MovePatterns
         var cachedPaths = [];
     }
-    BasePiece.prototype.getRelativeDestinations = function (direction, count) {
-        var _this = this;
-        var transforms = getTransforms({ direction: direction, count: 0 }, this.isWhite);
-        var appliedTransforms = transforms.map(function (t) { return modifyTransform(t, count); });
-        var destinations = appliedTransforms.map(function (transform) { return applyTransform(_this.location, transform); });
-        return destinations;
+    BasePiece.prototype.getRelativeDestination = function (transform) {
+        var destination = applyTransform(transform, this.location, this.isWhite);
+        return destination;
     };
     return BasePiece;
 })();
+function applyTransform(transform, position, isWhite) {
+    var modifier = isWhite ? 1 : -1;
+    return {
+        file: position.file + (transform.file * modifier),
+        rank: position.rank + (transform.rank * modifier)
+    };
+}
 function modifyTransform(transform, count) {
     return {
         file: transform.file * count,
