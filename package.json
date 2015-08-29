@@ -36,6 +36,7 @@
     "ts-globber": "^0.3.6"
   },
   "dependencies": {
+    "bluebird": "^2.9.34",
     "pegjs": "^0.8.0"
   }
 }
