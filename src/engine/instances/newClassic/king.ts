@@ -14,15 +14,15 @@ var downRight = makeMove(1, -1);
 var queenSideCastle: Chess.MoveDefinition = {
 	canMove: true,
 	transforms: { file: -2, rank: 0, absolute: true },
-	preCondition: castle(Dir.QueenSide, 4),
-	postMoveAction: postCastle(Dir.QueenSide, 2)
+	preCondition: castle({ file: -4, rank: 0 }),
+	postMoveAction: postCastle({ file: -2, rank: 0 }, { file: 1, rank: 0 })
 }
 
 var kingSideCastle: Chess.MoveDefinition = {
 	canMove: true,
 	transforms: { file: 2, rank: 0, absolute: true },
-	preCondition: castle(Dir.KingSide, 3),
-	postMoveAction: postCastle(Dir.KingSide, 1)
+	preCondition: castle({ file: 3, rank: 0 }),
+	postMoveAction: postCastle({ file: 1, rank: 0 }, { file: -1, rank: 0 })
 }
 
 function makeMove(file: number, rank: number): Chess.MoveDefinition {
@@ -33,17 +33,21 @@ function makeMove(file: number, rank: number): Chess.MoveDefinition {
 	}
 }
 
-function castle(dir: Dir, count: number): Chess.MovePatternConditional {
+function castle(rookSquare: Chess.Coordinate): Chess.MoveCondition {
 	return (piece, state, board) => {
 		// King is not allowed to have moved
 		var kingMoves = state.moveHistory.filter(moves => moves.piece.id === piece.id);
 		if (kingMoves.length > 0) return false;
+		
+		// If the king isn't at 1,5 or 8,5...
+		if ((piece.location.rank !== 1 && piece.location.rank !== 8)
+			|| piece.location.file !== 5) return false;
 
-		var coord = piece.getRelativeDestinations(dir, count)[0];
+		var coord = piece.getAbsoluteDestination(rookSquare);
 		var square = board.getSquare(coord, state);
 		
 		// Piece must be a rook and the same colour..
-		if (square == null) return null;		
+		if (square == null) return null;
 		if (square.piece == null) return false;
 		if (square.piece.name !== "Rook") return false;
 		if (square.piece.isWhite !== piece.isWhite) return false;
@@ -54,8 +58,10 @@ function castle(dir: Dir, count: number): Chess.MovePatternConditional {
 		
 		// All squares between the King and the Rook must be vacant
 		var betweenSquares: Chess.Square[] = [];
-		for (var x = 1; x < count; x++) {
-			betweenSquares.push(board.getSquare(piece.getRelativeDestinations(dir, x)[0], state));
+		var increment = rookSquare.file > 0 ? 1 : -1;
+		for (var x = 1; x !== rookSquare.file; x += increment) {
+			var destination = piece.getAbsoluteDestination({ file: x, rank: 0 });
+			betweenSquares.push(board.getSquare(destination, state));
 		}
 
 		var allVacant = betweenSquares.every(sq => sq.piece == null);
@@ -64,21 +70,15 @@ function castle(dir: Dir, count: number): Chess.MovePatternConditional {
 	}
 }
 
-function postCastle(dir: Dir, count: number): Chess.MoveFunction {
+function postCastle(rookSquare: Chess.Coordinate, rookDestination: Chess.Coordinate): Chess.MoveFunction {
 	return {
 		action: (piece, state, board) => {
-			var oppositeDir = oppositeDirection(dir);
+			var oldRookSquare = board.getSquare(piece.getAbsoluteDestination(rookSquare), state);
 
-			var rookSquare = board.getSquare(
-				piece.getRelativeDestinations(dir, count)[0],
-				state);
+			var newRookSquare = board.getSquare(piece.getAbsoluteDestination(rookDestination), state);
 
-			var newRookSquare = board.getSquare(
-				piece.getRelativeDestinations(oppositeDir, 1)[0],
-				state);
-			
-			newRookSquare.piece = rookSquare.piece;
-			rookSquare.piece = null;
+			newRookSquare.piece = oldRookSquare.piece;
+			oldRookSquare.piece = null;
 		}
 	}
 }
