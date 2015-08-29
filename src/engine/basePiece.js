@@ -1,6 +1,15 @@
 var BasePiece = (function () {
     function BasePiece(piece, notation) {
+        var _this = this;
         this.id = 0;
+        this.getRelativeDestination = function (transform) {
+            var destination = applyTransform(transform, _this.location, _this.isWhite);
+            return destination;
+        };
+        this.getAbsoluteDestination = function (transform) {
+            var destination = applyTransform(transform, _this.location, true);
+            return destination;
+        };
         this.isWhite = notation === piece.notation.toUpperCase();
         this.name = piece.name;
         this.movement = piece.movement;
@@ -10,17 +19,7 @@ var BasePiece = (function () {
         this.notation = notation;
         this.moveHistory = [];
         this.postMoveFunctions = piece.postMoveFunctions || [];
-        // Optimisation: Caching evaluated MovePatterns
-        var cachedPaths = [];
     }
-    BasePiece.prototype.getRelativeDestination = function (transform) {
-        var destination = applyTransform(transform, this.location, this.isWhite);
-        return destination;
-    };
-    BasePiece.prototype.getAbsoluteDestination = function (transform) {
-        var destination = applyTransform(transform, this.location, true);
-        return destination;
-    };
     return BasePiece;
 })();
 function applyTransform(transform, position, isWhite) {
