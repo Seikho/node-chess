@@ -25,7 +25,6 @@
         "src/engine/helpers/createPiece.ts",
         "src/engine/helpers/createSquares.ts",
         "src/engine/helpers/deepCopy.ts",
-        "src/engine/helpers/getIncrements.ts",
         "src/engine/helpers/getMoves.ts",
         "src/engine/helpers/getSquare.ts",
         "src/engine/helpers/inferMoves.ts",
