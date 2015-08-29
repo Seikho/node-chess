@@ -9,14 +9,15 @@ import BasePiece = require("./basePiece");
 import availableMoves = require("./helpers/availableMoves");
 import getSquare = require("./helpers/getSquare");
 import createPiece = require("./helpers/createPiece");
+import Promise = require("bluebird");
 export = Engine;
 
 /**
  * Board: extensible board (TODO: more detail)
  */
 class Engine implements Chess.Engine {
-    constructor(){}
-    
+    constructor() { }
+
     rankCount: number = 8;
     fileCount: number = 8;
     postMoveFunctions: Chess.MoveFunction[] = [];
@@ -37,9 +38,21 @@ class Engine implements Chess.Engine {
     positionParser = fenParser.bind(this);
 
     movePiece = movePiece.bind(this);
+    movePieceAsync = (move: Chess.Move, boardState?: Chess.BoardState): Promise<Chess.BoardState> => {
+        var promise = new Promise<Chess.BoardState>((resolve, reject) => {
+            setImmediate(() => {
+                var newState = this.movePiece(move, boardState);
+                resolve(newState);
+            });
+        });
+        
+        return promise;
+    }
+
+
     getSquare = getSquare.bind(this);
     getMoves = getMoves.bind(this);
-    
+
     create = createSqaures.bind(this);
     inferMoves = inferMoves.bind(this);
     toString = toString.bind(this);

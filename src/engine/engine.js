@@ -8,11 +8,13 @@ var BasePiece = require("./basePiece");
 var availableMoves = require("./helpers/availableMoves");
 var getSquare = require("./helpers/getSquare");
 var createPiece = require("./helpers/createPiece");
+var Promise = require("bluebird");
 /**
  * Board: extensible board (TODO: more detail)
  */
 var Engine = (function () {
     function Engine() {
+        var _this = this;
         this.rankCount = 8;
         this.fileCount = 8;
         this.postMoveFunctions = [];
@@ -30,6 +32,15 @@ var Engine = (function () {
         this.pieces = [];
         this.positionParser = fenParser.bind(this);
         this.movePiece = movePiece.bind(this);
+        this.movePieceAsync = function (move, boardState) {
+            var promise = new Promise(function (resolve, reject) {
+                setImmediate(function () {
+                    var newState = _this.movePiece(move, boardState);
+                    resolve(newState);
+                });
+            });
+            return promise;
+        };
         this.getSquare = getSquare.bind(this);
         this.getMoves = getMoves.bind(this);
         this.create = createSqaures.bind(this);
