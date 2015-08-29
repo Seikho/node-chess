@@ -11865,16 +11865,7 @@ module.exports = utils;
 },{}],50:[function(require,module,exports){
 var BasePiece = (function () {
     function BasePiece(piece, notation) {
-        var _this = this;
         this.id = 0;
-        this.getRelativeDestination = function (transform) {
-            var destination = applyTransform(transform, _this.location, _this.isWhite);
-            return destination;
-        };
-        this.getAbsoluteDestination = function (transform) {
-            var destination = applyTransform(transform, _this.location, true);
-            return destination;
-        };
         this.isWhite = notation === piece.notation.toUpperCase();
         this.name = piece.name;
         this.movement = piece.movement;
@@ -11885,6 +11876,14 @@ var BasePiece = (function () {
         this.moveHistory = [];
         this.postMoveFunctions = piece.postMoveFunctions || [];
     }
+    BasePiece.prototype.getRelativeDestination = function (transform) {
+        var destination = applyTransform(transform, this.location, this.isWhite);
+        return destination;
+    };
+    BasePiece.prototype.getAbsoluteDestination = function (transform) {
+        var destination = applyTransform(transform, this.location, true);
+        return destination;
+    };
     return BasePiece;
 })();
 function applyTransform(transform, position, isWhite) {
@@ -12048,6 +12047,7 @@ function copyPiece(piece) {
     copy.location = { rank: piece.location.rank, file: piece.location.file };
     copy.movement = shallowCopyArray(piece.movement);
     copy.getRelativeDestination = piece.getRelativeDestination;
+    copy.getAbsoluteDestination = piece.getAbsoluteDestination;
     copy.postMoveFunctions = piece.postMoveFunctions.slice();
     return copy;
 }
@@ -12538,7 +12538,13 @@ var firstMove = {
             var coordBehindPawn = piece.getRelativeDestination({ file: 0, rank: -1 });
             var squareBehindPawn = board.getSquare(coordBehindPawn, state);
             squareBehindPawn.tags["enpassant"] = true;
-            // TODO: Add board postMoveFunction: Remove enpassant tag
+            state.postMoveFunctions.push({
+                moveNumber: state.moveNumber + 1,
+                action: function (piece, innerState, innerBoard) {
+                    var sq = innerBoard.getSquare({ file: coordBehindPawn.file, rank: coordBehindPawn.rank }, innerState);
+                    delete sq.tags["enpassant"];
+                }
+            });
         }
     }
 };

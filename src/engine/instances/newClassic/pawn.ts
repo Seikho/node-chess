@@ -16,7 +16,13 @@ var firstMove: Chess.MoveDefinition = {
 			var squareBehindPawn = board.getSquare(coordBehindPawn, state);
 			squareBehindPawn.tags["enpassant"] = true;
 			
-			// TODO: Add board postMoveFunction: Remove enpassant tag
+			state.postMoveFunctions.push({
+				moveNumber: state.moveNumber+1,
+				action: (piece, innerState, innerBoard) => {
+					var sq = innerBoard.getSquare({file: coordBehindPawn.file, rank: coordBehindPawn.rank }, innerState);
+					delete sq.tags["enpassant"];
+				}
+			})
 		}
 	}
 }
