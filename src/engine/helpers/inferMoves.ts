@@ -4,7 +4,7 @@ export = infer;
  * Intentionally not using any closures to improve performance
  * This code can potentially be called thousands of times after a single move has been played
  */
-function infer(piece: Chess.Piece, state?: Chess.BoardState) {
+function infer(piece: Chess.BasePiece, state?: Chess.BoardState) {
 	var board: Chess.Engine = this;
 	state = state || board.boardState;
 	var moves: Chess.Move[] = [];
@@ -14,7 +14,7 @@ function infer(piece: Chess.Piece, state?: Chess.BoardState) {
 
 		var canProcess = true;
 		if (move.preCondition)
-			canProcess = move.preCondition(<Chess.BasePiece>piece, state, board);
+			canProcess = move.preCondition(piece, state, board);
 
 		if (move.transforms) {
 			// Pre-conditions only apply to 
