@@ -123,8 +123,8 @@ declare module "node-chess" {
         canMove?: boolean;
         canCapture?: boolean;
         postMoveAction?: MoveFunction;
-        preCondition?: MovePatternConditional;
-        postCondition?: MovePatternConditional;
+        preCondition?: MoveCondition;
+        postCondition?: MoveCondition;
         useDefaultConditions?: boolean;
     }
     
@@ -144,7 +144,7 @@ declare module "node-chess" {
         canJump?: boolean;
     }
 
-    export interface MovePatternConditional {
+    export interface MoveCondition {
         (piece: BasePiece, boardState: BoardState, board: Engine): boolean;
     }
 
