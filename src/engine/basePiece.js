@@ -17,6 +17,10 @@ var BasePiece = (function () {
         var destination = applyTransform(transform, this.location, this.isWhite);
         return destination;
     };
+    BasePiece.prototype.getAbsoluteDestination = function (transform) {
+        var destination = applyTransform(transform, this.location, true);
+        return destination;
+    };
     return BasePiece;
 })();
 function applyTransform(transform, position, isWhite) {

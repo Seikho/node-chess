@@ -34,6 +34,11 @@ class BasePiece implements Chess.BasePiece {
 		var destination = applyTransform(transform, this.location, this.isWhite);
 		return destination;
 	}
+	
+	getAbsoluteDestination(transform: Chess.Coordinate): Chess.Coordinate {
+		var destination = applyTransform(transform, this.location, true);
+		return destination;
+	}
 }
 
 function applyTransform(transform: Chess.Coordinate, position: Chess.Coordinate, isWhite: boolean) {
