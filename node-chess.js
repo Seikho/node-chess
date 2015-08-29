@@ -5857,7 +5857,7 @@ var Direction = exports.Direction;
 
 },{}],33:[function(require,module,exports){
 var Engine = require("./engine/engine");
-var classicEngine = require("./engine/instances/newClassic/engine");
+var classicEngine = require("./engine/instances/classic/engine");
 var enums = require("./enums");
 var chess = {
     Engine: Engine,
@@ -5868,4 +5868,4 @@ var chess = {
 };
 module.exports = chess;
 
-},{"./engine/engine":13,"./engine/instances/newClassic/engine":24,"./enums":32}]},{},[33]);
+},{"./engine/engine":13,"./engine/instances/classic/engine":24,"./enums":32}]},{},[33]);

@@ -12725,7 +12725,7 @@ var Direction = exports.Direction;
 
 },{}],71:[function(require,module,exports){
 var Engine = require("./engine/engine");
-var classicEngine = require("./engine/instances/newClassic/engine");
+var classicEngine = require("./engine/instances/classic/engine");
 var enums = require("./enums");
 var chess = {
     Engine: Engine,
@@ -12736,7 +12736,7 @@ var chess = {
 };
 module.exports = chess;
 
-},{"./engine/engine":51,"./engine/instances/newClassic/engine":62,"./enums":70}],72:[function(require,module,exports){
+},{"./engine/engine":51,"./engine/instances/classic/engine":62,"./enums":70}],72:[function(require,module,exports){
 var chess = require("../src/index");
 var chai = require("chai");
 var expect = chai.expect;
