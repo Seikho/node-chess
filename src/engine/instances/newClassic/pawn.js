@@ -5,7 +5,15 @@ var moveForward = {
 var firstMove = {
     canMove: true,
     transforms: { file: 0, rank: 2 },
-    preCondition: function (piece, boardState) { return boardState.moveHistory.filter(function (m) { return m.piece.id === piece.id; }).length === 0; }
+    preCondition: function (piece, boardState) { return boardState.moveHistory.filter(function (m) { return m.piece.id === piece.id; }).length === 0; },
+    postMoveAction: {
+        action: function (piece, state, board) {
+            var coordBehindPawn = piece.getRelativeDestinations(1 /* Down */, 1)[0];
+            var squareBehindPawn = board.getSquare(coordBehindPawn, state);
+            squareBehindPawn.tags["enpassant"] = true;
+            // TODO: Add board postMoveFunction: Remove enpassant tag
+        }
+    }
 };
 var leftCapture = {
     canCapture: true,

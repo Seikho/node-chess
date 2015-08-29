@@ -10,7 +10,16 @@ var moveForward: Chess.MoveDefinition = {
 var firstMove: Chess.MoveDefinition = {
 	canMove: true,
 	transforms: { file: 0, rank: 2 },
-	preCondition: (piece, boardState) => boardState.moveHistory.filter(m => m.piece.id === piece.id).length === 0
+	preCondition: (piece, boardState) => boardState.moveHistory.filter(m => m.piece.id === piece.id).length === 0,
+	postMoveAction: {
+		action: (piece, state, board) => {
+			var coordBehindPawn = piece.getRelativeDestinations(Dir.Down, 1)[0];
+			var squareBehindPawn = board.getSquare(coordBehindPawn, state);
+			squareBehindPawn.tags["enpassant"] = true;
+			
+			// TODO: Add board postMoveFunction: Remove enpassant tag
+		}
+	}
 }
 
 var leftCapture: Chess.MoveDefinition = {
