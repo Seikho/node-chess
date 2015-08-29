@@ -47,7 +47,10 @@ function processTransform(move, piece, boardState, board) {
         transforms = [transforms];
     for (var x = 0; x < transforms.length; x++) {
         var transform = transforms[x];
-        steps.push(applyTransform(steps[x], transform, modifier));
+        var appliedTransform = applyTransform(steps[x], transform, modifier);
+        if (!isInBounds(appliedTransform))
+            return null;
+        steps.push(appliedTransform);
     }
     var finalCoord = steps[steps.length - 1];
     finalMove.to = finalCoord;
@@ -58,9 +61,9 @@ function processTransform(move, piece, boardState, board) {
     if (!finalSquare)
         return null;
     var finalSquarePiece = finalSquare.piece;
-    var cantCaptureOnFinalSquare = move.canCapture && finalSquarePiece && finalSquarePiece.isWhite != piece.isWhite;
-    if (cantCaptureOnFinalSquare)
-        return null;
+    var canCaptureOnFinalSquare = move.canCapture && finalSquarePiece && finalSquarePiece.isWhite != piece.isWhite;
+    if (canCaptureOnFinalSquare)
+        return finalMove;
     var canMoveButSquareOccupied = move.canMove && finalSquarePiece;
     if (canMoveButSquareOccupied)
         return null;
