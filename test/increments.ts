@@ -4,7 +4,7 @@ import chai = require("chai");
 var expect = chai.expect;
 
 var classic = chess.classic.engine();
-var sq = classic.getSquare({file: 3, rank: 1});
+var sq = classic.getSquare({ file: 3, rank: 1 });
 var moves = classic.inferMoves(sq.piece);
 console.log(moves);
 
@@ -24,6 +24,34 @@ var blackCmMoveTest = pieceMoveTest.bind(blackCheckmate);
 var stalemate = chess.classic.engine();
 stalemate.positionParser("k7/p7/2R5/8/8/8/8/1R2K3 w - - 0 1");
 var stalementCmMoveTest = pieceMoveTest.bind(stalemate);
+
+describe("relatve destination tests", () => {
+
+	it("White: will evaluate {1,0} from {2,2} to be {3,2}", () => {
+		var b2 = classic.getSquare({ file: 2, rank: 2 });
+		var c2 = b2.piece.getRelativeDestination({ file: 1, rank: 0 });
+		expect(c2.file).to.equal(3);
+		expect(c2.rank).to.equal(2);
+	});
+
+
+	it("Black: will evaluate {0,1} from {2,7} to be {2,6}", () => {
+		var b7 = classic.getSquare({ file: 2, rank: 7 });
+		var b6 = b7.piece.getRelativeDestination({ file: 0, rank: 1 });
+		expect(b6.file).to.equal(2);
+		expect(b6.rank).to.equal(6);
+	});
+});
+
+describe("absolute destination tests", () => {
+	it("Black: will evaluate {0,-2} from {2,7} to be {2,5}", () => {
+		var b7 = classic.getSquare({ file: 2, rank: 7 });
+		var b5 = b7.piece.getAbsoluteDestination({ file: 0, rank: -2 });
+		expect(b5.file).to.equal(2);
+		expect(b5.rank).to.equal(5);
+	});
+})
+
 
 describe("available move tests", () => {
 
@@ -81,7 +109,7 @@ describe("game conclusion tests", () => {
 
 	stalementCmMoveTest("[Stalemate] will move Ra6", coord(3, 6), coord(1, 6));
 
-	it("Will delcare that the game is drawn by stalement", () => {		
+	it("Will delcare that the game is drawn by stalement", () => {
 		expect(stalemate.boardState.gameIsDrawn).to.equal(true);
 	})
 });
@@ -140,10 +168,10 @@ function pieceMoveTest(message: string, from: Chess.Coordinate, to: Chess.Coordi
 		var expected = wont ? from : to;
 		var square: Chess.Square = board.getSquare(from);
 		var piece: Chess.Piece = board.getSquare(from).piece;
-		var newState = board.movePiece( { from, to });
+		var newState = board.movePiece({ from, to });
 		var moved: Chess.Square = board.getSquare(expected, newState);
 		var movedPiece = moved.piece;
-		
+
 		if (wont) {
 			expect(newState).to.be.null;
 			return;
