@@ -99,7 +99,7 @@ declare module "node-chess" {
     }
 
     export interface BasePiece extends Piece {
-        getRelativeDestinations: (direction: number, count: number) => Coordinate[];
+        getRelativeDestination: (transform: Coordinate) => Coordinate;
         postMoveFunctions: MoveFunction[];
     }
 
