@@ -8,7 +8,7 @@ var firstMove = {
     preCondition: function (piece, boardState) { return boardState.moveHistory.filter(function (m) { return m.piece.id === piece.id; }).length === 0; },
     postMoveAction: {
         action: function (piece, state, board) {
-            var coordBehindPawn = piece.getRelativeDestinations(1 /* Down */, 1)[0];
+            var coordBehindPawn = piece.getRelativeDestination({ file: 0, rank: -1 });
             var squareBehindPawn = board.getSquare(coordBehindPawn, state);
             squareBehindPawn.tags["enpassant"] = true;
             // TODO: Add board postMoveFunction: Remove enpassant tag
@@ -26,35 +26,33 @@ var rightCapture = {
 var leftEnpassant = {
     canCapture: true,
     transforms: { file: -1, rank: 1 },
-    preCondition: enpassantPreMove(10 /* UpLeft */),
+    preCondition: enpassantPreMove({ file: -1, rank: 1 }),
     postMoveAction: {
-        action: enpassantPostMove(2 /* Left */)
+        action: enpassantPostMove
     }
 };
 var rightEnpassant = {
     canCapture: true,
     transforms: { file: 1, rank: 1 },
-    preCondition: enpassantPreMove(11 /* UpRight */),
+    preCondition: enpassantPreMove({ file: 1, rank: 1 }),
     postMoveAction: {
-        action: enpassantPostMove(3 /* Right */)
+        action: enpassantPostMove
     }
 };
 function enpassantPreMove(dir) {
     return function (piece, state, board) {
-        var coord = piece.getRelativeDestinations(dir, 1);
-        var sq = board.getSquare(coord[0], state);
+        var coord = piece.getRelativeDestination(dir);
+        var sq = board.getSquare(coord, state);
         if (!sq)
             return false;
         return !!sq.tags["enpassant"];
     };
 }
-function enpassantPostMove(dir) {
-    return function (piece, state, board) {
-        var coord = piece.getRelativeDestinations(dir, 1);
-        var square = board.getSquare(coord[0], state);
-        state.capturedPieces.push(square.piece);
-        square.piece = null;
-    };
+function enpassantPostMove(piece, state, board) {
+    var coord = piece.getRelativeDestination({ file: 0, rank: -1 });
+    var square = board.getSquare(coord, state);
+    state.capturedPieces.push(square.piece);
+    square.piece = null;
 }
 var pawn = {
     notation: "p",
