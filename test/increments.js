@@ -2,9 +2,6 @@ var chess = require("../src/index");
 var chai = require("chai");
 var expect = chai.expect;
 var classic = chess.classic.engine();
-var sq = classic.getSquare({ file: 3, rank: 1 });
-var moves = classic.inferMoves(sq.piece);
-console.log(moves);
 var classicMoveTest = pieceMoveTest.bind(classic);
 var classicMovesTest = hasMovesTest.bind(classic);
 var classicTagTest = hasTagTest.bind(classic);
@@ -87,7 +84,7 @@ describe("game conclusion tests", function () {
         expect(blackCheckmate.boardState.winnerIsWhite).to.equal(false);
     });
     stalementCmMoveTest("[Stalemate] will move Ra6", coord(3, 6), coord(1, 6));
-    it("Will delcare that the game is drawn by stalement", function () {
+    it("Will declare that the game is drawn by stalement", function () {
         expect(stalemate.boardState.gameIsDrawn).to.equal(true);
     });
 });

@@ -17186,12 +17186,17 @@ function processIncrementer(move, piece, state, board) {
                 if (!move.canCapture && !move.incrementer.canJump)
                     break;
                 validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
-                continue;
+                // If we can jump, we can possibly go to the next square, otherwise terminate the incrementer here.
+                if (move.incrementer.canJump)
+                    continue;
+                else
+                    break;
             }
             if (square.piece.isWhite === piece.isWhite) {
                 if (!move.incrementer.canJump)
                     break;
-                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
+                // Do not add the move here: we can jump, but we can't move to this square
+                //validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
                 continue;
             }
             if (move.canCapture) {
@@ -17780,9 +17785,6 @@ var chess = require("../src/index");
 var chai = require("chai");
 var expect = chai.expect;
 var classic = chess.classic.engine();
-var sq = classic.getSquare({ file: 3, rank: 1 });
-var moves = classic.inferMoves(sq.piece);
-console.log(moves);
 var classicMoveTest = pieceMoveTest.bind(classic);
 var classicMovesTest = hasMovesTest.bind(classic);
 var classicTagTest = hasTagTest.bind(classic);
@@ -17865,7 +17867,7 @@ describe("game conclusion tests", function () {
         expect(blackCheckmate.boardState.winnerIsWhite).to.equal(false);
     });
     stalementCmMoveTest("[Stalemate] will move Ra6", coord(3, 6), coord(1, 6));
-    it("Will delcare that the game is drawn by stalement", function () {
+    it("Will declare that the game is drawn by stalement", function () {
         expect(stalemate.boardState.gameIsDrawn).to.equal(true);
     });
 });
