@@ -24,7 +24,9 @@ function isMoveAllowed(move, boardState, board) {
     }
 }
 function allowedMoves(boardState, board) {
-    var isLegit = function (move) { return isMoveAllowed(move, boardState, board); };
+    function isLegit(move) {
+        return isMoveAllowed(move, boardState, board);
+    }
     var legitMoves = boardState.moves.filter(isLegit);
     return legitMoves;
 }
@@ -46,15 +48,18 @@ function isGameOver(boardState, board) {
 }
 function isCheck(checkWhite, boardState) {
     var kingSquare;
-    boardState.ranks.forEach(function (rank) {
-        rank.squares.forEach(function (square) {
+    //TODO: Optimise--remove closures
+    for (var rx = 1; rx <= 8; rx++) {
+        var rank = boardState.ranks[rx];
+        for (var sx = 1; sx <= 8; sx++) {
+            var square = rank.squares[sx];
             if (!square.piece)
-                return;
+                continue;
             var isKing = square.piece.name === "King" && square.piece.isWhite === checkWhite;
             if (isKing)
                 kingSquare = square;
-        });
-    });
+        }
+    }
     if (!kingSquare)
         throw new Error("Unable to locate opposing king");
     var attackFilter = function (move) { return move.to.file === kingSquare.file && move.to.rank === kingSquare.rank; };

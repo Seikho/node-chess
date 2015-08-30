@@ -1,6 +1,7 @@
 import Chess = require("node-chess");
 import chess = require("../src/index");
 import chai = require("chai");
+
 var expect = chai.expect;
 
 var classic = chess.classic.engine();

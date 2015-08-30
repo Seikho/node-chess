@@ -14,10 +14,9 @@ function isMoveAllowed(move: Chess.Move, boardState: Chess.BoardState, board: Ch
     if (turn !== move.isWhite) return false;
 
     try {
-        var future = board.movePiece(move, boardState);
-        if (!future) return false;        
+        var future = board.movePiece(move, boardState);      
+        if (!future) return false;       
         var futureIsInCheck = isCheck(turn, future);
-        
         return !futureIsInCheck;
 
     } catch (ex) {
@@ -27,8 +26,12 @@ function isMoveAllowed(move: Chess.Move, boardState: Chess.BoardState, board: Ch
 }
 
 function allowedMoves(boardState: Chess.BoardState, board: Chess.Engine) {
-    var isLegit = move => isMoveAllowed(move, boardState, board);
-    var legitMoves = boardState.moves.filter(isLegit);
+    
+    function isLegit(move: Chess.Move) {
+        return isMoveAllowed(move, boardState, board);
+    }
+    
+    var legitMoves = boardState.moves.filter(isLegit);          
     return legitMoves;
 }
 
@@ -52,13 +55,19 @@ function isGameOver(boardState: Chess.BoardState, board: Chess.Engine) {
 function isCheck(checkWhite: boolean, boardState: Chess.BoardState) {
     var kingSquare: Chess.Square;
 
-    boardState.ranks.forEach(rank => {
-        rank.squares.forEach(square => {
-            if (!square.piece) return;
+    //TODO: Optimise--remove closures
+    for (var rx = 1; rx <= 8; rx++) {
+        var rank = boardState.ranks[rx];
+        
+        for (var sx = 1; sx <= 8; sx++) {
+            var square = rank.squares[sx];
+            
+            if (!square.piece) continue;
             var isKing = square.piece.name === "King" && square.piece.isWhite === checkWhite;
             if (isKing) kingSquare = square;
-        });
-    });
+        }
+    }
+
 
     if (!kingSquare) throw new Error("Unable to locate opposing king");
 
@@ -68,3 +77,4 @@ function isCheck(checkWhite: boolean, boardState: Chess.BoardState) {
     var isInCheck = kingAttackers.length > 0;
     return isInCheck;
 }
+
