@@ -35,7 +35,7 @@ var chess = require("node-chess");
 var game = chess.classic.engine();
 ``` 
 
-###Using the board
+### Using the board
 ```javascript
 // Move the E2 pawn to E4
 game.movePiece( { from: { file: 5, rank: 2 } , to: { file: 5, rank: 4 } });
