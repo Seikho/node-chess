@@ -153,13 +153,17 @@ function processIncrementer(move: Chess.MoveDefinition, piece: Chess.Piece, stat
 				if (!move.canCapture && !move.incrementer.canJump) break;
 
 				validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
-				continue;
+				
+				// If we can jump, we can possibly go to the next square, otherwise terminate the incrementer here.
+				if (move.incrementer.canJump) continue;
+				else break;
 			}
 
 			if (square.piece.isWhite === piece.isWhite) {
 				if (!move.incrementer.canJump) break;
-
-				validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
+				
+				// Do not add the move here: we can jump, but we can't move to this square
+				//validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
 				continue;
 			}
 
