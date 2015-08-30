@@ -6,6 +6,7 @@ import bishop = require("./bishop");
 import rook = require("./rook");
 import queen = require("./queen");
 import king = require("./king");
+import mates = require("./rules");
 
 export = classEngine;
 
@@ -17,6 +18,8 @@ function classEngine(): Chess.Engine {
 	];
 
 	board.positionParser();
+	
+	board.postMoveFunctions = [mates.postMove];
 	
 	return board;
 }

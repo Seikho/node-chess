@@ -10042,7 +10042,7 @@ var Engine = (function () {
 })();
 module.exports = Engine;
 
-},{"./basePiece":14,"./helpers/availableMoves":16,"./helpers/createPiece":17,"./helpers/createSquares":18,"./helpers/getMoves":20,"./helpers/getSquare":21,"./helpers/inferMoves":22,"./helpers/movePiece":23,"./helpers/toString":24,"./parsers/fen":32,"bluebird":2}],16:[function(require,module,exports){
+},{"./basePiece":14,"./helpers/availableMoves":16,"./helpers/createPiece":17,"./helpers/createSquares":18,"./helpers/getMoves":20,"./helpers/getSquare":21,"./helpers/inferMoves":22,"./helpers/movePiece":23,"./helpers/toString":24,"./parsers/fen":33,"bluebird":2}],16:[function(require,module,exports){
 function availableMoves(boardState) {
     var self = this;
     boardState = boardState || self.boardState;
@@ -10130,9 +10130,11 @@ function shallowCopy(object) {
     var copy = {};
     if (!object)
         return copy;
-    var add = function (key) { return copy[key] = object[key]; };
-    Object.keys(object)
-        .forEach(add);
+    var keys = Object.keys(object);
+    for (var x = 0; x < keys.length; x++) {
+        var key = keys[x];
+        copy[key] = object[key];
+    }
     return copy;
 }
 function copyPiece(piece) {
@@ -10140,10 +10142,10 @@ function copyPiece(piece) {
         return null;
     var copy = shallowCopy(piece);
     copy.location = { rank: piece.location.rank, file: piece.location.file };
-    copy.movement = shallowCopyArray(piece.movement);
+    copy.movement = piece.movement;
     copy.getRelativeDestination = piece.getRelativeDestination;
     copy.getAbsoluteDestination = piece.getAbsoluteDestination;
-    copy.postMoveFunctions = piece.postMoveFunctions.slice();
+    copy.postMoveFunctions = piece.postMoveFunctions;
     return copy;
 }
 function copyAvailableMoves(moves) {
@@ -10235,6 +10237,7 @@ function processTransform(move, piece, boardState, board) {
     var finalMove = {
         from: copyCoord(piece.location),
         to: null,
+        isWhite: piece.isWhite
     };
     var canSkipLogic = move.preCondition && !move.useDefaultConditions;
     if (move.postMoveAction)
@@ -10314,23 +10317,23 @@ function processIncrementer(move, piece, state, board) {
             if (square.piece.isWhite !== piece.isWhite) {
                 if (!move.canCapture && !move.incrementer.canJump)
                     break;
-                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
                 continue;
             }
             if (square.piece.isWhite === piece.isWhite) {
                 if (!move.incrementer.canJump)
                     break;
-                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
                 continue;
             }
             if (move.canCapture) {
-                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
                 continue;
             }
             break;
         }
         if (move.canMove) {
-            validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+            validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
             continue;
         }
         break;
@@ -10494,17 +10497,19 @@ var bishop = require("./bishop");
 var rook = require("./rook");
 var queen = require("./queen");
 var king = require("./king");
+var mates = require("./rules");
 function classEngine() {
     var board = new Engine();
     board.pieces = [
         pawn, knight, bishop, rook, queen, king
     ];
     board.positionParser();
+    board.postMoveFunctions = [mates.postMove];
     return board;
 }
 module.exports = classEngine;
 
-},{"../../engine":15,"./bishop":25,"./king":27,"./knight":28,"./pawn":29,"./queen":30,"./rook":31}],27:[function(require,module,exports){
+},{"../../engine":15,"./bishop":25,"./king":27,"./knight":28,"./pawn":29,"./queen":30,"./rook":31,"./rules":32}],27:[function(require,module,exports){
 var up = makeMove(0, 1);
 var down = makeMove(0, -1);
 var left = makeMove(-1, 0);
@@ -10741,6 +10746,77 @@ var rook = {
 module.exports = rook;
 
 },{}],32:[function(require,module,exports){
+/**
+ * If the board has the 'check' tag,
+ */
+exports.postMove = {
+    action: function (piece, boardState, board) {
+        var gameState = isGameOver(boardState, board);
+        return gameState;
+    }
+};
+function isMoveAllowed(move, boardState, board) {
+    var turn = boardState.whitesTurn;
+    if (turn !== move.isWhite)
+        return false;
+    try {
+        var future = board.movePiece(move, boardState);
+        if (!future)
+            return false;
+        var futureIsInCheck = isCheck(turn, future);
+        return !futureIsInCheck;
+    }
+    catch (ex) {
+        // No king due to being captured
+        return false;
+    }
+}
+function allowedMoves(boardState, board) {
+    function isLegit(move) {
+        return isMoveAllowed(move, boardState, board);
+    }
+    var legitMoves = boardState.moves.filter(isLegit);
+    return legitMoves;
+}
+function isGameOver(boardState, board) {
+    var isInCheck = isCheck(boardState.whitesTurn, boardState);
+    // if (!isInCheck) return false;
+    var moves = allowedMoves(boardState, board);
+    var hasMoves = moves.length > 0;
+    if (hasMoves)
+        return false;
+    boardState.moves = [];
+    if (isInCheck) {
+        boardState.winnerIsWhite = !boardState.whitesTurn;
+    }
+    else {
+        boardState.gameIsDrawn = true;
+    }
+    return true;
+}
+function isCheck(checkWhite, boardState) {
+    var kingSquare;
+    //TODO: Optimise--remove closures
+    for (var rx = 1; rx <= 8; rx++) {
+        var rank = boardState.ranks[rx];
+        for (var sx = 1; sx <= 8; sx++) {
+            var square = rank.squares[sx];
+            if (!square.piece)
+                continue;
+            var isKing = square.piece.name === "King" && square.piece.isWhite === checkWhite;
+            if (isKing)
+                kingSquare = square;
+        }
+    }
+    if (!kingSquare)
+        throw new Error("Unable to locate opposing king");
+    var attackFilter = function (move) { return move.to.file === kingSquare.file && move.to.rank === kingSquare.rank; };
+    var kingAttackers = boardState.moves.filter(attackFilter);
+    var isInCheck = kingAttackers.length > 0;
+    return isInCheck;
+}
+
+},{}],33:[function(require,module,exports){
 var fenStringParser = require("./stringParsers/fen");
 var defaultPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 function fenParser(position) {
@@ -10792,12 +10868,12 @@ function createFilesForRank(engine, fenRank, rankNumber) {
 }
 module.exports = fenParser;
 
-},{"./stringParsers/fen":33}],33:[function(require,module,exports){
+},{"./stringParsers/fen":34}],34:[function(require,module,exports){
 var PEG = require("pegjs");
 var parser = PEG.buildParser("\n\tStart\n\t= WS r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move WS\n\t{ return {\n\tranks: r,\n\tturn: t,\n\tcastling: c,\n\thalfMove: h,\n\tfullMove: t };\n\t}\n\tRankList\n\t= head:Rank \"/\" tail:RankList { return [].concat(head,tail); }\n\t/ Rank\n\n\tRank\n\t= rank:[a-zA-Z0-9]+ { return rank.join(''); }\n\n\tWS\n\t= \" \"* { return null; }\n\n\tTurn\n\t= turn:[w|b] { return turn }\n\n\tCastling\n\t= castling:[k|q|K|Q|-]+ { return castling.filter(function(c) { return c !== '-'; }); }\n\n\tEnpassant\n\t= ([a-h]{1})([1-8]{1})\n\t/ \"-\"\n\n\tHalfMove\n\t= [0-9]+\n\n\tMove\n\t= [0-9]+\n");
 module.exports = parser;
 
-},{"pegjs":12}],34:[function(require,module,exports){
+},{"pegjs":12}],35:[function(require,module,exports){
 (function (Direction) {
     Direction[Direction["Up"] = 0] = "Up";
     Direction[Direction["Down"] = 1] = "Down";
@@ -10818,7 +10894,7 @@ module.exports = parser;
 })(exports.Direction || (exports.Direction = {}));
 var Direction = exports.Direction;
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 var Engine = require("./engine/engine");
 var classicEngine = require("./engine/instances/classic/engine");
 var enums = require("./enums");
@@ -10831,4 +10907,4 @@ var chess = {
 };
 module.exports = chess;
 
-},{"./engine/engine":15,"./engine/instances/classic/engine":26,"./enums":34}]},{},[35]);
+},{"./engine/engine":15,"./engine/instances/classic/engine":26,"./enums":35}]},{},[36]);
