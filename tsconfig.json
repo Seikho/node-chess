@@ -37,6 +37,7 @@
         "src/engine/instances/classic/pawn.ts",
         "src/engine/instances/classic/queen.ts",
         "src/engine/instances/classic/rook.ts",
+        "src/engine/instances/classic/rules.ts",
         "src/engine/parsers/fen.ts",
         "src/engine/parsers/stringParsers/fen.ts",
         "src/enums.ts",
