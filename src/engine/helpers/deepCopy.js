@@ -31,9 +31,11 @@ function shallowCopy(object) {
     var copy = {};
     if (!object)
         return copy;
-    var add = function (key) { return copy[key] = object[key]; };
-    Object.keys(object)
-        .forEach(add);
+    var keys = Object.keys(object);
+    for (var x = 0; x < keys.length; x++) {
+        var key = keys[x];
+        copy[key] = object[key];
+    }
     return copy;
 }
 function copyPiece(piece) {
@@ -41,10 +43,10 @@ function copyPiece(piece) {
         return null;
     var copy = shallowCopy(piece);
     copy.location = { rank: piece.location.rank, file: piece.location.file };
-    copy.movement = shallowCopyArray(piece.movement);
+    copy.movement = piece.movement;
     copy.getRelativeDestination = piece.getRelativeDestination;
     copy.getAbsoluteDestination = piece.getAbsoluteDestination;
-    copy.postMoveFunctions = piece.postMoveFunctions.slice();
+    copy.postMoveFunctions = piece.postMoveFunctions;
     return copy;
 }
 function copyAvailableMoves(moves) {
