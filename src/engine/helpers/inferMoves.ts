@@ -45,6 +45,7 @@ function processTransform(move: Chess.MoveDefinition, piece: Chess.Piece, boardS
 	var finalMove: Chess.Move = {
 		from: copyCoord(piece.location),
 		to: null,
+		isWhite: piece.isWhite
 	};
 
 	var canSkipLogic = move.preCondition && !move.useDefaultConditions;
@@ -151,19 +152,19 @@ function processIncrementer(move: Chess.MoveDefinition, piece: Chess.Piece, stat
 			if (square.piece.isWhite !== piece.isWhite) {
 				if (!move.canCapture && !move.incrementer.canJump) break;
 
-				validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+				validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
 				continue;
 			}
 
 			if (square.piece.isWhite === piece.isWhite) {
 				if (!move.incrementer.canJump) break;
 
-				validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+				validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
 				continue;
 			}
 
 			if (move.canCapture) {
-				validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+				validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
 				continue;
 			}
 
@@ -171,7 +172,7 @@ function processIncrementer(move: Chess.MoveDefinition, piece: Chess.Piece, stat
 		}
 
 		if (move.canMove) {
-			validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+			validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
 			continue;
 		}
 

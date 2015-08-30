@@ -37,6 +37,7 @@ function processTransform(move, piece, boardState, board) {
     var finalMove = {
         from: copyCoord(piece.location),
         to: null,
+        isWhite: piece.isWhite
     };
     var canSkipLogic = move.preCondition && !move.useDefaultConditions;
     if (move.postMoveAction)
@@ -116,23 +117,23 @@ function processIncrementer(move, piece, state, board) {
             if (square.piece.isWhite !== piece.isWhite) {
                 if (!move.canCapture && !move.incrementer.canJump)
                     break;
-                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
                 continue;
             }
             if (square.piece.isWhite === piece.isWhite) {
                 if (!move.incrementer.canJump)
                     break;
-                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
                 continue;
             }
             if (move.canCapture) {
-                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+                validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
                 continue;
             }
             break;
         }
         if (move.canMove) {
-            validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank } });
+            validMoves.push({ from: copyCoord(piece.location), to: { file: current.file, rank: current.rank }, isWhite: piece.isWhite });
             continue;
         }
         break;
