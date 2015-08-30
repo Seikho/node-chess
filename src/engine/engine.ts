@@ -39,11 +39,11 @@ class Engine implements Chess.Engine {
 
     movePiece = movePiece.bind(this);
     movePieceAsync = (move: Chess.Move, boardState?: Chess.BoardState): Promise<Chess.BoardState> => {
-        var promise = new Promise<Chess.BoardState>((resolve, reject) => {
-            setImmediate(() => {
+        var promise = new Promise<Chess.BoardState>(resolve => {
+            setTimeout(() => {
                 var newState = this.movePiece(move, boardState);
                 resolve(newState);
-            });
+            }, 0);
         });
         
         return promise;

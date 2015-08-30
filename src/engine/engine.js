@@ -33,11 +33,11 @@ var Engine = (function () {
         this.positionParser = fenParser.bind(this);
         this.movePiece = movePiece.bind(this);
         this.movePieceAsync = function (move, boardState) {
-            var promise = new Promise(function (resolve, reject) {
-                setImmediate(function () {
+            var promise = new Promise(function (resolve) {
+                setTimeout(function () {
                     var newState = _this.movePiece(move, boardState);
                     resolve(newState);
-                });
+                }, 0);
             });
             return promise;
         };

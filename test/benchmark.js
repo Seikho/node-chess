@@ -22,14 +22,10 @@ describe("benchmarks", function () {
         console.log(box(times));
     });
     it("will move a7-a6 " + times + " using movePieceAsync", function (done) {
-        var times = [];
         var mainTimer = new Timer();
         Promise.all(engines.map(function (engine) {
-            var timer = new Timer();
-            return engine.movePieceAsync({ from: { file: 2, rank: 7 }, to: { file: 2, rank: 6 } })
-                .then(function () { return times.push(timer.stop()); });
+            return engine.movePieceAsync({ from: { file: 2, rank: 7 }, to: { file: 2, rank: 6 } });
         })).then(function () {
-            console.log(box(times));
             console.log("Total time: " + mainTimer.stop());
             done();
         }).catch(done);
