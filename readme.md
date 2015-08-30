@@ -57,26 +57,33 @@ The 'super knight' moves 3 squares laterally before moving 1 square on the oppos
 ```javascript
 var Direction = require("./engine/direction");
 var customEngine = new chess.Engine();
-var horzThenVert = {
-	moves: [{direction: Direction.Horizontal, count: 3}, {direction: Direction.Vertical, count: 1}],
-	canJump: true,
-	canCapture: true,
-	canMove: true
-}
 
-var vertThenHorz = {
-	moves: [{direction: Direction.Vertical, count: 3}, {direction: Direction.Horizontal, count: 1}],
-	canJump: true,
-	canCapture: true,
-	canMove: true
-} 
+var upLeft = makeMove(-1, 3);
+var upRight = makeMove(1, 3);
+
+var downLeft = makeMove(-1, -3);
+var downRight = makeMove(1, -3);
+
+var leftUp = makeMove(-3, 1);
+var leftDown = makeMove(-3, -1);
+
+var rightUp = makeMove(3, 1);
+var rightDown = makeMove(3, -1);
+
+function makeMove(file, rank) {
+	return {
+		canCapture: true,
+		canMove: true,
+		transforms: { file: file, rank: rank, canJump: true }
+	}
+}
 
 var superKnight = {
 	name: "SuperKnight",
-	movement: [horzThenVert, vertThenHorz],
+	movement: [upLeft, upRight, downLeft, downRight, leftUp, leftDown, rightUp, rightDown],
 	canQueen: false,
 	canSpawn: true,
-	value: 3,
+	value: 3.5,
 	notation: "s"
 }
 
