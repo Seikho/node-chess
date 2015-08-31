@@ -47,6 +47,13 @@ game.movePiece( { from: { file: 2, rank: 8 }, to: { file: 3, rank: 6 } });
 // No piece is on B8
 game.movePiece({ from: { file: 2, rank: 8 }, to: { file: 3, rank: 6 } }); === null; // true
 
+// Promotion
+// To a queen (by default)
+game.movePiece({ from: { file: 1, rank: 7 }, to: { file: 1, rank: 8 } });
+
+// To a rook
+game.movePiece({ from: { file: 1, rank: 7 }, to: { file: 1, rank: 8 } }, "r");
+
 // Print the available moves of the C6 knight to the console
 console.log(classicEngine.getMoves({ file: 3, rank: 6 }));
 ```
