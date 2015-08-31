@@ -23,6 +23,10 @@ var stalemate = chess.classic.engine();
 stalemate.positionParser("k7/p7/2R5/8/8/8/8/1R2K3 w - - 0 1");
 var stalementCmMoveTest = pieceMoveTest.bind(stalemate);
 
+var whitePromote = chess.classic.engine();
+whitePromote.positionParser("1nbqkbnr/Pppppppp/8/8/8/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1");
+var whitePromiseMoveTest = pieceMoveTest.bind(whitePromote);
+
 describe("relatve destination tests", () => {
 
 	it("White: will evaluate {1,0} from {2,2} to be {3,2}", () => {
@@ -63,7 +67,7 @@ describe("available move tests", () => {
 	classicMovesTest("will find all available moves for a7 pawn form the start position", coord(1, 7), [coord(1, 6), coord(1, 5)]);
 });
 
-describe("movement tests", () => {
+describe("classic movement tests", () => {
 
 	classicMoveTest("[White] will move a2-a3", coord(1, 2), coord(1, 3));
 	classicMoveTest("[White] will not move a3-a4 due to being black's turn", coord(1, 3), coord(1, 4), true);
@@ -90,6 +94,18 @@ describe("movement tests", () => {
 	classicMovesTest("[Black] will be able to move Ke8-Kc8 (o-o-o) and Ke8-Kd8", coord(5, 8), [coord(3, 8), coord(4, 8)]);
 	classicMoveTest("[Black] will castle queen side (Ke8-Kc8 or o-o-o)", coord(5, 8), coord(3, 8));
 	classicLocationTest("will have black rook on d8 after castling", coord(4, 8), "r");
+	
+	it("[Promote] will promote pawn on a7 to a queen", () => {
+		whitePromote.movePiece({
+			from: {file:1, rank: 7},
+			to: {file:1, rank:8}
+		});
+		
+		var square = whitePromote.getSquare({file: 1, rank: 8});
+		var piece = square.piece;
+		expect(square.piece).to.exist;
+		expect(square.piece.notation).to.equal("q");
+	});
 });
 
 describe("game conclusion tests", () => {
