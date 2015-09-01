@@ -1,6 +1,6 @@
 {
   "name": "node-chess",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "An isomorphic and fully customisable JavaScript chess engine",
   "main": "src/index",
   "scripts": {
