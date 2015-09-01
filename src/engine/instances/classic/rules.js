@@ -31,6 +31,12 @@ function allowedMoves(boardState, board) {
     return legitMoves;
 }
 function isGameOver(boardState, board) {
+    var fiftyMoveStalement = fiftyMoveRule(boardState, board);
+    if (fiftyMoveStalement) {
+        boardState.gameIsDrawn = true;
+        boardState.moves = [];
+        return true;
+    }
     var isInCheck = isCheck(boardState.whitesTurn, boardState);
     // if (!isInCheck) return false;
     var moves = allowedMoves(boardState, board);
@@ -66,5 +72,14 @@ function isCheck(checkWhite, boardState) {
     var kingAttackers = boardState.moves.filter(attackFilter);
     var isInCheck = kingAttackers.length > 0;
     return isInCheck;
+}
+function fiftyMoveRule(state, board) {
+    if (state.moveHistory.length < 50)
+        return false;
+    var lastFiftyMoves = state.moveHistory.slice(-50);
+    return !lastFiftyMoves.some(isPawn);
+}
+function isPawn(move) {
+    return move.piece.notation === "p";
 }
 //# sourceMappingURL=rules.js.map

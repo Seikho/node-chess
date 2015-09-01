@@ -36,6 +36,13 @@ function allowedMoves(boardState: Chess.BoardState, board: Chess.Engine) {
 }
 
 function isGameOver(boardState: Chess.BoardState, board: Chess.Engine) {
+    var fiftyMoveStalement = fiftyMoveRule(boardState, board);
+    if (fiftyMoveStalement) {
+        boardState.gameIsDrawn = true;
+        boardState.moves = [];
+        return true;
+    }
+    
     var isInCheck = isCheck(boardState.whitesTurn, boardState);
     // if (!isInCheck) return false;
     var moves = allowedMoves(boardState, board);
@@ -78,3 +85,13 @@ function isCheck(checkWhite: boolean, boardState: Chess.BoardState) {
     return isInCheck;
 }
 
+function fiftyMoveRule(state: Chess.BoardState, board: Chess.Engine) {
+    if (state.moveHistory.length < 50) return false;
+    var lastFiftyMoves = state.moveHistory.slice(-50);
+    
+    return !lastFiftyMoves.some(isPawn)
+}
+
+function isPawn(move: Chess.MoveHistory) {
+    return move.piece.notation === "p";
+}
