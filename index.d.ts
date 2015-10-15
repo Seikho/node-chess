@@ -37,7 +37,7 @@ export interface BoardTag {
     [index: string]: any;
 }
 
-const enum Direction {
+export enum Direction {
     Up,
     Down,
     Left,
