@@ -4,8 +4,6 @@ A fully isomorphic and extensible chess engine with position analysis, board ana
 [![NPM version](http://img.shields.io/npm/v/node-chess.svg?style=flat)](https://www.npmjs.org/package/node-chess)
 [![Travis build status](https://travis-ci.org/Seikho/node-chess.svg?branch=master)](https://travis-ci.org/Seikho/node-chess)
 
-### Under construction !!!
-
 ### What does it do? How is it extensible?
 Node-chess allows you extend the board and add your own rules. The analysis engine and computer player will automatically factor these changes/additions into their calculations and adjust accordingly. 
 
