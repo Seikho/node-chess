@@ -1,0 +1,11 @@
+{
+    "version": "0.1.0",
+    "isShellCommand": true,
+    "command": "npm",
+    "args": [
+        "run",
+        "build"
+    ],
+    "showOutput": "silent",
+    "problemMatcher": "$tsc"
+}
