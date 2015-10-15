@@ -7,46 +7,5 @@
         "outDir": "./",
         "sourceMap": true
     },
-    "filesGlob": [
-        "src/**/*.ts",
-        "test/**/*.ts"
-    ],
-    "files": [
-        "test/benchmark.ts",
-        "test/copy.ts",
-        "test/fen-parser.ts",
-        "test/increments.ts",
-        "src/analyzer.ts",
-        "src/castling.ts",
-        "src/engine/basePiece.ts",
-        "src/engine/engine.ts",
-        "src/engine/helpers/addCoordinates.ts",
-        "src/engine/helpers/availableMoves.ts",
-        "src/engine/helpers/createPiece.ts",
-        "src/engine/helpers/createSquares.ts",
-        "src/engine/helpers/deepCopy.ts",
-        "src/engine/helpers/getMoves.ts",
-        "src/engine/helpers/getSquare.ts",
-        "src/engine/helpers/inferMoves.ts",
-        "src/engine/helpers/movePiece.ts",
-        "src/engine/helpers/toString.ts",
-        "src/engine/instances/classic/bishop.ts",
-        "src/engine/instances/classic/engine.ts",
-        "src/engine/instances/classic/king.ts",
-        "src/engine/instances/classic/knight.ts",
-        "src/engine/instances/classic/pawn.ts",
-        "src/engine/instances/classic/queen.ts",
-        "src/engine/instances/classic/rook.ts",
-        "src/engine/instances/classic/rules.ts",
-        "src/engine/parsers/fen.ts",
-        "src/engine/parsers/stringParsers/fen.ts",
-        "src/enums.ts",
-        "src/index.ts",
-        "src/turn.ts",
-        "src/typings/bluebird/bluebird.d.ts",
-        "src/typings/chai/chai.d.ts",
-        "src/typings/mocha/mocha.d.ts",
-        "src/typings/node-chess/node-chess.d.ts",
-        "src/typings/node/node.d.ts"
-    ]
+    "exclude": ["node_modules"]
 }
