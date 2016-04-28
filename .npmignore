@@ -4,3 +4,5 @@
 .tscache/
 profile/
 typings/
+!index.d.ts
+!src/typings/node-chess/node-chess.d.ts
