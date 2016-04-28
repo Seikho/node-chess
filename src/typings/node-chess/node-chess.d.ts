@@ -12,12 +12,11 @@ declare module "node-chess" {
         postMoveFunctions: MoveFunction[];
 
         movePiece(move: Move, boardState?: BoardState): BoardState;
-        movePieceAsync(move: Move, boardState?: BoardState): Promise<BoardState>;
         getSquare(square: Coordinate, boardState?: BoardState): Square;
         getMoves(coordinate: Coordinate, boardState?: BoardState): Move[];
 
         create(): void;
-        populateAvailableMoves(boardState?: BoardState);
+        populateAvailableMoves(boardState?: BoardState): void;
         createPiece(notation: string, location: Coordinate): BasePiece;
         inferMoves(piece: Piece, boardState?: BoardState): Move[];
         toString(): string;
