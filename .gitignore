@@ -7,3 +7,7 @@ node_modules/
 tsd.json
 *.map
 .settings/
+*.js
+!node-chess.js
+!debug.js
+!profile/increment.js
