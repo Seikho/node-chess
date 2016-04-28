@@ -210,7 +210,7 @@ function checkBetween(start: Chess.Coordinate, end: Chess.Coordinate, piece: Che
 	// Ensure all squares between current and previous are vacant
 	// Avoid closures to avoid heap allocations
 	for (var y = end[dimension]; y !== start[dimension]; y += inc) {
-		var between = { file: end.file, rank: end.rank };
+		var between: Chess.Coordinate = { file: end.file, rank: end.rank };
 		between[dimension] += inc;
 		var sq = board.getSquare(between, boardState);
 				

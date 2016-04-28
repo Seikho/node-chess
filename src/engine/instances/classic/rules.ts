@@ -4,7 +4,7 @@ import Chess = require("node-chess");
  */
 
 export var postMove = {
-    action: (piece, boardState: Chess.BoardState, board: Chess.Engine) => {
+    action: (piece: Chess.Piece, boardState: Chess.BoardState, board: Chess.Engine) => {
         var gameState = isGameOver(boardState, board);
         return gameState;
     }

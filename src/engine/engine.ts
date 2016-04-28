@@ -34,22 +34,11 @@ class Engine implements Chess.Engine {
         moveHistory: []
     }
 
-    pieces = [];
+    pieces: Chess.Piece[] = [];
     positionParser = fenParser.bind(this);
 
     movePiece = movePiece.bind(this);
-    movePieceAsync = (move: Chess.Move, boardState?: Chess.BoardState): Promise<Chess.BoardState> => {
-        var promise = new Promise<Chess.BoardState>(resolve => {
-            setTimeout(() => {
-                var newState = this.movePiece(move, boardState);
-                resolve(newState);
-            }, 0);
-        });
-        
-        return promise;
-    }
-
-
+   
     getSquare = getSquare.bind(this);
     getMoves = getMoves.bind(this);
 

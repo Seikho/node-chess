@@ -32,11 +32,14 @@ function copyRank(rank: Chess.Rank) {
 			tags: shallowCopy(sq.tags),
 		};
 	});
-	
+
 	return copy;
 }
 
-function shallowCopy(object: Object) {
+type CopyableObject = {
+	[index: string ]: any
+}
+function shallowCopy(object: CopyableObject) {
 	var copy: any = {};
 	if (!object) return copy;
 
@@ -45,20 +48,20 @@ function shallowCopy(object: Object) {
 		var key = keys[x];
 		copy[key] = object[key];
 	}
-		
+
 	return copy;
 }
 
 function copyPiece(piece: Chess.BasePiece): Chess.BasePiece {
 	if (!piece) return null;
-	
+
 	var copy: Chess.BasePiece = shallowCopy(piece);
 	copy.location = { rank: piece.location.rank, file: piece.location.file };
 	copy.movement = piece.movement;
 	copy.getRelativeDestination = piece.getRelativeDestination;
 	copy.getAbsoluteDestination = piece.getAbsoluteDestination;
 	copy.postMoveFunctions = piece.postMoveFunctions;
-	return copy; 
+	return copy;
 }
 
 function copyAvailableMoves(moves: Chess.Move[]) {
@@ -70,7 +73,7 @@ function copyAvailableMoves(moves: Chess.Move[]) {
 			isWhite: move.isWhite
 		};
 	}
-	var newMoves = [];
+	var newMoves: Array<Chess.Move> = [];
 	moves.forEach(m => newMoves.push(copyMove(m)));
 	return newMoves;
 }
@@ -83,11 +86,11 @@ function copyMoveHistory(history: Chess.MoveHistory[]) {
 			piece: hist.piece
 		};
 	}
-	var newHistory = [];
+	var newHistory: Array<Chess.MoveHistory> = [];
 	history.forEach(h => newHistory.push(copyHistory(h)));
 	return newHistory;
 }
 
 function shallowCopyArray(array: any[]) {
-	return array ? array.slice() : []; 
+	return array ? array.slice() : [];
 }

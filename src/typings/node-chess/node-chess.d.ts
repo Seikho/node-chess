@@ -1,7 +1,5 @@
 declare module "node-chess" {   
     
-    //TODO: Type the API interface     
-    
     export class Engine {
         rankCount: number;
         fileCount: number;
@@ -67,6 +65,7 @@ declare module "node-chess" {
     export interface Coordinate {
         file: number; // Board x-axis
         rank: number; // Board y-axis
+        [axis: string]: number;
     }
 
     export interface Rank {
@@ -188,4 +187,3 @@ declare module "node-chess" {
         (): boolean;
     }
 }
-
