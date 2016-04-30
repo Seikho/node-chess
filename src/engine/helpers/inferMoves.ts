@@ -1,30 +1,37 @@
-import Chess = require("node-chess");
-export = infer;
+import Engine from '../index';
+import BasePiece from '../basePiece';
+import {
+	BoardState,
+	Move,
+	MoveDefinition,
+	Transform,
+	Piece,
+	Coordinate
+} from '../../types';
 /**
  * Intentionally not using any closures to improve performance
  * This code can potentially be called thousands of times after a single move has been played
  */
-function infer(piece: Chess.BasePiece, state?: Chess.BoardState) {
-	var board: Chess.Engine = this;
-	state = state || board.boardState;
-	var moves: Chess.Move[] = [];
+export default function infer(this: Engine, piece: BasePiece, state?: BoardState) {	
+	state = state || this.boardState;
+	var moves: Move[] = [];
 
 	for (var key in piece.movement) {
 		var move = piece.movement[key];
 
 		var canProcess = true;
 		if (move.preCondition)
-			canProcess = move.preCondition(piece, state, board);
+			canProcess = move.preCondition(piece, state, this);
 
 		if (move.transforms) {
 			// Pre-conditions only apply to 
 			if (!canProcess) continue;
 
-			var newMove = processTransform(move, piece, state, board);
+			var newMove = processTransform(move, piece, state, this);
 			if (newMove) moves.push(newMove);
 		}
 		else {
-			var newMoves = processIncrementer(move, piece, state, board);
+			var newMoves = processIncrementer(move, piece, state, this);
 
 			if (move.postMoveAction) {
 				for (var x = 0; x < newMoves.length; x++) {
@@ -39,10 +46,10 @@ function infer(piece: Chess.BasePiece, state?: Chess.BoardState) {
 	return moves;
 }
 
-function processTransform(move: Chess.MoveDefinition, piece: Chess.Piece, boardState: Chess.BoardState, board: Chess.Engine) {
+function processTransform(move: MoveDefinition, piece: Piece, boardState: BoardState, board: Engine) {
 
 	var modifier = piece.isWhite ? 1 : -1;
-	var finalMove: Chess.Move = {
+	var finalMove: Move = {
 		from: copyCoord(piece.location),
 		to: null,
 		isWhite: piece.isWhite
@@ -54,7 +61,7 @@ function processTransform(move: Chess.MoveDefinition, piece: Chess.Piece, boardS
 		finalMove.postMoveActions = [move.postMoveAction];
 
 	var steps = [piece.location];
-	var transforms = <Chess.Transform[]>move.transforms;
+	var transforms = <Transform[]>move.transforms;
 
 	if (!Array.isArray(transforms)) transforms = <any>[transforms];
 
@@ -134,13 +141,13 @@ function processTransform(move: Chess.MoveDefinition, piece: Chess.Piece, boardS
 	return null;
 }
 
-function processIncrementer(move: Chess.MoveDefinition, piece: Chess.Piece, state: Chess.BoardState, board: Chess.Engine): Chess.Move[] {
+function processIncrementer(move: MoveDefinition, piece: Piece, state: BoardState, board: Engine): Move[] {
 	var current = { file: piece.location.file, rank: piece.location.rank };
 	var modifier = piece.isWhite || move.incrementer.absolute ? 1 : -1;
 
 	var file = move.incrementer.file * modifier;
 	var rank = move.incrementer.rank * modifier;
-	var validMoves: Chess.Move[] = [];
+	var validMoves: Move[] = [];
 
 	while (true) {
 		current.file += file;
@@ -186,13 +193,13 @@ function processIncrementer(move: Chess.MoveDefinition, piece: Chess.Piece, stat
 	return validMoves;
 }
 
-function isInBounds(position: Chess.Coordinate): boolean {
+function isInBounds(position: Coordinate): boolean {
 	return position.file > 0 && position.file <= 8
 		&& position.rank > 0 && position.rank <= 8;
 }
 
 // TODO: Shrink function signature. Take an object instead
-function checkBetween(start: Chess.Coordinate, end: Chess.Coordinate, piece: Chess.Piece, transform: Chess.Transform, boardState: Chess.BoardState, board: Chess.Engine) {
+function checkBetween(start: Coordinate, end: Coordinate, piece: Piece, transform: Transform, boardState: BoardState, board: Engine) {
 	var difference = {
 		file: Math.abs(start.file - end.file),
 		rank: Math.abs(start.rank - end.rank)
@@ -210,7 +217,7 @@ function checkBetween(start: Chess.Coordinate, end: Chess.Coordinate, piece: Che
 	// Ensure all squares between current and previous are vacant
 	// Avoid closures to avoid heap allocations
 	for (var y = end[dimension]; y !== start[dimension]; y += inc) {
-		var between: Chess.Coordinate = { file: end.file, rank: end.rank };
+		var between: Coordinate = { file: end.file, rank: end.rank };
 		between[dimension] += inc;
 		var sq = board.getSquare(between, boardState);
 				
@@ -222,7 +229,7 @@ function checkBetween(start: Chess.Coordinate, end: Chess.Coordinate, piece: Che
 	return true;
 }
 
-function applyTransform(coordinate: Chess.Coordinate, transform: Chess.Transform, modifier: number) {
+function applyTransform(coordinate: Coordinate, transform: Transform, modifier: number) {
 	if (transform.absolute) modifier = 1;
 
 	var file = coordinate.file + (transform.file * modifier);
@@ -234,7 +241,7 @@ function applyTransform(coordinate: Chess.Coordinate, transform: Chess.Transform
 	};
 }
 
-function copyCoord(coord: Chess.Coordinate) {
+function copyCoord(coord: Coordinate) {
 	return {
 		file: coord.file,
 		rank: coord.rank

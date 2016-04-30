@@ -1,15 +1,17 @@
-import Chess = require("node-chess");
-export = availableMoves;
+import Engine from '../index';
+import {
+    BoardState,
+    Move
+} from '../../types';
 
-function availableMoves(boardState?: Chess.BoardState) {
-    var self: Chess.Engine = this;
-    boardState = boardState || self.boardState; 
-    var moves: Chess.Move[] = [];
+export default function availableMoves(this: Engine, boardState?: BoardState) {
+    boardState = boardState || this.boardState; 
+    var moves: Move[] = [];
     
     boardState.ranks.forEach(rank => {
         rank.squares.forEach(square => {
             if (square.piece == null) return;
-            moves = moves.concat(self.inferMoves(square.piece, boardState));
+            moves = moves.concat(this.inferMoves(square.piece, boardState));
         });
     });
     

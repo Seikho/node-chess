@@ -1,14 +1,13 @@
-import Engine = require("./engine/engine");
-import classicEngine = require("./engine/instances/classic/engine");
-import enums = require("./enums");
-import Directions = enums.Direction;
+import Engine from './engine';
+import classicEngine from './engine/instances/classic/engine';
+import {Direction} from './enums';
 
 const chess = {
+	Direction,
 	Engine: Engine,
 	classic: {
 		engine: classicEngine,
-	},
-	Direction: enums.Direction
+	}
 };
 
 export = chess;

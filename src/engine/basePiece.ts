@@ -1,10 +1,14 @@
-import Chess = require("node-chess");
-import enums = require("../enums");
-import Direction = enums.Direction;
-export = BasePiece;
+import { 
+	Piece,
+	Coordinate,
+	Move,
+	MoveFunction,
+	MoveDefinition
+} from '../types';
+import {Direction} from '../enums';
 
-class BasePiece implements Chess.BasePiece {
-	constructor(piece: Chess.Piece, notation: string) {
+export default class BasePiece {
+	constructor(piece: Piece, notation: string) {
 		this.isWhite = notation === piece.notation.toUpperCase();
 		this.name = piece.name;
 		this.movement = piece.movement;
@@ -16,29 +20,29 @@ class BasePiece implements Chess.BasePiece {
 		this.postMoveFunctions = piece.postMoveFunctions || [];		
 	}
 	id = 0;
-	location: Chess.Coordinate;
+	location: Coordinate;
 	name: string;
-	movement: Chess.MoveDefinition[];
+	movement: MoveDefinition[];
 	canQueen: boolean;
 	canSpawn: boolean;
 	value: number;
 	notation: string;
-	moveHistory: Chess.Move[];
+	moveHistory: Move[];
 	isWhite: boolean;
-	postMoveFunctions: Chess.MoveFunction[];
+	postMoveFunctions: MoveFunction[];
 
-	getRelativeDestination(transform: Chess.Coordinate): Chess.Coordinate {		
+	getRelativeDestination(transform: Coordinate): Coordinate {		
 		var destination = applyTransform(transform, this.location, this.isWhite);
 		return destination;
 	}
 	
-	getAbsoluteDestination(transform: Chess.Coordinate): Chess.Coordinate {
+	getAbsoluteDestination(transform: Coordinate): Coordinate {
 		var destination = applyTransform(transform, this.location, true);
 		return destination;
 	}
 }
 
-function applyTransform(transform: Chess.Coordinate, position: Chess.Coordinate, isWhite: boolean) {
+function applyTransform(transform: Coordinate, position: Coordinate, isWhite: boolean) {
 	var modifier = isWhite ? 1 : -1;
 	return {
 		file: position.file + (transform.file * modifier),
@@ -46,7 +50,7 @@ function applyTransform(transform: Chess.Coordinate, position: Chess.Coordinate,
 	}	
 }
 
-function modifyTransform(transform: Chess.Coordinate, count: number) {
+function modifyTransform(transform: Coordinate, count: number) {
 	return {
 		file: transform.file * count,
 		rank: transform.rank * count

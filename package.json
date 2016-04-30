@@ -33,7 +33,7 @@
     "browserify": "^11.0.1",
     "chai": "^2.1.2",
     "mocha": "^2.2.1",
-    "typescript": "^1.9.0-dev.20160427"
+    "typescript": "^1.9.0-dev.20160429"
   },
   "dependencies": {
     "bluebird": "^2.9.34",

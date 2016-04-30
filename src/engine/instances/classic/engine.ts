@@ -1,16 +1,13 @@
-import Chess = require("node-chess");
-import Engine = require("../../engine");
-import pawn = require("./pawn");
-import knight = require("./knight");
-import bishop = require("./bishop");
-import rook = require("./rook");
-import queen = require("./queen");
-import king = require("./king");
-import mates = require("./rules");
+import Engine from '../../index';
+import pawn from './pawn';
+import knight from './knight';
+import bishop from './bishop';
+import rook from './rook';
+import queen from './queen';
+import king from './king';
+import mates from './rules';
 
-export = classEngine;
-
-function classEngine(): Chess.Engine {
+export default function classEngine(): Engine {
 	var board = new Engine();
 	
 	board.pieces = [
@@ -19,7 +16,7 @@ function classEngine(): Chess.Engine {
 
 	board.positionParser();
 	
-	board.postMoveFunctions = [mates.postMove];
+	board.postMoveFunctions = [mates];
 	
 	return board;
 }

@@ -1,29 +1,35 @@
-import Chess = require("node-chess");
+import {
+	Coordinate,
+	SingleMove,
+	Square,
+	Piece
+} from '../src/types';
+import {Direction} from '../src/enums';
+import Engine from '../src/engine';
 import chess = require("../src/index");
-import chai = require("chai");
+import {expect} from 'chai';
 
-var expect = chai.expect;
-
-var classic = chess.classic.engine();
+const make = chess.classic;
+const classic = chess.classic.engine();
 
 var classicMoveTest = pieceMoveTest.bind(classic);
 var classicMovesTest = hasMovesTest.bind(classic);
 var classicTagTest = hasTagTest.bind(classic);
 var classicLocationTest = atLocationTest.bind(classic);
 
-var checkmate = chess.classic.engine();
+var checkmate = make.engine();
 checkmate.positionParser("6rk/6pp/3N4/8/8/8/PP2PPPP/RNBQKB1R w KQkq - 0 1");
 var cmMoveTest = pieceMoveTest.bind(checkmate);
 
-var blackCheckmate = chess.classic.engine();
+var blackCheckmate = make.engine();
 blackCheckmate.positionParser("r5bk/6pp/3N4/8/8/8/4PPPP/7K b KQkq - 0 1");
 var blackCmMoveTest = pieceMoveTest.bind(blackCheckmate);
 
-var stalemate = chess.classic.engine();
+var stalemate = make.engine();
 stalemate.positionParser("k7/p7/2R5/8/8/8/8/1R2K3 w - - 0 1");
 var stalementCmMoveTest = pieceMoveTest.bind(stalemate);
 
-var whitePromote = chess.classic.engine();
+var whitePromote = make.engine();
 whitePromote.positionParser("1nbqkbnr/Pppppppp/8/8/8/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1");
 var whitePromiseMoveTest = pieceMoveTest.bind(whitePromote);
 
@@ -128,25 +134,25 @@ describe("game conclusion tests", () => {
 	})
 });
 
-function hasTagTest(message: string, coordinate: Chess.Coordinate, tagName: string, expected: any) {
+function hasTagTest(message: string, coordinate: Coordinate, tagName: string, expected: any) {
 	it(message, () => {
-		var board: Chess.Engine = this;
+		var board: Engine = this;
 		var square = board.getSquare(coordinate);
 		expect(square.tags[tagName]).to.equal(expected);
 	});
 }
 
-function atLocationTest(message: string, location: Chess.Coordinate, notation: string) {
+function atLocationTest(message: string, location: Coordinate, notation: string) {
 	it(message, () => {
-		var board: Chess.Engine = this;
+		var board: Engine = this;
 		var square = board.getSquare(location);
 		expect(square.piece.notation).to.equal(notation);
 	});
 }
 
-function hasMovesTest(message: string, start: Chess.Coordinate, expectedMoves: Chess.Coordinate[]): void {
+function hasMovesTest(message: string, start: Coordinate, expectedMoves: Coordinate[]): void {
 	it(message, () => {
-		var board: Chess.Engine = this;
+		var board: Engine = this;
 		var moves = board.boardState.moves
 			.filter(move => move.from.file === start.file && move.from.rank === start.rank)
 			.map(move => move.to);
@@ -160,11 +166,11 @@ function coord(file: number, rank: number) {
 	return { file: file, rank: rank };
 }
 
-function compare(left: Chess.Coordinate, right: Chess.Coordinate): boolean {
+function compare(left: Coordinate, right: Coordinate): boolean {
 	return left.rank === right.rank && left.file === right.file;
 }
 
-function move(direction: Chess.Direction, count: number): Chess.SingleMove {
+function move(direction: Direction, count: number): SingleMove {
 	return { direction: direction, count: count };
 }
 
@@ -172,18 +178,18 @@ function move(direction: Chess.Direction, count: number): Chess.SingleMove {
  * Test that a piece successfully moved
  */
 var count = 0;
-function pieceMoveTest(message: string, from: Chess.Coordinate, to: Chess.Coordinate, wont = false) {
+function pieceMoveTest(message: string, from: Coordinate, to: Coordinate, wont = false) {
 
 	it(message, () => {
 
 		var isShitMove = from.file === 2 && from.rank === 7;
 
-		var board: Chess.Engine = this;
+		var board: Engine = this;
 		var expected = wont ? from : to;
-		var square: Chess.Square = board.getSquare(from);
-		var piece: Chess.Piece = board.getSquare(from).piece;
+		var square: Square = board.getSquare(from);
+		var piece: Piece = board.getSquare(from).piece;
 		var newState = board.movePiece({ from, to });
-		var moved: Chess.Square = board.getSquare(expected, newState);
+		var moved: Square = board.getSquare(expected, newState);
 		var movedPiece = moved.piece;
 
 		if (wont) {

@@ -1,8 +1,7 @@
-import Chess = require("node-chess");
-var PEG = require("pegjs");
-export = parser;
+import { StringParser } from '../../../types';
+const PEG = require("pegjs");
 
-var parser: Chess.StringParser = PEG.buildParser(`
+const parser: StringParser = PEG.buildParser(`
 	Start
 	= WS r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move WS
 	{ return {
@@ -38,3 +37,5 @@ var parser: Chess.StringParser = PEG.buildParser(`
 	Move
 	= [0-9]+
 `);
+
+export { parser as default }

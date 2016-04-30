@@ -1,8 +1,10 @@
-import Chess = require("node-chess");
-import chess = require("../src/index");
-import chai = require("chai");
-import deepCopy = require("../src/engine/helpers/deepCopy");
-var expect = chai.expect;
+import {
+	Coordinate,
+	Move
+} from '../src/types';
+import chess = require('../src/index');
+import {expect} from 'chai';
+import deepCopy from '../src/engine/helpers/deepCopy';
 var newBoard = chess.classic.engine;
 
 describe("deep copy tests", () => {
@@ -47,7 +49,7 @@ describe("deep copy tests", () => {
 	});
 });
 
-function m(from: Chess.Coordinate, to: Chess.Coordinate): Chess.Move {
+function m(from: Coordinate, to: Coordinate): Move {
 	return { from, to };
 }
 

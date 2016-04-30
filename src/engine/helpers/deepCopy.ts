@@ -1,9 +1,14 @@
-import Chess = require("node-chess");
-export = deepCopy;
+import BasePiece from '../basePiece';
+import {
+	BoardState,
+	Rank,
+	Move,
+	MoveHistory
+} from '../../types';
 
-function deepCopy(boardState: Chess.BoardState) {
+export default function deepCopy(boardState: BoardState) {
 
-	var copy: Chess.BoardState = {
+	var copy: BoardState = {
 		ranks: boardState.ranks.map(copyRank),
 		tags: shallowCopy(boardState.tags),
 		moveNumber: boardState.moveNumber,
@@ -18,8 +23,8 @@ function deepCopy(boardState: Chess.BoardState) {
 	return copy;
 }
 
-function copyRank(rank: Chess.Rank) {
-	var copy: Chess.Rank = {
+function copyRank(rank: Rank) {
+	var copy: Rank = {
 		rank: rank.rank,
 		squares: []
 	}
@@ -52,10 +57,10 @@ function shallowCopy(object: CopyableObject) {
 	return copy;
 }
 
-function copyPiece(piece: Chess.BasePiece): Chess.BasePiece {
+function copyPiece(piece: BasePiece): BasePiece {
 	if (!piece) return null;
 
-	var copy: Chess.BasePiece = shallowCopy(piece);
+	var copy: BasePiece = shallowCopy(piece);
 	copy.location = { rank: piece.location.rank, file: piece.location.file };
 	copy.movement = piece.movement;
 	copy.getRelativeDestination = piece.getRelativeDestination;
@@ -64,8 +69,8 @@ function copyPiece(piece: Chess.BasePiece): Chess.BasePiece {
 	return copy;
 }
 
-function copyAvailableMoves(moves: Chess.Move[]) {
-	function copyMove(move: Chess.Move): Chess.Move {
+function copyAvailableMoves(moves: Move[]) {
+	function copyMove(move: Move): Move {
 		return {
 			from: shallowCopy(move.from),
 			to: shallowCopy(move.to),
@@ -73,20 +78,20 @@ function copyAvailableMoves(moves: Chess.Move[]) {
 			isWhite: move.isWhite
 		};
 	}
-	var newMoves: Array<Chess.Move> = [];
+	var newMoves: Array<Move> = [];
 	moves.forEach(m => newMoves.push(copyMove(m)));
 	return newMoves;
 }
 
-function copyMoveHistory(history: Chess.MoveHistory[]) {
-	function copyHistory(hist: Chess.MoveHistory): Chess.MoveHistory {
+function copyMoveHistory(history: MoveHistory[]) {
+	function copyHistory(hist: MoveHistory): MoveHistory {
 		return {
 			from: shallowCopy(hist.from),
 			to: shallowCopy(hist.to),
 			piece: hist.piece
 		};
 	}
-	var newHistory: Array<Chess.MoveHistory> = [];
+	var newHistory: Array<MoveHistory> = [];
 	history.forEach(h => newHistory.push(copyHistory(h)));
 	return newHistory;
 }

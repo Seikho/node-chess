@@ -1,25 +1,27 @@
-import Chess = require("node-chess");
-import fenStringParser = require("./stringParsers/fen");
-export = fenParser;
+import Engine from '../index';
+import {
+	Rank,
+	Square
+} from '../../types';
+import fenStringParser from './stringParsers/fen';
 
-var defaultPosition: string = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+const defaultPosition: string = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-function fenParser(position?: string): void {
-	var self: Chess.Engine = this;
+export default function fenParser(this: Engine, position?: string): void {
 	var engineInput = fenStringParser.parse(position || defaultPosition);
 	
-	self.boardState.whitesTurn = engineInput.turn === "w";
-	var rankCount = self.rankCount;
+	this.boardState.whitesTurn = engineInput.turn === "w";
+	var rankCount = this.rankCount;
 	engineInput.ranks.forEach(rank => {
-		self.boardState.ranks[rankCount] = createFilesForRank(self, rank, rankCount);
+		this.boardState.ranks[rankCount] = createFilesForRank(this, rank, rankCount);
 		rankCount--;
 	});
 	
-	self.populateAvailableMoves();
+	this.populateAvailableMoves();
 }
 
-function createFilesForRank(engine: Chess.Engine, fenRank: string, rankNumber: number): Chess.Rank {
-	var rank: Chess.Rank = {
+function createFilesForRank(engine: Engine, fenRank: string, rankNumber: number): Rank {
+	var rank: Rank = {
 		rank: rankNumber,
 		squares: []
 	}
@@ -46,7 +48,7 @@ function createFilesForRank(engine: Chess.Engine, fenRank: string, rankNumber: n
 			index++;
 			continue;
 		}
-		var square: Chess.Square = {
+		var square: Square = {
 			rank: rankNumber,
 			file: i,
 			piece: engine.createPiece(notation, { file: i, rank: rankNumber }),

@@ -1,9 +1,11 @@
-import Chess = require("node-chess");
-import Engine = require("./engine/engine");
+import {
+	AnalysisOptions
+} from './types'
+import Engine from './engine';
 export = Analyzer;
 
 class Analyzer {
-	constructor(engine: Engine, options?: Chess.AnalysisOptions) {
+	constructor(engine: Engine, options?: AnalysisOptions) {
 		this.evaluation = 0;
 		if (!options) options = {};
 		this.options.interval = options.interval || 100;
@@ -18,6 +20,6 @@ class Analyzer {
 	}
 
 	evaluation: number;
-	options: Chess.AnalysisOptions = {};
+	options: AnalysisOptions = {};
 	startTime: number;
 }

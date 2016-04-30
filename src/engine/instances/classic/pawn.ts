@@ -1,7 +1,13 @@
-import Chess = require("node-chess");
-export = pawn;
+import Engine from '../../index';
+import BasePiece from '../../basePiece';
+import {
+	MoveDefinition,
+	Coordinate,
+	BoardState,
+	Piece
+} from '../../../types';
 
-var moveForward: Chess.MoveDefinition = {
+var moveForward: MoveDefinition = {
 	canMove: true,
 	transforms: { file: 0, rank: 1 },
 	postMoveAction: {
@@ -27,7 +33,7 @@ var moveForward: Chess.MoveDefinition = {
 	}
 }
 
-var firstMove: Chess.MoveDefinition = {
+var firstMove: MoveDefinition = {
 	canMove: true,
 	transforms: { file: 0, rank: 2 },
 	preCondition: (piece, boardState) => boardState.moveHistory.filter(m => m.piece.id === piece.id).length === 0,
@@ -48,17 +54,17 @@ var firstMove: Chess.MoveDefinition = {
 	}
 }
 
-var leftCapture: Chess.MoveDefinition = {
+var leftCapture: MoveDefinition = {
 	canCapture: true,
 	transforms: { file: 1, rank: 1 }
 }
 
-var rightCapture: Chess.MoveDefinition = {
+var rightCapture: MoveDefinition = {
 	canCapture: true,
 	transforms: { file: -1, rank: 1 }
 }
 
-var leftEnpassant: Chess.MoveDefinition = {
+var leftEnpassant: MoveDefinition = {
 	canCapture: true,
 	transforms: { file: -1, rank: 1 },
 	preCondition: enpassantPreMove({ file: -1, rank: 1 }),
@@ -67,7 +73,7 @@ var leftEnpassant: Chess.MoveDefinition = {
 	}
 }
 
-var rightEnpassant: Chess.MoveDefinition = {
+var rightEnpassant: MoveDefinition = {
 	canCapture: true,
 	transforms: { file: 1, rank: 1 },
 	preCondition: enpassantPreMove({ file: 1, rank: 1 }),
@@ -76,8 +82,8 @@ var rightEnpassant: Chess.MoveDefinition = {
 	}
 }
 
-function enpassantPreMove(dir: Chess.Coordinate) {
-	return (piece: Chess.BasePiece, state: Chess.BoardState, board: Chess.Engine) => {
+function enpassantPreMove(dir: Coordinate) {
+	return (piece: BasePiece, state: BoardState, board: Engine) => {
 		var coord = piece.getRelativeDestination(dir);
 		var sq = board.getSquare(coord, state);
 		if (!sq) return false;
@@ -85,14 +91,14 @@ function enpassantPreMove(dir: Chess.Coordinate) {
 	}
 }
 
-function enpassantPostMove(piece: Chess.BasePiece, state: Chess.BoardState, board: Chess.Engine) {
+function enpassantPostMove(piece: BasePiece, state: BoardState, board: Engine) {
 	var coord = piece.getRelativeDestination({ file: 0, rank: -1 });
 	var square = board.getSquare(coord, state);
 	state.capturedPieces.push(square.piece);
 	square.piece = null;
 }
 
-var pawn: Chess.Piece = {
+var pawn: Piece = {
 	notation: "p",
 	name: "Pawn",
 	movement: [moveForward, firstMove, leftCapture, rightCapture, leftEnpassant, rightEnpassant],
@@ -100,3 +106,5 @@ var pawn: Chess.Piece = {
 	canSpawn: false,
 	value: 1
 }
+
+export { pawn as default }

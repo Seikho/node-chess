@@ -1,9 +1,12 @@
-import Chess = require("node-chess");
-export = getSquare;
+import Engine from '../index';
+import {
+    Coordinate,
+    BoardState,
+    Square
+} from '../../types';
 
-function getSquare(square: Chess.Coordinate, boardState?: Chess.BoardState): Chess.Square {
-    var self: Chess.Engine = this;
-    boardState = boardState || self.boardState; 
+export default function getSquare(this: Engine, square: Coordinate, boardState?: BoardState): Square {
+    boardState = boardState || this.boardState; 
         
     if (!boardState.ranks[square.rank]) return null;
     return boardState.ranks[square.rank].squares[square.file] || null;

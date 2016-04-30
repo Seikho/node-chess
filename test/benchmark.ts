@@ -1,14 +1,13 @@
-import Chess = require("node-chess");
-import chess = require("../src/index");
+import Engine from '../src/engine';
+import chess = require('../src/index');
 import Promise = require("bluebird");
-import chai = require("chai");
-var Analysis = require("analysis");
-var box = Analysis.descriptive.box;
-var expect = chai.expect;
+import {expect} from 'chai';
+const Analysis = require('analysis');
+const box = Analysis.descriptive.box;
 
 describe("benchmarks", function() {
 	this.timeout(60000);
-	var engines: Chess.Engine[] = [];
+	var engines: Engine[] = [];
 
 	var times = 100;
 	it(`will create a classic board ${times} times`, () => {

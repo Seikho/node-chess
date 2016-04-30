@@ -1,12 +1,14 @@
-import Chess = require("node-chess");
-export = bishop;
+import {
+	MoveDefinition,
+	Piece
+} from '../../../types';
 
 var upLeft = makeMove(-1, 1);
 var upRight = makeMove(1, 1);
 var downLeft = makeMove(-1, -1);
 var downRight = makeMove(1, -1);
 
-function makeMove(file: number, rank: number): Chess.MoveDefinition {
+function makeMove(file: number, rank: number): MoveDefinition {
 	return {
 		canCapture: true,
 		canMove: true,
@@ -14,7 +16,7 @@ function makeMove(file: number, rank: number): Chess.MoveDefinition {
 	}
 }
 
-var bishop: Chess.Piece = {
+var bishop: Piece = {
 	notation: "b",
 	name: "Bishop",
 	movement: [upLeft, upRight, downLeft, downRight],
@@ -22,3 +24,5 @@ var bishop: Chess.Piece = {
 	canSpawn: false,
 	value: 3
 }
+
+export { bishop as default }

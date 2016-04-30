@@ -1,6 +1,5 @@
-import classicEngine = require("../src/engine/instances/classic/engine");
-import chai = require("chai");
-var expect = chai.expect;
+import classicEngine from '../src/engine/instances/classic/engine';
+import {expect} from 'chai';
 
 describe("fen parsing tests", () => {
 	// Build a basic board with a pawn a valid piece

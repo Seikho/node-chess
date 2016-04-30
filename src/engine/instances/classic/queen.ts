@@ -1,5 +1,7 @@
-import Chess = require("node-chess");
-export = queen;
+import {
+	MoveDefinition,
+	Piece
+} from '../../../types';
 
 var up = makeMove(0, 1);
 var down = makeMove(0, -1);
@@ -10,7 +12,7 @@ var upRight = makeMove(1, 1);
 var downLeft = makeMove(-1, -1);
 var downRight = makeMove(1, -1);
 
-function makeMove(file: number, rank: number): Chess.MoveDefinition {
+function makeMove(file: number, rank: number): MoveDefinition {
 	return {
 		canCapture: true,
 		canMove: true,
@@ -18,7 +20,7 @@ function makeMove(file: number, rank: number): Chess.MoveDefinition {
 	}
 }
 
-var queen: Chess.Piece = {
+var queen: Piece = {
 	notation: "q",
 	name: "Queen",
 	movement: [upLeft, upRight, downLeft, downRight, up, down, left, right],
@@ -26,3 +28,5 @@ var queen: Chess.Piece = {
 	canSpawn: false,
 	value: 9
 }
+
+export { queen as default }
