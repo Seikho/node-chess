@@ -1,9 +1,5 @@
 import Engine from '../src/engine';
 import chess = require('../src/index');
-import Promise = require("bluebird");
-import {expect} from 'chai';
-const Analysis = require('analysis');
-const box = Analysis.descriptive.box;
 
 describe("benchmarks", function() {
 	this.timeout(60000);
@@ -23,7 +19,7 @@ describe("benchmarks", function() {
 			return timer.stop();
 		});
 
-		console.log(box(times));
+		console.log(JSON.stringify(times));
 	});
 });
 
