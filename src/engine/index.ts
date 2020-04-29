@@ -9,7 +9,7 @@ import getMoves from './helpers/getMoves';
 import inferMoves from './helpers/inferMoves';
 import movePiece from './helpers/movePiece';
 import fenParser from './parsers/fen';
-import createSqaures from './helpers/createSquares';
+import createSquares from './helpers/createSquares';
 import BasePiece from './basePiece';
 import availableMoves from './helpers/availableMoves';
 import getSquare from './helpers/getSquare';
@@ -46,7 +46,7 @@ export default class Engine {
     getSquare = getSquare.bind(this);
     getMoves = getMoves.bind(this);
 
-    create = createSqaures.bind(this);
+    create = createSquares.bind(this);
     inferMoves = inferMoves.bind(this);
     toString = toString.bind(this);
     pieceFactory = BasePiece;

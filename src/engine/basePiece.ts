@@ -1,11 +1,10 @@
-import { 
+import {
 	Piece,
 	Coordinate,
 	Move,
 	MoveFunction,
 	MoveDefinition
 } from '../types';
-import {Direction} from '../enums';
 
 export default class BasePiece {
 	constructor(piece: Piece, notation: string) {
@@ -17,7 +16,7 @@ export default class BasePiece {
 		this.value = piece.value;
 		this.notation = notation;
 		this.moveHistory = [];
-		this.postMoveFunctions = piece.postMoveFunctions || [];		
+		this.postMoveFunctions = piece.postMoveFunctions || [];
 	}
 	id = 0;
 	location: Coordinate;
@@ -31,11 +30,11 @@ export default class BasePiece {
 	isWhite: boolean;
 	postMoveFunctions: MoveFunction[];
 
-	getRelativeDestination(transform: Coordinate): Coordinate {		
+	getRelativeDestination(transform: Coordinate): Coordinate {
 		var destination = applyTransform(transform, this.location, this.isWhite);
 		return destination;
 	}
-	
+
 	getAbsoluteDestination(transform: Coordinate): Coordinate {
 		var destination = applyTransform(transform, this.location, true);
 		return destination;
@@ -47,7 +46,7 @@ function applyTransform(transform: Coordinate, position: Coordinate, isWhite: bo
 	return {
 		file: position.file + (transform.file * modifier),
 		rank: position.rank + (transform.rank * modifier)
-	}	
+	}
 }
 
 function modifyTransform(transform: Coordinate, count: number) {
