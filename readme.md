@@ -14,9 +14,13 @@ With node-chess you can:
 - add, change, and remove rules such as win and loss conditions
 - extend the existing engine to improve the calculations for your own variants
 
+### Requirements
+
+Node 12.X
+
 ### Installation
 Add it as a dependency to your project
-```javascript
+```bash
 npm install node-chess
 ```
 
