@@ -2,7 +2,7 @@ import {
 	Coordinate,
 	Move
 } from '../src/types';
-import chess from '../src';v
+import chess from '../src';
 import {expect} from 'chai';
 import deepCopy from '../src/engine/helpers/deepCopy';
 const newBoard = chess.classic.engine;
