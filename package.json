@@ -4,7 +4,7 @@
   "description": "An isomorphic and fully customisable JavaScript chess engine",
   "main": "src/index.ts",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --require ts-node/register test/*",
     "start": "node src/index.js",
     "build": "tsc && browserify src/index.js -o node-chess.js && browserify test/increments.js -o profile/increments.js"
   },
@@ -35,7 +35,8 @@
     "browserify": "^11.0.1",
     "chai": "^2.1.2",
     "mocha": "^7.1.2",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "ts-node": "^8.9.1"
   },
   "dependencies": {
     "pegjs": "^0.10.0"
