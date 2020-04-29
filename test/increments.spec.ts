@@ -134,7 +134,7 @@ describe("game conclusion tests", () => {
 	})
 });
 
-function hasTagTest(message: string, coordinate: Coordinate, tagName: string, expected: any) {
+function hasTagTest(this: Engine, message: string, coordinate: Coordinate, tagName: string, expected: any) {
 	it(message, () => {
 		var board: Engine = this;
 		var square = board.getSquare(coordinate);
@@ -142,7 +142,7 @@ function hasTagTest(message: string, coordinate: Coordinate, tagName: string, ex
 	});
 }
 
-function atLocationTest(message: string, location: Coordinate, notation: string) {
+function atLocationTest(this:Engine, message: string, location: Coordinate, notation: string) {
 	it(message, () => {
 		var board: Engine = this;
 		var square = board.getSquare(location);
@@ -150,7 +150,7 @@ function atLocationTest(message: string, location: Coordinate, notation: string)
 	});
 }
 
-function hasMovesTest(message: string, start: Coordinate, expectedMoves: Coordinate[]): void {
+function hasMovesTest(this:Engine, message: string, start: Coordinate, expectedMoves: Coordinate[]): void {
 	it(message, () => {
 		var board: Engine = this;
 		var moves = board.boardState.moves
@@ -178,7 +178,7 @@ function move(direction: Direction, count: number): SingleMove {
  * Test that a piece successfully moved
  */
 var count = 0;
-function pieceMoveTest(message: string, from: Coordinate, to: Coordinate, wont = false) {
+function pieceMoveTest(this: Engine, message: string, from: Coordinate, to: Coordinate, wont = false) {
 
 	it(message, () => {
 
