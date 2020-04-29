@@ -10,6 +10,4 @@ const chess = {
 	}
 };
 
-export = chess;
-exports.default = chess; 
- 
+export default chess;

@@ -2,10 +2,10 @@ import {
 	Coordinate,
 	Move
 } from '../src/types';
-import chess = require('../src/index');
+import chess from '../src';v
 import {expect} from 'chai';
 import deepCopy from '../src/engine/helpers/deepCopy';
-var newBoard = chess.classic.engine;
+const newBoard = chess.classic.engine;
 
 describe("deep copy tests", () => {
 

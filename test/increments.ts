@@ -6,7 +6,7 @@ import {
 } from '../src/types';
 import {Direction} from '../src/enums';
 import Engine from '../src/engine';
-import chess = require("../src/index");
+import chess from "../src/index";
 import {expect} from 'chai';
 
 const make = chess.classic;
@@ -100,13 +100,13 @@ describe("classic movement tests", () => {
 	classicMovesTest("[Black] will be able to move Ke8-Kc8 (o-o-o) and Ke8-Kd8", coord(5, 8), [coord(3, 8), coord(4, 8)]);
 	classicMoveTest("[Black] will castle queen side (Ke8-Kc8 or o-o-o)", coord(5, 8), coord(3, 8));
 	classicLocationTest("will have black rook on d8 after castling", coord(4, 8), "r");
-	
+
 	it("[Promote] will promote pawn on a7 to a queen", () => {
 		whitePromote.movePiece({
 			from: {file:1, rank: 7},
 			to: {file:1, rank:8}
 		});
-		
+
 		var square = whitePromote.getSquare({file: 1, rank: 8});
 		var piece = square.piece;
 		expect(square.piece).to.exist;

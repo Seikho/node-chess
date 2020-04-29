@@ -1,5 +1,5 @@
 import Engine from '../src/engine';
-import chess = require('../src/index');
+import chess from '../src'
 
 describe("benchmarks", function() {
 	this.timeout(60000);
