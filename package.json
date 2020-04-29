@@ -4,7 +4,7 @@
   "description": "An isomorphic and fully customisable JavaScript chess engine",
   "main": "src/index.ts",
   "scripts": {
-    "test": "mocha --require ts-node/register test/*",
+    "test": "mocha --require ts-node/register test/*.spec.ts",
     "start": "node src/index.js",
     "build": "tsc && browserify src/index.js -o node-chess.js && browserify test/increments.spec.js -o profile/increments.js"
   },
