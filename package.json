@@ -29,15 +29,15 @@
   },
   "homepage": "https://github.com/seikho/node-chess",
   "devDependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "@types/pegjs": "^0.10.1",
     "browserify": "^11.0.1",
     "chai": "^2.1.2",
     "mocha": "^7.1.2",
-    "typescript": "^3.8.3",
-    "@types/mocha": "^7.0.2",
-    "@types/chai": "^4.2.11"
+    "typescript": "^3.8.3"
   },
   "dependencies": {
-    "bluebird": "^2.9.34",
-    "pegjs": "^0.8.0"
+    "pegjs": "^0.10.0"
   }
 }

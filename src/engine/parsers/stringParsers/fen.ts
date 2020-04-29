@@ -1,7 +1,7 @@
 import { StringParser } from '../../../types';
-const PEG = require("pegjs");
+import {PEG} from 'pegjs';
 
-const parser: StringParser = PEG.buildParser(`
+const parser: StringParser = PEG.parse(`
 	Start
 	= WS r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move WS
 	{ return {

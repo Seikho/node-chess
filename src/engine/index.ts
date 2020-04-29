@@ -14,7 +14,6 @@ import BasePiece from './basePiece';
 import availableMoves from './helpers/availableMoves';
 import getSquare from './helpers/getSquare';
 import createPiece from './helpers/createPiece';
-import Promise = require("bluebird");
 
 /**
  * Board: extensible board (TODO: more detail)
