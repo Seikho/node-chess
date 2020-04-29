@@ -1,7 +1,7 @@
 import { StringParser } from '../../../types';
-import {PEG} from 'pegjs';
+import {generate} from 'pegjs';
 
-const parser: StringParser = PEG.parse(`
+const parser: StringParser = generate(`
 	Start
 	= WS r:RankList WS t:Turn WS c:Castling WS Enpassant WS h:HalfMove WS m:Move WS
 	{ return {
