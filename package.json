@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --require ts-node/register test/*",
     "start": "node src/index.js",
-    "build": "tsc && browserify src/index.js -o node-chess.js && browserify test/increments.js -o profile/increments.js"
+    "build": "tsc && browserify src/index.js -o node-chess.js && browserify test/increments.spec.js -o profile/increments.js"
   },
   "repository": {
     "type": "git",

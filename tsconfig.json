@@ -1,15 +1,14 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
     "noImplicitAny": true,
     "removeComments": false,
     "outDir": "./",
-    "sourceMap": true
+    "sourceMap": true,
+    "moduleResolution": "node"
   },
   "exclude": [
-    "node_modules",
-    "tests/*",
-    "src/**/*.spec.ts"
+    "node_modules"
   ]
 }
