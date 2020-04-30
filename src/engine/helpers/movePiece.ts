@@ -45,17 +45,22 @@ export function calculateMovePiece(this: Engine, move: Move, _boardState: BoardS
 	// Update piece location
 	destination.piece.location = { file: to.file, rank: to.rank };
 
-	const pieceAfterMove = destination.piece;
+	// Update move history
+	newBoardState.moveHistory.push({ from: from, to: to, piece: destination.piece });
 
 	// Run other move logic, castle, upgrade etc
 	const movePatternPostActions = moveDefinition.postMoveActions || [];
 	movePatternPostActions.forEach(func => {
-		func.action(pieceAfterMove, newBoardState, this);
+		if (destination.piece)
+			func.action(destination.piece, newBoardState, this);
 	});
 
 	// Run other piece logic
 	const pieceFunctions = destination.piece.postMoveFunctions || [];
-	pieceFunctions.forEach(fn => fn.action(pieceAfterMove, newBoardState, this));
+	pieceFunctions.forEach(fn => {
+		if (destination.piece)
+			fn.action(destination.piece, newBoardState, this)
+	});
 
 	// Set turn
 	newBoardState.whitesTurn = !newBoardState.whitesTurn;
@@ -67,12 +72,13 @@ export function calculateMovePiece(this: Engine, move: Move, _boardState: BoardS
 	const enginePostMoveActions: MoveFunction[] = newBoardState.postMoveFunctions || [];
 
 	enginePostMoveActions.forEach(postMove => {
-		if (!postMove.moveNumber || postMove.moveNumber === newBoardState.moveNumber)
-			postMove.action(pieceAfterMove, newBoardState, this);
+		if (!postMove.moveNumber || postMove.moveNumber === newBoardState.moveNumber) {
+			if (destination.piece)
+				postMove.action(destination.piece, newBoardState, this);
+		}
 	});
 
-	// Update move history
-	newBoardState.moveHistory.push({ from: from, to: to, piece: destination.piece });
+
 	// Update move count, perhaps length of moveHistory !== moveCount?
 	newBoardState.moveNumber++;
 
@@ -80,7 +86,7 @@ export function calculateMovePiece(this: Engine, move: Move, _boardState: BoardS
 
 	return {
 		newBoardState,
-		pieceAfterMove
+		pieceAfterMove: destination.piece
 	};
 }
 
