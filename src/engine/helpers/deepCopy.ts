@@ -1,14 +1,18 @@
 import BasePiece from '../basePiece';
 import {
 	BoardState,
-	Rank,
-	Move,
-	MoveHistory
+	Rank
 } from '../../types';
 
+/**
+ * Deep copies board state, ensures current & previous board state(s) are independent of each other
+ * Can use R or Lodash instead..
+ *
+ * @param boardState
+ */
 export default function deepCopy(boardState: BoardState) {
 
-	var copy: BoardState = {
+	const copy: BoardState = {
 		ranks: boardState.ranks.map(copyRank),
 		tags: shallowCopy(boardState.tags),
 		moveNumber: boardState.moveNumber,
@@ -23,8 +27,12 @@ export default function deepCopy(boardState: BoardState) {
 	return copy;
 }
 
+/**
+ * Copies one row on the board, the row contains x,y position, piece, and arbitrary tags
+ * @param rank
+ */
 function copyRank(rank: Rank) {
-	var copy: Rank = {
+	const copy: Rank = {
 		rank: rank.rank,
 		squares: []
 	}
@@ -41,61 +49,35 @@ function copyRank(rank: Rank) {
 	return copy;
 }
 
-type CopyableObject = {
-	[index: string ]: any
-}
-function shallowCopy(object: CopyableObject) {
-	var copy: any = {};
+/**
+ * Shallow copies the tags object
+ * @param object
+ */
+function shallowCopy(object: {[index: string ]: any}) {
+	const copy: any = {};
 	if (!object) return copy;
 
-	var keys = Object.keys(object);
-	for (var x = 0; x < keys.length; x++) {
-		var key = keys[x];
+	const keys = Object.keys(object);
+	for (let x = 0; x < keys.length; x++) {
+		const key = keys[x];
 		copy[key] = object[key];
 	}
 
 	return copy;
 }
 
-function copyPiece(piece: BasePiece): BasePiece {
+/**
+ * Copies a Piece, returns null if piece not found
+ * @param piece
+ */
+function copyPiece(piece: BasePiece | null): BasePiece | null {
 	if (!piece) return null;
 
-	var copy: BasePiece = shallowCopy(piece);
+	const copy: BasePiece = shallowCopy(piece);
 	copy.location = { rank: piece.location.rank, file: piece.location.file };
 	copy.movement = piece.movement;
 	copy.getRelativeDestination = piece.getRelativeDestination;
 	copy.getAbsoluteDestination = piece.getAbsoluteDestination;
 	copy.postMoveFunctions = piece.postMoveFunctions;
 	return copy;
-}
-
-function copyAvailableMoves(moves: Move[]) {
-	function copyMove(move: Move): Move {
-		return {
-			from: shallowCopy(move.from),
-			to: shallowCopy(move.to),
-			postMoveActions: shallowCopyArray(move.postMoveActions),
-			isWhite: move.isWhite
-		};
-	}
-	var newMoves: Array<Move> = [];
-	moves.forEach(m => newMoves.push(copyMove(m)));
-	return newMoves;
-}
-
-function copyMoveHistory(history: MoveHistory[]) {
-	function copyHistory(hist: MoveHistory): MoveHistory {
-		return {
-			from: shallowCopy(hist.from),
-			to: shallowCopy(hist.to),
-			piece: hist.piece
-		};
-	}
-	var newHistory: Array<MoveHistory> = [];
-	history.forEach(h => newHistory.push(copyHistory(h)));
-	return newHistory;
-}
-
-function shallowCopyArray(array: any[]) {
-	return array ? array.slice() : [];
 }

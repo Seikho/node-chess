@@ -2,11 +2,11 @@ import BasePiece from './engine/basePiece';
 import Engine from './engine';
 
 export interface BoardState {
-    ranks: Rank[];
+    ranks: Rank[]; // rows of the board, i = 1-8 inclusive
     tags: BoardTag;
     moveNumber: number;
     whitesTurn: boolean;
-    capturedPieces: Piece[];
+    capturedPieces: BoardPiece[];
     postMoveFunctions: MoveFunction[];
     preMoveFunctions: MoveFunction[];
     moves: Move[];
@@ -19,9 +19,11 @@ export interface BoardTag {
     [index: string]: any;
 }
 
+export type MoveFunctionAction = (piece: BoardPiece, boardState: BoardState, board: Engine) => any;
+
 export interface MoveFunction {
     moveNumber?: number;
-    action: (piece: BasePiece, boardState: BoardState, board: Engine) => any;
+    action: MoveFunctionAction;
 }
 
 export interface Coordinate {
@@ -38,10 +40,9 @@ export interface Rank {
 export interface Square {
     rank: number;
     file: number;
-    piece: BasePiece;
+    piece: BasePiece | null;
 
-    // TODO: Change to more strongly typed interface
-    tags: any;
+    tags: {[key: string]: boolean | string};
 }
 
 export interface Move {
@@ -56,25 +57,39 @@ export interface MoveHistory {
     from: Coordinate;
     to: Coordinate;
     options?: any;
-    piece: Piece;
+    piece: BoardPiece;
 }
 
-export interface Piece {
-    id?: number;
-    location?: Coordinate;
+/**
+ * Piece Definition
+ */
+export interface IPiece {
     name: string;
     movement: MoveDefinition[];
     notation: string;
     value: number;
     canQueen: boolean;
     canSpawn: boolean;
-    isWhite?: boolean;
-    postMoveFunctions?: MoveFunction[];
+    postMoveFunctions: MoveFunction[];
 }
 
+/**
+ * Piece on Board Representation Definition
+ */
+export interface BoardPiece extends IPiece {
+    id: number;
+    location: Coordinate;
+    isWhite: boolean;
+    getRelativeDestination: (transform: Coordinate) => Coordinate;
+    getAbsoluteDestination: (transform: Coordinate) => Coordinate;
+}
+
+/**
+ * Specify behaviour of piece
+ */
 export interface MoveDefinition {
-    transforms?: Transform | Transform[];
-    incrementer?: Increment;
+    transforms?: Transform | Transform[]; // All displacement vectors, with canJump
+    incrementer?: Increment; // Infinite move directions
     canMove?: boolean;
     canCapture?: boolean;
     postMoveAction?: MoveFunction;

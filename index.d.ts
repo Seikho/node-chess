@@ -10,7 +10,7 @@ export {
     Square,
     Move,
     MoveHistory,
-    Piece,
+    BoardPiece,
     MoveDefinition,
     Increment,
     Transform,
@@ -35,5 +35,5 @@ export default api;
 
 /**
  * TODO: Fix!
- * Export 
+ * Export
  */

@@ -1,27 +1,32 @@
 import Engine from '../../index';
-import BasePiece from '../../basePiece';
 import {
 	MoveDefinition,
 	Coordinate,
 	BoardState,
-	Piece
+	IPiece, BoardPiece, MoveFunctionAction
 } from '../../../types';
+import Queen from './queen';
+import {isInBounds} from "../../helpers/inferMoves";
 
-var moveForward: MoveDefinition = {
+/**
+ * Pawn with enpassant, promote, first-move support
+ */
+
+const moveForward: MoveDefinition = {
 	canMove: true,
 	transforms: { file: 0, rank: 1 },
 	postMoveAction: {
 		action: (piece, state, board) => {
-			var move = state.moveHistory.slice(-1)[0];
-			if (move.to.rank !== 1 && move.to.rank !== 8) return;
-			
-			var promotionNotation = (<string>move.options || "q").toLowerCase();
-			var promotionPiece = board.pieces.filter(p => p.notation === promotionNotation)[0];
-			
+			const move = state.moveHistory.slice(-1)[0];
+			if (!move || move.to.rank !== 1 && move.to.rank !== 8) return;
+
+			const promotionNotation = (<string>move.options || Queen.notation).toLowerCase();
+			let promotionPiece = board.pieces.filter(p => p.notation === promotionNotation)[0];
+
 			if (!promotionPiece) {
-				promotionPiece = board.pieces.filter(p => p.notation === "q")[0];
+				promotionPiece = board.pieces.filter(p => p.notation === Queen.notation)[0];
 			}
-			
+
 			piece.canQueen = false;
 			piece.canSpawn = true;
 			piece.movement = promotionPiece.movement;
@@ -33,20 +38,20 @@ var moveForward: MoveDefinition = {
 	}
 }
 
-var firstMove: MoveDefinition = {
+const firstMove: MoveDefinition = {
 	canMove: true,
 	transforms: { file: 0, rank: 2 },
 	preCondition: (piece, boardState) => boardState.moveHistory.filter(m => m.piece.id === piece.id).length === 0,
 	postMoveAction: {
 		action: (piece, state, board) => {
-			var coordBehindPawn = piece.getRelativeDestination({ file: 0, rank: -1 })
-			var squareBehindPawn = board.getSquare(coordBehindPawn, state);
+			const coordBehindPawn = piece.getRelativeDestination({ file: 0, rank: -1 })
+			const squareBehindPawn = board.getSquare(coordBehindPawn, state);
 			squareBehindPawn.tags["enpassant"] = true;
-			
+
 			state.postMoveFunctions.push({
-				moveNumber: state.moveNumber+1,
+				moveNumber: state.moveNumber + 1,
 				action: (piece, innerState, innerBoard) => {
-					var sq = innerBoard.getSquare({file: coordBehindPawn.file, rank: coordBehindPawn.rank }, innerState);
+					const sq = innerBoard.getSquare({file: coordBehindPawn.file, rank: coordBehindPawn.rank }, innerState);
 					delete sq.tags["enpassant"];
 				}
 			})
@@ -54,57 +59,61 @@ var firstMove: MoveDefinition = {
 	}
 }
 
-var leftCapture: MoveDefinition = {
+const leftCapture: MoveDefinition = {
 	canCapture: true,
 	transforms: { file: 1, rank: 1 }
 }
 
-var rightCapture: MoveDefinition = {
+const rightCapture: MoveDefinition = {
 	canCapture: true,
 	transforms: { file: -1, rank: 1 }
 }
 
-var leftEnpassant: MoveDefinition = {
-	canCapture: true,
-	transforms: { file: -1, rank: 1 },
-	preCondition: enpassantPreMove({ file: -1, rank: 1 }),
-	postMoveAction: {
-		action: enpassantPostMove
-	}
-}
-
-var rightEnpassant: MoveDefinition = {
-	canCapture: true,
-	transforms: { file: 1, rank: 1 },
-	preCondition: enpassantPreMove({ file: 1, rank: 1 }),
-	postMoveAction: {
-		action: enpassantPostMove
-	}
-}
-
-function enpassantPreMove(dir: Coordinate) {
-	return (piece: BasePiece, state: BoardState, board: Engine) => {
-		var coord = piece.getRelativeDestination(dir);
-		var sq = board.getSquare(coord, state);
-		if (!sq) return false;
+const makeEnpassantPreMove = (dir: Coordinate): MoveFunctionAction => {
+	return (piece: BoardPiece, state: BoardState, board: Engine) => {
+		const coord = piece.getRelativeDestination(dir);
+		if (!isInBounds(coord)) return false;
+		const sq = board.getSquare(coord, state);
 		return !!sq.tags["enpassant"];
 	}
 }
 
-function enpassantPostMove(piece: BasePiece, state: BoardState, board: Engine) {
-	var coord = piece.getRelativeDestination({ file: 0, rank: -1 });
-	var square = board.getSquare(coord, state);
+const enpassantPostMove: MoveFunctionAction = (piece: BoardPiece, state: BoardState, board: Engine) => {
+	const coord = piece.getRelativeDestination({ file: 0, rank: -1 });
+	const square = board.getSquare(coord, state);
+
+	if (square.piece === null) throw Error(`enpassant postMove fail, expected target piece to be on square ${coord.rank} ${coord.file}, instead got null`)
+
 	state.capturedPieces.push(square.piece);
 	square.piece = null;
 }
 
-var pawn: Piece = {
+const leftEnpassant: MoveDefinition = {
+	canCapture: true,
+	transforms: { file: -1, rank: 1 },
+	preCondition: makeEnpassantPreMove({ file: -1, rank: 1 }),
+	postMoveAction: {
+		action: enpassantPostMove
+	}
+}
+
+const rightEnpassant: MoveDefinition = {
+	canCapture: true,
+	transforms: { file: 1, rank: 1 },
+	preCondition: makeEnpassantPreMove({ file: 1, rank: 1 }),
+	postMoveAction: {
+		action: enpassantPostMove
+	}
+}
+
+const pawn: IPiece = {
 	notation: "p",
 	name: "Pawn",
 	movement: [moveForward, firstMove, leftCapture, rightCapture, leftEnpassant, rightEnpassant],
 	canQueen: true,
 	canSpawn: false,
-	value: 1
+	value: 1,
+	postMoveFunctions: []
 }
 
 export { pawn as default }

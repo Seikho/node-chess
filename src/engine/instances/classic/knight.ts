@@ -1,18 +1,23 @@
 import {
 	MoveDefinition,
-	Piece
+	IPiece
 } from '../../../types';
-var upLeft = makeMove(-1, 2);
-var upRight = makeMove(1, 2);
 
-var downLeft = makeMove(-1, -2);
-var downRight = makeMove(1, -2);
+/**
+ * Knight
+ */
 
-var leftUp = makeMove(-2, 1);
-var leftDown = makeMove(-2, -1);
+const upLeft = makeMove(-1, 2);
+const upRight = makeMove(1, 2);
 
-var rightUp = makeMove(2, 1);
-var rightDown = makeMove(2, -1);
+const downLeft = makeMove(-1, -2);
+const downRight = makeMove(1, -2);
+
+const leftUp = makeMove(-2, 1);
+const leftDown = makeMove(-2, -1);
+
+const rightUp = makeMove(2, 1);
+const rightDown = makeMove(2, -1);
 
 function makeMove(file: number, rank: number): MoveDefinition {
 	return {
@@ -22,13 +27,14 @@ function makeMove(file: number, rank: number): MoveDefinition {
 	}
 }
 
-var knight: Piece = {
+const knight: IPiece = {
 	name: "Knight",
 	movement: [upLeft, upRight, downLeft, downRight, leftUp, leftDown, rightUp, rightDown],
 	canQueen: false,
 	canSpawn: true,
 	value: 3,
-	notation: "n"
+	notation: "n",
+	postMoveFunctions: []
 }
 
 export { knight as default }

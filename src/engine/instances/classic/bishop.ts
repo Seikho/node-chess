@@ -1,12 +1,12 @@
 import {
 	MoveDefinition,
-	Piece
+	IPiece
 } from '../../../types';
 
-var upLeft = makeMove(-1, 1);
-var upRight = makeMove(1, 1);
-var downLeft = makeMove(-1, -1);
-var downRight = makeMove(1, -1);
+const upLeft = makeMove(-1, 1);
+const upRight = makeMove(1, 1);
+const downLeft = makeMove(-1, -1);
+const downRight = makeMove(1, -1);
 
 function makeMove(file: number, rank: number): MoveDefinition {
 	return {
@@ -16,13 +16,14 @@ function makeMove(file: number, rank: number): MoveDefinition {
 	}
 }
 
-var bishop: Piece = {
+const bishop: IPiece = {
 	notation: "b",
 	name: "Bishop",
 	movement: [upLeft, upRight, downLeft, downRight],
 	canQueen: false,
 	canSpawn: false,
-	value: 3
+	value: 3,
+	postMoveFunctions: []
 }
 
 export { bishop as default }

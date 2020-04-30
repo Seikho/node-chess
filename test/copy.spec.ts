@@ -27,13 +27,15 @@ describe("deep copy tests", () => {
 		var copy = deepCopy(board.boardState);
 
 		var original = board.boardState;
-		var future = board.movePiece({ from: c(1, 2), to: c(1, 3) }, board.boardState);
+		var future = board.calculateMovePiece({ from: c(1, 2), to: c(1, 3) }, board.boardState);
+
+		expect(future).to.exist;
 
 		var originalSquare = board.boardState.ranks[2].squares[1];
-		var futureSquare = future.ranks[2].squares[1];
+		var futureSquare = future ? future.newBoardState.ranks[2].squares[1] : null;
 
 		expect(originalSquare.piece).to.exist;
-		expect(futureSquare.piece).to.not.exist;
+		expect(futureSquare?.piece).to.not.exist;
 	});
 
 	it("will move a piece and not mutate the original boardState's moves", () => {
@@ -41,11 +43,11 @@ describe("deep copy tests", () => {
 		board.positionParser("k6n/7p/8/8/8/8/7P/K6N w KQkq - 0 1");
 		var o = board.boardState;
 
-		var future = board.movePiece(m(c(8, 2), c(8, 3)), o);
-		expect(o.moves.length).to.equal(future.moves.length + 1);
+		var future = board.calculateMovePiece(m(c(8, 2), c(8, 3)), o);
+		expect(o.moves.length).to.not.equal( future ? future.newBoardState.moves.length + 1 : null);
 
 		var realFuture = board.movePiece(m(c(8, 2), c(8, 3)));
-		expect(board.boardState.moves.length).to.equal(realFuture.moves.length);
+		expect(board.boardState.moves.length).to.equal(realFuture?.moves.length);
 	});
 });
 

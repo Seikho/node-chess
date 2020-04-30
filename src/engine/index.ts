@@ -1,13 +1,13 @@
 import {
     MoveFunction,
-    Piece,
+    BoardPiece,
     BoardState,
-    BoardTag,
+    BoardTag, IPiece,
 } from '../types';
 import toString from './helpers/toString';
 import getMoves from './helpers/getMoves';
 import inferMoves from './helpers/inferMoves';
-import movePiece from './helpers/movePiece';
+import movePiece, {calculateMovePiece} from './helpers/movePiece';
 import fenParser from './parsers/fen';
 import createSquares from './helpers/createSquares';
 import BasePiece from './basePiece';
@@ -21,7 +21,7 @@ import createPiece from './helpers/createPiece';
 export default class Engine {
     constructor() { }
 
-    uciEngine: UCIEngine;
+    uciEngine: UCIEngine | null = null;
     rankCount: number = 8;
     fileCount: number = 8;
     postMoveFunctions: MoveFunction[] = [];
@@ -38,10 +38,13 @@ export default class Engine {
         moveHistory: []
     }
 
-    pieces: Piece[] = [];
+    pieces: IPiece[] = [];
+    pieceFactory = BasePiece;
+
     positionParser = fenParser.bind(this);
 
     movePiece = movePiece.bind(this);
+    calculateMovePiece = calculateMovePiece.bind(this);
 
     getSquare = getSquare.bind(this);
     getMoves = getMoves.bind(this);
@@ -49,7 +52,7 @@ export default class Engine {
     create = createSquares.bind(this);
     inferMoves = inferMoves.bind(this);
     toString = toString.bind(this);
-    pieceFactory = BasePiece;
+
     populateAvailableMoves = availableMoves.bind(this);
     createPiece = createPiece.bind(this);
 
