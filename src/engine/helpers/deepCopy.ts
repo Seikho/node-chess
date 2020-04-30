@@ -34,7 +34,7 @@ export default function deepCopy(boardState: BoardState) {
 function copyRank(rank: Rank) {
 	const copy: Rank = {
 		rank: rank.rank,
-		squares: []
+		squares: Array(rank.squares.length)
 	}
 
 	rank.squares.forEach((sq, i) => {
