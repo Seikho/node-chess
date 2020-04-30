@@ -44,7 +44,7 @@ describe("deep copy tests", () => {
 		var o = board.boardState;
 
 		var future = board.calculateMovePiece(m(c(8, 2), c(8, 3)), o);
-		expect(o.moves.length).to.not.equal( future ? future.newBoardState.moves.length + 1 : null);
+		expect(o.moves.length).to.equal( future ? future.newBoardState.moves.length + 1 : null);
 
 		var realFuture = board.movePiece(m(c(8, 2), c(8, 3)));
 		expect(board.boardState.moves.length).to.equal(realFuture?.moves.length);
