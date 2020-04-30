@@ -31,7 +31,6 @@
   "devDependencies": {
     "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",
-    "@types/pegjs": "^0.10.1",
     "browserify": "^11.0.1",
     "chai": "^2.1.2",
     "mocha": "^7.1.2",
@@ -39,6 +38,7 @@
     "ts-node": "^8.9.1"
   },
   "dependencies": {
+    "@types/pegjs": "^0.10.1",
     "pegjs": "^0.10.0"
   }
 }
